@@ -1,3 +1,6 @@
-# myblog
+Build and run locally:
 
-test
+```
+docker build -t blog .
+docker run -d -p 80:80 blog
+```

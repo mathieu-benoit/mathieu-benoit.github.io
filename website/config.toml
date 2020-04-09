@@ -1,0 +1,37 @@
+baseurl = "/"
+languageCode = "en-us"
+theme = "hello-friend"
+paginate = 5
+
+[params]
+  contentTypeName = "posts"
+  defaultTheme = "dark"
+  showMenuItems = 2
+  showReadingTime = true
+  description = "Mathieu Benoit's blog"
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  minitag = "minitags"
+
+[languages]
+  [languages.en]
+    title = "always up, always on"
+    subtitle = "Mathieu Benoit"
+
+    [languages.en.params.logo]
+      logoText = "always up, always on"
+      logoHomeLink = "/"
+
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "about"
+        url = "/about"
+        weight = "30"
+      [[languages.en.menu.main]]
+        identifier = "posts"
+        name = "blog"
+        url = "/posts"
+        weight = "10"
