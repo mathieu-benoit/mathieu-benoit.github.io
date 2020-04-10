@@ -1,6 +1,6 @@
 FROM nginx:1.17.9-alpine
 
-ARG HUGO_VERSION=0.68.3
+ARG HUGO_VERSION=0.69.0
 
 RUN apk add --update wget ca-certificates && \
     cd /tmp/ && \
