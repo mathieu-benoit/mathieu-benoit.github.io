@@ -4,21 +4,15 @@ theme = "hello-friend"
 paginate = 5
 
 [params]
-  contentTypeName = "posts"
+  contentTypeName = "blog"
   defaultTheme = "dark"
   showMenuItems = 2
-  showReadingTime = true
+  showReadingTime = false
   description = "Mathieu Benoit's blog"
-
-[taxonomies]
-  category = "categories"
-  tag = "tags"
-  minitag = "minitags"
 
 [languages]
   [languages.en]
     title = "always up, always on"
-    subtitle = "Mathieu Benoit"
 
     [languages.en.params.logo]
       logoText = "always up, always on"
@@ -31,7 +25,7 @@ paginate = 5
         url = "/about"
         weight = "30"
       [[languages.en.menu.main]]
-        identifier = "posts"
+        identifier = "blog"
         name = "blog"
-        url = "/posts"
+        url = "/blog"
         weight = "10"
