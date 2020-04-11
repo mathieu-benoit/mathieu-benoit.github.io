@@ -4,7 +4,7 @@ theme = "hello-friend"
 paginate = 5
 
 [params]
-  contentTypeName = "blog"
+  contentTypeName = "posts"
   defaultTheme = "dark"
   showMenuItems = 2
   showReadingTime = false
@@ -24,8 +24,3 @@ paginate = 5
         name = "about"
         url = "/about"
         weight = "30"
-      [[languages.en.menu.main]]
-        identifier = "blog"
-        name = "blog"
-        url = "/blog"
-        weight = "10"
