@@ -1,7 +1,7 @@
 ---
 title: flexible kured deployment with its helm chart, schedule, microsoft teams or slack notifications, etc.
 date: 2020-01-10
-tags: [azure, containers, kubernetes, security]
+tags: [azure, containers, kubernetes, security, helm]
 description: let's have a look at podman, a daemonless container engine
 ---
 [![](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
