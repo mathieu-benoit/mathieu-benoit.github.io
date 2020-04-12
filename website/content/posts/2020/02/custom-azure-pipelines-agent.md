@@ -28,75 +28,75 @@ AZP_POOL=myadoagent
 On any Docker host:
 ```
 docker run \
- -e AZP_URL=$AZP_URL \
- -e AZP_TOKEN=$AZP_TOKEN \
- -e AZP_AGENT_NAME=$AZP_AGENT_NAME \
- -e AZP_POOL=$AZP_POOL \
- -it mabenoit/ado-agent:latest
+    -e AZP_URL=$AZP_URL \
+    -e AZP_TOKEN=$AZP_TOKEN \
+    -e AZP_AGENT_NAME=$AZP_AGENT_NAME \
+    -e AZP_POOL=$AZP_POOL \
+    -it mabenoit/ado-agent:latest
 ```
 
 On ACI:
 ```
 az container create \
- -g $rg -n $name \
- --image mabenoit/ado-agent:latest \
- --ip-address Private \
- -e AZP_URL=$AZP_URL AZP_TOKEN=$AZP_TOKEN AZP_AGENT_NAME=$AZP_AGENT_NAME AZP_POOL=$AZP_POOL
+    -g $rg -n $name \
+    --image mabenoit/ado-agent:latest \
+    --ip-address Private \
+    -e AZP_URL=$AZP_URL AZP_TOKEN=$AZP_TOKEN AZP_AGENT_NAME=$AZP_AGENT_NAME AZP_POOL=$AZP_POOL
 ```
 
 On Kubernetes:
 ```
 kubectl create secret generic azp \
- --from-literal=AZP_URL=$AZP_URL \
- --from-literal=AZP_TOKEN=$AZP_TOKEN \
- --from-literal=AZP_AGENT_NAME=$AZP_AGENT_NAME \
- --from-literal=AZP_POOL=$AZP_POOL
+    --from-literal=AZP_URL=$AZP_URL \
+    --from-literal=AZP_TOKEN=$AZP_TOKEN \
+    --from-literal=AZP_AGENT_NAME=$AZP_AGENT_NAME \
+    --from-literal=AZP_POOL=$AZP_POOL
 kubectl apply -f - <<EOF
 apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: ado-agent
+  name: ado-agent
 spec:
- replicas: 1
- selector:
- matchLabels:
- app: ado-agent
- template:
- metadata:
- labels:
- app: ado-agent
- spec:
- containers:
- - name: ado-agent
- image: mabenoit/ado-agent:latest
- env:
- - name: AZP_URL
- valueFrom:
- secretKeyRef:
- name: azp
- key: AZP\_URL
- - name: AZP_TOKEN
- valueFrom:
- secretKeyRef:
- name: azp
- key: AZP\_TOKEN
- - name: AZP_AGENT_NAME
- valueFrom:
- secretKeyRef:
- name: azp  
- key: AZP_AGENT_NAME
- - name: AZP_POOL
- valueFrom:
- secretKeyRef:
- name: azp
- key: AZP_POOL
- volumeMounts:
- - mountPath: /var/run/docker.sock
- name: docker-socket-volume
- volumes:
- - name: docker-socket-volume
- hostPath:
- path: /var/run/docker.sock
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ado-agent
+  template:
+    metadata:
+      labels:
+        app: ado-agent
+    spec:
+      containers:
+        - name: ado-agent
+          image: mabenoit/ado-agent:latest
+          env:
+            - name: AZP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: azp
+                  key: AZP_URL
+            - name: AZP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: azp
+                  key: AZP_TOKEN
+            - name: AZP_AGENT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: azp
+                  key: AZP_AGENT_NAME
+            - name: AZP_POOL
+              valueFrom:
+                secretKeyRef:
+                  name: azp
+                  key: AZP_POOL
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-socket-volume
+      volumes:
+        - name: docker-socket-volume
+          hostPath:
+            path: /var/run/docker.sock
 EOF
 ```
 
