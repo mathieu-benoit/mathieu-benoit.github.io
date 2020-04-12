@@ -1,0 +1,137 @@
+trigger:
+  batch: true
+  branches:
+    include: 
+    - '*'
+  paths:
+    exclude:
+    - README.md
+
+pr: none
+
+variables:
+  helmVersion: 3.1.2
+  registryServerName: '$(registryName).azurecr.io'
+  projectName: myblog
+  helmChartVersionArtifactName: 'helm-chart-version'
+  hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
+  nginxIngressVersion: 0.30.0
+  # Additional variables needed to be defined in the Azure Pipeline definition:
+  # For Build/CI stage: registryName, registryLogin and registryPassword.
+  # For Release/CD stage: registryName, registryLogin, registryPassword, aksName, aksRgName, aksLocation, aksSpId, aksSpSecret and aksSpTenantId.
+
+pool:
+  name: mabenoittest9578
+  #imageName: ubuntu-latest
+
+stages:
+- stage: 'Build'
+  displayName: 'Build'
+  jobs:
+  - job: 'Build_Container_Image'
+    variables:
+      imageTag: $(build.buildId)
+    displayName: 'build and push container image'
+    condition: and(succeeded(), eq(variables['deployContainer'], 'true'))
+    steps:
+    - bash: |
+        docker build \
+            -t $(registryServerName)/$(projectName):$(imageTag) \
+            .
+      failOnStderr: true
+      displayName: 'docker build'
+    - bash: |
+        echo $(registryPassword) | docker login \
+            $(registryServerName) \
+            -u $(registryLogin) \
+            --password-stdin
+      displayName: 'docker login'
+    - bash: |
+        docker push $(registryServerName)/$(projectName):$(imageTag)
+      failOnStderr: true
+      condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+      displayName: 'docker push'
+  - job: 'Package_Helm_Chart'
+    variables:
+      imageTag: $(build.buildId)
+      helmChartVersion: $(build.buildId)
+    displayName: 'package and push helm chart'
+    condition: and(succeeded(), eq(variables['deployContainer'], 'true'))
+    steps:
+    - task: HelmInstaller@1
+      displayName: 'install helm'
+      inputs:
+        helmVersionToInstall: $(helmVersion)
+    - bash: |
+        cd chart/
+        helm dependency update
+        helm package \
+            --version $(helmChartVersion) \
+            --app-version $(imageTag) \
+            .
+      failOnStderr: true
+      displayName: 'helm package'
+    - bash: |
+        cd chart/
+        chartPackage=$(ls $(projectName)-*.tgz)
+        az acr helm push \
+            -n $(registryName) \
+            -u $(registryLogin) \
+            -p $(registryPassword) \
+            $chartPackage
+        echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
+      failOnStderr: true
+      condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+      name: helmPush
+      displayName: 'az acr helm push'
+    - publish: $(build.artifactStagingDirectory)
+      artifact: $(helmChartVersionArtifactName)
+- stage: 'Release'
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  displayName: 'Release'
+  jobs:
+  - job: Deploy_Helm_Chart
+    dependsOn: Deploy_Terraform_Templates
+    variables:
+      k8sNamespace: $(projectName)
+    displayName: 'deploy helm chart into aks'
+    steps:
+    - checkout: none
+    - task: HelmInstaller@1
+      displayName: 'install helm'
+      inputs:
+        helmVersionToInstall: $(helmVersion)
+    - download: current
+      artifact: $(helmChartVersionArtifactName)
+    - bash: |
+        az login \
+            --service-principal \
+            -u $(aksSpId) \
+            -p $(aksSpSecret) \
+            --tenant $(aksSpTenantId)
+        az aks get-credentials \
+            -n $(aksName) \
+            -g $(aksResourceGroupName)
+        helm repo add \
+            $(registryName) \
+            https://$(registryServerName)/helm/v1/repo \
+            --username $(registryLogin) \
+            --password $(registryPassword)
+        helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/$(helmChartVersionArtifactName)/variables.json -r)
+        helm upgrade \
+            --namespace $(k8sNamespace) \
+            --install \
+            --wait \
+            --version $helmChartVersion \
+            --set image.repository=$(registryServerName)/$(projectName) \
+            --set networkpolicies.enabled=$(networkPoliciesEnabled) \
+            --set ingress.hostName=$(hostName) \
+            --set issuer.acme.email=$(issuerEmail) \
+            --set nginx-ingress.defaultBackend.enabled=false \
+            --set nginx-ingress.controller.scope.enabled=true \
+            --set nginx-ingress.controller.image.tag=$(nginxIngressVersion) \
+            --set nginx-ingress.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
+            $(projectName) \
+            $(registryName)/$(projectName)
+      failOnStderr: true
+      displayName: 'deploy helm chart'
