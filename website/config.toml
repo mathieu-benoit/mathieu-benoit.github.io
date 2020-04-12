@@ -13,6 +13,10 @@ paginate = 5
 [languages]
   [languages.en]
     title = "always up, always on"
+    menuMore = "show more"
+    readMore = "read more"
+    newerPosts = "newer posts"
+    olderPosts = "older posts"
 
     [languages.en.params.logo]
       logoText = "always up, always on"
