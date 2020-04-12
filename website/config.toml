@@ -1,4 +1,4 @@
-baseurl = "https://myblog.canadacentral.cloudapp.azure.com/"
+baseurl = "/"
 languageCode = "en-us"
 theme = "hello-friend"
 paginate = 5
