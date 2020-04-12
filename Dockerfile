@@ -13,6 +13,7 @@ RUN apk add --update wget ca-certificates && \
 
 WORKDIR /website
 COPY website .
+COPY config/nginx.conf /etc/nginx/conf.d/default.conf
 
 RUN hugo -v -s /website -d /usr/share/nginx/html
 
