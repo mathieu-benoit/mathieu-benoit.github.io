@@ -14,6 +14,7 @@ variables:
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
   helmChartVersionArtifactName: 'helm-chart-version'
+  dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.30.0
   # Additional variables needed to be defined in the Azure Pipeline definition:
@@ -32,7 +33,6 @@ stages:
     variables:
       imageTag: $(build.buildId)
     displayName: 'build and push container image'
-    condition: and(succeeded(), eq(variables['deployContainer'], 'true'))
     steps:
     - bash: |
         docker build \
@@ -56,7 +56,6 @@ stages:
       imageTag: $(build.buildId)
       helmChartVersion: $(build.buildId)
     displayName: 'package and push helm chart'
-    condition: and(succeeded(), eq(variables['deployContainer'], 'true'))
     steps:
     - task: HelmInstaller@1
       displayName: 'install helm'
@@ -91,7 +90,6 @@ stages:
   displayName: 'Release'
   jobs:
   - job: Deploy_Helm_Chart
-    dependsOn: Deploy_Terraform_Templates
     variables:
       k8sNamespace: $(projectName)
     displayName: 'deploy helm chart into aks'
