@@ -29,7 +29,7 @@ stages:
 - stage: 'Build'
   displayName: 'Build'
   jobs:
-  - job: 'Build_Container_Image'
+  - job: Build_Container_Image
     variables:
       imageTag: $(build.buildId)
     displayName: 'build and push container image'
@@ -53,11 +53,12 @@ stages:
       failOnStderr: true
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
       displayName: 'docker push'
-  - job: 'Package_Helm_Chart'
+  - job: Package_Helm_Chart
     variables:
       imageTag: $(build.buildId)
       helmChartVersion: $(build.buildId)
     displayName: 'package and push helm chart'
+    dependsOn: Build_Container_Image
     steps:
     - task: HelmInstaller@1
       displayName: 'install helm'
