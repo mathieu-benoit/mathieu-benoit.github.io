@@ -34,6 +34,8 @@ stages:
       imageTag: $(build.buildId)
     displayName: 'build and push container image'
     steps:
+    - checkout: self
+      submodules: true
     - bash: |
         docker build \
             -t $(registryServerName)/$(projectName):$(imageTag) \
