@@ -3,7 +3,6 @@ title: kubernetes network policies, how to secure the communications between you
 date: 2019-09-30
 tags: [azure, containers, security, kubernetes]
 description: let's secure the communications between your pods with calico kubernetes network policies
-draft: true
 ---
 On May 2019, [Network Policies on AKS was announced GA](https://azure.microsoft.com/updates/user-defined-network-policy-in-azure-kubernetes-service-aks-is-now-available/):
 
