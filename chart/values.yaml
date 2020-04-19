@@ -8,13 +8,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-podSecurityContext: {}
+podSecurityContext:
   runAsUser: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
+securityContext:
   runAsNonRoot: true
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: true
