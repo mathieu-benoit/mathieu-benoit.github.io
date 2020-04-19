@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
-  port: 80
+  port: 8080
 
 imagePullSecrets: []
 nameOverride: ""
@@ -21,7 +21,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: true
