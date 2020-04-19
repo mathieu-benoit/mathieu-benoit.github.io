@@ -48,12 +48,10 @@ stages:
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
-      condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
       displayName: 'docker login'
     - bash: |
         docker push $(registryServerName)/$(projectName):$(imageTag)
       failOnStderr: true
-      condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
       displayName: 'docker push'
   - job: Package_Helm_Chart
     variables:
