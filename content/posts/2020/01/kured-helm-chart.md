@@ -1,8 +1,8 @@
 ---
-title: flexible kured deployment with its helm chart, schedule, microsoft teams or slack notifications, etc.
+title: flexible kured deployment with its helm chart
 date: 2020-01-10
 tags: [azure, containers, kubernetes, security, helm]
-description: let's have a look at podman, a daemonless container engine
+description: let's be more flexible while deploying kured thanks to its helm chart
 ---
 [![](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
 
@@ -91,7 +91,7 @@ helm install kured stable/kured \
 
 # That's a wrap!
 
-With all of this, here is my final command I use to deploy kured with its Helm chart in my own Kubernetes cluster:
+With all of this, here is my final command I use to deploy `kured` with its Helm chart in my own Kubernetes cluster:
 ```
 ns=kured  
 teamsWebHook=<teams-web-hook>  
