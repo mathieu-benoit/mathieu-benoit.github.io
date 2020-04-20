@@ -121,6 +121,7 @@ stages:
             --username $(registryLogin) \
             --password $(registryPassword)
         helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/$(helmChartVersionArtifactName)/variables.json -r)
+        if [ "$(kubectl get ns $(k8sNamespace) | grep Active)" ]; then kubectl create ns $(k8sNamespace); fi
         helm upgrade \
             --namespace $(k8sNamespace) \
             --install \
