@@ -1,5 +1,5 @@
 ---
-title: my bot just got powered by .net core 3.1, docker, kubernetes and terraform
+title: my bot just became a cloud native app
 date: 2019-12-23
 tags: [azure, containers, kubernetes, dotnet, terraform, helm]
 description: let's leverage docker, helm, kubernetes and terraform to make your bot app more cloud native

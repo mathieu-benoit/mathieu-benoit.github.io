@@ -2,26 +2,23 @@ replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
-  port: 80
+  port: 8080
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  runAsUser: 1000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: true
