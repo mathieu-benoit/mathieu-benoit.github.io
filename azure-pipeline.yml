@@ -11,7 +11,7 @@ trigger:
 pr: none
 
 variables:
-  helmVersion: 3.1.2
+  helmVersion: 3.2.0-rc.1
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
   helmChartVersionArtifactName: 'helm-chart-version'
@@ -123,6 +123,7 @@ stages:
         helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/$(helmChartVersionArtifactName)/variables.json -r)
         helm upgrade \
             --namespace $(k8sNamespace) \
+            --create-namespace \
             --install \
             --wait \
             --version $helmChartVersion \
