@@ -14,10 +14,10 @@ variables:
   helmVersion: 3.2.0
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
-  helmChartVersionArtifactName: 'helm-chart-version'
   dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.30.0
+  helmChartVersion: $(build.buildId)
   # Additional variables needed to be defined in the Azure Pipeline definition:
   # For Build/CI stage: registryName, registryLogin and registryPassword.
   # For Release/CD stage: registryName, registryLogin, registryPassword, aksName, aksRgName, aksLocation, aksSpId, aksSpSecret and aksSpTenantId.
@@ -58,7 +58,6 @@ stages:
   - job: Package_Helm_Chart
     variables:
       imageTag: $(build.buildId)
-      helmChartVersion: $(build.buildId)
     displayName: 'package and push helm chart'
     dependsOn: Build_Container_Image
     steps:
@@ -78,19 +77,16 @@ stages:
     - bash: |
         cd chart/
         ls -la
-        chartPackage=$(ls $(projectName)-*.tgz)
+        chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         az acr helm push \
             -n $(registryName) \
             -u $(registryLogin) \
             -p $(registryPassword) \
             $chartPackage
-        echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
       displayName: 'az acr helm push'
-    - publish: $(build.artifactStagingDirectory)
-      artifact: $(helmChartVersionArtifactName)
 - stage: 'Release'
   displayName: 'Release'
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
@@ -105,8 +101,6 @@ stages:
       displayName: 'install helm'
       inputs:
         helmVersionToInstall: $(helmVersion)
-    - download: current
-      artifact: $(helmChartVersionArtifactName)
     - bash: |
         az login \
             --service-principal \
@@ -121,13 +115,12 @@ stages:
             https://$(registryServerName)/helm/v1/repo \
             --username $(registryLogin) \
             --password $(registryPassword)
-        helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/$(helmChartVersionArtifactName)/variables.json -r)
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
             --install \
             --wait \
-            --version $helmChartVersion \
+            --version $(helmChartVersion) \
             --set image.repository=$(registryServerName)/$(projectName) \
             --set networkpolicies.enabled=$(networkPoliciesEnabled) \
             --set ingress.hostName=$(hostName) \
