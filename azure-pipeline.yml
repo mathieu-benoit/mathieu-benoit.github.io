@@ -18,6 +18,7 @@ variables:
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.30.0
   helmChartVersion: $(build.buildId)
+  skipComponentGovernanceDetection: true
   # Additional variables needed to be defined in the Azure Pipeline definition:
   # For Build/CI stage: registryName, registryLogin and registryPassword.
   # For Release/CD stage: registryName, registryLogin, registryPassword, aksName, aksRgName, aksLocation, aksSpId, aksSpSecret and aksSpTenantId.
@@ -76,7 +77,6 @@ stages:
       displayName: 'helm package'
     - bash: |
         cd chart/
-        ls -la
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         az acr helm push \
             -n $(registryName) \
