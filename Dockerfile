@@ -13,6 +13,6 @@ WORKDIR /site
 COPY . .
 RUN hugo -v -s /site -d /site/public
 
-FROM nginxinc/nginx-unprivileged:1.17.10-alpine
+FROM nginxinc/nginx-unprivileged:1.18.0-alpine
 COPY config/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /site/public /usr/share/nginx/html
