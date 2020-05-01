@@ -27,6 +27,6 @@ So here are the results of my own implementations based on this:
 
 Now on a policy or governance standpoint, how to control this across your kubernetes deployments? Officially, there is the notion of [Pod Security Policy](https://kubernetes.io/docs/concepts/policy/pod-security-policy), you could [give it a try to this PSP concept in Preview with AKS](https://docs.microsoft.com/azure/aks/use-pod-security-policies). But it seems that this concept won't graduate anymore in Kubernetes and will let more room for the new concept of [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) and [Open Policy Agent](https://www.openpolicyagent.org). In AKS you could [give it a try to this new way by leveraging Azure Policy](https://docs.microsoft.com/azure/governance/policy/concepts/rego-for-aks). Stay tuned for sure on this!
 
-Hope you enjoyed and learned something with this blog article and you will be able to leverage those resources for your own context and projects!
+Hope you enjoyed and learned something with this blog article and you will be able to leverage those resources for your own context and security posture!
 
 Cheers! ;)

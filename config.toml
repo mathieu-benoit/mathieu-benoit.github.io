@@ -26,5 +26,5 @@ paginate = 5
       [[languages.en.menu.main]]
         identifier = "about"
         name = "about"
-        url = "/about"
+        url = "/about/"
         weight = "30"
