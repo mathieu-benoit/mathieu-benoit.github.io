@@ -14,7 +14,7 @@ variables:
   helmVersion: 3.2.0
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
-  hostName: alwaysupalwayson.com
+  dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.30.0
   helmChartVersion: $(build.buildId)
