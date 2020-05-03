@@ -14,7 +14,8 @@ variables:
   helmVersion: 3.2.0
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
-  hostName: alwaysupalwayson.com
+  dnsName: $(projectName)	  hostName: alwaysupalwayson.com
+  hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.30.0
   helmChartVersion: $(build.buildId)
   skipComponentGovernanceDetection: true
@@ -127,6 +128,7 @@ stages:
             --set nginx-ingress.defaultBackend.enabled=false \
             --set nginx-ingress.controller.scope.enabled=true \
             --set nginx-ingress.controller.image.tag=$(nginxIngressVersion) \
+            --set nginx-ingress.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
             $(registryName)/$(projectName)
       failOnStderr: true
