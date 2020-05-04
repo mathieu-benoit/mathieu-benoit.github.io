@@ -22,6 +22,6 @@ appVersion: FIXME
 
 dependencies:
   - name: nginx-ingress
-    version: 1.36.0
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    version: 2.0.3
+    repository: https://kubernetes.github.io/ingress-nginx
     condition: nginx-ingress.enabled
