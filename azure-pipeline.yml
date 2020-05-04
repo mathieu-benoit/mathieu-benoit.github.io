@@ -16,7 +16,7 @@ variables:
   projectName: myblog
   dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
-  nginxIngressVersion: 0.30.0
+  nginxIngressVersion: 0.32.0
   helmChartVersion: $(build.buildId)
   skipComponentGovernanceDetection: true
   # Additional variables needed to be defined in the Azure Pipeline definition:
