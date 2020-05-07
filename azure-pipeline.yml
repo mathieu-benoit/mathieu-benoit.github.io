@@ -69,6 +69,7 @@ stages:
     - bash: |
         cd chart/
         helm dependency update
+        ls -la
         helm package \
             --version $(helmChartVersion) \
             --app-version $(imageTag) \
