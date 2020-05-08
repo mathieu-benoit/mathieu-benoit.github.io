@@ -49,5 +49,4 @@ Selector labels
 {{- define "myblog.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "myblog.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app: {{ include "myblog.name" . }}
 {{- end -}}
