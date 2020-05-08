@@ -68,9 +68,9 @@ stages:
         helmVersionToInstall: $(helmVersion)
     - bash: |
         cd chart/
-        helm dependency update
-        ls -la charts
+        rm *.tgz
         helm package \
+            --dependency-update \
             --version $(helmChartVersion) \
             --app-version $(imageTag) \
             .
