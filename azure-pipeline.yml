@@ -17,7 +17,7 @@ variables:
   dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.32.0
-  helmChartVersion: $(build.buildId)
+  helmChartVersion: v$(build.buildId)
   skipComponentGovernanceDetection: true
   # Additional variables needed to be defined in the Azure Pipeline definition:
   # For Build/CI stage: registryName, registryLogin and registryPassword.
@@ -136,6 +136,6 @@ stages:
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
-            $(registryName)/$(projectName)
+            $(registryName)/helm/$(projectName)
       failOnStderr: true
       displayName: 'deploy helm chart'
