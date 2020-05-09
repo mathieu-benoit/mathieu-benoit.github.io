@@ -89,7 +89,7 @@ stages:
         helm chart push $(chartName):$(helmChartVersion)
         # cleanup
         helm chart remove $(chartName):$(helmChartVersion)
-        rm $(chartPackage)
+        rm $chartPackage
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
