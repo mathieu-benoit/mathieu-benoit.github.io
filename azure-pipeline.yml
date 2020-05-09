@@ -83,12 +83,12 @@ stages:
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         export HELM_EXPERIMENTAL_OCI=1
         helm chart save $chartPackage $(chartName)
-        helm chart list
         echo $(registryPassword) | helm registry login \
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
         helm chart push $(chartName):$(helmChartVersion)
+        helm chart remove $(chartName):$(helmChartVersion)
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
@@ -122,8 +122,8 @@ stages:
             -u $(registryLogin) \
             --password-stdin
         helm chart pull $(chartName):$(helmChartVersion)
-        helm chart export $(chartName):$(helmChartVersion)
-        ls $(projectName)
+        rm -r ./install
+        helm chart export $(chartName):$(helmChartVersion) --destination ./install
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
@@ -140,5 +140,6 @@ stages:
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
             $(projectName)
+        helm chart remove $(chartName):$(helmChartVersion)
       failOnStderr: true
       displayName: 'deploy helm chart'
