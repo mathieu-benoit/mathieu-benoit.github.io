@@ -69,7 +69,6 @@ stages:
         helmVersionToInstall: $(helmVersion)
     - bash: |
         cd chart/
-        rm *.tgz
         export HELM_EXPERIMENTAL_OCI=1
         helm package \
             --dependency-update \
@@ -88,7 +87,9 @@ stages:
             -u $(registryLogin) \
             --password-stdin
         helm chart push $(chartName):$(helmChartVersion)
+        # cleanup
         helm chart remove $(chartName):$(helmChartVersion)
+        rm $(chartPackage)
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
@@ -122,7 +123,6 @@ stages:
             -u $(registryLogin) \
             --password-stdin
         helm chart pull $(chartName):$(helmChartVersion)
-        rm -r ./install
         helm chart export $(chartName):$(helmChartVersion) --destination ./install
         helm upgrade \
             --namespace $(k8sNamespace) \
@@ -139,7 +139,9 @@ stages:
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
-            $(projectName)
+            ./install/$(projectName)
+        # cleanup
+        rm -r ./install
         helm chart remove $(chartName):$(helmChartVersion)
       failOnStderr: true
       displayName: 'deploy helm chart'
