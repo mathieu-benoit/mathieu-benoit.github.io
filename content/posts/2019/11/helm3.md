@@ -12,7 +12,7 @@ Yep, Tiller is gone, but that's not just that! Here is an exhaustive [list of al
 
 Let's go through our first _Hello, World!_ scenario with Helm 3.
 
-First you need to [install Helm 3](https://helm.sh/docs/intro/install/). In my case I will leverage throughout this blog article the [Azure Cloud Shell](https://azure.microsoft.com/en-us/features/cloud-shell/). But as we speak, it just has Helm version 2.15.2, so here is my custom script to install my own Helm 3 version:
+First you need to [install Helm 3](https://helm.sh/docs/intro/install/). In my case I will leverage throughout this blog article the [Azure Cloud Shell](https://azure.microsoft.com/features/cloud-shell/). But as we speak, it just has Helm version 2.15.2, so here is my custom script to install my own Helm 3 version:
 ```
 helmFile='helm-v3.0.0-linux-amd64.tar.gz'
 curl https://get.helm.sh/$helmFile --output $helmFile

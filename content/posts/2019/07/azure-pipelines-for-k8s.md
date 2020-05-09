@@ -90,7 +90,7 @@ $ az keyvault secret set --vault-name $kv -n dev-aksSpSecret --value $aksSpSecre
 ```
 Note: You could also store your Azure Container Registry login and password (see the [original blog article](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm) to see how to get them).
 
-From there, you could now create a [Variable Group in Azure DevOps linked to this Azure Key Vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups#link-secrets-from-an-azure-key-vault) by leveraging this Service Principal just created.
+From there, you could now create a [Variable Group in Azure DevOps linked to this Azure Key Vault](https://docs.microsoft.com/azure/devops/pipelines/library/variable-groups#link-secrets-from-an-azure-key-vault) by leveraging this Service Principal just created.
 
 [![](https://1.bp.blogspot.com/-iPmxCkZX2a4/XSYEdoFEmwI/AAAAAAAATWU/AVTMPPZYijAABiNT_Z897KGStYdVR3cOwCLcBGAs/s640/Capture2.PNG)](https://1.bp.blogspot.com/-iPmxCkZX2a4/XSYEdoFEmwI/AAAAAAAATWU/AVTMPPZYijAABiNT_Z897KGStYdVR3cOwCLcBGAs/s1600/Capture2.PNG)
 
