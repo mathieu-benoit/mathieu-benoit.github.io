@@ -69,6 +69,7 @@ stages:
     - bash: |
         cd chart/
         rm *.tgz
+        export HELM_EXPERIMENTAL_OCI=1
         helm package \
             --dependency-update \
             --version $(helmChartVersion) \
@@ -80,12 +81,13 @@ stages:
         cd chart/
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         export HELM_EXPERIMENTAL_OCI=1
-        helm chart save $chartPackage $(registryServerName)/charts/$(projectName):$(helmChartVersion)
+        helm chart save $chartPackage $(registryServerName)/helm/$(projectName):$(helmChartVersion)
+        helm chart list
         echo $(registryPassword) | helm registry login \
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
-        helm chart push $(registryServerName)/charts/$(projectName):$(helmChartVersion)
+        helm chart push $(registryServerName)/helm/$(projectName):$(helmChartVersion)
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
