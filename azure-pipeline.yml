@@ -14,6 +14,7 @@ variables:
   helmVersion: 3.2.1
   registryServerName: '$(registryName).azurecr.io'
   projectName: myblog
+  chartName: $(registryServerName)/helm/$(projectName)
   dnsName: $(projectName)
   hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
   nginxIngressVersion: 0.32.0
@@ -81,13 +82,13 @@ stages:
         cd chart/
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         export HELM_EXPERIMENTAL_OCI=1
-        helm chart save $chartPackage $(registryServerName)/helm/$(projectName)
+        helm chart save $chartPackage $(chartName)
         helm chart list
         echo $(registryPassword) | helm registry login \
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
-        helm chart push $(registryServerName)/helm/$(projectName):$(helmChartVersion)
+        helm chart push $(chartName):$(helmChartVersion)
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
@@ -120,7 +121,7 @@ stages:
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
-        helm chart pull $(registryName)/helm/$(projectName):$(helmChartVersion)
+        helm chart pull $(chartName):$(helmChartVersion)
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
@@ -137,6 +138,6 @@ stages:
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
-            $(registryName)/helm/$(projectName)
+            $(chartName)
       failOnStderr: true
       displayName: 'deploy helm chart'
