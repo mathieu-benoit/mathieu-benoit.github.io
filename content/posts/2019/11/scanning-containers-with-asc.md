@@ -9,7 +9,7 @@ Yes you could for sure use any container images scanning tool of your choice lik
 
 I just gave it a try, loved it!
 
-To continue my [Security Posture on Azure](https://alwaysupalwayson.blogspot.com/2019/05/security-with-microsoft-azure.html), I have been leveraging ASC (Standard SKU) and followed [this guide](https://docs.microsoft.com/azure/security-center/azure-container-registry-integration).
+To continue my [Security Posture on Azure]({{< ref "/posts/2019/05/azure-security.md" >}}), I have been leveraging ASC (Standard SKU) and followed [this guide](https://docs.microsoft.com/azure/security-center/azure-container-registry-integration).
 
 Now for any container images pushed in ACR I will trigger a scan to get the potential vulnerabilities detected by Qualys. For example, I gave it a try with the [azure/phippyandfriends](https://github.com/Azure/phippyandfriends) GitHub repository, and here is the resulting PR of the scans I got: [https://github.com/Azure/phippyandfriends/pull/36](https://github.com/Azure/phippyandfriends/pull/36)
 
