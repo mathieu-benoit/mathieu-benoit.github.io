@@ -81,7 +81,7 @@ stages:
         cd chart/
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
         export HELM_EXPERIMENTAL_OCI=1
-        helm chart save $chartPackage $(registryServerName)/helm/$(projectName):$(helmChartVersion)
+        helm chart save $chartPackage $(registryServerName)/helm/$(projectName)
         helm chart list
         echo $(registryPassword) | helm registry login \
             $(registryServerName) \
