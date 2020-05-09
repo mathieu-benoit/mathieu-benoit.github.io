@@ -1,7 +1,7 @@
 ---
 title: ci/cd pipeline with azure devops to deploy any apps on kubernetes
 date: 2019-07-10
-tags: [azure, azure pipelines, kubernetes, containers]
+tags: [azure, azure devops, kubernetes, containers]
 description: let's build and deploy a containerized app in kubernetes via azure pipelines
 ---
 Back in October 1st 2018, I published [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html), then I updated it on October 12th 2018 with [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html), to finally published on November 27th 2018 a more generic and professional one in the official Microsoft Open Source blog: [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm).

@@ -31,10 +31,10 @@ Further considerations:
 - Even if that blog article was focused on Terraform, you could use this process and concept with any tool of your choice.
 
 Resources:
-- [Terraform with Azure](https://docs.microsoft.com/azure/terraform/)
-- [Provisioning an AKS cluster using Hashicorp Terraform](https://azure.microsoft.com/resources/videos/azure-friday-provisioning-kubernetes-clusters-on-aks-using-hashicorp-terraform/)
-- [Tutorial: Terraforming your JAMstack on Azure with Gatsby, Azure Pipelines, and Git](https://cloudblogs.microsoft.com/opensource/2018/11/16/terraform-jamstack-azure-gatsby-azure-pipelines-git/)
-- [Use your own build container image to create containerized apps](https://yuriburger.net/2019/03/04/use-your-own-build-container-image-to-create-containerized-apps/)
+- [Terraform with Azure](https://docs.microsoft.com/azure/terraform)
+- [Provisioning an AKS cluster using Hashicorp Terraform](https://azure.microsoft.com/resources/videos/azure-friday-provisioning-kubernetes-clusters-on-aks-using-hashicorp-terraform)
+- [Tutorial: Terraforming your JAMstack on Azure with Gatsby, Azure Pipelines, and Git](https://cloudblogs.microsoft.com/opensource/2018/11/16/terraform-jamstack-azure-gatsby-azure-pipelines-git)
+- [Use your own build container image to create containerized apps](https://yuriburger.net/2019/03/04/use-your-own-build-container-image-to-create-containerized-apps)
 - I cho, cho, choose you container image [Part 1](https://itnext.io/i-cho-cho-chose-you-container-image-part-1-fa6671d9ae1f) and [Part 2](https://medium.com/@scott.coulton/i-cho-cho-choose-you-container-image-part-2-44b45e47a1f7)
 
 Hope you enjoyed this blog article and you will be able to leverage and adapt it for your own needs and projects!

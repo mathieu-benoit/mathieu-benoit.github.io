@@ -2,7 +2,7 @@
 title: keda, event-driven containers for Kubernetes
 date: 2019-06-09
 tags: [azure, containers, kubernetes]
-description: let's share the resources available to you to prepare the exam az-500
+description: let's see what's keda what it is in action
 ---
 [![](https://avatars3.githubusercontent.com/u/49917779?s=200&v=4)](https://avatars3.githubusercontent.com/u/49917779?s=200&v=4)
 

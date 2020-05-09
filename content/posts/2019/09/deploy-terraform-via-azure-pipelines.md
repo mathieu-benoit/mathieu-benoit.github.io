@@ -1,7 +1,7 @@
 ---
 title: a recipe to deploy your azure resources with terraform via azure pipelines
 date: 2019-09-04
-tags: [azure, terraform, azure pipelines]
+tags: [azure, terraform, azure devops]
 description: let's deploy terraform templates via azure pipelines
 ---
 Here is a recipe which is putting altogether the different concepts to deploy any Azure resources with Terraform by leveraging Azure DevOps:

@@ -1,7 +1,7 @@
 ---
 title: helm chart management in ci/cd with acr and azure devops
 date: 2019-07-01
-tags: [azure, azure pipelines, kubernetes, containers]
+tags: [azure, azure devops, kubernetes, containers]
 description: let's do ci/cd with your own helm charts, acr and aks via azure pipelines
 ---
 I recently got an interesting comment on my blog article [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm):
@@ -47,7 +47,7 @@ What has changed?
 
 - I'm not using anymore `--version` while running helm package to be now able to leverage the version which resides in the `Chart.yaml` file. This version is not anymore `build.buildId` and is now managed directly from source control with that file. Again [that's the recommendation according to the Helm documentation](https://helm.sh/docs/developing_charts/#charts-and-versioning).
 - Before running az acr helm push, I need to check if the Helm chart version already exists otherwise I will have an error on that regard, I don't want that. There is also a `--force` parameter but I don't want to overwrite the previous entry with the same value, if someone forgot to change the version in the `Chart.yaml` file, it will override a previous value... could be dangerous.
-- Finally, I'm exposing the `helmChartVersion` value in a file then shared via an Azure pipeline artifact `build-artifact`, [see here why I'm doing that like this](https://alwaysupalwayson.blogspot.com/2019/06/set-multi-stage-output-variable-with.html).
+- Finally, I'm exposing the `helmChartVersion` value in a file then shared via an Azure pipeline artifact `build-artifact`, [see here why I'm doing that like this]({{< ref "/posts/2019/06/azure-pipelines-stages-variables.md" >}}).
 
 # 2. Release definition
 

@@ -1,7 +1,7 @@
 ---
 title: private aks and private acr, safer you are
 date: 2020-03-27
-tags: [azure, security, kubernetes, azure pipelines]
+tags: [azure, security, kubernetes, azure devops]
 description: let's setup azure private endpoint for both azure kubernetes service (aks) and azure container registry (acr)
 ---
 To continue improving your security posture with [Azure Private Endpoint like I demonstrated with Azure Blob Storage previously]({{< ref "/posts/2020/03/protect-terraform-state.md" >}}), let's now have a look at Azure Private Endpoint with Azure Kubernetes Service (AKS) and Azure Container Registry (ACR).  

@@ -1,3 +1,9 @@
+---
+title: security with microsoft azure
+date: 2019-05-15
+tags: [azure, security]
+description: let's go through all the security concept in azure to nurture your security posture
+---
 Security in IT is important.
 Security in IT is the matter and the responsibility of everyone, every stakeholders. Not just for security professionals, not just for SecOps.
 In IT solutions implementation, Security is like UnitTests, IntegrationTests, LoadTests and Monitoring, they are always low priority in the backlog. Something we postpone by thinking "_we will do that later, just before going live, in Production_" or even worst "_it's not important_"... big mistake! You won't do that later because you will be focused on new features and bug fix...
@@ -29,7 +35,7 @@ You will tell me that's a lot, too much! Where to start in Azure? I recommend st
 Give [Azure Security Center](https://azure.microsoft.com/services/security-center) a try, it's free to start! And check out your [Secure score](https://docs.microsoft.com/azure/security-center/security-center-secure-score), what does it tell you?
 The secret is to start earlier than later and start small. Add quick fix tasks and user stories as security implementations in your backlog. You could also watch this //build 2019 session [DIY Azure Security Assessments](https://mybuild.techcommunity.microsoft.com/sessions/77141), it will help you building your own backlog/todo list.
 You could also have a look at the new [Azure Sentinel service](https://azure.microsoft.com/services/azure-sentinel), the cloud native SIEM service, very promising.
-If you are doing Docker and Kubernetes, with [Azure Kubernetes Service](https://azure.microsoft.com/services/kubernetes-service/), you have different concepts and tools to setup, here are 3 pointers for you to get started:  
+If you are doing Docker and Kubernetes, with [Azure Kubernetes Service](https://azure.microsoft.com/services/kubernetes-service), you have different concepts and tools to setup, here are 3 pointers for you to get started:  
 - [Azure webinar series- Help Deliver Applications Securely with DevSecOps](https://info.microsoft.com/ww-ondemand-help-deliver-applications-securely-with-devsecops-us.html)
 - [Enterprise security in the era of containers and Kubernetes](https://mybuild.techcommunity.microsoft.com/sessions/77061)
 - [Azure Kubernetes Services: Container Security for a Cloud Native World](https://info.cloudops.com/azure-kubernetes-services-container-security)

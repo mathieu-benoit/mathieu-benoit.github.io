@@ -1,7 +1,7 @@
 ---
 title: my bot just became a cloud native app
 date: 2019-12-23
-tags: [azure, containers, kubernetes, dotnet, terraform, helm]
+tags: [azure, containers, kubernetes, dotnet, terraform, helm, azure devops]
 description: let's leverage docker, helm, kubernetes and terraform to make your bot app more cloud native
 ---
 On April 2018, I played for the first time with the Bot Framework, [I got that idea to leverage such technologies and feature for my monthly "Azure News & Updates" blog article](https://alwaysupalwayson.blogspot.com/2018/04/my-monthly-azure-news-updates-blog.html). It was a good opportunity for me to make my app [a great conversationalist](https://alwaysupalwayson.blogspot.com/2018/03/make-your-apps-great-conversationalists.html). At that time, I built this with Azure Functions v1, Bot Framework v3, static and not-compiled code in .NET Framework, I got issue with the cold start; none of this was cross-platform at that time... Since then I have learned a lot about OSS, Docker and Kubernetes. On that regard, why not modernizing my Bot with more Cloud Native Computing practices?!
