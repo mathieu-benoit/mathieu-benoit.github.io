@@ -3,6 +3,8 @@ title: private aks and private acr, safer you are
 date: 2020-03-27
 tags: [azure, security, kubernetes, azure devops]
 description: let's setup azure private endpoint for both azure kubernetes service (aks) and azure container registry (acr)
+aliases:
+    - /private-aks-and-acr/
 ---
 To continue improving your security posture with [Azure Private Endpoint like I demonstrated with Azure Blob Storage previously]({{< ref "/posts/2020/03/protect-terraform-state.md" >}}), let's now have a look at Azure Private Endpoint with Azure Kubernetes Service (AKS) and Azure Container Registry (ACR).  
 
@@ -29,7 +31,7 @@ If you are interested in seeing how I put all of this together, [here is the PR 
 - The [current documentation about Azure Private Link with ACR](https://docs.microsoft.com/azure/container-registry/container-registry-private-link) is missing the command avoiding public access to your ACR: az acr update --default-action Deny. It will be fixed soon by the Product Group team.
 - Currently once you have setup Azure Private Link with ACR (and made it private), [the Azure Security Center Scanning (Qualys)](https://docs.microsoft.com/azure/security-center/azure-container-registry-integration) is not working yet.
 
-You could see on the image above that I'm using also [Calico Network Policies]({{< ref "/posts/2019/09/calico.md" >}}), [Kured to patch my K8S nodes]({{< ref "/posts/2020/01/kured-helm-chart.md" >}}), but there is more to come for sure like the new features like [Azure Policy](https://docs.microsoft.com/azure/governance/policy/concepts/rego-for-aks) in Preview, [AAD integration v2](https://docs.microsoft.com/azure/aks/azure-ad-v2) in Preview,  [Managed Identities](https://docs.microsoft.com/azure/aks/use-managed-identity) in GA, etc. If you are looking for more best practices around security for your AKS cluster, I invite you to leverage this GitHub Repository in Work in Progress: [https://github.com/Azure/sg-aks-workshop](https://github.com/Azure/sg-aks-workshop).  
+You could see on the image above that I'm using also [Calico Network Policies]({{< ref "/posts/2019/09/calico.md" >}}), [Kured to patch my K8S nodes]({{< ref "/posts/2020/01/kured.md" >}}), but there is more to come for sure like the new features like [Azure Policy](https://docs.microsoft.com/azure/governance/policy/concepts/rego-for-aks) in Preview, [AAD integration v2](https://docs.microsoft.com/azure/aks/azure-ad-v2) in Preview,  [Managed Identities](https://docs.microsoft.com/azure/aks/use-managed-identity) in GA, etc. If you are looking for more best practices around security for your AKS cluster, I invite you to leverage this GitHub Repository in Work in Progress: [https://github.com/Azure/sg-aks-workshop](https://github.com/Azure/sg-aks-workshop).  
 
 Hope you are enjoying those great news and updates to setup more securely your solution leveraging AKS!
 

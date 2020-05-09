@@ -3,6 +3,8 @@ title: my own custom and private azure pipelines agent as a docker container
 date: 2020-02-24
 tags: [azure, containers, kubernetes, azure devops]
 description: let's build a custom linux container image as an azure pipelines agent
+aliases:
+    - /custom-azure-pipelines-agent/
 ---
 On May 2018 I documented [how to host your own and private Azure DevOps (formerly VSTS) agent](https://alwaysupalwayson.blogspot.com/2018/05/host-your-private-vsts-linux-agent-in.html). It was all about hosting this agent as a Docker Linux container and we were able to host it on Kubernetes.  
 Since then the recommended approach by Microsoft is to review how to customize your own custom and private Docker agent. We don't have anymore to get the huge/heavy base Docker image with all the tools preconfigured. Now we could just install the tools we need, you could follow the official documentation for this: [Running a self-hosted agent in Docker](https://docs.microsoft.com/azure/devops/pipelines/agents/docker#linux).

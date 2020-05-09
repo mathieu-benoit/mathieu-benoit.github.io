@@ -3,6 +3,8 @@ title: deploying azure cognitive services as docker containers
 date: 2019-03-31
 tags: [azure, containers, ai]
 description: let's deploy azure cognitive services as docker containers
+aliases:
+    - /azure-cognitive-services-containers/
 ---
 {{< youtube hdfbn4Q8jbo >}}
 

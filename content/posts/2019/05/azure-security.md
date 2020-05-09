@@ -3,6 +3,8 @@ title: security with microsoft azure
 date: 2019-05-15
 tags: [azure, security]
 description: let's go through all the security concept in azure to nurture your security posture
+aliases:
+    - /azure-security/
 ---
 Security in IT is important.
 Security in IT is the matter and the responsibility of everyone, every stakeholders. Not just for security professionals, not just for SecOps.

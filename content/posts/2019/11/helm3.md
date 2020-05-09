@@ -3,6 +3,8 @@ title: helm 3 is out
 date: 2019-11-20
 tags: [containers, kubernetes, helm]
 description: let's go through the latest and greatest of helm 3
+aliases:
+    - /helm3/
 ---
 [![](https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png)](https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png)
 

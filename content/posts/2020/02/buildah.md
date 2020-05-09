@@ -3,6 +3,8 @@ title: buildah, a tool to facilitate building oci container images
 date: 2020-02-01
 tags: [azure, containers, kubernetes]
 description: let's build your own oci container images with buildah
+aliases:
+    - /buildah/
 ---
 My previous blog article was about some [findings and learnings I got with podman, a daemonless container engine]({{< ref "/posts/2020/01/podman.md" >}}). With podman we are able to run commands like: `podman pull|push|tag|run|images|ps` and many others (`podman help`) without any Docker Daemon installed. And again, at the end of the day, if you are comfortable with that, you could uninstall Docker and do this: `alias docker=podman`.
 

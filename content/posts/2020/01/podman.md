@@ -3,6 +3,8 @@ title: podman, a daemonless container engine
 date: 2020-01-24
 tags: [azure, containers, kubernetes]
 description: let's have a look at podman, a daemonless container engine
+aliases:
+    - /podman/
 ---
 I took the opportunity to play with [podman](https://podman.io/), an interesting project started by RedHat:  
 

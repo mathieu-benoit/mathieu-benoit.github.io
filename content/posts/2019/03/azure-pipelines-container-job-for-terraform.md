@@ -3,6 +3,8 @@ title: azure devops pipeline container job with terraform
 date: 2019-03-16
 tags: [azure, azure devops]
 description: let's leverage container job in azure pipelines for terraform
+aliases:
+    - /azure-pipelines-container-job-for-terraform/
 ---
 This blog article will leverage the [Azure DevOps pipeline container job](https://docs.microsoft.com/azure/devops/pipelines/process/container-phases) to be able to deploy an Hashicorp Terraform template.
 

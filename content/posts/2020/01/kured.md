@@ -3,6 +3,8 @@ title: flexible kured deployment with its helm chart
 date: 2020-01-10
 tags: [azure, containers, kubernetes, security, helm]
 description: let's be more flexible while deploying kured thanks to its helm chart
+aliases:
+    - /kured/
 ---
 [![](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
 

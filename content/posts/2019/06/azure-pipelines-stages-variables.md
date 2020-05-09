@@ -3,6 +3,8 @@ title: set a multi-stage output variable with azure devops
 date: 2019-06-09
 tags: [azure devops]
 description: let's see how to easily pass variables from one stage to another in azure devops pipelines
+aliases:
+    - /azure-pipelines-stages-variables/
 ---
 _Update on May 4th, 2020: Azure DevOps now supports this feature: [Jobs can access output variables from previous stages](https://docs.microsoft.com/azure/devops/release-notes/2020/sprint-168-update#jobs-can-access-output-variables-from-previous-stages). So you don't need anymore this tips, but could just read this article for fun and to learn few commands with `jq` ;)_
 

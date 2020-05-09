@@ -3,6 +3,8 @@ title: kubernetes network policies, how to secure the communications between you
 date: 2019-09-30
 tags: [azure, containers, security, kubernetes]
 description: let's secure the communications between your pods with calico kubernetes network policies
+aliases:
+    - /calico/
 ---
 _Update on October 17th, 2019, this blog article has been promoted and published on the official Microsoft's Open Source blog there: [Tutorial: Calico Network Policies with Azure Kubernetes Service](https://cloudblogs.microsoft.com/opensource/2019/10/17/tutorial-calico-network-policies-with-azure-kubernetes-service/)._
 

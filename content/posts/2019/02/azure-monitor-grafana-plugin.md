@@ -3,6 +3,8 @@ title: grafana dashboards to monitor your azure services
 date: 2019-02-10
 tags: [azure, containers]
 description: let's use grafana dashboard for your azure services through azure monitor
+aliases:
+    - /azure-monitor-grafana-plugin/
 ---
 On November 2017, [the Grafana plugin to monitor your Azure services was announced](https://azure.microsoft.com/blog/monitor-azure-services-and-applications-using-grafana) in Preview.  
 As a reminder, Grafana is a very [popular open-source project listed in the CNCF landscape](https://landscape.cncf.io/selected=grafana).

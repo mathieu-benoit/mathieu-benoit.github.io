@@ -4,6 +4,8 @@ date: 2020-04-15
 tags: [TODO]
 description: TODO
 draft: true
+aliases:
+    - /hugo/
 ---
 My new blog is here! The old one is there, on Blogger.
 

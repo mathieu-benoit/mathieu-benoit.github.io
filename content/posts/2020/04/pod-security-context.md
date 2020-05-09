@@ -3,6 +3,8 @@ title: container security context on kubernetes
 date: 2020-04-28
 tags: [kubernetes, containers, security]
 description: let's add more security context to your containers on kubernetes
+aliases:
+    - /pod-security-context/
 ---
 While preparing my presentation with [Maxime Coquerel](https://www.linkedin.com/in/maximecoquerel) for our [16 Security Best Practices with Kubernetes on Azure (AKS)](https://www.youtube.com/watch?v=BCDSXyrJUJQ) presentation in French, I took the opportunity to learn about the Pod Security Context in Kubernetes. Here, in this blog article, are my learnings.
 
