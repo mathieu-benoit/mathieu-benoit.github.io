@@ -4,7 +4,7 @@ date: 2019-07-10
 tags: [azure, azure pipelines, kubernetes, containers]
 description: let's build and deploy a containerized app in kubernetes via azure pipelines
 ---
-Back in October 1st 2018, I published [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html), then I updated it on October 12th 2018 with [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html), to finally published on November 27th 2018 a more generic and professional one in the official Microsoft Open Source blog: [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm/).
+Back in October 1st 2018, I published [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html), then I updated it on October 12th 2018 with [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html), to finally published on November 27th 2018 a more generic and professional one in the official Microsoft Open Source blog: [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm).
 
 I got great feedback from customers and colleagues which brought to my attention few ideas of improvements.
 
@@ -48,7 +48,7 @@ On that regard, we will have 3 files:
 
 [![](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s640/Capture.PNG)](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s1600/Capture.PNG)
 
-TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line/) to create your Azure pipeline definition based on this YAML file: `az pipelines create --yml-path`.
+TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line) to create your Azure pipeline definition based on this YAML file: `az pipelines create --yml-path`.
 _Note: There is currently a limitation with Azure pipeline with YAML definition where we don't have yet the ability to use Gates or Pre-Condition for each Stage, [but it's coming](https://dev.azure.com/mseng/AzureDevOpsRoadmap/_workitems/edit/1510336)! As a workaround currently, I'm using a boolean variable deployToProduction [as a condition for the Production Stage](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/phippy/cicd/azure-pipelines.yml#L51)._
 
 # 4. Azure Key Vault to store and retrieve the secrets
@@ -74,7 +74,7 @@ $ az role assignment create --assignee $kvSpId --role Reader --scope $kvId
 $ az keyvault set-policy -n $kv --spn $kvSpId --secret-permissions get list
 ```
 
-TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line/) to create your Service Endpoint based on this specific Service Principal created for your Azure Key Vault:
+TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line) to create your Service Endpoint based on this specific Service Principal created for your Azure Key Vault:
 ```
 $ az devops service-endpoint create \
     --authorization-scheme ServicePrincipal \
@@ -88,7 +88,7 @@ $ az keyvault secret set --vault-name $kv -n dev-aksSpTenantId --value $tenantId
 $ az keyvault secret set --vault-name $kv -n dev-aksSpId --value $aksSpId  
 $ az keyvault secret set --vault-name $kv -n dev-aksSpSecret --value $aksSpSecret  
 ```
-Note: You could also store your Azure Container Registry login and password (see the [original blog article](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm/) to see how to get them).
+Note: You could also store your Azure Container Registry login and password (see the [original blog article](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm) to see how to get them).
 
 From there, you could now create a [Variable Group in Azure DevOps linked to this Azure Key Vault](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups#link-secrets-from-an-azure-key-vault) by leveraging this Service Principal just created.
 

@@ -55,7 +55,7 @@ podman push $crName/alpine
 
 Actually with podman you could easily do this in your bash environment: `alias docker=podman`, that's the goal!
 
-I now invite you to see how you could build our own OCI Container (not Docker ;)) Images, with my other blog article: [buildah, a tool to facilitate building OCI container images](https://alwaysupalwayson.blogspot.com/2020/02/buildah-tool-to-facilitate-building-oci.html).
+I now invite you to see how you could build our own OCI Container (not Docker ;)) Images, with my other blog article: [buildah, a tool to facilitate building OCI container images]({{< ref "/posts/2020/02/buildah.md" >}}).
 
 # Further readings
 

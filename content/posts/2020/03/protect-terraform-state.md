@@ -7,7 +7,7 @@ description: let's leverage azure private endpoint to protect the azure blob sto
 Few weeks ago, [Azure Private Link was announced GA for Azure Storage, Azure SQL and Azure CosmosDB](https://azure.microsoft.com/updates/azure-private-link-is-now-available/) and more recently for Azure Database for [MariaDB](https://azure.microsoft.com/updates/aziure-private-link-for-azure-database-for-mariadb-is-now-generally-available/), [PostgreSQL](https://azure.microsoft.com/updates/private-link-for-azure-database-for-postgresql-single-server-is-now-available/) and [MySQL](https://azure.microsoft.com/updates/azure-private-link-for-azure-database-for-mysql-is-now-available/). And actually [Private AKS cluster with Azure Private Link](https://docs.microsoft.com/azure/aks/private-clusters) just became GA too.
 Azure Private Link includes two concepts: Private Endpoint and Private Link Service. With this blog article we won't discuss about [Private Link Service](https://docs.microsoft.com/azure/private-link/private-link-service-overview).
   
-I would like to leverage Azure Private Link to protect the Azure Blob Storage account used to store the TF State of [my Terraform deployment](https://alwaysupalwayson.blogspot.com/2019/09/a-recipe-to-deploy-your-azure-resources.html).  
+I would like to leverage Azure Private Link to protect the Azure Blob Storage account used to store the TF State of [my Terraform deployment]({{< ref "/posts/2019/09/deploy-terraform-via-azure-pipelines.md" >}}).  
 For this I have leveraged a combination of the following resources:  
 - [Quickstart: Create a private endpoint using Azure CLI](https://docs.microsoft.com/azure/private-link/create-private-endpoint-cli)
 - [Connect privately to a storage account using Azure Private Endpoint](https://docs.microsoft.com/azure/private-link/create-private-endpoint-storage-portal)
@@ -65,11 +65,11 @@ az network private-dns zone create \
 az network private-dns link vnet create \
     -g $rg \
     --zone-name $zoneName \
-    -n $privateDnsName 
-    \--virtual-network $vnetName \
+    -n $privateDnsName \
+    --virtual-network $vnetName \
     --registration-enabled false
-networkInterfaceId=$(az network private-endpoint show -n $privateEndpointName -g $rg --query 'networkInterfaces\[0\].id' -o tsv)
-privateIpAddress=$(az resource show --ids $networkInterfaceId --api-version 2019-04-01 --query properties.ipConfigurations\[0\].properties.privateIPAddress -o tsv)
+networkInterfaceId=$(az network private-endpoint show -n $privateEndpointName -g $rg --query 'networkInterfaces[0].id' -o tsv)
+privateIpAddress=$(az resource show --ids $networkInterfaceId --api-version 2019-04-01 --query properties.ipConfigurations[0].properties.privateIPAddress -o tsv)
 az network private-dns record-set a create \
     -n $storageName \
     --zone-name $zoneName \
@@ -83,13 +83,13 @@ az network private-dns record-set a add-record \
 
 Here you are, with all the above commands, your Azure Storage account is not anymore accessible publicly but now only by who has access to its VNET:  
 - Any resources in the same VNET
-- Any resources in [peered VNET](https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview)
-- Any resources in [Gateway-ed network](https://docs.microsoft.com/en-us/azure/expressroute/expressroute-about-virtual-network-gateways)
+- Any resources in [peered VNET](https://docs.microsoft.com/azure/virtual-network/virtual-network-peering-overview)
+- Any resources in [Gateway-ed network](https://docs.microsoft.com/azure/expressroute/expressroute-about-virtual-network-gateways)
 
-In my case, like illustrated in [my Terraform deployment](https://alwaysupalwayson.blogspot.com/2019/09/a-recipe-to-deploy-your-azure-resources.html), I'm leveraging [my own custom and private Azure Pipelines Agent as a Docker container](https://alwaysupalwayson.blogspot.com/2020/02/azure-pipelines-agent.html) deployed on my AKS cluster in the same VNET or on a peered VNET. FYI, there is limitations with Azure Web App for Containers or Azure Container Instances (ACI) which don't support 1/ build docker container images on Docker + 2/ like [described here](https://docs.microsoft.com/azure/container-instances/container-instances-vnet#unsupported-networking-scenarios) they don't support internal name resolution which won't work with the Private DNS setup required by Azure Private Endpoints.
+In my case, like illustrated in [my Terraform deployment]({{< ref "/posts/2019/09/deploy-terraform-via-azure-pipelines.md" >}}), I'm leveraging [my own custom and private Azure Pipelines Agent as a Docker container]({{< ref "/posts/2020/02/custom-azure-pipelines-agent.md" >}}) deployed on my AKS cluster in the same VNET or on a peered VNET. FYI, there is limitations with Azure Web App for Containers or Azure Container Instances (ACI) which don't support 1/ build docker container images on Docker + 2/ like [described here](https://docs.microsoft.com/azure/container-instances/container-instances-vnet#unsupported-networking-scenarios) they don't support internal name resolution which won't work with the Private DNS setup required by Azure Private Endpoints.
 
 Complementary resources:
-- [Azure Private Link FAQ](https://docs.microsoft.com/en-us/azure/private-link/private-link-faq)
+- [Azure Private Link FAQ](https://docs.microsoft.com/azure/private-link/private-link-faq)
 - [Azure Private Link Pricing](https://azure.microsoft.com/pricing/details/private-link/)
 - [Using Azure Private Link for Storage Accounts](https://stefanstranger.github.io/2019/11/03/UsingAzurePrivateLinkForStorageAccounts/)
 

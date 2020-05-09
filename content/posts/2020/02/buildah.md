@@ -4,7 +4,7 @@ date: 2020-02-01
 tags: [azure, containers, kubernetes]
 description: let's build your own oci container images with buildah
 ---
-My previous blog article was about some [findings and learnings I got with podman, a daemonless container engine](https://alwaysupalwayson.blogspot.com/2020/01/podman-daemonless-container-engine.html). With podman we are able to run commands like: `podman pull|push|tag|run|images|ps` and many others (`podman help`) without any Docker Daemon installed. And again, at the end of the day, if you are comfortable with that, you could uninstall Docker and do this: `alias docker=podman`.
+My previous blog article was about some [findings and learnings I got with podman, a daemonless container engine]({{< ref "/posts/2020/01/podman.md" >}}). With podman we are able to run commands like: `podman pull|push|tag|run|images|ps` and many others (`podman help`) without any Docker Daemon installed. And again, at the end of the day, if you are comfortable with that, you could uninstall Docker and do this: `alias docker=podman`.
 
 Now what about building your own OCI Container images? If you would like to successfully run the command podman build, you will need to install [buildah](https://buildah.io/) too.
 
@@ -82,13 +82,13 @@ Interesting...
 
 # Pushing an OCI Container Image in Container Registry
 
-I won't go through the commands `pull|push` I presented in [my previous blog article with podman](https://alwaysupalwayson.blogspot.com/2020/01/podman-daemonless-container-engine.html), but I was able to successfully push the date image in my DockerHub as well as in an Azure Container Registry (ACR).
+I won't go through the commands `pull|push` I presented in [my previous blog article with podman]({{< ref "/posts/2020/01/podman.md" >}}), but I was able to successfully push the date image in my DockerHub as well as in an Azure Container Registry (ACR).
 
 In ACR, the icon of your Container image type will differ like you could see on the image below, on your left an image built with Docker and on your right an image built with podman/buildah:
 
 [![](https://1.bp.blogspot.com/-5bTcYqKRE6o/XjYWEynYptI/AAAAAAAAUuM/qAiBX7Ri6O0qEN4wj9LD3SVud2We_rXSgCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-5bTcYqKRE6o/XjYWEynYptI/AAAAAAAAUuM/qAiBX7Ri6O0qEN4wj9LD3SVud2We_rXSgCLcBGAsYHQ/s1600/Capture.PNG)
 
-Since [I'm using Azure Security Center (ASC) to scan my Container images in ACR](https://alwaysupalwayson.blogspot.com/2019/11/scanning-container-images-for.html), I found out that for now there is an issue ("Scan error" without any details information) meaning that is not yet supported (I reached out to the Product Group Team, will see what they'll say):
+Since [I'm using Azure Security Center (ASC) to scan my Container images in ACR]({{< ref "/posts/2019/11/scanning-containers-with-asc.md" >}}), I found out that for now there is an issue ("Scan error" without any details information) meaning that is not yet supported (I reached out to the Product Group Team, will see what they'll say):
 
 [![](https://1.bp.blogspot.com/-2VprSVf_nEw/XjYXqBqOmvI/AAAAAAAAUuY/U1xyUXN6fqcu753npuNnn_b5it04XPwNQCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-2VprSVf_nEw/XjYXqBqOmvI/AAAAAAAAUuY/U1xyUXN6fqcu753npuNnn_b5it04XPwNQCLcBGAsYHQ/s1600/Capture.PNG)
 
@@ -105,7 +105,7 @@ Depending on which version of Docker/Moby your are running as the CRI of your Ku
 
 # Further considerations and resources
 
-- [podman, a daemonless container engine](https://alwaysupalwayson.blogspot.com/2020/01/podman-daemonless-container-engine.html)
+- [podman, a daemonless container engine]({{< ref "/posts/2020/01/podman.md" >}})
 - [How to run Podman on Windows with WSL2](https://www.redhat.com/sysadmin/podman-windows-wsl2)
 - [Podman and Buildah for Docker users](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/)
 - [Best practices for running Buildah in a container](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/)

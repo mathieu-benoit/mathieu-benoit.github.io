@@ -6,7 +6,7 @@ description: let's be more flexible while deploying kured thanks to its helm cha
 ---
 [![](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
 
-Kured (KUbernetes REboot Daemon) is the proper way to keep your Linux Nodes up-to-date automatically with Kubernetes: [https://docs.microsoft.com/azure/aks/node-updates-kured](https://docs.microsoft.com/en-us/azure/aks/node-updates-kured). That's one of your responsibility to setup this tool (or any other alternative you may have) for your own Security Posture.
+Kured (KUbernetes REboot Daemon) is the proper way to keep your Linux Nodes up-to-date automatically with Kubernetes: [https://docs.microsoft.com/azure/aks/node-updates-kured](https://docs.microsoft.com/azure/aks/node-updates-kured). That's one of your responsibility to setup this tool (or any other alternative you may have) for your own Security Posture.
 
 I recently found out that the proper way to install kured is not by doing this like explained [here](https://github.com/weaveworks/kured#installation):
 ```

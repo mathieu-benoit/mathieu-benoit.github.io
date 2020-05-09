@@ -4,17 +4,19 @@ date: 2019-09-30
 tags: [azure, containers, security, kubernetes]
 description: let's secure the communications between your pods with calico kubernetes network policies
 ---
+_Update on October 17th, 2019, this blog article has been promoted and published on the official Microsoft's Open Source blog there: [Tutorial: Calico Network Policies with Azure Kubernetes Service](https://cloudblogs.microsoft.com/opensource/2019/10/17/tutorial-calico-network-policies-with-azure-kubernetes-service/)._
+
 On May 2019, [Network Policies on AKS was announced GA](https://azure.microsoft.com/updates/user-defined-network-policy-in-azure-kubernetes-service-aks-is-now-available/):
 
 > _A user-defined network policy feature in AKS enables secure network segmentation within Kubernetes. This feature also allows cluster operators to control which pods can communicate with each other and with resources outside the cluster.
 > Network policy is generally available through the Azure native policy plug-in or through the community project Calico._
 
-I encourage you to give a read of this article too: [Integrating Azure CNI and Calico: A technical deep dive](https://azure.microsoft.com/blog/integrating-azure-cni-and-calico-a-technical-deep-dive/) where you will see all the concepts explained on a Networking perspective with AKS.
-Furthermore here is the [Kubernetes tutorial](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy/), the [Calico tutorial](https://docs.projectcalico.org/v3.9/security/calico-network-policy) and the [AKS tutorial](https://docs.microsoft.com/azure/aks/use-network-policies) you could give a try to practice with those concepts.
+I encourage you to give a read of this article too: [Integrating Azure CNI and Calico: A technical deep dive](https://azure.microsoft.com/blog/integrating-azure-cni-and-calico-a-technical-deep-dive) where you will see all the concepts explained on a Networking perspective with AKS.
+Furthermore here is the [Kubernetes tutorial](https://kubernetes.io/docs/tasks/administer-cluster/declare-network-policy), the [Calico tutorial](https://docs.projectcalico.org/v3.9/security/calico-network-policy) and the [AKS tutorial](https://docs.microsoft.com/azure/aks/use-network-policies) you could give a try to practice with those concepts.
 
 Some gotchas here:
 - By default, any pods could communicate with any other pods across namespaces within a Kubernetes cluster, it's by design.
-  - But [Kubernetes Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) will guarantee the "Just Enough Access" principle of your Security posture
+  - But [Kubernetes Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies) will guarantee the "Just Enough Access" principle of your Security posture
 - By default, there is no default plugin pre-installed with Kubernetes to actually apply such Network Policies
   - You need to install this plugin, otherwise your Network Policies won't have any effect.
 - With AKS, you have the option between `azure` or `calico` as your Network Policy plugin
@@ -142,6 +144,7 @@ kubectl run curl-$RANDOM \
 # curl --connect-timeout 2 http://web:80
 # curl --connect-timeout 2 www.microsoft.com
 # exit
+```
 
 And finally we want [WEB having access only to API on port 3000 and be accessible only from Internet on port 80](https://orca.tufin.io/netpol/?yaml=apiVersion:%20networking.k8s.io%2Fv1%0Akind:%20NetworkPolicy%0Ametadata:%0A3name:%20web-netpol%0Aspec:%0A3podSelector:%0A5matchLabels:%0A7app:%20web%0A3policyTypes:%0A3-%20Ingress%0A3-%20Egress%0A3ingress:%0A3-%20from:%20%5B%5D%0A5ports:%0A6-%20port:%2080%0A8protocol:%20TCP%0A3egress:%0A3-%20to:%0A5-%20podSelector:%0A9matchLabels:%0A11app:%20api%0A5ports:%0A6-%20port:%203000%0A8protocol:%20TCP%0A3-%20to:%0A5-%20namespaceSelector:%0A9matchLabels:%0A11name:%20kube-system%0A7podSelector:%0A9matchLabels:%0A11k8s-app:%20kube-dns%0A5ports:%0A6-%20port:%2053%0A8protocol:%20UDP):
 ```

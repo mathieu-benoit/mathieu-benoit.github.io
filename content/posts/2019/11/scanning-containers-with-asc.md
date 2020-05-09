@@ -4,7 +4,7 @@ date: 2019-11-29
 tags: [azure, containers, security]
 description: let's use azure security center (asc) to scan your containers in azure container registry (acr)
 ---
-One of the new feature announced during [Ignite 2019](https://alwaysupalwayson.blogspot.com/2019/11/ignite-2019-whats-new-with-docker-and.html) with Azure Security Center (ASC) is the ability in Preview to [scan container images in Azure Container Registry (ACR)](https://azure.microsoft.com/updates/scan-container-images-for-vulnerabilities-in-azure-security-center/).  
+One of the new feature announced during [Ignite 2019](https://alwaysupalwayson.blogspot.com/2019/11/ignite-2019-whats-new-with-docker-and.html) with Azure Security Center (ASC) is the ability in Preview to [scan container images in Azure Container Registry (ACR)](https://azure.microsoft.com/updates/scan-container-images-for-vulnerabilities-in-azure-security-center).  
 Yes you could for sure use any container images scanning tool of your choice like Aqua Security or Twistlock, but now you could leverage ASC too.
 
 I just gave it a try, loved it!
