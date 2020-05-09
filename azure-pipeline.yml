@@ -115,11 +115,10 @@ stages:
         az aks get-credentials \
             -n $(aksName) \
             -g $(aksResourceGroupName)
-        helm repo add \
-            $(registryName) \
-            https://$(registryServerName)/helm/v1/repo \
-            --username $(registryLogin) \
-            --password $(registryPassword)
+        echo $(registryPassword) | helm registry login \
+            $(registryServerName) \
+            -u $(registryLogin) \
+            --password-stdin
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
