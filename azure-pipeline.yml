@@ -122,6 +122,8 @@ stages:
             -u $(registryLogin) \
             --password-stdin
         helm chart pull $(chartName):$(helmChartVersion)
+        helm chart export $(chartName):$(helmChartVersion)
+        ls
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
@@ -137,6 +139,6 @@ stages:
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
-            $(chartName):$(helmChartVersion)
+            $(projectName):$(helmChartVersion)
       failOnStderr: true
       displayName: 'deploy helm chart'
