@@ -115,10 +115,12 @@ stages:
         az aks get-credentials \
             -n $(aksName) \
             -g $(aksResourceGroupName)
+        export HELM_EXPERIMENTAL_OCI=1
         echo $(registryPassword) | helm registry login \
             $(registryServerName) \
             -u $(registryLogin) \
             --password-stdin
+        helm chart pull $(registryName)/helm/$(projectName):$(helmChartVersion)
         helm upgrade \
             --namespace $(k8sNamespace) \
             --create-namespace \
