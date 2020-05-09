@@ -128,7 +128,6 @@ stages:
             --install \
             --history-max 1 \
             --wait \
-            --version $(helmChartVersion) \
             --set image.repository=$(registryServerName)/$(projectName) \
             --set networkpolicies.enabled=$(networkPoliciesEnabled) \
             --set ingress.hostName=$(hostName) \
@@ -138,6 +137,6 @@ stages:
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
             --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
-            $(chartName)
+            $(chartName):$(helmChartVersion)
       failOnStderr: true
       displayName: 'deploy helm chart'
