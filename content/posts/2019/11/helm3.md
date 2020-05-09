@@ -25,16 +25,16 @@ echo 'export PATH=$PATH:~/tools' >> ~/.bashrc && source ~/.bashrc
 helm3 version
 ```
 
-From here I have both helm and helm3 commands to keep/use both in parallel for now. So I will use helm3 command from here.
+From here I have both helm and helm3 commands to keep/use both in parallel for now. So I will use `helm3` command from here.
 
 Then let's create our first Helm chart:
 ```
 chart=hello-world  
 helm3 create $chart
 ls ./$chart
-# Should return: _charts_  Chart.yaml  _templates_ values.yaml
+# Should return: charts  Chart.yaml  templates values.yaml
 ls ./$chart/templates
-# Should return: deployment.yaml  _helpers.tpl  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml  _tests_
+# Should return: deployment.yaml  helpers.tpl  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml
 helm3 lint ./$chart
 ```
 
@@ -115,7 +115,7 @@ helm3 list -n $ns
 kubectl get all -n $ns
 ```
 
-_Note: I took the opportunity to open_ _[PR#35](https://github.com/Azure/phippyandfriends/pull/35)_ _in the associated [azure/phippyandfriends](https://github.com/Azure/phippyandfriends) GitHub repository to leverage the Helm 3 client__._
+_Note: I took the opportunity to open [PR#35](https://github.com/Azure/phippyandfriends/pull/35) in the associated [azure/phippyandfriends](https://github.com/Azure/phippyandfriends) GitHub repository to leverage the Helm 3 client._
 
 Here we are! We have seen how to install Helm 3 in Azure Cloud Shell, we have created and deployed our first Helm 3 chart, then we pushed it in ACR via 2 different ways and finally we also showed how to continue using Helm 2 charts with the Helm 3 client. Hope you enjoyed this!
 
@@ -125,7 +125,7 @@ Complementary resources I invite you to leverage too:
     - [An Introduction to Helm - Matt Farina, Samsung SDS & Josh Dolitsky, Blood Orange](https://kccncna19.sched.com/event/UajI) 
     - [Helm 3 Deep Dive - Taylor Thomas, Microsoft Azure & Martin Hickey, IBM](https://kccncna19.sched.com/event/Uagg) 
     - [Managing Helm Deployments with GitOps at CERN - Ricardo Rocha, CERN](https://kccncna19.sched.com/event/UabD) 
-- Helm Hub - [https://hub.helm.sh/](https://hub.helm.sh)
+- Helm Hub - [https://hub.helm.sh](https://hub.helm.sh)
 - [ORAS - OCI Registry As Storage](https://github.com/deislabs/oras)
 
 Happy Helming! Happy Sailing!
