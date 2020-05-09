@@ -79,15 +79,17 @@ stages:
     - bash: |
         cd chart/
         chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
-        az acr helm push \
-            -n $(registryName) \
+        export HELM_EXPERIMENTAL_OCI=1
+        helm chart save $chartPackage $(registryServerName)/charts/$(projectName):$(helmChartVersion)
+        echo $(registryPassword) | helm registry login \
+            $(registryServerName) \
             -u $(registryLogin) \
-            -p $(registryPassword) \
-            $chartPackage
+            --password-stdin
+        helm chart push $(registryServerName)/charts/$(projectName):$(helmChartVersion)
       failOnStderr: true
       name: helmPush
       condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-      displayName: 'az acr helm push'
+      displayName: 'helm push'
 - stage: 'Release'
   displayName: 'Release'
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
