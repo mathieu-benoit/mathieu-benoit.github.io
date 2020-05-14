@@ -6,7 +6,7 @@ description: let's setup azure private endpoint for both azure kubernetes servic
 aliases:
     - /private-aks-and-acr/
 ---
-To continue improving your security posture with [Azure Private Endpoint like I demonstrated with Azure Blob Storage previously]({{< ref "/posts/2020/03/protect-terraform-state.md" >}}), let's now have a look at Azure Private Endpoint with Azure Kubernetes Service (AKS) and Azure Container Registry (ACR).  
+To continue improving your Security Posture with [Azure Private Endpoint like I demonstrated with Azure Blob Storage previously]({{< ref "/posts/2020/03/protect-terraform-state.md" >}}), let's now have a look at Azure Private Endpoint with Azure Kubernetes Service (AKS) and Azure Container Registry (ACR).  
 
 Private AKS cluster just reached GA and private ACR has just been announced in Public Preview [among different PaaS service now supporting Azure Private Link](https://azure.microsoft.com/updates/privatelinkforpaasga/).  
 
@@ -18,10 +18,10 @@ To summarize what I have made:
 - [Private AKS](https://docs.microsoft.com/azure/aks/private-clusters) cluster in its own Subnet with Private Endpoint
 - [Private ACR](https://docs.microsoft.com/azure/container-registry/container-registry-private-link) in its own Subnet with Private Endpoint
     - I put it in the same AKS's VNET, it's my choice, but it could be placed in another peered VNET as well.
-- Jumpbox VM in a VNET peered with the AKS's VNET
-    - I Deny the inbound traffic on port 22 (SSH/RDP) as soon as I don't need it. Best practices are to leverage JIT VM from ASC or Azure Bastion instead.
+- Jumpbox VM and Bastion in a VNET peered with the AKS's VNET
+    - I create a VM with only a Private IP address and I create an Azure Bastion to allow the SSH connection from within the Azure portal.
 - [Custom Azure pipelines agent]({{< ref "/posts/2020/02/custom-azure-pipelines-agent.md" >}}) hosted on AKS
-    - With that I'm able to push both containers and Helm chart in ACR as well as deploying the Helm chart in AKS.
+    - With that I'm able to push both containers and Helm chart in ACR as well as deploying the Helm chart in AKS for any of my apps.
 - [Private Azure Blob Storage Account]({{< ref "/posts/2020/03/protect-terraform-state.md" >}}) with Private Endpoint
     - Not illustrated on this image, but I am using this custom Azure pipelines agent described above to deploy Terraform for different workloads. In order to get access to this associated TF State file locked down in Blob Storage Account behind its Private Endpoint, I need to peer the AKS's VNET with the Blob Storage account's VNET.
 
