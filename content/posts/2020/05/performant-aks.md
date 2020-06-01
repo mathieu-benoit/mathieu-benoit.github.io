@@ -6,7 +6,7 @@ description: let's highlight tips & tricks about the setup of an aks cluster to 
 aliases:
     - /performant-aks/
 ---
-The intent of this blog article is to highlight advanced setups for advanced scenarios on Azure Kubernetes Service (AKS) as the AKS cluster hosts a consequent number of containers with a lot of communication in and out, at scale. So it may or may not apply to your own workload but at least we will mention concepts and settings which could improve performance and avoid overrhead or throttling.
+The intent of this blog article is to highlight advanced setups for advanced scenarios on Azure Kubernetes Service (AKS) as the AKS cluster hosts a consequent number of containers with a lot of communication in and out, at scale. So it may or may not apply to your own workload but at least we will mention concepts and settings which could improve performance and avoid overhead or throttling.
 
 Topics covered in the blog article:
 - [K8s version]({{< ref "#k8s-version" >}})
@@ -65,7 +65,7 @@ az aks nodepool scale
 
 > [This article](https://docs.microsoft.com/azure/virtual-machines/linux/sizes) describes the available sizes and options for the Azure virtual machines you can use to run your apps and workloads. It also provides deployment considerations to be aware of when you're planning to use these resources. You will find options for General purpose, Compute optimized, Memory optimized, GPU or even Hig performance compute scenarios.
 
-You could look at the specs of the VM size you selected and then create an AKS cluster or a Nodepool with your selected by running the command below:
+You could look at the specs of the VM size you selected and then create an AKS cluster or a Nodepool by running the command below:
 ```
 NODE_VM_SIZE=FIXME
 LOCATION=FIXME
@@ -157,7 +157,7 @@ az aks nodepool add \
 
 _Note: even if it's related to Calico, [this video](https://www.projectcalico.org/everything-you-need-to-know-about-kubernetes-networking-on-azure) really well explains the difference between Azure CNI versus Kubenet CNI. I also found this article [Networking with Kubernetes](https://medium.com/practo-engineering/networking-with-kubernetes-1-3db116ad3c98) very insightful about the differences between the networking modes._
 
-You could defin the Network Plugin of an AKS cluster at the creation time only:
+You could define the Network Plugin of an AKS cluster at the creation time only:
 ```
 az aks create \
     --network-plugin azure
