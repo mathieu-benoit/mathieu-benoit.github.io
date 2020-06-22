@@ -40,7 +40,6 @@ stages:
     - checkout: self
       submodules: true
     - bash: |
-        docker rmi nginxinc/nginx-unprivileged:1.19.0-alpine
         docker build \
             -t $(registryServerName)/$(projectName):$(imageTag) \
             .
