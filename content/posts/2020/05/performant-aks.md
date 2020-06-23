@@ -186,10 +186,13 @@ az aks update \
 ```
 
 
+_Note: worth mentioning that as we speak, the AKS team is working on the implementation and the support of Node local DNS](https://github.com/Azure/AKS/issues/1492) which should improve performance within your cluster, stay tuned! ;)_
+
 Here we are! Hope you enjoyed those tips and tricks. The advice is not to apply all of this to your workload but more having monitoring tools in place to track and watch the behavior and get insights of your cluster, your nodes, your containers and your applications. And then apply the most relevant recommendation(s) above accordingly. You may also want to leverage those resources below to help you with this:
 - [AKS Diagnostics](https://docs.microsoft.com/azure/aks/concepts-diagnostics)
 - [Azure Advisor integration with AKS](https://azure.microsoft.com/updates/azure-advisor-integration-with-aks-now-generally-available/)
 - [Azure Monitor for containers](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-overview)
 - [Linux Performance Troubleshooting](https://docs.microsoft.com/azure/aks/troubleshoot-linux)
+- [kubernaughty - IO, resources contention notes, docs and tools](https://github.com/jnoller/kubernaughty)
 
 Happy performant sailing, cheers! ;)
