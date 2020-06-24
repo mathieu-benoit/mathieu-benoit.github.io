@@ -18,6 +18,7 @@ Topics covered in the blog article:
 - [IOPS]({{< ref "#iops" >}})
 - [Azure CNI]({{< ref "#azure-cni" >}})
 - [Allocated outbound ports]({{< ref "#allocated-outbound-ports" >}})
+- [Further considerations]({{< ref "#further-considerations" >}})
 
 # K8s version
 
@@ -185,8 +186,14 @@ az aks update \
     --load-balancer-idle-timeout
 ```
 
+# Further considerations
 
-_Note: worth mentioning that as we speak, the AKS team is working on the implementation and the support of Node local DNS](https://github.com/Azure/AKS/issues/1492) which should improve performance within your cluster, stay tuned! ;)_
+Here are complementary and further considerations you may want to watch out:
+- [Node Local DNS](https://github.com/Azure/AKS/issues/1492) - In Development
+- [Proximity Placement Groups](https://azure.microsoft.com/updates/azure-kubernetes-service-aks-support-for-proximity-placement-groups-is-now-available/) - Public Preview
+- [Node Image Upgrade](https://docs.microsoft.com/azure/aks/node-image-upgrade) - Public Preview
+
+
 
 Here we are! Hope you enjoyed those tips and tricks. The advice is not to apply all of this to your workload but more having monitoring tools in place to track and watch the behavior and get insights of your cluster, your nodes, your containers and your applications. And then apply the most relevant recommendation(s) above accordingly. You may also want to leverage those resources below to help you with this:
 - [AKS Diagnostics](https://docs.microsoft.com/azure/aks/concepts-diagnostics)
