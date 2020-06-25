@@ -18,7 +18,7 @@ This reference was given to me while flying to Toronto for business meetings by 
 
 This book is all about how we could do less but better, with less stress, more happiness and with more valuable contribution. You will get great stories and quotations coming from influencers, thinkers, artists, entrepreneurs, athletes, movie maker, politicians, coaches, etc. from different continents all around the world.
 
-**Thinks**
+**Thinks** :thought_balloon:
 - Nonessentialist - **All things to all people** :thumbsdown:
     - I have to
     - It's all important
@@ -28,7 +28,7 @@ This book is all about how we could do less but better, with less stress, more h
     - Only few things really matter
     - What are the trade-offs?
 
-**Does**
+**Does** :ok_hand:
 - Nonessentialist - **The undisciplined pursuit of more** :thumbsdown:
     - Reacts to what's most pressing
     - Says "yes" to people without really thinking
@@ -38,7 +38,7 @@ This book is all about how we could do less but better, with less stress, more h
     - Says "no" to everything except the essential
     - Removes obstacles to make execution easy
 
-**Gets**
+**Gets** :raised_hands:
 - Nonessentialist - **Lives a life that does not satisfy** :thumbsdown:
     - Takes on too much and work suffers
     - Feels out of control
@@ -52,7 +52,7 @@ This book is all about how we could do less but better, with less stress, more h
 
 This book contains 4 main parts:  
 
-**Essence** - _what is the core mind-set of an Essentialist?_
+**Essence** :seedling: - _what is the core mind-set of an Essentialist?_
 - **Choose** - the invincible power of choice
     - _A choice is not a thing. Our options may be things, but a choice is an action._
 - **Discern** - the unimportance of practically everything
@@ -60,7 +60,7 @@ This book contains 4 main parts:
 - **Trade-off** - which problem do I want?
     - _It involves two things (or more) we want. But we obviously cannot do it all (well). Priorities have to be defined._
 
-**Explore** - _how can we discern the trivial many from the vital few?_
+**Explore** :sailboat: - _how can we discern the trivial many from the vital few?_
 - **Escape** - the perks of being unavailable
     - _We need space to escape in order to discern the essential few from the trivial many._ _Take place to design, to concentrate, to read._
 - **Look** - see what really matters
@@ -72,7 +72,7 @@ This book contains 4 main parts:
 - **Select** - the power of extreme criteria
     - _Selective, explicit and also right._
 
-**Eliminate** - _how can we cut out the trivial many?_
+**Eliminate** :no_entry_sign: - _how can we cut out the trivial many?_
 - **Clarify** - one decision that makes a thousand
     - _From "pretty clear" to "really clear"._
 - **Dare** - the power of a graceful "no"
@@ -84,7 +84,7 @@ This book contains 4 main parts:
 - **Limit** - The freedom of setting boundaries
     - _See boundaries as liberating. Sets rules in advance that eliminate the need for the direct "no"._
 
-**Execute** - _how can we make doing the vital few things almost effortless?_
+**Execute** :running: - _how can we make doing the vital few things almost effortless?_
 - **Buffer** - the unfair advantage
     - _Build in a buffer for unexpected events. Practice extreme and early preparation._
 - **Subtract** - bring forth more by removing obstacles
