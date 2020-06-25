@@ -2,6 +2,7 @@ baseurl = "/"
 languageCode = "en-us"
 theme = "hello-friend"
 paginate = 5
+defaultContentLanguage = "en"
 
 [params]
   contentTypeName = "posts"
@@ -9,6 +10,8 @@ paginate = 5
   showMenuItems = 2
   showReadingTime = false
   description = "Mathieu Benoit's blog"
+  logoText = "always up, always on"
+  logoHomeLink = "/"
 
 [languages]
   [languages.en]
@@ -18,13 +21,22 @@ paginate = 5
     newerPosts = "newer posts"
     olderPosts = "older posts"
 
-    [languages.en.params.logo]
-      logoText = "always up, always on"
-      logoHomeLink = "/"
-
     [languages.en.menu]
       [[languages.en.menu.main]]
         identifier = "about"
         name = "about"
+        url = "/about/"
+        weight = "30"
+  [languages.fr]
+    title = "always up, always on"
+    menuMore = "voir plus"
+    readMore = "lire plus"
+    newerPosts = "plus récents"
+    olderPosts = "moins récents"
+
+    [languages.fr.menu]
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "à propos"
         url = "/about/"
         weight = "30"
