@@ -4,5 +4,5 @@ Build and run locally:
 
 ```
 docker build -t blog .
-docker run -d -p 80:8080 blog
+docker run -d -p 8080:8080 blog
 ```
