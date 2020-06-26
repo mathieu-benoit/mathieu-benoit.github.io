@@ -21,7 +21,7 @@ So here are the results of my own implementations based on this:
 - [PR to implement this with myblog](https://github.com/mathieu-benoit/myblog/pull/6)
     - `Dockerfile` to have the official base image `nginxinc/nginx-unprivileged`
     - Container's port as `8080` instead of `80`
-    - `podSecurityContext` with `runAsNonRoot: true`, `allowPrivilegeEscalation: false` and `readOnlyRootFilesystem: true`
+    - `podSecurityContext` with `securityContext.capabilities.drop: all`, `runAsNonRoot: true`, `allowPrivilegeEscalation: false` and `readOnlyRootFilesystem: true`
 - [PR to implement this with MyMonthlyBlogArticle.Bot](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot/pull/35)
     - `Dockerfile` to have this environment variable: `ENV ASPNETCORE_URLS=http://+:5000`
     - Container's port as `5000` instead of `80`
