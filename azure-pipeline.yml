@@ -16,7 +16,7 @@ variables:
   projectName: myblog
   chartName: $(registryServerName)/helm/$(projectName)
   dnsName: $(projectName)
-  hostName: $(dnsName).$(aksLocation).cloudapp.azure.com
+  hostName: alwaysupalwayson.com
   nginxIngressVersion: 0.33.0
   helmChartVersion: v$(build.buildId)
   skipComponentGovernanceDetection: true
@@ -117,6 +117,25 @@ stages:
         az aks get-credentials \
             -n $(aksName) \
             -g $(aksResourceGroupName)
+      failOnStderr: true
+      displayName: 'az aks get-credentials'
+    - bash: |
+        openssl req \
+          -x509 \
+          -nodes \
+          -days 365 \
+          -newkey rsa:2048 \
+          -out $(projectName).crt \
+          -keyout $(projectName).key \
+          -subj "/CN=$(hostName)/O=$(projectName)"
+        kubectl create secret tls ingress-tls \
+          -n $(k8sNamespace) \
+          --key $(projectName).key \
+          --cert $(projectName).crt
+        rm $(projectName).crt $(projectName).key
+      failOnStderr: true
+      displayName: 'create ingress-tls secret'
+    - bash: |
         export HELM_EXPERIMENTAL_OCI=1
         echo '$(registryPassword)' | helm registry login \
             $(registryServerName) \
@@ -133,11 +152,9 @@ stages:
             --set image.repository=$(registryServerName)/$(projectName) \
             --set networkpolicies.enabled=$(networkPoliciesEnabled) \
             --set ingress.hostName=$(hostName) \
-            --set issuer.acme.email=$(issuerEmail) \
             --set ingress-nginx.defaultBackend.enabled=false \
             --set ingress-nginx.controller.scope.enabled=true \
             --set ingress-nginx.controller.image.tag=$(nginxIngressVersion) \
-            --set ingress-nginx.controller.service.annotations."service\.beta\.kubernetes\.io/azure-dns-label-name"=$(dnsName) \
             $(projectName) \
             ./install/$(projectName)
         # cleanup

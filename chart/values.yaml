@@ -48,10 +48,5 @@ tolerations: []
 
 affinity: {}
 
-issuer:
-  name: letsencrypt-prod
-  acme:
-    email: ""
-
 networkpolicies:
-  enabled: false
+  enabled: true
