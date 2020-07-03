@@ -5,13 +5,14 @@ tags: [thoughts]
 draft: true
 description: let's review the book - essentialism, the discipline pursuit of less
 aliases:
-    - /essentialism/
+    - /coaching/
 ---
+A colleague of mine just shared this article on LinkedIn: [The Best Way to Respond to the Question, "What Do You Do?"](https://hbrascend.org/topics/the-best-way-to-respond-to-the-question-what-do-you-do/).
+
+This reminded me that I took some notes and takeaways for myself from a training I took the opportunity to take: "The Coaching Habit" from Michael Bungay Stanier.
+That's kind of training I love to take, not technical at all but improving my soft-skills helping me getting better as a human-being.
+
 https://www.feval.ca/posts/training-coaching-habit/
-
-
-Earlier this year I got the opportunity to get the training "The Coaching Habit" from Michael Bungay Stanier. That's kind of training I love to take, not technical at all but improving my soft-skills helping me getting better as a human-being.
-
 
 
 Be Lazy, stop fixing/solving things, let them do the work
