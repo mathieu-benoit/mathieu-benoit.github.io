@@ -189,7 +189,6 @@ az aks update \
 # Further considerations
 
 Here are complementary and further considerations you may want to watch out:
-- [`containerd` instead of `moby` as the CRI](https://docs.microsoft.com/azure/aks/cluster-configuration#container-runtime-configuration-preview) - Public Preview
 - [Node Local DNS](https://github.com/Azure/AKS/issues/1492) - In Development
 - [Proximity Placement Groups](https://azure.microsoft.com/updates/azure-kubernetes-service-aks-support-for-proximity-placement-groups-is-now-available/) - Public Preview
 - [Node Image Upgrade](https://docs.microsoft.com/azure/aks/node-image-upgrade) - Public Preview
