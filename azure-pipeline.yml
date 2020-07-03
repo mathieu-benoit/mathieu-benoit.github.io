@@ -117,25 +117,6 @@ stages:
         az aks get-credentials \
             -n $(aksName) \
             -g $(aksResourceGroupName)
-      failOnStderr: true
-      displayName: 'az aks get-credentials'
-    - bash: |
-        openssl req \
-          -x509 \
-          -nodes \
-          -days 365 \
-          -newkey rsa:2048 \
-          -out $(projectName).crt \
-          -keyout $(projectName).key \
-          -subj "/CN=$(hostName)/O=$(projectName)"
-        kubectl create secret tls ingress-tls \
-          -n $(k8sNamespace) \
-          --key $(projectName).key \
-          --cert $(projectName).crt
-        rm $(projectName).crt $(projectName).key
-      failOnStderr: true
-      displayName: 'create ingress-tls secret'
-    - bash: |
         export HELM_EXPERIMENTAL_OCI=1
         echo '$(registryPassword)' | helm registry login \
             $(registryServerName) \
