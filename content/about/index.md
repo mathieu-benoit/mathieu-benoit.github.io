@@ -8,7 +8,7 @@ title: "about"
 </figure>
 {{< /html >}}
 
-I'm Mathieu Benoit. I live in Quebec city, QC - Canada :maple_leaf:, and I was born in France :fr:. I work at Microsoft as Cloud Solution Architect :cloud:. The intent of this blog is to document and share my learnings, I'm a learn-it-all :rocket:! I'm passionate :heart: about Cloud Native Computing technologies such as Open Source, Cloud, Security, Containers, DevOps and Kubernetes.
+I'm Mathieu Benoit. I live in Quebec city, QC - Canada :maple_leaf:, and I was born in France :fr:. I work at Google as Customer Engineer, Appplication Modernization with GCP :cloud:. The intent of this blog is to document and share my learnings, I'm a learn-it-all :rocket:! I'm passionate :heart: about Cloud Native Computing technologies such as Open Source, Cloud, Security, Containers, DevOps and Kubernetes.
 
 If you are insterested to know more about how this bog is built, [feel free to checkout that story]({{< ref "/posts/2020/05/myblog.md" >}}) :art:!
 
