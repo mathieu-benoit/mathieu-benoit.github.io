@@ -3,6 +3,9 @@
 Build and run locally:
 
 ```
+git clone https://github.com/mathieu-benoit/myblog
+git submodule init
+git submodule update
 docker build -t blog .
 docker run -d -p 8080:8080 blog
 ```
