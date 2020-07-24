@@ -1,5 +1,6 @@
 steps:
 - name: gcr.io/cloud-builders/git
+  env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
   args: ['submodule', 'update', '--init', '--recursive']
 - name: gcr.io/cloud-builders/docker
   args: ["build", "-t", "gcr.io/$PROJECT_ID/myblog:$COMMIT_SHA", "."]
