@@ -2,7 +2,6 @@
 title: the coaching habit
 date: 2020-07-03
 tags: [thoughts]
-draft: true
 description: let's review the book - the coaching habit
 aliases:
     - /coaching/
