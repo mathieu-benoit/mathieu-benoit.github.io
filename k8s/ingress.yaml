@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: myblog
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: myblog-static-ip
+    networking.gke.io/managed-certificates: myblog
+spec:
+  backend:
+    serviceName: myblog
+    servicePort: 8080

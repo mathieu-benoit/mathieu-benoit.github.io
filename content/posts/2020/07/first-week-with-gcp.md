@@ -2,7 +2,7 @@
 title: my first week with gcp
 date: 2020-07-24
 tags: [gcp, containers, devops, kubernetes]
-description: let's share what I learned during my first week leveraging gcp
+description: let's share what I learned during my first week leveraging gcp, tools and services like linux on my pixelbook, gcloud cli, docker, git, service account, gcr, cloud run, app engine and kubernetes engine
 aliases:
     - /first-week-with-gcp/
 ---
@@ -45,11 +45,11 @@ Here are few general resources I have captured to keep as references:
 
 Well, that's really cool, but now let's take one of [my containerized app: `myblog`]({{< ref "/posts/2020/05/myblog.md" >}}) and delpoy it on GCP! For that we will leverage 4 services in GCP:
 - [Google Container Registry](https://cloud.google.com/container-registry)
-- [Google Cloud Run](https://cloud.google.com/run)
+- [Google Cloud Run](https://cloud.google.com/run), yep [Cloud Run could run website too](https://medium.com/google-cloud/can-cloud-run-handle-these-9-workloads-serverless-toolbox-afddeab87819)! ;)
 - [Google Cloud App Engine](https://cloud.google.com/appengine)
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
 
-I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already both of them installed too (yep, with a Docker daemon too to succesfully run your `docker` commands ;)).
+I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already the three of them installed too (yep, with a Docker daemon too to succesfully run your `docker` commands ;)).
 
 ```
 # Clone the Git repo locally
@@ -92,7 +92,7 @@ docker build -t gcr.io/$projectId/myblog:1 .
 docker push gcr.io/$projectId/myblog:1
 ```
 
-From here, we could now deploy this container from GCR to any service capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
+From here, we could now deploy this container from GCR to any services capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
 
 ```
 # Deploy this container on Cloud Run (< 1min)
