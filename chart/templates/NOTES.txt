@@ -1,6 +1,0 @@
-# Get most of the objects deployed in the current Kubernetes namespace:
-kubectl get all,ing,secrets,cert,netpol,issuer,certificaterequest,order,challenge -n {{ .Release.Namespace }}
-
-# Browse the public HTTPS endpoint exposed here:
-hostName=$(kubectl get ing {{ include "myblog.fullname" . }} -n {{ .Release.Namespace }} -o jsonpath="{.spec.rules[0].host}")
-curl https://$hostName

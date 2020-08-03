@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myblog
+  labels:
+    app.kubernetes.io/name: myblog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: myblog
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: myblog
+    spec:
+      securityContext:
+        runAsUser: 1000
+      containers:
+        - name: myblog
+          securityContext:
+            capabilities:
+              drop:
+                - all
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          image: gcr.io/mabenoit-myblog/myblog:5
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp
+      volumes:
+      - emptyDir: {}
+        name: tmp

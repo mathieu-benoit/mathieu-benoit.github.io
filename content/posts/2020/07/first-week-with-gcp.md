@@ -2,7 +2,7 @@
 title: my first week with gcp
 date: 2020-07-24
 tags: [gcp, containers, devops, kubernetes]
-description: let's share what I learned during my first week leveraging gcp
+description: let's share what I learned during my first week leveraging gcp, tools and services like linux on my pixelbook, gcloud cli, docker, git, service account, gcr, cloud run, app engine and kubernetes engine
 aliases:
     - /first-week-with-gcp/
 ---
@@ -29,7 +29,7 @@ To accomplish this I took the [Google Cloud Essentials course on Qwiklabs](https
 - [Load Balancers](https://cloud.google.com/load-balancing/docs)
     - [This doc](https://cloud.google.com/load-balancing/docs/load-balancing-overview#a_closer_look_at_cloud_load_balancers) is a great resource to see your different options about Load Balancer on GCP.
 
-The experience with [Qwiklabs](https://google.qwiklabs.com) is awesome! I got step-by-step labs allowing me to do hands-on via the Google Cloud Console and via the Google Cloud Shell. Furthermore, the last exercise is a challenge, not step-by-step guided, making sure I'm able to do it myself!
+The experience with [Qwiklabs](https://google.qwiklabs.com) is awesome! I got step-by-step labs allowing me to do hands-on via the Google Cloud Console and via the Google Cloud Shell. Furthermore, the last exercise is a challenge, not step-by-step guided, making sure I'm able to do it by myself!
 
 Here are few general resources I have captured to keep as references:
 - [Google Cloud Next OnAir 2020](https://cloud.withgoogle.com/next)
@@ -45,11 +45,11 @@ Here are few general resources I have captured to keep as references:
 
 Well, that's really cool, but now let's take one of [my containerized app: `myblog`]({{< ref "/posts/2020/05/myblog.md" >}}) and delpoy it on GCP! For that we will leverage 4 services in GCP:
 - [Google Container Registry](https://cloud.google.com/container-registry)
-- [Google Cloud Run](https://cloud.google.com/run)
+- [Google Cloud Run](https://cloud.google.com/run), yep [Cloud Run could run website too](https://medium.com/google-cloud/can-cloud-run-handle-these-9-workloads-serverless-toolbox-afddeab87819)! ;)
 - [Google Cloud App Engine](https://cloud.google.com/appengine)
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
 
-I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already both of them installed too (yep, with a Docker daemon too to succesfully run your `docker` commands ;)).
+I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already the three of them installed too (yep, with a Docker daemon too to succesfully run all your `docker` commands ;)).
 
 ```
 # Clone the Git repo locally
@@ -92,20 +92,18 @@ docker build -t gcr.io/$projectId/myblog:1 .
 docker push gcr.io/$projectId/myblog:1
 ```
 
-From here, we could now deploy this container from GCR to any service capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
+From here, we could now deploy this container from GCR to any services capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
 
 ```
 # Deploy this container on Cloud Run (< 1min)
-gcloud init
 gcloud services enable run.googleapis.com
 gcloud run deploy myblog \
-    --image gcr.io/$projectId/myblog:1 \
+    --image gcr.io/$projectId/myblog \
     --region us-east1 \
     --platform managed \
     --allow-unauthenticated
 
 # Deploy this container on Google App Engine (~ 5min)
-gcloud init
 gcloud services enable appengineflex.googleapis.com
 echo "runtime: custom" >> app.yaml
 echo "env: flex" >> app.yaml
@@ -113,7 +111,6 @@ gcloud app deploy \
     --image-url gcr.io/$projectId/myblog:1
 
 # Deploy this container on GKE (~ 5min)
-gcloud init
 gcloud services enable container.googleapis.com
 clusterName=mygkecluster
 gcloud container clusters create $clusterName \
