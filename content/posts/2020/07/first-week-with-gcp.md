@@ -29,7 +29,7 @@ To accomplish this I took the [Google Cloud Essentials course on Qwiklabs](https
 - [Load Balancers](https://cloud.google.com/load-balancing/docs)
     - [This doc](https://cloud.google.com/load-balancing/docs/load-balancing-overview#a_closer_look_at_cloud_load_balancers) is a great resource to see your different options about Load Balancer on GCP.
 
-The experience with [Qwiklabs](https://google.qwiklabs.com) is awesome! I got step-by-step labs allowing me to do hands-on via the Google Cloud Console and via the Google Cloud Shell. Furthermore, the last exercise is a challenge, not step-by-step guided, making sure I'm able to do it myself!
+The experience with [Qwiklabs](https://google.qwiklabs.com) is awesome! I got step-by-step labs allowing me to do hands-on via the Google Cloud Console and via the Google Cloud Shell. Furthermore, the last exercise is a challenge, not step-by-step guided, making sure I'm able to do it by myself!
 
 Here are few general resources I have captured to keep as references:
 - [Google Cloud Next OnAir 2020](https://cloud.withgoogle.com/next)
@@ -49,7 +49,7 @@ Well, that's really cool, but now let's take one of [my containerized app: `mybl
 - [Google Cloud App Engine](https://cloud.google.com/appengine)
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
 
-I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already the three of them installed too (yep, with a Docker daemon too to succesfully run your `docker` commands ;)).
+I'm running all the commands below since I have installed locally, like explained above, the `gcloud`, `Docker` and `kubectl` CLIs. But you could also do this from within the Google Cloud Shell which has already the three of them installed too (yep, with a Docker daemon too to succesfully run all your `docker` commands ;)).
 
 ```
 # Clone the Git repo locally
@@ -96,16 +96,14 @@ From here, we could now deploy this container from GCR to any services capable o
 
 ```
 # Deploy this container on Cloud Run (< 1min)
-gcloud init
 gcloud services enable run.googleapis.com
 gcloud run deploy myblog \
-    --image gcr.io/$projectId/myblog:1 \
+    --image gcr.io/$projectId/myblog \
     --region us-east1 \
     --platform managed \
     --allow-unauthenticated
 
 # Deploy this container on Google App Engine (~ 5min)
-gcloud init
 gcloud services enable appengineflex.googleapis.com
 echo "runtime: custom" >> app.yaml
 echo "env: flex" >> app.yaml
@@ -113,7 +111,6 @@ gcloud app deploy \
     --image-url gcr.io/$projectId/myblog:1
 
 # Deploy this container on GKE (~ 5min)
-gcloud init
 gcloud services enable container.googleapis.com
 clusterName=mygkecluster
 gcloud container clusters create $clusterName \

@@ -25,7 +25,7 @@ spec:
             runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
-          image: gcr.io/mabenoit-myblog/myblog:3
+          image: gcr.io/mabenoit-myblog/myblog:5
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
