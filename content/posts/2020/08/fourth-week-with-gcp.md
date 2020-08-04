@@ -7,10 +7,9 @@ draft: true
 aliases:
     - /third-week-with-gcp/
 ---
-https://medium.com/@jryancanty/hashicorp-vault-and-terraform-on-google-cloud-security-best-practices-3d94de86a3e9
+Automation for Infrastructure with Terraform and for Apps with Cloud Build.
 
 https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9
-https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d
+https://cloud.google.com/blog/products/identity-security/achieve-least-privilege-with-less-effort-using-iam-recommender
 
-Monitoring as Code
-https://www.youtube.com/watch?v=mCtEMTW8Ksw
+Infrastructure Quest and select the IAM Qwik Start lab: https://goo.gl/ez5Vzw

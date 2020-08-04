@@ -1,6 +1,18 @@
+---
+title: my third week with gcp
+date: 2020-08-10
+tags: [gcp, security, kubernetes]
+description: let's share what I learned during my third week leveraging gcp, focused on gke
+draft: true
+aliases:
+    - /third-week-with-gcp/
+---
 https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-devops-vs-sre/
 
 http://go/sre-books
+
+SRE versus DevOps
+https://cloud.google.com/blog/products/gcp/sre-vs-devops-competing-standards-or-close-friends
 
 https://cloudblog-withgoogle-com.cdn.ampproject.org/c/s/cloudblog.withgoogle.com/products/management-tools/practical-guide-to-setting-slos/amp/
 
