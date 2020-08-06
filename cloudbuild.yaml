@@ -1,5 +1,7 @@
 steps:
 - name: gcr.io/cloud-builders/git
+  args: ['clone', 'https://github.com/mathieu-benoit/myblog']
+- name: gcr.io/cloud-builders/git
   entrypoint: 'bash'
   env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
   args:
@@ -9,6 +11,6 @@ steps:
     git submodule init
     git submodule update
 - name: gcr.io/cloud-builders/docker
-  args: ["build", "-t", "gcr.io/$PROJECT_ID/myblog:$COMMIT_SHA", "."]
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/myblog:$COMMIT_SHA', '.']
 - name: gcr.io/cloud-builders/docker
-  args: ["push", "gcr.io/$PROJECT_ID/myblog:$COMMIT_SHA"]
+  args: ['push', 'gcr.io/$PROJECT_ID/myblog:$COMMIT_SHA']
