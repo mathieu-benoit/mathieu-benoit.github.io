@@ -1,6 +1,6 @@
 steps:
 - name: gcr.io/cloud-builders/git
-  args: ['clone', ['https://github.com/mathieu-benoit/myblog']]
+  args: ['clone', 'https://github.com/mathieu-benoit/myblog']
 - name: gcr.io/cloud-builders/git
   entrypoint: 'bash'
   env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
