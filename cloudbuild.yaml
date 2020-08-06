@@ -1,5 +1,7 @@
 steps:
 - name: gcr.io/cloud-builders/git
+   args: ['clone', '$REPO_NAME']
+- name: gcr.io/cloud-builders/git
   entrypoint: 'bash'
   env: ['GIT_DISCOVERY_ACROSS_FILESYSTEM=1']
   args:
