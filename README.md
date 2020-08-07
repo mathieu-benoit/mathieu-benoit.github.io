@@ -1,16 +1,18 @@
-Build and run locally:
-
+Build the container:
 ```
-# Build the container
 git clone https://github.com/mathieu-benoit/myblog
 git submodule init
 git submodule update
 docker build -t blog .
+```
 
-# Run locally the container
+Run locally:
+```
 docker run -d -p 8080:8080 blog
+```
 
-# Deploy on Kubernetes
+Deploy on Kubernetes:
+```
 kubectl create ns myblog
 kubectl config set-context --current --namespace myblog
 kubectl apply -f k8s/deployment.yaml # you need to change the container image reference accordingly.
