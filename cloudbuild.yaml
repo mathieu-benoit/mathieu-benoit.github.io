@@ -1,9 +1,3 @@
-substitutions:
-    _APP_NAME: myblog
-    _REPO_OWNER: mathieu-benoit
-    _CLOUDSDK_COMPUTE_ZONE: us-east1-b
-    _CLOUDSDK_CONTAINER_CLUSTER: mygkecluster
-    _CLOUDSDK_CORE_PROJECT: myblog
 steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
@@ -17,3 +11,9 @@ steps:
   - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
   - 'CLOUDSDK_CORE_PROJECT=${CLOUDSDK_CORE_PROJECT}'
+substitutions:
+    _APP_NAME: myblog
+    _REPO_OWNER: mathieu-benoit
+    _CLOUDSDK_COMPUTE_ZONE: us-east1-b
+    _CLOUDSDK_CONTAINER_CLUSTER: mygkecluster
+    _CLOUDSDK_CORE_PROJECT: myblog
