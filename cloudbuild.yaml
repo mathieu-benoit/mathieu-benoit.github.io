@@ -1,6 +1,6 @@
 steps:
 - name: gcr.io/cloud-builders/git
-  args: ['clone', '--recurse-submodules', '$_REPO_URL']
+  args: ['clone', '--recurse-submodules', 'https://github.com/mathieu-benoit/myblog']
 - name: gcr.io/cloud-builders/docker
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/myblog:$SHORT_SHA', 'myblog/.']
 - name: gcr.io/cloud-builders/docker
