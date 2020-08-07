@@ -7,6 +7,10 @@ steps:
   args: ['push', 'gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/kubectl
   args: ['apply', '-f', 'k8s/']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
+  - 'CLOUDSDK_CORE_PROJECT=${CLOUDSDK_CORE_PROJECT}'
 substitutions:
     _APP_NAME: myblog
     _REPO_OWNER: mathieu-benoit
