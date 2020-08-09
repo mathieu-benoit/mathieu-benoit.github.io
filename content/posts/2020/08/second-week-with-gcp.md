@@ -2,7 +2,7 @@
 title: my second week with gcp
 date: 2020-08-03
 tags: [gcp, security, kubernetes]
-description: let's share what I learned during my second week leveraging gcp, focused on gke
+description: let's share some learnings during my second week leveraging gcp, focused on gke
 aliases:
     - /second-week-with-gcp/
 ---

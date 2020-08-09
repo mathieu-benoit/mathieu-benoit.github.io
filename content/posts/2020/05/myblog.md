@@ -17,11 +17,16 @@ Blogger was fine for me, great helper to write, publish and host my blog article
 
 For sure I lost on-purpose few features like Comments and Anylitics/Statistics on my blog articles... but to be honest I was not using them that much. So I made a choice here to not have yet equivalent to these features but that something I could implement too (in the future).
 
-So yes, I just wanted to make it Cloud Native by leveraging different concepts you could look at, directly in its public GitHub repository: [https://github.com/mathieu-benoit/myblog](https://github.com/mathieu-benoit/myblog):
-- Docker - see [`Dockerfile` file](https://github.com/mathieu-benoit/myblog/blob/master/Dockerfile)
-- Helm chart - see [`chart` folder](https://github.com/mathieu-benoit/myblog/tree/master/chart)
-- Azure Pipelines - see [`azure-pipeline.yml` file](https://github.com/mathieu-benoit/myblog/blob/master/azure-pipeline.yml)
+So yes, I just wanted to make it Cloud Native by leveraging different concepts you could look at, directly in its public GitHub repository: [https://github.com/mathieu-benoit/myblog](https://github.com/mathieu-benoit/myblog/tree/backup-azure-and-helm-implementation):
+- Docker - see [`Dockerfile` file](https://github.com/mathieu-benoit/myblog/blob/backup-azure-and-helm-implementation/Dockerfile)
+- Helm chart - see [`chart` folder](https://github.com/mathieu-benoit/myblog/tree/backup-azure-and-helm-implementation/chart)
+- Azure Pipelines - see [`azure-pipeline.yml` file](https://github.com/mathieu-benoit/myblog/blob/backup-azure-and-helm-implementation/azure-pipeline.yml)
 - And few more concepts and technologies such as: [`NetworkPolicies`]({{< ref "/posts/2019/09/calico.md" >}}), [`Pod Security Context`]({{< ref "/posts/2020/04/pod-security-context.md" >}}), `Nginx Ingress Controller`, `Cert-Manager`, etc.
+
+Updates on 2020-08-07:
+- Simplificattion of the Kubernetes manifests (not using Helm anymore) - see [`k8s` folder](https://github.com/mathieu-benoit/myblog/tree/master/k8s)
+- Simplification of the SSL certificate management by not using `Nginx Ingress Controller` nor `cert-manager` anymore, but the `ManagedCertificate` offered by GCP/GKE - see [`ingress.yaml` file](https://github.com/mathieu-benoit/myblog/blob/master/k8s/ingress.yaml)
+- Using Google Cloud Build instead of Azure DevOps - see [`cloudbuild.yaml` file](https://github.com/mathieu-benoit/myblog/blob/master/cloudbuild.yaml)
 
 I have been learning a lot (yes, that's a continuous journey)!
 

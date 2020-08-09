@@ -2,7 +2,7 @@
 title: my first week with gcp
 date: 2020-07-24
 tags: [gcp, containers, devops, kubernetes]
-description: let's share what I learned during my first week leveraging gcp, tools and services like linux on my pixelbook, gcloud cli, docker, git, service account, gcr, cloud run, app engine and kubernetes engine
+description: let's share some learnings during my first week leveraging gcp, tools and services like linux on my pixelbook, gcloud cli, docker, git, service account, gcr, cloud run, app engine and kubernetes engine
 aliases:
     - /first-week-with-gcp/
 ---

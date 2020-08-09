@@ -1,11 +1,11 @@
 ---
-title: my third week with gcp
+title: fixme
 date: 2020-08-10
-tags: [gcp, security, kubernetes]
-description: let's share what I learned during my third week leveraging gcp, focused on gke
+tags: [fixme]
+description: fixme
 draft: true
 aliases:
-    - /third-week-with-gcp/
+    - /fixme/
 ---
 https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-devops-vs-sre/
 
@@ -37,3 +37,9 @@ Achieving Resiliency on Google Cloud
 https://www.youtube.com/watch?v=DplYhUrADao
 --> priority on user activities
 --> don't just try to avoid failures
+
+https://uptime.is/
+
+SRE: The Cloud Native Approach to Operations by Container Solutions:
+https://info.container-solutions.com/sre-the-cloud-native-approach-to-operations-e-book
+

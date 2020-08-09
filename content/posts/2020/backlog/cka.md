@@ -7,4 +7,4 @@ draft: true
 aliases:
     - /fixme/
 ---
-https://cloud.google.com/anthos/docs/setup/overview
+https://www.linkedin.com/pulse/how-prepare-kubernetes-certification-cka-prasad-kundeti/
