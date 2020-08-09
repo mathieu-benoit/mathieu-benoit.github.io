@@ -16,4 +16,5 @@ substitutions:
     _REPO_OWNER: mathieu-benoit
     _CLOUDSDK_COMPUTE_ZONE: us-east1-b
     _CLOUDSDK_CONTAINER_CLUSTER: mygkecluster
-    _CLOUDSDK_CORE_PROJECT: myblog
+    _CLOUDSDK_CORE_PROJECT: myblog\
+images: ['gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA']
