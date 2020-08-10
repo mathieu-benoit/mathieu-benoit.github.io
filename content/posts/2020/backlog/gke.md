@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.coursera.org/specializations/architecting-google-kubernetes-engine
+--> https://www.coursera.org/learn/deploying-workloads-google-kubernetes-engine-gke
+--> https://www.coursera.org/learn/deploying-secure-kubernetes-containers-in-production
+
 GCP's Ops Suite on GKE - https://www.qwiklabs.com/quests/133
 ```
 --enable-stackdriver-kubernetes

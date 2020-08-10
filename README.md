@@ -1,8 +1,6 @@
 Build the container:
 ```
-git clone https://github.com/mathieu-benoit/myblog
-git submodule init
-git submodule update
+git clone --recurse-submodules https://github.com/mathieu-benoit/myblog
 docker build -t blog .
 ```
 
