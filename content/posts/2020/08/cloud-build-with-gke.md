@@ -3,7 +3,6 @@ title: deploy a containerize app on gke with cloud build
 date: 2020-08-10
 tags: [gcp, security, containers, kubernetes]
 description: let's see how to use google cloud build to deploy a containerized app on gke
-draft: true
 aliases:
     - /cloud-build-with-gke/
 ---
