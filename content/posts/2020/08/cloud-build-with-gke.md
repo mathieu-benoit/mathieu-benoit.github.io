@@ -1,12 +1,13 @@
 ---
-title: deploy a containerized app on gke with cloud build
+title: build and deploy a containerized app on gke with cloud build
 date: 2020-08-10
 tags: [gcp, security, containers, kubernetes]
-description: let's see how to use google cloud build to deploy a containerized app on gke
+description: let's see how to use google cloud build to build and deploy a containerized app on gke
 aliases:
     - /cloud-build-with-gke/
 ---
-Today we will see how to deploy a containerized app on GKE by leveraging [Google Cloud Build](https://cloud.google.com/cloud-build/).
+[![](https://cloud.google.com/container-registry/images/builder.png)](https://cloud.google.com/container-registry/images/builder.png)
+Today we will see how to build and deploy a containerized app on GKE by leveraging [Google Cloud Build](https://cloud.google.com/cloud-build/).
 
 We will first setup the [Continuous Integration (CI)]({{< ref "#ci" >}}) part to build and push the containerized app in Google Container Registry and then we will setup the [Continuous Delivery (CD)]({{< ref "#cd" >}}) part to eventually deploy this containerized app on GKE.
 
@@ -98,12 +99,21 @@ kubectl get all -n $appName
 
 And that's it, just 1 step and our container image is deployed in GKE by leveraging our Kubernetes manifests! Because we provide both `CLOUDSDK_COMPUTE_ZONE` and `CLOUDSDK_CONTAINER_CLUSTER` environment variables, the `gcr.io/cloud-builders/kubectl` step is doing a `gcloud container clusters get-credentials` behind the scene for us before running the actual `kubectl` command. Anyway you could use this step/command for any Kubernetes cluster, but here there is a seamless and secure way to retrieve the GKE's kubeconfig.
 
+The GKE cluster is able to pull images from GCR because they are on the same Project, you could get more information [here](https://cloud.google.com/container-registry/docs/using-with-google-cloud-platform#gke).
+
+For information, if you have a [Private GKE cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept) and a [Private GCR](https://cloud.google.com/container-registry/docs/securing-with-vpc-sc), Cloud Build doesn't support VPC Service Control but [there is an alternative by creating an access level](https://cloud.google.com/vpc-service-controls/docs/supported-products#build).
+
+# Final thoughts
+
 You could find my final [`cloudbuild.yaml` file in GitHub](https://github.com/mathieu-benoit/myblog/blob/master/cloudbuild.yaml) leveraging what we have been discussing throughout this blog article and combining both the CI part as well as the CD part. Yes, I'm having just one build config file for my blog and as soon as the container image is pushed to Container Registry, it will be then deployed in GKE, without any pause, approval, etc. But again, you could achieve this with different build config files or also having different strategies in place regarding Git branches and pull requests to manage different environments. You could also setup a [GitOps approach](https://www.weave.works/blog/what-is-gitops-really) to manage the CD part within your GKE cluster and not handled by Cloud Build.
 
 To conclude, that's for sure you could use your tools of choice for CI/CD like Azure DevOps, Jenkins, Spinnaker, etc. to interact with GCP via the `gcloud` SDK/CLI. Based on my experience with Azure DevOps, I feel that Cloud Build is lighter and very easy to use and maintain. But to be honest, I really think the ["Keep It Simple, Stupid" principle](https://en.wikipedia.org/wiki/KISS_principle) is key here. Furthermore, the integration of Cloud Build as a service in GCP is helping for a seemless and secure integration with other GCP services.
 
 Complementary and further resources:
 - [CI/CD on Google Cloud](https://cloud.google.com/docs/ci-cd)
+- [Cloud Build Pricing](https://cloud.google.com/cloud-build/pricing)
+- [Container Registry Pricing](https://cloud.google.com/container-registry/pricing)
+- [GKE Pricing](https://cloud.google.com/kubernetes-engine/pricing)
 - [CodeLabs - Achieve continuous deployment to Google Kubernetes Engine (GKE) with Cloud Build](https://codelabs.developers.google.com/codelabs/cloud-builder-gke-continuous-deploy/index.html)
 - [Using Kaniko cache](https://cloud.google.com/cloud-build/docs/kaniko-cache)
 - [Securing Your GKE Deployments with Binary Authorization](https://codelabs.developers.google.com/codelabs/cloud-binauthz-intro/)
