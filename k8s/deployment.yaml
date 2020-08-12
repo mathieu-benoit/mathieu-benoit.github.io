@@ -42,6 +42,8 @@ spec:
           volumeMounts:
           - mountPath: /tmp
             name: tmp
+      nodeSelector:
+        kubernetes.io/os: linux
       volumes:
       - emptyDir: {}
         name: tmp
