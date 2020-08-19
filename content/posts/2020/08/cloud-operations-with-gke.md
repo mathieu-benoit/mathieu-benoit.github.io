@@ -3,7 +3,6 @@ title: cloud operations with gke
 date: 2020-08-17
 tags: [gcp, sre, containers, kubernetes]
 description: let's see how to leverage google cloud operations (aka stackdriver) with gke
-draft: true
 aliases:
     - /cloud-operations-with-gke/
 ---
@@ -15,9 +14,9 @@ So, where to start with your GKE cluster? Actually, that's pretty easy and strai
 
 > Cloud Logging, and its companion tool Cloud Monitoring, are full featured products that are both deeply integrated into GKE. In this blog post, we’ll go over how logging works on GKE and some best practices for log collection. Then we’ll go over some common logging use cases, so you can make the most out of the extensive logging functionality built into GKE and Google Cloud Platform.
 
-By default, a GKE cluster is created with the option `--enable-stackdriver-kubernetes`. From there you could [observe your GKE cluster with a pre-built GKE dashboard and GKE metrics](https://cloud.google.com/stackdriver/docs/solutions/gke/observing). You could also create custom metrics, custom dashboards and alerts based on your containers, services, nodes, etc.
+By default, a GKE cluster is created with the option `--enable-stackdriver-kubernetes` and is provisioned with a pre-configured [Fluentd](https://www.fluentd.org/)-based collector that forwards logs to Cloud Logging. From there you could [observe your GKE cluster with a pre-built GKE dashboard and GKE metrics](https://cloud.google.com/stackdriver/docs/solutions/gke/observing). You could also create custom metrics, custom dashboards and alerts based on your containers, services, nodes, etc.
 
-Another feature I find very valuable is the [concept of service monitoring combined with the SLO API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring). I'm able to [get another pre-defined dashboard for my Kubernetes services](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/microservices#gke-base-svc) and actually from there [I'm now able to define some SLIs/SLOs](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo). To know more about SLO, I have found these resources below very valuable:
+Another feature I find very valuable is the [concept of service monitoring combined with the SLO API](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring). I'm able to [get another pre-defined dashboard for my Kubernetes services](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/microservices#gke-base-svc) and actually from there [I'm now able to define some SLIs/SLOs](https://cloud.google.com/stackdriver/docs/solutions/slo-monitoring/ui/create-slo). To know more about SLO, I have found these resources below very insightful:
 - [Defining SLOs](https://cloud.google.com/solutions/defining-SLOs)
 - [Adopting SLOs](https://cloud.google.com/solutions/adopting-SLOs)
 - [Implementing SLOs](https://landing.google.com/sre/workbook/chapters/implementing-slos/)
