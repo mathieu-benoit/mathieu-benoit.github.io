@@ -7,6 +7,13 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://queue.acm.org/detail.cfm?id=3404974
+
+SLOs with Stackdriver Service Monitoring
+https://medium.com/google-cloud/slos-with-stackdriver-service-monitoring-62f193147b3f
+Automating Application Dashboard Creation for Services on GKE/Istio
+https://medium.com/google-cloud/automating-application-dashboard-creation-for-services-on-gke-istio-a55a5a79aa15
+
 https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-devops-vs-sre/
 
 http://go/sre-books
@@ -40,6 +47,13 @@ https://www.youtube.com/watch?v=DplYhUrADao
 
 https://uptime.is/
 
+TODOs:
+
 SRE: The Cloud Native Approach to Operations by Container Solutions:
 https://info.container-solutions.com/sre-the-cloud-native-approach-to-operations-e-book
 
+The Art of SLOs workshop
+https://landing.google.com/sre/resources/practicesandprocesses/art-of-slos/
+
+Coursera - Site Reliability Engineering: Measuring and Managing Reliability
+https://www.coursera.org/learn/site-reliability-engineering-slos

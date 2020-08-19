@@ -7,12 +7,17 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://github.com/GoogleCloudPlatform/microservices-demo
+
 https://cloud.google.com/anthos/service-mesh
 https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
 https://cloud.google.com/blog/products/networking/welcome-to-the-service-mesh-era-introducing-a-new-istio-blog-post-series
 https://www.youtube.com/watch?v=SMhTI0Pjn1Q
 https://www.youtube.com/watch?v=7cINRP0BFY8
 https://www.youtube.com/watch?v=0cgTHQFXYPQ
+
+Understanding SLOs and Error Budgets With Istio (Cloud Next '19)
+https://www.youtube.com/watch?v=AKh8uuVCpFI
 
 https://codelabs.developers.google.com/codelabs/cloud-hello-istio/index.html?index=..%2F..index#0
 https://codelabs.developers.google.com/codelabs/cloud-istio-aspnetcore-part1/#0

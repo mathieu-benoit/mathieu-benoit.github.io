@@ -30,3 +30,6 @@ https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-goog
 
 Monitoring as Code
 https://www.youtube.com/watch?v=mCtEMTW8Ksw
+
+Protecting your GCP infrastructure with Forseti Config Validator part four: Using Terraform Validator
+https://cloud.google.com/blog/products/identity-security/using-forseti-config-validator-with-terraform-validator
