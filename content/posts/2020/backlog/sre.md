@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html
+
 https://queue.acm.org/detail.cfm?id=3404974
 
 SLOs with Stackdriver Service Monitoring
