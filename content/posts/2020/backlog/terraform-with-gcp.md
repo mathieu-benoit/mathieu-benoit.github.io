@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+Example of a Private GKE cluster with Terraform:
+https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
+
 Automation for Infrastructure with Terraform and for Apps with Cloud Build.
 
 https://www.youtube.com/watch?v=3vfXQxWJazM

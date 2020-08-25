@@ -7,60 +7,63 @@ draft: true
 aliases:
     - /fixme/
 ---
-Best practices for operating containers
-https://cloud.google.com/solutions/best-practices-for-operating-containers
-Preparing a Google Kubernetes Engine environment for production
-https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod
+
+# Use least-privilege service account
+
+> You should [create and use a minimally privileged service account](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa) to run your GKE cluster instead of using the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account).
+
+So we need to create a dedicated service account with the proper and minimal privileges and then use it to create the GKE cluster or any GKE Node pool:
+```
+projectId=FIXME
+
+gcloud services enable cloudresourcemanager.googleapis.com
+
+saName=FIXME
+saId=$saName@$projectId.iam.gserviceaccount.com
+gcloud iam service-accounts create $saName \
+  --display-name=$saName
+
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
+  --role roles/logging.logWriter
+
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
+  --role roles/monitoring.metricWriter
+
+gcloud projects add-iam-policy-binding $projectId \
+  --member "serviceAccount:$saId" \
+  --role roles/monitoring.viewer
+
+# Example to use it at cluster creation:
+gcloud container clusters create \
+  --service-account=$saId
+
+# Example to use it at nodepool creation:
+gcloud container node-pools create \
+  --service-account=$saId
+```
+
+# Workload Identity
+
+https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod#using_workload_identity_to_interact_with_google_cloud_service_apis
+https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
 
-Understanding IP address management in GKE
-https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
 
 Architecting with Google Kubernetes Engine: Workloads
 https://www.coursera.org/learn/deploying-workloads-google-kubernetes-engine-gke
 
-Cloud Native LB
-https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing
-
 Architecting with Google Kubernetes Engine: Production
 https://www.coursera.org/learn/deploying-secure-kubernetes-containers-in-production
 
-
-VPC versus Private Registry/Cluster
-https://cloud.google.com/vpc-service-controls/docs/supported-products#build
-
-
-https://medium.com/google-cloud/mitigating-data-exfiltration-risks-in-gcp-using-vpc-service-controls-part-1-82e2b440197
-
-https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine
-
-- [Master authorized networks]()
-
-https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#vpc-clusters
-- [VPC-native cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips)
-    - Network Endpoint Groups (NEG) by annotating the Service with `cloud.google.com/neg: '{ingress": true}'`? Is it related/mandatory?
-
 - [Harden workload isolation with GKE Sandbox](https://cloud.google.com/kubernetes-engine/docs/how-to/sandbox-pods)
 
-https://www.youtube.com/watch?v=WFwGgo7ULXE
-- VPC Firewall
-- VPC Service Controls
-- Packet Mirroring
-- Cloud Armor (DDoS Protection + WAF) on Load Balancer
+Binary authorization
+https://github.com/GoogleCloudPlatform/gke-binary-auth-demo
+
+- RBAC?
+    - https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod#role-based_access_control_rbac
 
 
-- CIDRs
-- Nodepools Sandbox
-- Workload identity
 
-- [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://www.youtube.com/watch?v=fI-5LkBDap8)
-
-https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod
-https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster
-
-Load Balancing
-https://cloud.google.com/blog/products/containers-kubernetes/exposing-services-on-gke
-https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features
-https://cloud.google.com/kubernetes-engine/docs/how-to/container-native-load-balancing
-https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
-https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts
