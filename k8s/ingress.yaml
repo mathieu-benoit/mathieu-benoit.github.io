@@ -5,7 +5,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.global-static-ip-name: myblog-static-ip
     networking.gke.io/managed-certificates: myblog
-    cloud.google.com/neg: '{"ingress": true}'
 spec:
   backend:
     serviceName: myblog
