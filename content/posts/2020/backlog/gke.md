@@ -8,6 +8,10 @@ aliases:
     - /fixme/
 ---
 
+Keyless Entry: Securely Access GCP Services From Kubernetes (Cloud Next '19)
+https://www.youtube.com/watch?v=s4NYEJDFc0M
+By Shopify, Service Account, Workload Identity, etc.
+
 # Use least-privilege service account
 
 > You should [create and use a minimally privileged service account](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa) to run your GKE cluster instead of using the [Compute Engine default service account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account).
@@ -64,6 +68,7 @@ https://github.com/GoogleCloudPlatform/gke-binary-auth-demo
 
 - RBAC?
     - https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod#role-based_access_control_rbac
+    - https://www.cncf.io/blog/2020/08/28/kubernetes-rbac-101-authorization/
 
 
 

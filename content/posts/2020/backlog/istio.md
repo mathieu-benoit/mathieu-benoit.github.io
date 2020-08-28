@@ -7,6 +7,12 @@ draft: true
 aliases:
     - /fixme/
 ---
+[Building Globally Scalable Services with Istio and ASM](https://youtu.be/clu7t0LVhcw)
+All about multi clusters pattern and distributed services. Ameer does a really great job to explain the advantages and responsibilities to come from monolith, going to microserives, embracing service mesh to what's the value of Istio and Anthos Service Mesh. In other words, that's the presentation you need if you would like to understand what's a service mesh, and why you may need one (or not)!
+Pointing to complementary resources:
+- [Kubernetes Engine (GKE) multi-cluster life cycle management series](http://bit.ly/gke-multicluster-lifecycle)
+- [ASM Workshop](http://bit.ly/asm-workshop)
+
 Extending your Istio service mesh across GKE clusters and Compute Engine instances
 https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
 

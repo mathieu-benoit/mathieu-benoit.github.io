@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+Really great intro: Optimizing SRE Effectiveness at The New York Times (Cloud Next '19)
+https://www.youtube.com/watch?v=QCRe-Vo-PPo
+
 https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html
 
 https://queue.acm.org/detail.cfm?id=3404974

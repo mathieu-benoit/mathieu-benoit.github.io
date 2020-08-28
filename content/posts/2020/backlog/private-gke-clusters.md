@@ -47,3 +47,11 @@ https://cloud.google.com/vpc-service-controls/docs/supported-products#build
 - https://medium.com/google-cloud/mitigating-data-exfiltration-risks-in-gcp-using-vpc-service-controls-part-1-82e2b440197
 - https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine
 - https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#vpc-clusters
+
+# FIXME - VPC/Subnet/CIDRs
+    - https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
+    - https://cloud.google.com/vpc/docs/alias-ip
+    - https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
+Understanding IP address management in GKE
+https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
+Recommended to have 30 pods per node max, after this as you will scale your nodes you could overload your master nodes.

@@ -13,30 +13,18 @@ FIXME - Intro
 
 # VPC-native cluster
 
-Since [its announcement in October 2018](https://cloud.google.com/blog/products/gcp/introducing-vpc-native-clusters-for-google-kubernetes-engine), [VPC-native clusters for GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) is the default cluster network mode when you create a GKE cluster from within the Google Console but not yet via REST API nor the Google Cloud SDK/CLI. VPC-native clusters use [alias IP ranges](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) for pod networking. This means that the control plane automatically manages the routing configuration for pods instead of configuring and maintaining static routes for each node in the GKE cluster. I have found these resources very valuable to understand why we should use this VPC-native clusters mode for better capabilities around security, performance and integration with other GCP services:
+Since [its announcement in October 2018](https://cloud.google.com/blog/products/gcp/introducing-vpc-native-clusters-for-google-kubernetes-engine), [VPC-native clusters for GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) is the default cluster network mode when you create a GKE cluster from within the Google Console but not yet via REST API nor the Google Cloud SDK/CLI. VPC-native clusters use [alias IP ranges](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) for pod networking. This means that the control plane automatically manages the routing configuration for pods instead of configuring and maintaining static routes for each node in the GKE cluster. I have found these following resources very valuable to understand why we should use this VPC-native clusters mode for better capabilities around security, performance and integration with other GCP services:
 - [VPC-native clusters compared to routes-based clusters](https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod#vpc-native_clusters_compared_to_routes-based_clusters)
 - [The ins and outs of networking in Google Container Engine and Kubernetes (Google Cloud Next '17)](https://www.youtube.com/watch?v=y2bhV81MfKQ)
 - [VPC-native clusters on Google Kubernetes Engine](https://medium.com/google-cloud/vpc-native-clusters-on-google-kubernetes-engine-b7c022c07510)
 
 _Note: VPC-native clusters tend to consume more IP addresses in the network, so you should take that into account._
 
-So here is now I will create my GKE cluster to leverage this feature (you can't updaate an existing cluster to get this feature):
+So here is now I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
 ```
 gcloud container clusters create \
   --enable-ip-alias
 ```
-
-# FIXME - VPC/Subnet/CIDRs
-    - https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
-    - https://cloud.google.com/vpc/docs/alias-ip
-    - https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
-
-Understanding IP address management in GKE
-https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
-
-Recommended to have 30 pods per node max, after this as you will scale your nodes you could overload your master nodes.
-
-
 
 # Container-native Load Balancing
 
@@ -57,31 +45,23 @@ https://cloud.google.com/armor/docs/configure-security-policies
 To check:
 
 - [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://www.youtube.com/watch?v=fI-5LkBDap8)
-- Load Balancing
-https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts
 - https://www.youtube.com/watch?v=WFwGgo7ULXE
   - VPC Firewall
   - VPC Service Controls
   - Packet Mirroring
   - Cloud Armor (DDoS Protection + WAF) on Load Balancer
 
-# Traffic Director
-
-FIXME, based on Envoy, etc.
-
-Traffic Director & Envoy-Based L7 ILB for Production-Grade Service Mesh & Istio (Cloud Next '19)
-https://youtu.be/FUITCYMCEhU
-
 More advanced features:
 - eBPF : https://cloud.google.com/blog/products/containers-kubernetes/bringing-ebpf-and-cilium-to-google-kubernetes-engine
-- 
-
+- ASM and Istio tutorial: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress
+- Traffic Director & Envoy-Based L7 ILB for Production-Grade Service Mesh & Istio (Cloud Next '19)
+https://youtu.be/FUITCYMCEhU
 
 
 Complementary and further resources:
 - [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://www.youtube.com/watch?v=J5HJ1y6PeyE)
 
-
+```
 clusterName=mygkecluster2
 gcloud container clusters create $clusterName \
     --release-channel rapid \
@@ -90,9 +70,13 @@ gcloud container clusters create $clusterName \
     --machine-type n1-standard-1 \
     --disk-size 100 \
     --image-type cos_containerd \
-    --addons NodeLocalDNS,NetworkPolicy \
+    --addons NodeLocalDNS,NetworkPolicy,HttpLoadBalancing \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-autorepair \
     --enable-autoupgrade \
     --enable-ip-alias
+```
+
+for ((i=1;i<=100;i++)); do   curl -v 34.120.185.218; done
+for ((i=1;i<=100;i++)); do   curl -v 35.186.246.29; done
