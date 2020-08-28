@@ -1,19 +1,15 @@
 ---
-title: advanced networking setup with gke
+title: container native networking with gke
 date: 2020-08-25
 tags: [gcp, containers, kubernetes, security]
-description: let's leverage more advanced networking setup with gke clusters
+description: let's see how gcp bring unique and true container native networking with gke
 draft: true
 aliases:
-    - /advanced-networking-setup-with-gke/
+    - /container-native-networking-with-gke/
 ---
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Containers_Uy53clo.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Containers_Uy53clo.max-2200x2200.jpg)
 
-To continue my learning with GKE, [my first week with GCP](FIXME) was about deploying manually a containerized app on a basic/default GKE cluster. [My second week with GCP](FIXME) was about to fine-tune a little bit my GKE cluster with more features. My third week was about deploying a containerized app on GKE via Cloud Build and GCR. And this week will be dedicated on more advanced setups focused on networking.
-
-FIXME - For this, I'm still leveraging these two resources:
-- [Preparing a Google Kubernetes Engine environment for production](https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod)
-- [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster)
+FIXME - Intro
 
 # VPC-native cluster
 
@@ -24,7 +20,7 @@ Since [its announcement in October 2018](https://cloud.google.com/blog/products/
 
 _Note: VPC-native clusters tend to consume more IP addresses in the network, so you should take that into account._
 
-So here is now I will create my GKE cluster to leverage this feature:
+So here is now I will create my GKE cluster to leverage this feature (you can't updaate an existing cluster to get this feature):
 ```
 gcloud container clusters create \
   --enable-ip-alias
@@ -40,33 +36,7 @@ https://cloud.google.com/blog/products/containers-kubernetes/ip-address-manageme
 
 Recommended to have 30 pods per node max, after this as you will scale your nodes you could overload your master nodes.
 
-# FIXME - Private clusters
 
-> By default, all nodes in a GKE cluster have public IP addresses. A good practice is to create private clusters, which gives all worker nodes only private RFC 1918 IP addresses. This is the most secure option as it prevents all internet access to both masters and nodes.
-    - https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept
-    - https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters
-    - https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
-
-_Note: [This table](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept#overview) illustrates how you could combine both Private endpoint and Master authorized networks features. Furthermore, [here is the list of requirements, restrictions and limitations](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#req_res_lim) for Private GKE clusters you should be aware of._
-
-So here is now I will create my GKE cluster to get a fully private GKE cluster:
-```
-gcloud container clusters create \
-  --enable-ip-alias \
-  --enable-private-nodes \
-  --enable-private-endpoint \
-  --enable-master-authorized-networks
-```
-
-> From other VMs in the cluster's VPC network, you can use `kubectl` to communicate with the private endpoint only if they are in the same region as the cluster and either their internal IP addresses are included in the list of master authorized networks or they are located in the same subnet as the cluster's nodes.
-
-FIXME:
-- Talk about Cloud Nat: https://cloud.google.com/nat/docs/gke-example
-- what about Cloud Build? 
-- What about Container Registry?
-  - https://cloud.google.com/vpc-service-controls/docs/set-up-gke
-- Test creation of a jumpbox?
-  - https://cloud.google.com/solutions/connecting-securely#bastion
 
 # Container-native Load Balancing
 
@@ -85,11 +55,7 @@ https://cloud.google.com/kubernetes-engine/docs/concepts/ingress#limitations
 https://cloud.google.com/armor/docs/configure-security-policies
 
 To check:
-- VPC versus Private Registry/Cluster
-https://cloud.google.com/vpc-service-controls/docs/supported-products#build
-- https://medium.com/google-cloud/mitigating-data-exfiltration-risks-in-gcp-using-vpc-service-controls-part-1-82e2b440197
-- https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine
-- https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#vpc-clusters
+
 - [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://www.youtube.com/watch?v=fI-5LkBDap8)
 - Load Balancing
 https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts
@@ -99,6 +65,12 @@ https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts
   - Packet Mirroring
   - Cloud Armor (DDoS Protection + WAF) on Load Balancer
 
+# Traffic Director
+
+FIXME, based on Envoy, etc.
+
+Traffic Director & Envoy-Based L7 ILB for Production-Grade Service Mesh & Istio (Cloud Next '19)
+https://youtu.be/FUITCYMCEhU
 
 More advanced features:
 - eBPF : https://cloud.google.com/blog/products/containers-kubernetes/bringing-ebpf-and-cilium-to-google-kubernetes-engine
@@ -108,3 +80,19 @@ More advanced features:
 
 Complementary and further resources:
 - [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://www.youtube.com/watch?v=J5HJ1y6PeyE)
+
+
+clusterName=mygkecluster2
+gcloud container clusters create $clusterName \
+    --release-channel rapid \
+    --zone us-east1-b \
+    --disk-type pd-ssd \
+    --machine-type n1-standard-1 \
+    --disk-size 100 \
+    --image-type cos_containerd \
+    --addons NodeLocalDNS,NetworkPolicy \
+    --enable-shielded-nodes \
+    --shielded-secure-boot \
+    --enable-autorepair \
+    --enable-autoupgrade \
+    --enable-ip-alias

@@ -7,6 +7,12 @@ draft: true
 aliases:
     - /fixme/
 ---
+Extending your Istio service mesh across GKE clusters and Compute Engine instances
+https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
+
+Canary deployments with Istio
+https://www.youtube.com/watch?v=CmZWau04ZS4
+
 https://github.com/GoogleCloudPlatform/microservices-demo
 
 https://cloud.google.com/anthos/service-mesh

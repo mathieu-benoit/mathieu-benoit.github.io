@@ -7,9 +7,12 @@ draft: true
 aliases:
     - /fixme/
 ---
+Anthos under the hood eBook
+https://inthecloud.withgoogle.com/anthos-ebook/dl-cd-typ.html
+
 https://cloud.google.com/anthos/docs/setup/overview
 
-Tutorial: Explore Anthos
+Tutorial: Explore Anthos with the Anthos Sample Deployment on GCP
 https://cloud.google.com/anthos/docs/tutorials/explore-anthos
 
 Architecting Hybrid Cloud Infrastructure with Anthos Specialization
