@@ -2,7 +2,7 @@
 title: application modernization at google next onair 2020
 date: 2020-08-31
 tags: [gcp, containers, kubernetes]
-description: let's see in details what is google next onair 2020 and more specifically what you should on an application modernization standpoint
+description: let's see in details what is google next onair 2020 and more specifically what you should watch on an application modernization standpoint
 aliases:
     - /app-modernization-google-next-2020/
 ---
@@ -60,11 +60,11 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Mainframe Modernization: Accelerating Legacy Transformation](https://cloud.withgoogle.com/next/sf/sessions?session=APP107#application-modernization) [[Youtube](https://youtu.be/-er5J94hvw0)]
     - Illustration of anti-patterns of mainframe modernization: big-bang rewrite, platform emulation and _in situ_ modernization. Definition of the [Google Cloud G4 Platform](https://cloud.google.com/solutions/mainframe-modernization) with an example of Cobol --> Google Cloud.
 - [Integrating VM Workloads into Anthos Service Mesh](https://cloud.withgoogle.com/next/sf/sessions?session=APP211#application-modernization) [[Youtube](https://youtu.be/3qBr0v4QR_w)]
-    - FIXME
+    - Modernize your VMs in place or develop a strategy to migrate your VMs to containers with ASM.
 - [Modernize Legacy Java Apps Using Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP224#application-modernization) [[Youtube](https://youtu.be/xiX3IdHWjLM)]
     - FIXME
 - [Running Anthos on Bare Metal and at the Edge with Major League Baseball](https://cloud.withgoogle.com/next/sf/sessions?session=APP228#application-modernization) [[Youtube](https://youtu.be/FrFYM2W9gj8)]
-    - FIXME
+    - A great story by the MLB for Anthos on-prem on top of VMWare and adding more AI/ML for the new generation of their Statcast solution.
 - [Enhance Your Security Posture and Run PCI Compliant Apps with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP238#application-modernization) [[Youtube](https://youtu.be/k2Re-IPjesU)]
     - Prescriptive and opinionated guidance on how to utilize Anthos’s security features for your PCI workloads.
 - [Accelerating Application Development with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP239#application-modernization) [[Youtube](https://youtu.be/Dkfqd2zoufE)]
@@ -102,7 +102,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-3) [[Youtube](https://youtu.be/dgPA_I6PSoA)]
     - A 47-min video walking trhough this Qwiklabs lab: [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://www.qwiklabs.com/focuses/1103?parent=catalog).
 
-2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to learn (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
+2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to learn and (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
 
 Complementary resources:
 - [Accelerate your application development and delivery](https://cloud.google.com/blog/topics/google-cloud-next/developer-productivity-announcements-at-next20-onair)
