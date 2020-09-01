@@ -13,6 +13,9 @@ Pointing to complementary resources:
 - [Kubernetes Engine (GKE) multi-cluster life cycle management series](http://bit.ly/gke-multicluster-lifecycle)
 - [ASM Workshop](http://bit.ly/asm-workshop)
 
+[Hands-on Lab: Managing Traffic Routing with Istio and Envoy](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-2) [[Youtube](https://youtu.be/J0bEeh5P9hE)]
+    - A 50 min video walking through this Qwiklabs lab: [Managing Traffic Routing with Istio and Envoy](https://www.qwiklabs.com/focuses/8456?parent=catalog).
+
 Extending your Istio service mesh across GKE clusters and Compute Engine instances
 https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
 

@@ -1,8 +1,8 @@
 ---
 title: container native networking with gke
-date: 2020-08-25
+date: 2020-08-31
 tags: [gcp, containers, kubernetes, security]
-description: let's see how gcp bring unique and true container native networking with gke
+description: let's see how gcp brings unique and true container native networking with gke
 draft: true
 aliases:
     - /container-native-networking-with-gke/
@@ -19,6 +19,9 @@ Since [its announcement in October 2018](https://cloud.google.com/blog/products/
 - [VPC-native clusters on Google Kubernetes Engine](https://medium.com/google-cloud/vpc-native-clusters-on-google-kubernetes-engine-b7c022c07510)
 
 _Note: VPC-native clusters tend to consume more IP addresses in the network, so you should take that into account._
+https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
+https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
+https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
 
 So here is now I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
 ```
@@ -62,21 +65,21 @@ Complementary and further resources:
 - [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://www.youtube.com/watch?v=J5HJ1y6PeyE)
 
 ```
-clusterName=mygkecluster2
+randomSuffix=$(shuf -i 100-999 -n 1)
+clusterName=mygkecluster$randomSuffix
 gcloud container clusters create $clusterName \
     --release-channel rapid \
-    --zone us-east1-b \
+    --zone us-east4-a \
     --disk-type pd-ssd \
-    --machine-type n1-standard-1 \
-    --disk-size 100 \
+    --machine-type n2d-standard-2 \
+    --disk-size 256 \
     --image-type cos_containerd \
     --addons NodeLocalDNS,NetworkPolicy,HttpLoadBalancing \
+    --enable-stackdriver-kubernetes \
     --enable-shielded-nodes \
     --shielded-secure-boot \
     --enable-autorepair \
     --enable-autoupgrade \
-    --enable-ip-alias
+    --enable-ip-alias \
+    --default-max-pods-per-node 10
 ```
-
-for ((i=1;i<=100;i++)); do   curl -v 34.120.185.218; done
-for ((i=1;i<=100;i++)); do   curl -v 35.186.246.29; done

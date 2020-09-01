@@ -40,6 +40,7 @@ FIXME:
   - https://cloud.google.com/vpc-service-controls/docs/set-up-gke
 - Test creation of a jumpbox?
   - https://cloud.google.com/solutions/connecting-securely#bastion
+  - https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e
 
 To check:
 - VPC versus Private Registry/Cluster
