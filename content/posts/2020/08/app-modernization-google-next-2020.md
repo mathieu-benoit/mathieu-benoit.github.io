@@ -8,9 +8,10 @@ aliases:
 ---
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
 
-TL;DR There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 4 sessions I found very insightful on an App Modernization standpoint, here you are:
+tl;dr: There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 5 sessions I found very insightful on an App Modernization standpoint, here you are:
 - [An App Modernization Story with Cloud Run](https://cloud.withgoogle.com/next/sf/sessions?session=APP236#application-modernization) [[Youtube](https://youtu.be/KY4DozBVV1Y)], great journey from monolith (Windows VM) to microservices (serverless Linux Container).
 - [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)], great definition of what's a service mesh.
+- [GitOps Workflows with GitLab and Anthos for Hybrid Cloud](https://cloud.withgoogle.com/next/sf/sessions?session=APP235#application-modernization) [[Youtube](https://youtu.be/npc08ggdTOw)], great session about GitOps in the context of multi GKE clusters managed via Anthos Configuration Management.
 - [Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)], great walkthrough of ACM, Anthos GKE (on GCP, on-premise on AWS) and Cloud Monitoring and Logging.
 - [Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)], great walkthrough of ASM and Cloud Run for Anthos.
 
@@ -41,7 +42,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Ship Faster, Spend Less By Going Multi-Cloud with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=SOLKEY200#application-modernization) [[Youtube](https://youtu.be/98QGt0zBFEg)]
     - A journey to modernization with Anthos in retail explained by application decoupling, lifecycle agility,  systematic delivery, observability and security.
 - [Modernizing Texas’ Best Retail Chain with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP102#application-modernization) [[Youtube](https://youtu.be/uU3ulPcjjzA)]
-    - FIXME
+    - A great sttory of modernizatioon from H-E-B by adopting DevOps, Kubernetes, Anthos, SRE and chaos engineering.
 - [Build, Deploy, Modernize and Manage Apps using Anthos](https://youtu.be/N8vwVVAuG6g)
     - Anthos can managed GKE, GKE onprem, GKE on Azure, GKE on AWS, AKS or EKS clusters by providing common features such as unified authentication, Anthos Config Management (ACM), Anthos Service Mesh (ASM)
 - [Optimize Cost to Performance on Google Kubernetes Engine](https://cloud.withgoogle.com/next/sf/sessions?session=APP218#application-modernization) [[Youtube](https://youtu.be/ry7XfEHivgE)]
@@ -67,41 +68,41 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Enhance Your Security Posture and Run PCI Compliant Apps with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP238#application-modernization) [[Youtube](https://youtu.be/k2Re-IPjesU)]
     - Prescriptive and opinionated guidance on how to utilize Anthos’s security features for your PCI workloads.
 - [Accelerating Application Development with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP239#application-modernization) [[Youtube](https://youtu.be/Dkfqd2zoufE)]
-    - FIXME
+    - After a quick introduction of app modernization with Kubernetes, Cloud Run and Anthos, this session is about how to move seamlessly your PCF workloads into Anthos.
 - [Evolve to Zero Trust Security Model‎ with Anthos Security](https://cloud.withgoogle.com/next/sf/sessions?session=APP240#application-modernization) [[Youtube](https://youtu.be/zCVwc3ocYfQ)]
-    - FIXME
+    - A Zero trust production worload security approach with Anthos.
 - [Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)]
     - A walk through of ACM, Anthos GKE (on GCP, on-premand on AWS) and Cloud Monitoring and Logging.
 - [Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)]
     - A walk through of ASM and Cloud Run for Anthos. Great example of chaos test to break a SLO.
 - [Anthos Security: Modernize Your Security Posture for Cloud-Native Applications](https://cloud.withgoogle.com/next/sf/sessions?session=SEC230#application-modernization) [[Youtube](https://youtu.be/7IU2SywG_BA)]
-    - FIXME
+    - How Anthos helps getting a better security posture across all your environments with mainly 4 steps: Harden infrastructure, establish guardrails, secure workloads and monitor and detect.
 - [Develop Scalable Apps in Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=SVR226#application-modernization) [[Youtube](https://youtu.be/Jupawsr16yM)]
-    - FIXME
+    - A walk through of the [Cloud Run for Anthos Reference Web App](https://github.com/GoogleCloudPlatform/cloud-run-anthos-reference-web-app).
 
 # Demos
 
 - [App Modernization demo](https://cloud.withgoogle.com/next/sf/demos?demo=704#application-modernization)
-    - FIXME
+    - Learn how Anthos brings everything together to balance security with agility, reliability with efficiency, and portability with consistency.
 - [Cloud native development demo](https://cloud.withgoogle.com/next/sf/demos?demo=705#application-modernization)
-    - An quick and interactive demo about Cloud native development about 3 aareas: Code and Verify, Package and Release and Run and Manage from 3 different personas: Dev, Security and Ops.
+    - A quick and interactive demo about Cloud native development about 3 aareas: Code and Verify, Package and Release and Run and Manage from 3 different personas: Dev, Security and Ops.
 - [Experience a Fully Managed, Serverless Environment demo](https://cloud.withgoogle.com/next/sf/demos?demo=706#application-modernization) [[Youtube](https://youtu.be/cL4zK_OajE8)]
-    - FIXME
+    - Discover how to easily build and deploy containerized applications in a fully managed environment using Cloud Run.
 - [Explore Anthos](https://cloud.withgoogle.com/next/sf/demos?demo=701#application-modernization) [[Youtube](https://youtu.be/in2L8AimfOQ)]
-    - FIXME
+    - A walk through a sample deployment for Anthos and gain insights about the different Anthos tools—such as ASM and ACM
 - [Source-Driven Development with Cloud Code](https://cloud.withgoogle.com/next/sf/demos?demo=702#application-modernization) [[Youtube](https://youtu.be/ofsWr85gltc)]
     - A 5-min video to walk you through Cloud Code for facilitating your local developments with containers, Cloud Run, Kubernetes, and GKE.
 - [Serverless Functions in Any Language Everywhere](https://cloud.withgoogle.com/next/sf/demos?demo=703#application-modernization) [[Youtube](https://youtu.be/DJjL6uXADlI)]
-    - A 5min video to walk you through Cloud Run and Cloud Functions and see how it could help you with your serverless applications.
+    - A 5-min video to walk you through Cloud Run and Cloud Functions and see how it could help you with your serverless applications.
 
 # StudyJam
 
 - [Hands-on Lab: Managing Traffic Routing with Istio and Envoy](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-2) [[Youtube](https://youtu.be/J0bEeh5P9hE)]
-    - A 50 min video walking through this Qwiklabs lab: [Managing Traffic Routing with Istio and Envoy](https://www.qwiklabs.com/focuses/8456?parent=catalog).
+    - A 48-min video walking through this Qwiklabs lab: [Managing Traffic Routing with Istio and Envoy](https://www.qwiklabs.com/focuses/8456?parent=catalog).
 - [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-3) [[Youtube](https://youtu.be/dgPA_I6PSoA)]
-    - A 46 min video walking trhough this Qwiklabs lab: [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://www.qwiklabs.com/focuses/1103?parent=catalog).
+    - A 47-min video walking trhough this Qwiklabs lab: [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://www.qwiklabs.com/focuses/1103?parent=catalog).
 
-2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
+2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to learn (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
 
 Complementary resources:
 - [Accelerate your application development and delivery](https://cloud.google.com/blog/topics/google-cloud-next/developer-productivity-announcements-at-next20-onair)
@@ -111,5 +112,6 @@ Complementary resources:
 - [Cloud Solutions Architecture](https://showcase.withgoogle.com/solutions-architecture)
 - [[eBook] CIO Guide to application modernization](https://inthecloud.withgoogle.com/cio-guide-app-mod/dl-cd.html)
 - [[eBook] Re-architecting to cloud native: an evolutionary approach to increasing developer productivity at scale](https://cloud.google.com/rearchitecting-to-cloud-native-whitepaper)
+- [[eBook] Anthos under the hood](https://inthecloud.withgoogle.com/anthos-ebook/dl-cd-typ.html)
 
 Stay safe and healthy, cheers!
