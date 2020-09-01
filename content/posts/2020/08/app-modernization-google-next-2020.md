@@ -11,10 +11,10 @@ aliases:
 TL;DR There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 4 sessions I found very insightful on an App Modernization standpoint, here you are:
 - [An App Modernization Story with Cloud Run](https://cloud.withgoogle.com/next/sf/sessions?session=APP236#application-modernization) [[Youtube](https://youtu.be/KY4DozBVV1Y)], great journey from monolith (Windows VM) to microservices (serverless Linux Container).
 - [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)], great definition of what's a service mesh.
-- [Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)], great walkthrough of ACM, Anthos GKE (on GCP, on-premand on AWS) and Cloud Monitoring and Logging.
+- [Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)], great walkthrough of ACM, Anthos GKE (on GCP, on-premise on AWS) and Cloud Monitoring and Logging.
 - [Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)], great walkthrough of ASM and Cloud Run for Anthos.
 
-What a perfect timing! While I'm doing my onboarding as [a Noogler](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB), I have the opportunity to (e-)attend my first Google conference. Yes for sure, like everyone I won't be able to travel to San Francisco or somewhere else to attend in-person such conference during 4-5 days. But I actually feel more lucky than if I would have, because without traveling I have X weeks of content thanks to this incredible new format of Google Next: [Google Next OnAir 2020](https://cloud.withgoogle.com/next/sf/)!
+What a perfect timing! While I'm doing my onboarding as [a Noogler](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB), I have the opportunity to (e-)attend my first Google conference. Yes for sure, like everyone I won't be able to travel to San Francisco or somewhere else to attend in-person such conference during 4-5 days. But I actually feel more lucky than if I would have, because without traveling I have 9 weeks of content thanks to this incredible new format of Google Next: [Google Next OnAir 2020](https://cloud.withgoogle.com/next/sf/)!
 
 I'm very impressed about the quality, the unicity and the huge amount of content from this conference. Most, if not all, of the sessions are ~20 min long, very convenient. It's very unique because it's during 9 weeks, with for sure sessions but many different other formats to learn about GCP:
 - [Session packages](https://cloud.withgoogle.com/next/sf/sessions#session-packages)
@@ -61,7 +61,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Integrating VM Workloads into Anthos Service Mesh](https://cloud.withgoogle.com/next/sf/sessions?session=APP211#application-modernization) [[Youtube](https://youtu.be/3qBr0v4QR_w)]
     - FIXME
 - [Modernize Legacy Java Apps Using Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP224#application-modernization) [[Youtube](https://youtu.be/xiX3IdHWjLM)]
-    -FIXME
+    - FIXME
 - [Running Anthos on Bare Metal and at the Edge with Major League Baseball](https://cloud.withgoogle.com/next/sf/sessions?session=APP228#application-modernization) [[Youtube](https://youtu.be/FrFYM2W9gj8)]
     - FIXME
 - [Enhance Your Security Posture and Run PCI Compliant Apps with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP238#application-modernization) [[Youtube](https://youtu.be/k2Re-IPjesU)]
@@ -99,8 +99,9 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Hands-on Lab: Managing Traffic Routing with Istio and Envoy](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-2) [[Youtube](https://youtu.be/J0bEeh5P9hE)]
     - A 50 min video walking through this Qwiklabs lab: [Managing Traffic Routing with Istio and Envoy](https://www.qwiklabs.com/focuses/8456?parent=catalog).
 - [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://cloudonair.withgoogle.com/events/next20-studyjam/watch?talk=w7-talk-3) [[Youtube](https://youtu.be/dgPA_I6PSoA)]
+    - A 46 min video walking trhough this Qwiklabs lab: [Hands-on Lab: Continuous Delivery with Jenkins in Kubernetes Engine](https://www.qwiklabs.com/focuses/1103?parent=catalog).
 
-2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning [there is more](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
+2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
 
 Complementary resources:
 - [Accelerate your application development and delivery](https://cloud.google.com/blog/topics/google-cloud-next/developer-productivity-announcements-at-next20-onair)
@@ -108,7 +109,7 @@ Complementary resources:
 - [I’m looking forward these 8 sessions at Google Cloud Next ’20 OnAir (Week 7)](https://seroter.com/2020/08/24/im-looking-forward-these-8-sessions-at-google-cloud-next-20-onair-weeks-7/)
 - [Anthos rising—now easier to use, for more workloads](https://cloud.google.com/blog/topics/google-cloud-next/latest-anthos-release-adds-hybrid-ai-and-other-features)
 - [Cloud Solutions Architecture](https://showcase.withgoogle.com/solutions-architecture)
-- [CIO Guide to application modernization eBook](https://inthecloud.withgoogle.com/cio-guide-app-mod/dl-cd.html)
-- [Re-architecting to cloud native: an evolutionary approach to increasing developer productivity at scale](https://cloud.google.com/rearchitecting-to-cloud-native-whitepaper)
+- [[eBook] CIO Guide to application modernization](https://inthecloud.withgoogle.com/cio-guide-app-mod/dl-cd.html)
+- [[eBook] Re-architecting to cloud native: an evolutionary approach to increasing developer productivity at scale](https://cloud.google.com/rearchitecting-to-cloud-native-whitepaper)
 
 Stay safe and healthy, cheers!
