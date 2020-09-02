@@ -29,13 +29,15 @@ gcloud container clusters create \
   --enable-ip-alias
 ```
 
-# Container-native Load Balancing
-
 Once you have deployed a containerized app in Kubernetes, you have many ways to expose it through a `Service` or an `Ingress`: NodePort Service, ClusterIP Service, Internal LoadBalancer Service, External LoadBalancer Servvice, Internal Ingress, External Ingress or Multi-cluster Ingress. This following resource will walk you through all those concepts: [GKE best practices: Exposing GKE applications through Ingress and Services](https://cloud.google.com/blog/products/containers-kubernetes/exposing-services-on-gke). To expose an `Ingress` on GKE I have found this following resource very valuable as well: [Ingress features](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features) which provides a comprehensive list of supported features for `Ingress` on GCP.
+
+# Container-native Load Balancing
 
 Since October 2018, [GCP has introduced a container-native load balancing on GKE](https://cloud.google.com/blog/products/containers-kubernetes/introducing-container-native-load-balancing-on-google-kubernetes-engine).
 
 > Without [container-native load balancing](https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing), load balancer traffic travels to the node instance groups and gets routed via iptables rules to Pods which might or might not be in the same node. With container-native load balancing, load balancer traffic is distributed directly to the Pods which should receive the traffic, eliminating the extra network hop. Container-native load balancing also helps with improved health checking since it targets Pods directly.
+
+For this you need to provision your GKE cluster with the `--enable-ip-aliases` and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`).
 
 https://cloud.google.com/blog/products/containers-kubernetes/introducing-container-native-load-balancing-on-google-kubernetes-engine
 Ready? A Deep Dive into Pod Readiness Gates for Service Health Management
@@ -80,6 +82,5 @@ gcloud container clusters create $clusterName \
     --shielded-secure-boot \
     --enable-autorepair \
     --enable-autoupgrade \
-    --enable-ip-alias \
-    --default-max-pods-per-node 10
+    --enable-ip-alias
 ```

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myblog
-  namespace: myblog
   labels:
     app.kubernetes.io/name: myblog
 spec:
