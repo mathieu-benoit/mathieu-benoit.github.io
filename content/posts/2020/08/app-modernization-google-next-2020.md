@@ -62,7 +62,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [Integrating VM Workloads into Anthos Service Mesh](https://cloud.withgoogle.com/next/sf/sessions?session=APP211#application-modernization) [[Youtube](https://youtu.be/3qBr0v4QR_w)]
     - Modernize your VMs in place or develop a strategy to migrate your VMs to containers with ASM.
 - [Modernize Legacy Java Apps Using Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP224#application-modernization) [[Youtube](https://youtu.be/xiX3IdHWjLM)]
-    - FIXME
+    - A walk through of the journey of modernization with Java apps.
 - [Running Anthos on Bare Metal and at the Edge with Major League Baseball](https://cloud.withgoogle.com/next/sf/sessions?session=APP228#application-modernization) [[Youtube](https://youtu.be/FrFYM2W9gj8)]
     - A great story by the MLB for Anthos on-prem on top of VMWare and adding more AI/ML for the new generation of their Statcast solution.
 - [Enhance Your Security Posture and Run PCI Compliant Apps with Anthos](https://cloud.withgoogle.com/next/sf/sessions?session=APP238#application-modernization) [[Youtube](https://youtu.be/k2Re-IPjesU)]

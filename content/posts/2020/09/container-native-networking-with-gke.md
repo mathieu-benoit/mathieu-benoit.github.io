@@ -1,6 +1,6 @@
 ---
 title: container native networking with gke
-date: 2020-08-31
+date: 2020-09-02
 tags: [gcp, containers, kubernetes, security]
 description: let's see how gcp brings unique and true container native networking with gke
 draft: true
@@ -23,7 +23,7 @@ https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
 https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
 https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
 
-So here is now I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
+So here is now how I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
 ```
 gcloud container clusters create \
   --enable-ip-alias

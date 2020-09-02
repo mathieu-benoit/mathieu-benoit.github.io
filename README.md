@@ -16,3 +16,12 @@ kubectl config set-context --current --namespace myblog
 kubectl apply -f k8s/deployment.yaml # you need to change the container image reference accordingly.
 kubectl apply -f k8s/service.yaml # you need to change the type of the service accordingly.
 ```
+
+Define the Cloud Build trigger:
+```
+gcloud beta builds triggers create github \
+    --repo-name=myblog \
+    --repo-owner=mathieu-benoit \
+    --branch-pattern="master" \
+    --build-config=cloudbuild-ci.yaml
+```
