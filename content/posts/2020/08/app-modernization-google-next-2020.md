@@ -105,6 +105,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to learn and (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
 
 Complementary resources:
+- [Next OnAir as it happens: All the announcements in one place](https://cloud.google.com/blog/topics/google-cloud-next/complete-list-of-announcements-from-google-cloud-next20-onair)
 - [Accelerate your application development and delivery](https://cloud.google.com/blog/topics/google-cloud-next/developer-productivity-announcements-at-next20-onair)
 - [Shining a light on Anthos at Next OnAir application modernization week](https://cloud.google.com/blog/topics/google-cloud-next/cant-miss-application-modernization-sessions-at-next20-onair)
 - [I’m looking forward these 8 sessions at Google Cloud Next ’20 OnAir (Week 7)](https://seroter.com/2020/08/24/im-looking-forward-these-8-sessions-at-google-cloud-next-20-onair-weeks-7/)
