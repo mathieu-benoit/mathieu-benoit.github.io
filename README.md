@@ -15,8 +15,11 @@ kubectl create ns myblog
 kubectl config set-context --current --namespace myblog
 
 # Simple way with just a deployment and service:
-kubectl apply -f k8s/deployment.yaml # you need to change the container image reference accordingly.
-kubectl apply -f k8s/service.yaml # you need to change the type of the service accordingly.
+imageName=FIXME
+sed -i "s,CONTAINER_IMAGE_NAME,$imageName," k8s/deployment.yaml
+kubectl apply -f k8s/deployment.yaml
+sed -i "s,NodePort,LoadBalancer," k8s/service.yaml
+kubectl apply -f k8s/service.yaml
 
 # Complete way:
 kubectl apply -f k8s/
