@@ -48,7 +48,7 @@ metric.type="kubernetes.io/container/cpu/core_usage_time"
 resource.type="k8s_container" 
 metadata.user_labels."app.kubernetes.io/name"="myblog"
 
-Get container uptime:
+# Get container uptime:
 metric.type="kubernetes.io/container/uptime"
 resource.type="k8s_container"
 metadata.user_labels."app.kubernetes.io/name"="myblog"
