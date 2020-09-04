@@ -9,7 +9,7 @@ aliases:
 ---
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Containers_Uy53clo.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Containers_Uy53clo.max-2200x2200.jpg)
 
-Networking with containers and Kubernetes is an important piece and it plays a critical role on a security and performance standpoint regarding pod-to-pod communications as well as communications in and out a Kubernetes cluster. With this article, I would like to list 4 main features GCP is providing for your GKE clusters. Again, those are important concepts to leverage but that's also the opportunity to demonstrate how Google is innovating, contributing and leading in such areas.
+Networking with containers and Kubernetes is an important piece and it plays a critical role on a security, performance and reliability standpoints (pod-to-pod communications as well as communications in and out a Kubernetes cluster). With this article, I would like to list 4 main networking features GCP is providing for your GKE clusters. Again, those are important concepts to leverage but that's also the opportunity to demonstrate how Google is innovating, contributing and leading in such areas.
 - [VPC-native cluster]({{< ref "#vpc-native-cluster" >}})
   - Default for your GKE clusters very soon if not already.
 - [Container-native Load Balancing]({{< ref "#container-native-load-balancing" >}})
@@ -17,7 +17,7 @@ Networking with containers and Kubernetes is an important piece and it plays a c
 - [GKE Dataplane V2]({{< ref "#gke-dataplane-v2" >}})
   - Interesting future for GKE clusters with eBPF via Cilium.
 - [Service Mesh]({{< ref "#service-mesh" >}})
-  - Beyond the buzz, that's an important piece when scaling your containerized workloads but not only!
+  - Beyond the buzz, that's an important piece when scaling your containerized (but not only) workloads.
 
 # VPC-native cluster
 
@@ -26,15 +26,23 @@ Since [its announcement in October 2018](https://cloud.google.com/blog/products/
 - [The ins and outs of networking in Google Container Engine and Kubernetes (Google Cloud Next '17)](https://www.youtube.com/watch?v=y2bhV81MfKQ)
 - [VPC-native clusters on Google Kubernetes Engine](https://medium.com/google-cloud/vpc-native-clusters-on-google-kubernetes-engine-b7c022c07510)
 
-_Note: VPC-native clusters tend to consume more IP addresses in the network, so you should take that into account._
-https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
-https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke
-https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr
-
 So here is now how I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
 ```
 gcloud container clusters create \
   --enable-ip-alias
+```
+
+VPC-native clusters tend to consume more IP addresses in the network, so you should take that into account. This guide [Understanding IP address management in GKE](https://cloud.google.com/blog/products/containers-kubernetes/ip-address-management-in-gke) explains really well what you should know about Pod range, Service range, subnet range, etc.
+[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/IP_address_management_in_GKE.max-800x800.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/IP_address_management_in_GKE.max-800x800.jpg)
+
+Based on this, the example below is provisioning a cluster with auto-mode IP address management + limiting the IP addresses consumption for both nodes/pods and services:
+```
+gcloud container clusters create \
+  --enable-ip-alias \
+  --max-pods-per-node 30 # instead of 110 \
+  --default-max-pods-per-node 30 # instead of 110 \
+  --services-ipv4-cidr '/25' # instead of /20 \
+  --cluster-ipv4-cidr '/20' # instead of /14
 ```
 
 # Container-native Load Balancing
@@ -46,6 +54,11 @@ Since October 2018, [GCP has introduced a container-native load balancing on GKE
 > Without [container-native load balancing](https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing), load balancer traffic travels to the node instance groups and gets routed via iptables rules to Pods which might or might not be in the same node. With container-native load balancing, load balancer traffic is distributed directly to the Pods which should receive the traffic, eliminating the extra network hop. Container-native load balancing also helps with improved health checking since it targets Pods directly.
 
 For this you need to provision your GKE cluster with the `--enable-ip-aliases` and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`).
+
+FIXME:
+- enable by default
+- gcloud get lb
+- backendconfig with cloud armor, etc.
 
 https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing#requirements
 https://cloud.google.com/kubernetes-engine/docs/how-to/container-native-load-balancing#using
@@ -78,35 +91,13 @@ https://youtu.be/FUITCYMCEhU
 
 [Build an Enterprise-Grade Service Mesh with Traffic Director](https://cloud.withgoogle.com/next/sf/sessions?session=NET206#infrastructure) [[Youtube](https://youtu.be/QyxQfW-Izs8)]
 
-Hope your enjoyed this blog article and hopefully you will be able to leverage such important features transparently if enabled ;)
+Hope you enjoyed this blog article and hopefully you will be able to leverage such important features transparently if enabled ;)
 
 Complementary and further resources:
 - [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://www.youtube.com/watch?v=J5HJ1y6PeyE)
+- [GKE Networking Differentiators (Cloud Next '19)](https://www.youtube.com/watch?v=RjcjaXi-vVY&autoplay=1)
 - [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://www.youtube.com/watch?v=fI-5LkBDap8)
 - [What's new in network security on Google Cloud (Cloud Next '20)](https://www.youtube.com/watch?v=WFwGgo7ULXE)
 - [Ready? A Deep Dive into Pod Readiness Gates for Service Health Management](https://www.youtube.com/watch?v=Vw9GmSeomFg)
 
 Cheers! ;)
-
-zone=us-east4-a
-randomSuffix=$(shuf -i 100-999 -n 1)
-clusterName=FIXME-$randomSuffix
-gcloud container clusters create $clusterName \
-    --release-channel rapid \
-    --zone $zone \
-    --disk-type pd-ssd \
-    --machine-type n2d-standard-2 \
-    --disk-size 256 \
-    --image-type cos_containerd \
-    --enable-network-policy \
-    --addons NodeLocalDNS,HttpLoadBalancing \
-    --enable-shielded-nodes \
-    --shielded-secure-boot \
-    --enable-ip-alias \
-    --enable-autorepair \
-    --enable-autoupgrade \
-    --enable-stackdriver-kubernetes \
-    --max-pods-per-node 30 \
-    --default-max-pods-per-node 30
-
-gcloud container clusters get-credentials $clusterName --zone $zone
