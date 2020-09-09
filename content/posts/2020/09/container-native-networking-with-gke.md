@@ -1,6 +1,6 @@
 ---
 title: container native networking with gke
-date: 2020-09-03
+date: 2020-09-09
 tags: [gcp, containers, kubernetes, security]
 description: let's see how gcp brings unique and true container native networking with gke
 draft: true
@@ -73,10 +73,10 @@ The [New GKE Dataplane V2 (leveraging eBPF via Cilium) which increases security 
 
 > [Cilium](https://cilium.io) is an open source project that has been designed on top of eBPF to address the new scalability, security and visibility requirements of container workloads. Cilium goes beyond a traditional Container Networking Interface (CNI) to provide service resolution, policy enforcement and much more.
 
-On [Cilium's blog article for the announcement](https://cilium.io/blog/2020/08/19/google-chooses-cilium-for-gke-networking), you could also read the story behing that partnership between Cilium, Google and actually the open source community, love that!
+On [Cilium's blog article for the announcement](https://cilium.io/blog/2020/08/19/google-chooses-cilium-for-gke-networking), you could also read the story behind that partnership between Cilium, Google and actually the broad open source community, I love that!
 > Google clearly has incredible technical chops and could have just built their dataplane directly on eBPF, instead, the GKE team has decided to leverage Cilium and contribute back. This is of course a huge honor for everybody who has contributed to Cilium over the years and shows Google's commitment to open collaboration.
 
-This feature is in Beta as we speak, but seems really promising! Like describe in [this tutorial](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging) you could give it a try by provisioning a new cluster with this command `gcloud beta container clusters create --enable-dataplane-v2`. From there, you will be for example able to leverage new features like [network policy logging](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging).
+This feature is in _beta_ as we speak, but seems really promising! Like describe in [this tutorial](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging) you could give it a try by provisioning a new cluster with this command `gcloud beta container clusters create --enable-dataplane-v2`. From there, you will be for example able to leverage new features like [network policy logging](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging).
 
 # Service Mesh
 
@@ -88,6 +88,7 @@ When talking about networking with containers and kubernetes, we can't avoid the
 https://youtu.be/FUITCYMCEhU
 - https://cloud.google.com/blog/products/networking/traffic-director-global-traffic-management-for-open-service-mesh
 - https://medium.com/cloudzone/google-clouds-traffic-director-what-is-it-and-how-is-it-related-to-the-istio-service-mesh-c199acc64a6d
+- https://cloud.google.com/traffic-director/docs/set-up-gke-pods-auto
 
 [Build an Enterprise-Grade Service Mesh with Traffic Director](https://cloud.withgoogle.com/next/sf/sessions?session=NET206#infrastructure) [[Youtube](https://youtu.be/QyxQfW-Izs8)]
 

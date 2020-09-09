@@ -8,12 +8,15 @@ aliases:
 ---
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
 
-tl;dr: There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 5 sessions I found very insightful on an App Modernization standpoint, here you are:
-- [An App Modernization Story with Cloud Run](https://cloud.withgoogle.com/next/sf/sessions?session=APP236#application-modernization) [[Youtube](https://youtu.be/KY4DozBVV1Y)], great journey from monolith (Windows VM) to microservices (serverless Linux Container).
-- [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)], great definition of what's a service mesh.
-- [GitOps Workflows with GitLab and Anthos for Hybrid Cloud](https://cloud.withgoogle.com/next/sf/sessions?session=APP235#application-modernization) [[Youtube](https://youtu.be/npc08ggdTOw)], great session about GitOps in the context of multi GKE clusters managed via Anthos Configuration Management.
-- [Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)], great walkthrough of ACM, Anthos GKE (on GCP, on-premise on AWS) and Cloud Monitoring and Logging.
-- [Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)], great walkthrough of ASM and Cloud Run for Anthos.
+_tl;dr: There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 5 sessions I found very insightful on an App Modernization standpoint, here you are:_
+- _[An App Modernization Story with Cloud Run](https://cloud.withgoogle.com/next/sf/sessions?session=APP236#application-modernization) [[Youtube](https://youtu.be/KY4DozBVV1Y)], great journey from monolith (Windows VM) to microservices (serverless Linux Container)._
+- _[Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)], great definition of what's a service mesh._
+- _[GitOps Workflows with GitLab and Anthos for Hybrid Cloud](https://cloud.withgoogle.com/next/sf/sessions?session=APP235#application-modernization) [[Youtube](https://youtu.be/npc08ggdTOw)], great session about GitOps in the context of multi GKE clusters managed via Anthos Configuration Management._
+- _[Anthos Deep Dive: Part One](https://cloud.withgoogle.com/next/sf/sessions?session=APP316#application-modernization) [[Youtube](https://youtu.be/be_bXETvbuE)], great walkthrough of ACM, Anthos GKE (on GCP, on-premise on AWS) and Cloud Monitoring and Logging._
+- _[Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)], great walkthrough of ASM and Cloud Run for Anthos._
+
+_Furthermore if you are looking for all the announcements in one place, here you are: [Next OnAir as it happens: All the announcements in one place](https://cloud.google.com/blog/topics/google-cloud-next/complete-list-of-announcements-from-google-cloud-next20-onair)._
+
 
 What a perfect timing! While I'm doing my onboarding as [a Noogler](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB), I have the opportunity to (e-)attend my first Google conference. Yes for sure, I'm a bit disapointed because like everyone I won't be able to travel to San Francisco or somewhere else to attend in-person such conference during 4-5 days. But I actually feel more lucky than if I would have. In deed, without traveling I have 9 weeks of content thanks to this incredible new format of Google Next: [Google Next OnAir 2020](https://cloud.withgoogle.com/next/sf/)!
 
@@ -105,7 +108,6 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 2020 is a very weird year for sure because of the covid-19 situation, I feel very priviledged to work in IT and very grateful and proud to work for a company like Google, providing such amazing new way to learn and (e-)attend and consume conference. This blog article is mostly focused on the App Modernization area, but like discussed at the beginning of this blog article, [there is more with past or upcoming sessions](https://gregsramblings.com/blog/google-cloud-next-onair-cheat-sheet). I hope you feel like me engergized and envisioned with all of this! ;)
 
 Complementary resources:
-- [Next OnAir as it happens: All the announcements in one place](https://cloud.google.com/blog/topics/google-cloud-next/complete-list-of-announcements-from-google-cloud-next20-onair)
 - [Accelerate your application development and delivery](https://cloud.google.com/blog/topics/google-cloud-next/developer-productivity-announcements-at-next20-onair)
 - [Shining a light on Anthos at Next OnAir application modernization week](https://cloud.google.com/blog/topics/google-cloud-next/cant-miss-application-modernization-sessions-at-next20-onair)
 - [I’m looking forward these 8 sessions at Google Cloud Next ’20 OnAir (Week 7)](https://seroter.com/2020/08/24/im-looking-forward-these-8-sessions-at-google-cloud-next-20-onair-weeks-7/)
