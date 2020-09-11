@@ -47,13 +47,13 @@ gcloud container clusters create \
 
 # Container-native Load Balancing
 
-Once you have deployed a containerized app in Kubernetes, you have many ways to expose it through a `Service` or an `Ingress`: NodePort Service, ClusterIP Service, Internal LoadBalancer Service, External LoadBalancer Servvice, Internal Ingress, External Ingress or Multi-cluster Ingress. This following resource will walk you through all those concepts: [GKE best practices: Exposing GKE applications through Ingress and Services](https://cloud.google.com/blog/products/containers-kubernetes/exposing-services-on-gke). To expose an `Ingress` on GKE I have found this following resource very valuable as well: [Ingress features](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features) which provides a comprehensive list of supported features for `Ingress` on GCP.
+Once you have deployed a containerized app in Kubernetes, you have many ways to expose it through a `Service` or an `Ingress`: NodePort Service, ClusterIP Service, Internal LoadBalancer Service, External LoadBalancer Service, Internal Ingress, External Ingress or Multi-cluster Ingress. This following resource will walk you through all those concepts: [GKE best practices: Exposing GKE applications through Ingress and Services](https://cloud.google.com/blog/products/containers-kubernetes/exposing-services-on-gke). To expose an `Ingress` on GKE I have found this following resource very valuable as well: [Ingress features](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features) which provides a comprehensive list of supported features for `Ingress` on GCP.
 
 Since October 2018, [GCP has introduced a container-native load balancing on GKE](https://cloud.google.com/blog/products/containers-kubernetes/introducing-container-native-load-balancing-on-google-kubernetes-engine).
 
 > Without [container-native load balancing](https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing), load balancer traffic travels to the node instance groups and gets routed via iptables rules to Pods which might or might not be in the same node. With container-native load balancing, load balancer traffic is distributed directly to the Pods which should receive the traffic, eliminating the extra network hop. Container-native load balancing also helps with improved health checking since it targets Pods directly.
 
-For this you need to provision your GKE cluster with the `--enable-ip-aliases` and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`).
+For this you need to provision your GKE cluster with the `--enable-ip-aliases` parameter and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`). The recomme
 
 FIXME:
 - enable by default
@@ -80,10 +80,17 @@ This feature is in _beta_ as we speak, but seems really promising! Like describe
 
 # Service Mesh
 
-When talking about networking with containers and kubernetes, we can't avoid the Service Mesh area. If you are not familiar with Service Mesh or you are wondering why you (or don't) need a Service Mesh for your own context, I highly encourage you to watch this session [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)] which is explaining really well what a Service Mesh is out there.
+When talking about networking with containers and Kubernetes, we can't avoid the Service Mesh area. If you are not familiar with Service Mesh or you are wondering why you do (or don't) need a Service Mesh for your own context, I highly encourage you to watch this session [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)] which is explaining really well what a Service Mesh is.
 
-- https://istio.io/latest/docs/
+[Istio](https://istio.io) is one of the Service Mesh out there, you could deploy it on any Kubernetes cluster; with this configuration you need to manage the setup, the update, as well as dealing with the fact that Istio and its components are sharing the same resources of your worloads within your cluster. This article [](https://cloud.google.com/blog/products/networking/welcome-to-the-service-mesh-era-introducing-a-new-istio-blog-post-series) provides more information about Istio and its components and features.
+ASM on GKE: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress
+Ingress for Anthos: https://cloud.google.com/kubernetes-engine/docs/concepts/ingress-for-anthos
+Anthos Service Mesh Deep Dive: https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
+
+Another step now is what if you would like a managed Istio service? Here comes Anthos Service Mesh (ASM)!
 - ASM and Istio tutorial: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress
+
+The ultimate step is what if you would like a managed Service Mesh's Control Plane? Hhere comes Traffic Director!
 - Traffic Director & Envoy-Based L7 ILB for Production-Grade Service Mesh & Istio (Cloud Next '19)
 https://youtu.be/FUITCYMCEhU
 - https://cloud.google.com/blog/products/networking/traffic-director-global-traffic-management-for-open-service-mesh
@@ -91,6 +98,8 @@ https://youtu.be/FUITCYMCEhU
 - https://cloud.google.com/traffic-director/docs/set-up-gke-pods-auto
 
 [Build an Enterprise-Grade Service Mesh with Traffic Director](https://cloud.withgoogle.com/next/sf/sessions?session=NET206#infrastructure) [[Youtube](https://youtu.be/QyxQfW-Izs8)]
+
+> In a service mesh, your application code doesn't need to know about your networking configuration. Instead, your applications communicate over a data plane, which is configured by a control plane that handles service networking. In this guide, Traffic Director is your control plane and the Envoy sidecar proxies are your data plane.
 
 Hope you enjoyed this blog article and hopefully you will be able to leverage such important features transparently if enabled ;)
 

@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd
+https://github.com/andreyk-code/no-inet-gke-cluster
+
 To continue my learning with GKE, [my first week with GCP](FIXME) was about deploying manually a containerized app on a basic/default GKE cluster. [My second week with GCP](FIXME) was about to fine-tune a little bit my GKE cluster with more features. My third week was about deploying a containerized app on GKE via Cloud Build and GCR. And this week will be dedicated on more advanced setups focused on networking.
 
 FIXME - For this, I'm still leveraging these two resources:
