@@ -1,7 +1,7 @@
 ---
 title: container native networking with gke
-date: 2020-09-09
-tags: [gcp, containers, kubernetes, security]
+date: 2020-09-15
+tags: [gcp, containers, kubernetes, servicemesh]
 description: let's see how gcp brings unique and true container native networking with gke
 draft: true
 aliases:
@@ -53,10 +53,9 @@ Since October 2018, [GCP has introduced a container-native load balancing on GKE
 
 > Without [container-native load balancing](https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing), load balancer traffic travels to the node instance groups and gets routed via iptables rules to Pods which might or might not be in the same node. With container-native load balancing, load balancer traffic is distributed directly to the Pods which should receive the traffic, eliminating the extra network hop. Container-native load balancing also helps with improved health checking since it targets Pods directly.
 
-For this you need to provision your GKE cluster with the `--enable-ip-aliases` parameter and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`). The recomme
+For this you need to provision your GKE cluster with the `--enable-ip-aliases` parameter and then add the `cloud.google.com/neg: '{"ingress": true}'` annotation on your `Service` (even if you expose it via an `Ingress`). The recommendation is to explicitly set this annotation where you need it, even if in some cases it will be [applied by default under certain conditions](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress#container-native_load_balancing). You could also [find the associated requirements, restrictions and limitations] information about that feature(https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing#requirements).
 
 FIXME:
-- enable by default
 - gcloud get lb
 - backendconfig with cloud armor, etc.
 
@@ -86,6 +85,8 @@ When talking about networking with containers and Kubernetes, we can't avoid the
 ASM on GKE: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress
 Ingress for Anthos: https://cloud.google.com/kubernetes-engine/docs/concepts/ingress-for-anthos
 Anthos Service Mesh Deep Dive: https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
+Extending your Istio service mesh across GKE clusters and Compute Engine instances: https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
+Ingress for Anthos - Multi-cluster Ingress and Global Service Load Balancing https://www.linkedin.com/pulse/ingress-anthos-multi-cluster-global-service-load-gokul-chandra/
 
 Another step now is what if you would like a managed Istio service? Here comes Anthos Service Mesh (ASM)!
 - ASM and Istio tutorial: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress
@@ -96,6 +97,7 @@ https://youtu.be/FUITCYMCEhU
 - https://cloud.google.com/blog/products/networking/traffic-director-global-traffic-management-for-open-service-mesh
 - https://medium.com/cloudzone/google-clouds-traffic-director-what-is-it-and-how-is-it-related-to-the-istio-service-mesh-c199acc64a6d
 - https://cloud.google.com/traffic-director/docs/set-up-gke-pods-auto
+- https://cloud.google.com/blog/products/networking/traffic-director-supports-proxyless-grpc
 
 [Build an Enterprise-Grade Service Mesh with Traffic Director](https://cloud.withgoogle.com/next/sf/sessions?session=NET206#infrastructure) [[Youtube](https://youtu.be/QyxQfW-Izs8)]
 

@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
+
+
 https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd
 https://github.com/andreyk-code/no-inet-gke-cluster
 
@@ -44,6 +47,7 @@ FIXME:
 - Test creation of a jumpbox?
   - https://cloud.google.com/solutions/connecting-securely#bastion
   - https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e
+  - https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine
 
 To check:
 - VPC versus Private Registry/Cluster
@@ -51,6 +55,7 @@ https://cloud.google.com/vpc-service-controls/docs/supported-products#build
 - https://medium.com/google-cloud/mitigating-data-exfiltration-risks-in-gcp-using-vpc-service-controls-part-1-82e2b440197
 - https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine
 - https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#vpc-clusters
+- https://medium.com/google-cloud/mitigating-data-exfiltration-risks-in-gcp-using-vpc-service-controls-part-1-82e2b440197
 
 # FIXME - VPC/Subnet/CIDRs
     - https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips#cluster_sizing
