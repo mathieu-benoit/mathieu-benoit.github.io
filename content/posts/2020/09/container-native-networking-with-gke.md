@@ -58,6 +58,7 @@ For this you need to provision your GKE cluster with the `--enable-ip-aliases` p
 FIXME:
 - gcloud get lb
 - backendconfig with cloud armor, etc.
+https://cloud.google.com/blog/products/networking/using-cloud-armor-and-cloud-cdn-with-your-google-load-balancer
 
 https://cloud.google.com/kubernetes-engine/docs/concepts/container-native-load-balancing#requirements
 https://cloud.google.com/kubernetes-engine/docs/how-to/container-native-load-balancing#using
@@ -86,7 +87,7 @@ ASM on GKE: https://cloud.google.com/solutions/exposing-service-mesh-apps-throug
 Ingress for Anthos: https://cloud.google.com/kubernetes-engine/docs/concepts/ingress-for-anthos
 Anthos Service Mesh Deep Dive: https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
 Extending your Istio service mesh across GKE clusters and Compute Engine instances: https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
-Ingress for Anthos - Multi-cluster Ingress and Global Service Load Balancing https://www.linkedin.com/pulse/ingress-anthos-multi-cluster-global-service-load-gokul-chandra/
+Ingress for Anthos — Multi-cluster Ingress and Global Service Load Balancing https://itnext.io/ingress-for-anthos-multi-cluster-ingress-and-global-service-load-balancing-c56c57b97e82
 
 Another step now is what if you would like a managed Istio service? Here comes Anthos Service Mesh (ASM)!
 - ASM and Istio tutorial: https://cloud.google.com/solutions/exposing-service-mesh-apps-through-gke-ingress

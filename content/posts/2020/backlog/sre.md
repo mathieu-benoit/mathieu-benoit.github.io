@@ -7,6 +7,16 @@ draft: true
 aliases:
     - /fixme/
 ---
+SRE Classroom: Distributed PubSub
+https://cloud.google.com/blog/products/devops-sre/join-sre-classroom-nalsd-workshops
+https://landing.google.com/sre/resources/practicesandprocesses/sre-classroom/
+
+https://www.blameless.com/blog/how-to-build-an-sre-team
+How to build an SRE team
+
+You don’t need SRE. What you need is SRE.
+https://sdarchitect.blog/2020/02/20/you-dont-need-sre-what-you-need-is-sre/
+
 Really great intro: Optimizing SRE Effectiveness at The New York Times (Cloud Next '19)
 https://www.youtube.com/watch?v=QCRe-Vo-PPo
 
@@ -36,7 +46,6 @@ SLO with GKE at Equifax: cloud.withgoogle.com/next/sf/sessions?session=OPS200
     - _a top-line target for fraction of successful interactions_
 - SLA: service level agreement
     - consequences
-
 
 5 key areas with SRE:
 1. Reduce organizational silos: Share ownershop

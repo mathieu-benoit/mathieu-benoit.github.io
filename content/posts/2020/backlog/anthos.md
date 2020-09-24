@@ -1,5 +1,5 @@
 ---
-title: fixme
+title: getting started with anthos
 date: 2020-08-10
 tags: [fixme]
 description: fixme
@@ -12,6 +12,8 @@ https://inthecloud.withgoogle.com/anthos-ebook/dl-cd-typ.html
 
 https://cloud.google.com/anthos/docs/setup/overview
 
+Explore Anthos
+https://youtu.be/in2L8AimfOQ
 Tutorial: Explore Anthos with the Anthos Sample Deployment on GCP
 https://cloud.google.com/anthos/docs/tutorials/explore-anthos
 

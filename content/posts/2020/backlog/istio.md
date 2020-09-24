@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+Incrementally Adopting Istio (Cloud Next '19)
+https://www.youtube.com/watch?v=0cgTHQFXYPQ
+
 [Building Globally Scalable Services with Istio and ASM](https://youtu.be/clu7t0LVhcw)
 All about multi clusters pattern and distributed services. Ameer does a really great job to explain the advantages and responsibilities to come from monolith, going to microserives, embracing service mesh to what's the value of Istio and Anthos Service Mesh. In other words, that's the presentation you need if you would like to understand what's a service mesh, and why you may need one (or not)!
 Pointing to complementary resources:
@@ -29,7 +32,6 @@ https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
 https://cloud.google.com/blog/products/networking/welcome-to-the-service-mesh-era-introducing-a-new-istio-blog-post-series
 https://www.youtube.com/watch?v=SMhTI0Pjn1Q
 https://www.youtube.com/watch?v=7cINRP0BFY8
-https://www.youtube.com/watch?v=0cgTHQFXYPQ
 
 Understanding SLOs and Error Budgets With Istio (Cloud Next '19)
 https://www.youtube.com/watch?v=AKh8uuVCpFI
