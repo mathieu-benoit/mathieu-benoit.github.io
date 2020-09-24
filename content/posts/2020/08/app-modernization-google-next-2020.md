@@ -1,7 +1,7 @@
 ---
 title: application modernization at google next onair 2020
 date: 2020-08-31
-tags: [gcp, containers, kubernetes, servicemesh]
+tags: [gcp, containers, kubernetes, service-mesh]
 description: let's see in details what is google next onair 2020 and more specifically what you should watch on an application modernization standpoint
 aliases:
     - /app-modernization-google-next-2020/
