@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://gkesecurity.guide/
+
 https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
 
 
