@@ -38,7 +38,7 @@ You learned something from someone, so that's the concept of giving back while y
 
 ## What could be shared?
 
-Anything you just learned. Someone will learn it from you. you could just forward or re-post or re-tweet an information to give it more visibility. Now, even better, you could add your own interpretation, highlight or point of view on top of it, it will accelerate the adoption by others and the collaboration with others.
+Anything you just learned. Someone will learn it from you. You could just forward or re-post or re-tweet an information to give it more visibility. Now, even better, you could add your own interpretation, highlight or point of view on top of it, it will accelerate the adoption by others and the collaboration with others.
 
 ## How to share?
 
@@ -56,6 +56,6 @@ As often as you can and when you think you have enough content to share. I often
 
 By sharing, you will be vulnerable, exposed and at risk with the content you are focused on or even with the point of view you could have on it. But that's ok, that's the goal. Be open minded and curious about what others are saying about it. I also found that being strategic and focused on a specific area is driving consistency and allow to go deeper and deeper as opposed to try to talk about everything in surface. Be yourself and add your own style and flavours, don't try to copy/paste someone else. You could quote or call out someone's else work, and that's ok too to recognize others by giving them visibility, credit and kudos. That's how communities are made by being groups of people sharing same points of interest and completing each others. Something I learned and I'm trying to be better is to be concised when I write an email, a post on LinkedIn or blog article. Be short and sweet by trying to summarize and highlight few items depending on the audience. For example, since recently I'm trying to use the concept of "tl;dr". Final tips, just have fun and don't overthink it, just do it, start small and adjust as you are growing by sharing.
 
-Hope you enjoyed reading through this one, there is few references that I encourage you to read and adapt to your own personality, style and path to grow as a person, parent, partner, friend, worker, etc.
+Hope you enjoyed reading through this one, there is few references that I encourage you to leverage and adapt to your own personality, style and path to grow as a person, parent, partner, friend, worker, etc.
 
 Cheers! ;)

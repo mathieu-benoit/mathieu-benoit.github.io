@@ -1,6 +1,6 @@
 ---
 title: container native networking with gke
-date: 2020-09-15
+date: 2020-09-29
 tags: [gcp, containers, kubernetes, servicemesh]
 description: let's see how gcp brings unique and true container native networking with gke
 draft: true
