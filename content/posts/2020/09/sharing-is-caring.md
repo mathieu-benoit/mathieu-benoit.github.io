@@ -3,7 +3,6 @@ title: sharing is caring
 date: 2020-09-28
 tags: [thoughts]
 description: let's discuss about the importance of sharing, especially in the context of a continuous learning process
-draft: true
 aliases:
     - /sharing-is-caring/
 ---
