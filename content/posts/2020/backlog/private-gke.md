@@ -1,11 +1,11 @@
 ---
 title: fixme
 date: 2020-08-10
-tags: [fixme]
+tags: [gcp, kubernetes, security]
 description: fixme
 draft: true
 aliases:
-    - /fixme/
+    - /private-gke/
 ---
 https://gkesecurity.guide/
 
