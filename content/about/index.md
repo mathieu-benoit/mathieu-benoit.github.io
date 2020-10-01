@@ -10,7 +10,7 @@ title: "about"
 
 I'm Mathieu Benoit. I live in Quebec city, QC - Canada :maple_leaf:, and I was born in France :fr:. I work at {{< html >}}<span style="color: rgb(59, 135, 245);">G</span><span style="color: rgb(235, 64, 49);">o</span><span style="color: rgb(239, 177, 0);">o</span><span style="color: rgb(59, 135, 245);">g</span><span style="color: rgb(52, 168, 83);">l</span><span style="color: rgb(235, 64, 49);">e</span>{{< /html >}} as Customer Engineer, Appplication Modernization with GCP :cloud:. Prior to this [I worked for 4 years at Microsoft as Cloud Solution Architect](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB). The intent of this blog is to document and share my learnings, I'm a [learn-it-all]({{< ref "/posts/2020/09/sharing-is-caring.md" >}}) person :rocket:. I'm passionate :heart: about Cloud Native Computing technologies such as Open Source, Cloud, Security, SRE, Containers, DevOps and Kubernetes.
 
-If you are insterested in knowing more about how this bog is built, [feel free to checkout that story]({{< ref "/posts/2020/05/myblog.md" >}}) :art:!
+If you are insterested in knowing more about how this blog is built, [feel free to checkout that story]({{< ref "/posts/2020/05/myblog.md" >}}) :art:!
 
 If you have any feedback, comment or issue about this blog, feel free to directly file a new issue :memo: {{< html >}}<a href="https://github.com/mathieu-benoit/myblog/issues/new/choose" target="_blank">there</a>{{< /html >}}.
 
