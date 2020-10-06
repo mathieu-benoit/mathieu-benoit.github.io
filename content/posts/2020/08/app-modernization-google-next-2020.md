@@ -90,7 +90,7 @@ I took the opportunity to watch most of the App Modernization sessions, here bel
 - [App Modernization demo](https://cloud.withgoogle.com/next/sf/demos?demo=704#application-modernization)
     - Learn how Anthos brings everything together to balance security with agility, reliability with efficiency, and portability with consistency.
 - [Cloud native development demo](https://cloud.withgoogle.com/next/sf/demos?demo=705#application-modernization)
-    - A quick and interactive demo about Cloud native development about 3 aareas: Code and Verify, Package and Release and Run and Manage from 3 different personas: Dev, Security and Ops.
+    - A quick and interactive demo about Cloud native development about 3 areas: Code and Verify, Package and Release and Run and Manage from 3 different personas: Dev, Security and Ops.
 - [Experience a Fully Managed, Serverless Environment demo](https://cloud.withgoogle.com/next/sf/demos?demo=706#application-modernization) [[Youtube](https://youtu.be/cL4zK_OajE8)]
     - Discover how to easily build and deploy containerized applications in a fully managed environment using Cloud Run.
 - [Explore Anthos](https://cloud.withgoogle.com/next/sf/demos?demo=701#application-modernization) [[Youtube](https://youtu.be/in2L8AimfOQ)]
