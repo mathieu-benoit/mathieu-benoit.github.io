@@ -31,6 +31,8 @@ Here are few resources I took the opportunity to refer in this presentation:
 - [Three selfish reasons I mentor](https://www.linkedin.com/pulse/three-selfish-reasons-i-mentor-you-may-want-too-sarah-fischer/) - Sarah Fischer
     - *interested in being a better you? then here are three selfish reasons to consider becoming a mentor​*
 - [Why You Should Always Teach What You Learn](https://medium.com/accelerated-intelligence/explanation-effect-why-you-should-always-teach-what-you-learn-9800983a0ea1) or [If you’re not spending 5 hours per week learning, you’re being irresponsible​](https://medium.com/accelerated-intelligence/the-5-hour-rule-if-youre-not-spending-5-hours-per-week-learning-you-re-being-irresponsible-791c3f18f5e6) - Michael Simmons​
+- [The Impact Of Mentoring During the Pandemic Situation](https://medium.com/gdgeurope/the-impact-of-mentoring-during-the-pandemic-situation-e413e94f93c9)
+    - *interesting way to see how you could help out your communities by being a mentor, especially during this covid-19 situation*
 
 ## Why sharing?
 
