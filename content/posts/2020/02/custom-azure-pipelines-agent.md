@@ -1,7 +1,7 @@
 ---
 title: my own custom and private azure pipelines agent as a docker container
 date: 2020-02-24
-tags: [azure, containers, kubernetes, azure devops]
+tags: [azure, containers, kubernetes, azure-devops]
 description: let's build a custom linux container image as an azure pipelines agent
 aliases:
     - /custom-azure-pipelines-agent/

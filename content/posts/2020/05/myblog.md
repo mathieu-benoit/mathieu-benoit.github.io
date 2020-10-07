@@ -1,7 +1,7 @@
 ---
 title: hello, cloud native hugo blog!
 date: 2020-05-15
-tags: [containers, azure, azure devops, kubernetes, helm, security]
+tags: [containers, azure, azure-devops, kubernetes, helm, security]
 description: let's discuss why my new blog is a containerized hugo website hosted on kubernetes
 aliases:
     - /myblog/

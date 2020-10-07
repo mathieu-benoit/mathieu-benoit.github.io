@@ -1,7 +1,7 @@
 ---
 title: helm chart management in ci/cd with acr and azure devops
 date: 2019-07-01
-tags: [azure, azure devops, kubernetes, containers]
+tags: [azure, azure-devops, kubernetes, containers]
 description: let's do ci/cd with your own helm charts, acr and aks via azure pipelines
 aliases:
     - /ci-cd-with-helm-chart/

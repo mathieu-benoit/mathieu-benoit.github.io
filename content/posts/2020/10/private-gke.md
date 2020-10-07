@@ -16,23 +16,31 @@ https://github.com/andreyk-code/no-inet-gke-cluster
 
 # Networking
 
-Talk about Cloud Nat: https://cloud.google.com/nat/docs/gke-example
+Talk about Cloud Nat? https://cloud.google.com/nat/docs/gke-example
 
 ```
 network=mygkecluster-network
 subnet=mygkecluster-subnet
+region=us-east4
 gcloud compute networks create $network \
   --subnet-mode custom
+
+  gcloud compute networks subnets list --network $network
+
 gcloud compute networks subnets create $subnet \
   --network $network \
-  --range 10.10.10.0/24 \
-  --region us-central1 \
+  --range 10.0.0.0/20 \
+  --region $region \
   --enable-private-ip-google-access \
-  --secondary-range services=10.10.11.0/24,pods=10.1.0.0/16
+  --secondary-range services=10.2.0.0/25,pods=10.1.0.0/20
   # 10.0.0.0/24 --> 10.2.0.0/20 --> 10.1.0.0/16
   # 192.168.0.0/20 --> 10.0.32.0/20 --> 10.4.0.0/14
   # 10.5.0.0/20 --> 10.4.0.0/19 --> 10.0.0.0/14
   #* 10.150.0.0/20 --> 10.53.16.0/25 --> 10.53.0.0/20
+
+gcloud compute networks subnets describe $subnet --region $region
+
+gcloud compute firewall-rules list     --filter 'name~^mygkecluster-network'
 ```
 
 # Private GKE clusters
@@ -54,7 +62,10 @@ gcloud container clusters create \
   --network $network \
   --subnetwork $subnet \
   --cluster-secondary-range-name pods \
-  --services-secondary-range-name services \
+  --services-secondary-range-name services
+
+# Verify that nodes don't have external IP address
+kubectl get nodes -o wide
 ```
 
 > From other VMs in the cluster's VPC network, you can use `kubectl` to communicate with the private endpoint only if they are in the same region as the cluster and either their internal IP addresses are included in the list of master authorized networks or they are located in the same subnet as the cluster's nodes.
@@ -65,6 +76,8 @@ https://cloud.google.com/solutions/connecting-securely#bastion
 https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e
 
 # Google Container Registry
+
+> In a private cluster, the container runtime can pull container images from Container Registry; it cannot pull images from any other container image registry on the internet. This is because the nodes in a private cluster do not have external IP addresses, so by default they cannot communicate with services outside of the Google network.
 
 https://cloud.google.com/vpc-service-controls/docs/set-up-gke
 

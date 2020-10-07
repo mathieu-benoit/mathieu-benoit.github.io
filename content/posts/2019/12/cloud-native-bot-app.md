@@ -1,7 +1,7 @@
 ---
 title: my bot just became a cloud native app
 date: 2019-12-23
-tags: [azure, containers, kubernetes, dotnet, terraform, helm, azure devops]
+tags: [azure, containers, kubernetes, dotnet, terraform, helm, azure-devops]
 description: let's leverage docker, helm, kubernetes and terraform to make your bot app more cloud native
 aliases:
     - /cloud-native-bot-app/
@@ -27,7 +27,7 @@ I was able to implement my Bot with [.NET Core 3.1 just announced early December
 
 # Docker base image
 
-I'm using the [mcr.microsoft.com/dotnet/core/aspnet](https://hub.docker.com/_/microsoft-dotnet-core-aspnet) base image, you could find the entire list of tags available here: [https://mcr.microsoft.com/v2/dotnet/core/aspnet/tags/list](https://mcr.microsoft.com/v2/dotnet/core/aspnet/tags/list). If you don't know yet, base images of Microsoft related products are now published in the Microsoft Container Registry, [read the story here](https://devblogs.microsoft.com/dotnet/net-core-container-images-now-published-to-microsoft-container-registry/). Furthermore, I'm using the alpine version of this base image in order to [reduce the size of the image as well as the surface of threat]({{< ref "/posts/2019/11/scanning-containers-with-asc.md" >}}) with such small alpine distribution. Notice also that I'm not using latest, 3 nor 3.1 but explicitly `aspnet:3.1.0` and `sdk:3.1.100` versions to be able to update them accordingly as new versions will arrive.  
+I'm using the [mcr.microsoft.com/dotnet/core/aspnet](https://hub.docker.com/_/microsoft-dotnet-core-aspnet) base image, you could find the entire list of tags available here: [https://mcr.microsoft.com/v2/dotnet/core/aspnet/tags/list](https://mcr.microsoft.com/v2/dotnet/core/aspnet/tags/list). If you don't know yet, base images of Microsoft related products are now published in the Microsoft Container Registry, [read the story here](https://devblogs.microsoft.com/dotnet/net-core-container-images-now-published-to-microsoft-container-registry/). Furthermore, I'm using the alpine version of this base image in order to [reduce the size of the image as well as the surface of threat]({{< ref "/posts/2019/11/scanning-containers-with-asc.md" >}}) with such small alpine distribution. Notice also that I'm not using `latest`, `3` nor `3.1` but explicitly `aspnet:3.1.0` and `sdk:3.1.100` versions to be able to update them accordingly as new versions will arrive.  
 The size of my image is now 112 MB.
 
 # Helm 3 and Helm chart

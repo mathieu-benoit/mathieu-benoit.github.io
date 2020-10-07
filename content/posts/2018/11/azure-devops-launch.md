@@ -1,12 +1,12 @@
 ---
 title: azure devops - community launch event in quebec city
 date: 2018-11-28
-tags: [azure, azure devops]
+tags: [azure, azure-devops, presentations]
 description: let's talk about the new branding azure devops
 aliases:
     - /azure-devops-launch/
 ---
-Last night, we hosted in [Le Camp](https://lecampquebec.com/en/) the Azure DevOps Community Launch Event in Quebec city. It's a world wide event to talk about the latest and greatest around Azure DevOps: [https://www.azuredevopslaunch.com/](https://www.azuredevopslaunch.com)  
+[Last night](https://www.meetup.com/AzureQC/events/254946993/), we hosted in [Le Camp](https://lecampquebec.com/en/) the Azure DevOps Community Launch Event in Quebec city. It's a world wide event to talk about the latest and greatest around Azure DevOps: [https://www.azuredevopslaunch.com/](https://www.azuredevopslaunch.com)  
 
 The agenda was:
 - **Introduction to Azure DevOps** by [Mathieu Benoit](https://www.linkedin.com/in/mathieubenoitqc), CSA at Microsoft and [AzureQC Meetup](https://www.meetup.com/AzureQC) organizer

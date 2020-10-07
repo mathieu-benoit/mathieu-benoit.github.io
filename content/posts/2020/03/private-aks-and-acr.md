@@ -1,7 +1,7 @@
 ---
 title: private aks and private acr, safer you are
 date: 2020-03-27
-tags: [azure, security, kubernetes, azure devops]
+tags: [azure, security, kubernetes, azure-devops]
 description: let's setup azure private endpoint for both azure kubernetes service (aks) and azure container registry (acr)
 aliases:
     - /private-aks-and-acr/

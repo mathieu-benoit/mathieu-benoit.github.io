@@ -1,7 +1,7 @@
 ---
 title: azure devops pipeline container job with terraform
 date: 2019-03-16
-tags: [azure, azure devops]
+tags: [azure, azure-devops]
 description: let's leverage container job in azure pipelines for terraform
 aliases:
     - /azure-pipelines-container-job-for-terraform/

@@ -1,7 +1,7 @@
 ---
 title: sharing is caring
 date: 2020-09-28
-tags: [thoughts]
+tags: [thoughts, presentations]
 description: let's discuss about the importance of sharing, especially in the context of a continuous learning process
 aliases:
     - /sharing-is-caring/

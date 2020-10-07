@@ -1,7 +1,7 @@
 ---
 title: ignite 2019, what's new with containers and kubernetes on azure?
 date: 2019-11-04
-tags: [containers, kubernetes, helm, azure, azure devops]
+tags: [containers, kubernetes, helm, azure, azure-devops]
 description: let's see what has been announced around the containers technologies at the microsoft ignite conference 2019
 aliases:
     - /ignite2019/

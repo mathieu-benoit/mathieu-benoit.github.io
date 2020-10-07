@@ -1,7 +1,7 @@
 ---
 title: ci/cd pipeline with azure devops to deploy any apps on kubernetes
 date: 2019-07-10
-tags: [azure, azure devops, kubernetes, containers]
+tags: [azure, azure-devops, kubernetes, containers]
 description: let's build and deploy a containerized app in kubernetes via azure pipelines
 aliases:
     - /azure-pipelines-for-k8s/

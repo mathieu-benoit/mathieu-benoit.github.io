@@ -1,7 +1,7 @@
 ---
 title: set a multi-stage output variable with azure devops
 date: 2019-06-09
-tags: [azure devops]
+tags: [azure-devops]
 description: let's see how to easily pass variables from one stage to another in azure devops pipelines
 aliases:
     - /azure-pipelines-stages-variables/
