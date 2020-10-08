@@ -6,7 +6,7 @@ description: let's see how to cleanup your gcr by deleting old container images.
 aliases:
     - /gcr-cleaner/
 ---
-I recently found out that [Google Container Registry (GCR) doesn't have yet a retention nor a cleanup feature](https://b.corp.google.com/issues/113559510). I automatically found two great open source contributions to accomplish this initiated by two Googlers:
+I recently found out that [Google Container Registry (GCR) doesn't have yet a retention nor a cleanup feature](https://b.corp.google.com/issues/113559510). I quickly found two great open source contributions to accomplish this initiated by two Googlers:
 - [gcr-cleaner](https://github.com/sethvargo/gcr-cleaner)
     - A containerized Golang app hosted on Cloud Run and triggered by Cloud Scheduler to delete untagged images.
 - [gcrgc.sh](https://gist.github.com/ahmetb/7ce6d741bd5baa194a3fac6b1fec8bb7)
