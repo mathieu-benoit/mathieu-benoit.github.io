@@ -33,6 +33,8 @@ Here are few resources I took the opportunity to refer in this presentation:
 - [Why You Should Always Teach What You Learn](https://medium.com/accelerated-intelligence/explanation-effect-why-you-should-always-teach-what-you-learn-9800983a0ea1) or [If you’re not spending 5 hours per week learning, you’re being irresponsible​](https://medium.com/accelerated-intelligence/the-5-hour-rule-if-youre-not-spending-5-hours-per-week-learning-you-re-being-irresponsible-791c3f18f5e6) - Michael Simmons​
 - [The Impact Of Mentoring During the Pandemic Situation](https://medium.com/gdgeurope/the-impact-of-mentoring-during-the-pandemic-situation-e413e94f93c9)
     - *interesting way to see how you could help out your communities by being a mentor, especially during this covid-19 situation*
+- [Postmortem Culture: Learning from Failure](https://landing.google.com/sre/sre-book/chapters/postmortem-culture/) - SRE Book, Google
+    - *another approach of sharing and learning from failures with the notion of blameless postmortems*
 
 ## Why sharing?
 
