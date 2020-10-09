@@ -58,6 +58,9 @@ For this you need to provision your GKE cluster with the `--enable-ip-aliases` p
 
 Other features and services you could now leverage [in addition to the load balancer is Cloud Armor (WAF) or Cloud CDN](https://cloud.google.com/blog/products/networking/using-cloud-armor-and-cloud-cdn-with-your-google-load-balancer) for example. Here is how to [Configure Ingress features through BackendConfig parameters](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#configuring_ingress_features_through_backendconfig_parameters).
 
+It's also important to note that the [Google Cloud Load Balancing](https://cloud.google.com/load-balancing) is Global (not regional) with single anycast IP (not DNS-based) and it's managed software-defined service (not instance- or device-based solution). The [Chapter 11 of the SRE Workbook](https://landing.google.com/sre/workbook/chapters/managing-load/) describes Google’s approach to traffic management with its GCLB.
+> Cloud Load Balancing is built on the same frontend-serving infrastructure that powers YouTube, Maps, Gmail, Search, etc. It supports 1 million+ queries per second with consistent high performance and low latency. Traffic enters Cloud Load Balancing through 80+ distinct global load balancing locations, maximizing the distance traveled on Google's fast private network backbone.
+
 # GKE Dataplane V2
 
 The [New GKE Dataplane V2 (leveraging eBPF via Cilium) which increases security and visibility for containers](https://cloud.google.com/blog/products/containers-kubernetes/bringing-ebpf-and-cilium-to-google-kubernetes-engine) has just been announced recently.
