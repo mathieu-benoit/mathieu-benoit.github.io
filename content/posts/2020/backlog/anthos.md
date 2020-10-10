@@ -22,3 +22,6 @@ https://www.coursera.org/specializations/architecting-hybrid-cloud-infrastructur
 
 ACM in Multi-Cluster Environments (Cloud Native Day 2020)
 https://www.youtube.com/watch?v=xhC5LZd5Nc4&list=PLCfLScXpEyAQ0k9pNr8SlGK42CSd-buYv&index=5
+
+Automating Kubernetes Multi-Cluster Config With Argo CD, inspired by ASM
+https://www.cncf.io/blog/2020/10/09/automating-kubernetes-multi-cluster-config-with-argo-cd/

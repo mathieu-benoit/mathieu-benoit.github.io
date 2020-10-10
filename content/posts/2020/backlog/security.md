@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://cloud.google.com/security/beyondprod
+https://cloud.google.com/security/infrastructure/design/
+
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/GCP_Security_kLUG9v5.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/GCP_Security_kLUG9v5.max-2200x2200.jpg)
 
 Are you looking for a step-by-step guide to setup your GCP foundation? Here you are with this [Google Cloud Security Foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf)!

@@ -7,6 +7,18 @@ draft: true
 aliases:
     - /sre/
 ---
+TODO:
+- Maybe have a separate blog article dedicated to SLI/SLO/SLA?
+
+Implementing GCP Stackdriver and Adapting SRE Practices to Samsung’s AI System (Cloud Next '19)
+https://www.youtube.com/watch?v=45UoGDxuwto
+
+Transparent Service Level Indicators (SLIs), Monitor Google Cloud services and their effects on your workloads.
+https://cloud.google.com/transparent-sli
+--> Good exercise to create my first SLOs with GCP Services/API?
+> We here at Google Cloud are committed to sharing detailed performance information about our services. This is similar to the data that Google SREs use to keep our services up and running. With this shared data, you can easily monitor how we are doing, so that when we work together on a service ticket, everyone is on the same page. We think Transparent SLIs will improve your tech support experience and increase your confidence in cloud computing.
+> To get started collecting and exploring Transparent service metrics, go to Cloud Monitoring Metrics Explorer and select “Consumed API” as the resource type. You'll see a list of metrics you can chart based on the products and services you are using in your application. You can then pick the metrics that makes the most sense for your environment. Narrow down the data you display by specifying which service, method, location, credential, or error code you want to monitor.
+
 The Art of SLOs Handbook letter
 https://static.googleusercontent.com/media/landing.google.com/en//sre/static/pdf/art-of-slos-handbook-letter.pdf
 SRE and the art of SLOs at the DevOpsDays 2019 Chicago: https://youtu.be/fWvNzDVOJDE

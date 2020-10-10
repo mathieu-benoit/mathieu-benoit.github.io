@@ -25,7 +25,7 @@ region=us-east4
 gcloud compute networks create $network \
   --subnet-mode custom
 
-  gcloud compute networks subnets list --network $network
+gcloud compute networks subnets list --network $network
 
 gcloud compute networks subnets create $subnet \
   --network $network \
