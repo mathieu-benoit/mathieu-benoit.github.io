@@ -27,7 +27,7 @@ Why Zero Trust Networks?
 - Non-targeted attacks have less value
     - Forces targeted attacks - higher cost to attacker
 
-[Identity Aware Proxy (IAP)](https://cloud.google.com/iap) is one of the components of the BeyondCorp security model and lets you establish a Central Authorization layer for Applications Accessed by HTTPS. Problems it solves:
+[Identity Aware Proxy (IAP)](https://cloud.google.com/iap) is one of the components of the BeyondCorp security model and lets you establish a central authorization layer for applications accessed by HTTPS. Problems it solves:
 - May remove need for VPN
     - Hard to configure, arguably secure, doesn not implement zero-trust
 - Access by Contractor (can't install VPN Client)
@@ -36,10 +36,16 @@ Why Zero Trust Networks?
     - Utilizing VPN normally means paying for agents installed on devices + sizing large NGFWs due to the encryption they need to support hundreds of users
 - Reduce latency
 
-A concrete implementation of IAP could be seen with this example: [How to ssh into your GCE machine without a public IP](https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e).
+> IAP can help you control access to your public cloud apps, your on-prem apps and your VMs running on Google Cloud. IAP works by verifying a users’s identity and considering the context of their request to determine if they should be allowed access. This is one building block in the zero trust model of access, an enterprise security model that enables every employee to work from untrusted networks without the use of a VPN.
 
-Here is another visual demonstration of IAP and Access Context Manager for both HTTPS (web app) and SSH/TCP (VM) resources:
+Here is visual demonstration of IAP and Access Context Manager for both HTTPS (web app) and SSH/TCP (VM) resources:
 {{< youtube RC5IhUF1618 >}}
+
+And here are concrete implementations of IAP:
+- [How to ssh into your GCE machine without a public IP](https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e)
+- [Verify the identity and context of a client before serving an App Engine app](https://medium.com/google-cloud/beyond-corp-in-a-bottle-uncorked-5e8c7acce52)
+- [use BeyondCorp with any identity provider and any back-end](https://medium.com/google-cloud/zero-trust-for-enterprise-cooking-up-some-access-controls-cfd05ba54d12)
+
 
 Further and complementary resources:
 - [How Google adopted BeyondCorp](https://security.googleblog.com/2019/06/how-google-adopted-beyondcorp.html)
@@ -52,6 +58,6 @@ Further and complementary resources:
 - [BeyondCorp Beyond Google by Veolia (Cloud Next '18)](https://www.youtube.com/watch?v=ei1CxF1BHh4)
     - After exposing their Cloud strategy, Veolia is illustrating how they are leveraging Google's BeyondCorp concept especially with IAP.
 
-Hope you enjoyed this blog article, stay safe!
+Hope you enjoyed this blog article, and hope it's giving you some ideas about how to modernize your way to implement your Zero Trust security model when dealing with accessing internal web apps or VMs.
 
-Cheers!
+Cheers and stay safe!
