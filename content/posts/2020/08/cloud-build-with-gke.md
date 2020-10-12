@@ -103,7 +103,7 @@ The GKE cluster is able to pull images from GCR because they are on the same Pro
 
 For information, if you have a [Private GKE cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept) and a [Private GCR](https://cloud.google.com/container-registry/docs/securing-with-vpc-sc), Cloud Build doesn't support VPC Service Control but [there is an alternative by creating an access level](https://cloud.google.com/vpc-service-controls/docs/supported-products#build).
 
-_Extra goodies here, you could get a Cloud Build's status badge by leveraging this `badger` project: https://github.com/kelseyhightower/badger._
+_Extra goodies here, you could get a Cloud Build's status badge by leveraging this `badger` project: [kelseyhightower/badger](https://github.com/kelseyhightower/badger)._
 
 # Final thoughts
 
