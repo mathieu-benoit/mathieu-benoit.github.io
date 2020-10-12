@@ -5,6 +5,7 @@ tags: [gcp, security]
 description: let's see how google shared best practices and technologies about its own zero trust security model, beyondcorp.
 aliases:
     - /beyondcorp/
+    - /iap/
 ---
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/BeyondCorps_high-level_architecture.max-900x900.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/BeyondCorps_high-level_architecture.max-900x900.jpg)
 
@@ -41,10 +42,13 @@ Why Zero Trust Networks?
 Here is visual demonstration of IAP and Access Context Manager for both HTTPS (web app) and SSH/TCP (VM) resources:
 {{< youtube RC5IhUF1618 >}}
 
-And here are concrete implementations of IAP:
+And here are concrete implementations of IAP if you are looking for more examples:
 - [How to ssh into your GCE machine without a public IP](https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e)
 - [Verify the identity and context of a client before serving an App Engine app](https://medium.com/google-cloud/beyond-corp-in-a-bottle-uncorked-5e8c7acce52)
-- [use BeyondCorp with any identity provider and any back-end](https://medium.com/google-cloud/zero-trust-for-enterprise-cooking-up-some-access-controls-cfd05ba54d12)
+- [Use BeyondCorp with any identity provider and any back-end](https://medium.com/google-cloud/zero-trust-for-enterprise-cooking-up-some-access-controls-cfd05ba54d12)
+
+Still a bit confused about how to get started with BeyondCorp and IAP? Here you are:
+{{< youtube goAWiQGRefw >}}
 
 
 Further and complementary resources:
@@ -58,6 +62,6 @@ Further and complementary resources:
 - [BeyondCorp Beyond Google by Veolia (Cloud Next '18)](https://www.youtube.com/watch?v=ei1CxF1BHh4)
     - After exposing their Cloud strategy, Veolia is illustrating how they are leveraging Google's BeyondCorp concept especially with IAP.
 
-Hope you enjoyed this blog article, and hope it's giving you some ideas about how to modernize your way to implement your Zero Trust security model when dealing with accessing internal web apps or VMs.
+Hope you enjoyed this blog article, and hope it's giving you some ideas about how to modernize your way to implement your Zero Trust security model when dealing with accessing internal web apps, APIs, GSuite, VMs, etc.
 
 Cheers and stay safe!
