@@ -2,9 +2,9 @@
 title: presentations
 ---
 
-Here is the list of the 29 public presentations and workshop I delivered.
+Here is the list of the 30 public presentations and workshop I delivered.
 
-## 2020 (6)
+## 2020 (7)
 
 - 2020-09 - [Kubernetes and beyond on Google Cloud Platform - Google for Startups Accelerator Program](https://github.com/mathieu-benoit/presentations/raw/main/2020-09-Kubernetesandbeyond-StartupAcceleratorProgram.pdf)
   - [Link to the event](https://events.withgoogle.com/google-for-startups-accelerator-canada-1/#content)
@@ -19,6 +19,7 @@ Here is the list of the 29 public presentations and workshop I delivered.
 - 2020-04 - [Everything-as-Code](https://www.eventbrite.ca/e/billets-beer-and-learn-virtuel-culture-dev-ops-et-linfrastructure-as-code-99410453342)
   - [Link to the recording](https://pages.nexapp.ca/beerandlearnedition4)
   - [Link to the demo](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot)
+- 2020-03 - [Continuous delivery in Azure DevOps workshop](https://github.com/microsoft/MCW-Continuous-delivery-in-Azure-DevOps)
 
 ## 2018 (10)
 
