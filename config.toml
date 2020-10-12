@@ -29,3 +29,8 @@ enableEmoji = true
         name = "about"
         url = "/about/"
         weight = "30"
+      [[languages.en.menu.main]]
+        identifier = "tags"
+        name = "tags"
+        url = "/tags/"
+        weight = "30"
