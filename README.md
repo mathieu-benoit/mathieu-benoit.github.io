@@ -1,3 +1,5 @@
+![CloudBuild](https://badger-dydtquwp2q-ue.a.run.app/build/status?project=mabenoit-myblog&id=2d99471b-c068-4452-a670-9763a89c6e8e)
+
 Build the container:
 ```
 git clone --recurse-submodules https://github.com/mathieu-benoit/myblog

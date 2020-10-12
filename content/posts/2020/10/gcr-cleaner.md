@@ -30,6 +30,6 @@ IMAGE_NAME=the-name-of-your-container-image
 
 You could also find altenative criteria to delete images, [like for example here](https://medium.com/@daangeurts/deleting-unused-images-from-google-cloud-container-registry-2fec12901ce6) another way to see this by keeping only X number of images for a specific image name. You may also want to have this as a [recurrent Cloud Build like illustrated here](https://gist.github.com/hazcod/232d4aa30d2778f0ab5cc0cd21a53281).
 
-In other words, you could adapt those scripts for your own needs.
+In other words, you could adapt these scripts for your own needs.
 
 Cheers!

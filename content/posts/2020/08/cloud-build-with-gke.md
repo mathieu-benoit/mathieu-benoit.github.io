@@ -103,6 +103,8 @@ The GKE cluster is able to pull images from GCR because they are on the same Pro
 
 For information, if you have a [Private GKE cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept) and a [Private GCR](https://cloud.google.com/container-registry/docs/securing-with-vpc-sc), Cloud Build doesn't support VPC Service Control but [there is an alternative by creating an access level](https://cloud.google.com/vpc-service-controls/docs/supported-products#build).
 
+_Extra goodies here, you could get a Cloud Build's status badge by leveraging this `badger` project: https://github.com/kelseyhightower/badger._
+
 # Final thoughts
 
 You could find my final [`cloudbuild.yaml` file in GitHub](https://github.com/mathieu-benoit/myblog/blob/master/cloudbuild.yaml) leveraging what we have been discussing throughout this blog article and combining both the CI part as well as the CD part. Yes, I'm having just one build config file for my blog and as soon as the container image is pushed to GCR, it will be then deployed in GKE, without any pause, approval, etc. But again, you could achieve those with different build config files or also having different strategies in place regarding Git branches and pull requests to manage different environments. You could also setup a [GitOps approach](https://www.weave.works/blog/what-is-gitops-really) to manage the CD part within your GKE cluster and not having this second part handled by Cloud Build.
