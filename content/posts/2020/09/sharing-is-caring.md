@@ -1,7 +1,7 @@
 ---
 title: sharing is caring
 date: 2020-09-28
-tags: [thoughts, presentations]
+tags: [inspiration, presentations]
 description: let's discuss about the importance of sharing, especially in the context of a continuous learning process
 aliases:
     - /sharing-is-caring/
@@ -42,7 +42,7 @@ You learned something from someone, so that's the concept of giving back while y
 
 ## What could be shared?
 
-Anything you just learned. Someone will learn it from you. You could just forward or re-post or re-tweet an information to give it more visibility. Now, even better, you could add your own interpretation, highlight or point of view on top of it, it will accelerate the adoption by others and the collaboration with others.
+Anything you just learned. Someone will learn it from you. You could just forward or re-post or re-tweet an information to give it more visibility. Now, even better, you could add your own interpretation, highlight or point of view on top of it, it will accelerate the adoption by others and the collaboration with others. Furthermore, few people are able to share "failures", but if you think about it, if you read tips and tricks from someone who thinks she or he failed, don't you think it's an acceleration process for learning? I recently read an article from someone who shared his story about ["how he failed his startup"]({{< ref "/posts/2020/10/the-lean-startup.md" >}}), really great example of courage and the power of sharing some lessons learned.
 
 ## How to share?
 

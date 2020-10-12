@@ -1,7 +1,7 @@
 ---
 title: essentialism, the discipline pursuit of less
 date: 2017-05-30
-tags: [thoughts]
+tags: [inspiration]
 description: let's review the book - essentialism, the discipline pursuit of less
 aliases:
     - /essentialism/

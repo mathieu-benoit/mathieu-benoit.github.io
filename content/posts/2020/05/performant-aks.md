@@ -2,7 +2,7 @@
 title: setup a performant aks cluster
 date: 2020-05-31
 tags: [azure, kubernetes]
-description: let's highlight tips & tricks about the setup of an aks cluster to make it more performant as its getting more and more containers at scale.
+description: let's highlight tips & tricks about the setup of an aks cluster to make it more performant as its getting more and more containers at scale
 aliases:
     - /performant-aks/
 ---

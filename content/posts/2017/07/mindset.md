@@ -1,7 +1,7 @@
 ---
 title: mindset, the new psychology of success
 date: 2017-07-31
-tags: [thoughts]
+tags: [inspiration]
 description: let's review the book - mindset, the new psychology of success
 aliases:
     - /mindset/

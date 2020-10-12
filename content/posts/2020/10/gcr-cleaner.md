@@ -2,7 +2,7 @@
 title: gcr cleaner
 date: 2020-10-07
 tags: [gcp, containers]
-description: let's see how to cleanup your gcr by deleting old container images.
+description: let's see how to cleanup your gcr by deleting old container images
 aliases:
     - /gcr-cleaner/
 ---

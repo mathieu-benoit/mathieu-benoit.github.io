@@ -10,6 +10,8 @@ aliases:
 https://gkesecurity.guide/
 https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd
 https://github.com/andreyk-code/no-inet-gke-cluster
+https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
+https://cloud.google.com/blog/products/devops-sre/using-the-cloud-foundation-toolkit-with-terraform
 
 
 --> https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#gcloud

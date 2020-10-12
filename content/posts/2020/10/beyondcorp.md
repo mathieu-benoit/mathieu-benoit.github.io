@@ -2,7 +2,7 @@
 title: zero trust security model with google's beyondcorp
 date: 2020-10-09
 tags: [gcp, security]
-description: let's see how google shared best practices and technologies about its own zero trust security model, beyondcorp.
+description: let's see how google shared best practices and technologies about its own zero trust security model, beyondcorp
 aliases:
     - /beyondcorp/
     - /iap/
