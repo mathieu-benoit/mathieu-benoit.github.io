@@ -30,7 +30,7 @@ Why Zero Trust Networks?
 
 [Identity Aware Proxy (IAP)](https://cloud.google.com/iap) is one of the components of the BeyondCorp security model and lets you establish a central authorization layer for applications accessed by HTTPS. Problems it solves:
 - May remove need for VPN
-    - Hard to configure, arguably secure, doesn not implement zero-trust
+    - Hard to configure, arguably secure, does not implement zero-trust
 - Access by Contractor (can't install VPN Client)
     - Some Companies implement SSL VPN - normally a webpage hosted on a NGFW
 - Save costs
