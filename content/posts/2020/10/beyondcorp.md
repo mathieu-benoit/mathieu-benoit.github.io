@@ -52,6 +52,8 @@ Still a bit confused about how to get started with BeyondCorp and IAP? Here you 
 
 
 Further and complementary resources:
+- [Google Cloud Security Showcase](https://cloud.google.com/security/showcase)
+- [Democratizing Zero Trust with an expanded BeyondCorp Alliance](https://cloud.google.com/blog/products/identity-security/google-cloud-announces-new-partners-in-its-beyondcorp-alliance)
 - [How Google adopted BeyondCorp](https://security.googleblog.com/2019/06/how-google-adopted-beyondcorp.html)
 - [Preparing for a BeyondCorp world at your company](https://cloud.google.com/blog/products/gcp/preparing-beyondcorp-world-your-company)
 - [Keep your teams working safely with BeyondCorp Remote Access](https://cloud.google.com/blog/products/identity-security/keep-your-teams-working-safely-with-beyondcorp-remote-access)
