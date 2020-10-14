@@ -49,7 +49,7 @@ https://cloud.withgoogle.com/next/sf/sessions?session=CMP100#infrastructure
 --> Active Assist: https://cloud.google.com/solutions/active-assist
 
 Cost Control and Financial Governance Best Practices (Cloud Next '19)
-https://www.youtube.com/watch?v=MM4wZ5JwYdE
+https://youtu.be/MM4wZ5JwYdE
 Great feedback from Deloitte, Etsy, Broad Institute, and Vendasta on how they are managing their businesses on GCP and increasing the predictability of their cloud costs with financial governance policies, controls, and cost optimizations.
 --> Build proactive alerts, dashboard and reports visible to a broad list of stakeholders: transparency, shared responsibilities, encourage collaboration, etc.
 

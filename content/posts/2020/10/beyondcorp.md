@@ -57,11 +57,11 @@ Further and complementary resources:
 - [How Google adopted BeyondCorp](https://security.googleblog.com/2019/06/how-google-adopted-beyondcorp.html)
 - [Preparing for a BeyondCorp world at your company](https://cloud.google.com/blog/products/gcp/preparing-beyondcorp-world-your-company)
 - [Keep your teams working safely with BeyondCorp Remote Access](https://cloud.google.com/blog/products/identity-security/keep-your-teams-working-safely-with-beyondcorp-remote-access)
-- [Towards Zero Trust at GitLab.com (Cloud Next '19)](https://www.youtube.com/watch?v=DrPiCBtaydM)
+- [Towards Zero Trust at GitLab.com (Cloud Next '19)](https://youtu.be/DrPiCBtaydM)
     - GitLab sharing lessons learned like implementing Zero Trust is always ongoing, each roadmap can be built independently, build root mechanisms first - order matters (central SSO, etc.), UX matters, serious automation will be needed, one size does not fill all (org requirements may differ), your mileage may vary (mature environments are more challenging).
-- [How Airbnb Secured Access to Their Cloud With Context-Aware Access (Cloud Next '19)](https://www.youtube.com/watch?v=Sq9gp8KBsY0)
+- [How Airbnb Secured Access to Their Cloud With Context-Aware Access (Cloud Next '19)](https://youtu.be/Sq9gp8KBsY0)
     - Airbnb deployed IAP in front of AWS + on prem backends to manage access to LOB web apps, G Suite, and GCP resources with context-aware access enabling stronger security posture, anywhere access, and more intuitive end-user experiences.
-- [BeyondCorp Beyond Google by Veolia (Cloud Next '18)](https://www.youtube.com/watch?v=ei1CxF1BHh4)
+- [BeyondCorp Beyond Google by Veolia (Cloud Next '18)](https://youtu.be/ei1CxF1BHh4)
     - After exposing their Cloud strategy, Veolia is illustrating how they are leveraging Google's BeyondCorp concept especially with IAP.
 
 Hope you enjoyed this blog article, and hope it's giving you some ideas about how to modernize your way to implement your Zero Trust security model when dealing with accessing internal web apps, APIs, GSuite, VMs, etc.

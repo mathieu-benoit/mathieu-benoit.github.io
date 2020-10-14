@@ -22,7 +22,7 @@ Networking with containers and Kubernetes is an important piece and plays a crit
 
 Since [its announcement in October 2018](https://cloud.google.com/blog/products/gcp/introducing-vpc-native-clusters-for-google-kubernetes-engine), [VPC-native clusters for GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) is the default cluster network mode when you create a GKE cluster from within the Google Console but not yet via REST API nor the Google Cloud SDK/CLI. VPC-native clusters use [alias IP ranges](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips) for pod networking. This means that the control plane automatically manages the routing configuration for pods instead of configuring and maintaining static routes for each node in the GKE cluster. I have found these following resources very valuable to understand why we should use this VPC-native clusters mode for better capabilities around security, performance and integration with other GCP services:
 - [VPC-native clusters compared to routes-based clusters](https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod#vpc-native_clusters_compared_to_routes-based_clusters)
-- [The ins and outs of networking in Google Container Engine and Kubernetes (Google Cloud Next '17)](https://www.youtube.com/watch?v=y2bhV81MfKQ)
+- [The ins and outs of networking in Google Container Engine and Kubernetes (Google Cloud Next '17)](https://youtu.be/y2bhV81MfKQ)
 - [VPC-native clusters on Google Kubernetes Engine](https://medium.com/google-cloud/vpc-native-clusters-on-google-kubernetes-engine-b7c022c07510)
 
 So here is now how I will create my GKE cluster to leverage this feature (FYI you can't update an existing cluster to get this feature):
@@ -115,10 +115,11 @@ Here are few resources to help you navigate throughout the capabilities and feat
 That's a wrap! Hope you enjoyed this blog article and hopefully you will be able to leverage such impressive services and features for your own needs and context ;)
 
 Complementary and further resources:
-- [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://www.youtube.com/watch?v=J5HJ1y6PeyE)
-- [GKE Networking Differentiators (Cloud Next '19)](https://www.youtube.com/watch?v=RjcjaXi-vVY&autoplay=1)
-- [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://www.youtube.com/watch?v=fI-5LkBDap8)
-- [What's new in network security on Google Cloud (Cloud Next '20)](https://www.youtube.com/watch?v=WFwGgo7ULXE)
-- [Ready? A Deep Dive into Pod Readiness Gates for Service Health Management](https://www.youtube.com/watch?v=Vw9GmSeomFg)
+- [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://youtu.be/J5HJ1y6PeyE)
+- [GKE Networking Differentiators (Cloud Next '19)](https://youtu.be/RjcjaXi-vVY)
+- [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://youtu.be/fI-5LkBDap8)
+- [What's new in network security on Google Cloud (Cloud Next '20)](https://youtu.be/WFwGgo7ULXE)
+- [Open systems: Key to Unlocking Multi-Cloud with Lyft, Juniper, Google (Cloud Next '19)](https://youtu.be/1s4Vvwyxrp0)
+- [Ready? A Deep Dive into Pod Readiness Gates for Service Health Management](https://youtu.be/Vw9GmSeomFg)
 
 Cheers! ;)

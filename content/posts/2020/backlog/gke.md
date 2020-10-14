@@ -9,7 +9,7 @@ aliases:
 ---
 
 Keyless Entry: Securely Access GCP Services From Kubernetes (Cloud Next '19)
-https://www.youtube.com/watch?v=s4NYEJDFc0M
+https://youtu.be/s4NYEJDFc0M
 By Shopify, Service Account, Workload Identity, etc.
 
 # Use least-privilege service account

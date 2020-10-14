@@ -57,7 +57,7 @@ FIXME/TOWATCH:
 BeyondProd: A new approach to cloud-native security
 https://cloud.google.com/security/beyondprod
 Google Infrastructure Security Design (Google Cloud Next '17)
-https://www.youtube.com/watch?v=O-JXFQezWOc
+https://youtu.be/O-JXFQezWOc
 --> really great resource
 --> Hardware --> Boot --> OS + IPC --> Storage --> 
-https://www.youtube.com/watch?v=ZQHoC0cR6Qw
+https://youtu.be/ZQHoC0cR6Qw

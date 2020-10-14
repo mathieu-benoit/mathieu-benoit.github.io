@@ -12,7 +12,7 @@ https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
 
 Automation for Infrastructure with Terraform and for Apps with Cloud Build.
 
-https://www.youtube.com/watch?v=3vfXQxWJazM
+https://youtu.be/3vfXQxWJazM
 https://cloud.google.com/foundation-toolkit
 
 https://cloud.google.com/solutions/managing-infrastructure-as-code
@@ -32,7 +32,7 @@ https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-key
 https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d
 
 Monitoring as Code
-https://www.youtube.com/watch?v=mCtEMTW8Ksw
+https://youtu.be/mCtEMTW8Ksw
 
 Protecting your GCP infrastructure with Forseti Config Validator part four: Using Terraform Validator
 https://cloud.google.com/blog/products/identity-security/using-forseti-config-validator-with-terraform-validator

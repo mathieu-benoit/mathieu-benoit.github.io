@@ -10,8 +10,23 @@ aliases:
 TODO:
 - Maybe have a separate blog article dedicated to SLI/SLO/SLA?
 
+[Introduction: How Google runs Production systems](https://landing.google.com/sre/sre-book/chapters/introduction/)
+
+[Developing a Google SRE Culture](https://www.coursera.org/learn/developing-a-google-sre-culture)
+- Why SRE is important to the success of an organization’s
+- IT transformation project
+- The relationship between DevOps and SRE
+- The pillars of DevOps
+- How SRE practices align to DevOps pillars
+- The value SRE can provide to an organization
+- The technical and cultural fundamentals of SRE
+- Where SRE can be applied within IT operations
+- The skills an SRE needs
+- The different types of SRE team implementations
+
+
 Implementing GCP Stackdriver and Adapting SRE Practices to Samsung’s AI System (Cloud Next '19)
-https://www.youtube.com/watch?v=45UoGDxuwto
+https://youtu.be/45UoGDxuwto
 
 Transparent Service Level Indicators (SLIs), Monitor Google Cloud services and their effects on your workloads.
 https://cloud.google.com/transparent-sli
@@ -55,7 +70,7 @@ You don’t need SRE. What you need is SRE.
 https://sdarchitect.blog/2020/02/20/you-dont-need-sre-what-you-need-is-sre/
 
 Really great intro: Optimizing SRE Effectiveness at The New York Times (Cloud Next '19)
-https://www.youtube.com/watch?v=QCRe-Vo-PPo
+https://youtu.be/QCRe-Vo-PPo
 
 https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html
 
@@ -107,7 +122,7 @@ How customers can adopt SRE:
     - Start with an advocate for SRE within an organization and decide how to embed them, such as within development, operations or horizontally (consulting) across teams. Evaluate the pros/cons of each model.
 
 Achieving Resiliency on Google Cloud
-https://www.youtube.com/watch?v=DplYhUrADao
+https://youtu.be/DplYhUrADao
 --> priority on user activities
 --> don't just try to avoid failures
 

@@ -187,8 +187,8 @@ Some gotchas:
 - Default rules are for Ingress, as soon as you are adding Egress you need to specify this in the policyTypes: section
 
 Resources:
-- [Secure traffic between pods using network policies in Azure Kubernetes Service (AKS) | Azure Friday](https://www.youtube.com/watch?v=131_TIa_ftI)
-- [Securing Cluster Networking with Network Policies - Ahmet Balkan, Google](https://www.youtube.com/watch?v=3gGpMmYeEO8)
+- [Secure traffic between pods using network policies in Azure Kubernetes Service (AKS) | Azure Friday](https://youtu.be/131_TIa_ftI)
+- [Securing Cluster Networking with Network Policies - Ahmet Balkan, Google](https://youtu.be/3gGpMmYeEO8)
   - [https://github.com/ahmetb/kubernetes-network-policy-recipes](https://github.com/ahmetb/kubernetes-network-policy-recipes)
 - [An Introduction to Kubernetes Network Policies for Security People](https://medium.com/@reuvenharrison/an-introduction-to-kubernetes-network-policies-for-security-people-ba92dd4c809d)
 - [Kubernetes Network Policies Viewer](https://orca.tufin.io/netpol)

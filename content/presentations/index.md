@@ -13,7 +13,7 @@ Here is the list of the 30 public presentations and workshop I delivered.
   - [Link to the demo](https://github.com/mathieu-benoit/azure-arc-k8s-demo)
 - 2020-06 - [Sharing is caring]({{< ref "/posts/2020/09/sharing-is-caring.md" >}})
 - 2020-06 - [my bot just became a cloud native app]({{< ref "/posts/2019/12/cloud-native-bot-app" >}})
-- 2020-04 - [Security Best Practices with Azure Kubernetes Service (AKS) - AzureQC Meetup [fr]](https://www.youtube.com/watch?v=BCDSXyrJUJQ)
+- 2020-04 - [Security Best Practices with Azure Kubernetes Service (AKS) - AzureQC Meetup [fr]](https://youtu.be/BCDSXyrJUJQ)
   - Co-presented with [Maxime Coquerel](https://www.linkedin.com/in/maximecoquerel/)
   - [Link to the session](https://www.meetup.com/AzureQC/events/269811805/)
 - 2020-04 - [Everything-as-Code](https://www.eventbrite.ca/e/billets-beer-and-learn-virtuel-culture-dev-ops-et-linfrastructure-as-code-99410453342)

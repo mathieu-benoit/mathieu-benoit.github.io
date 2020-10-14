@@ -8,7 +8,7 @@ aliases:
     - /fixme/
 ---
 Incrementally Adopting Istio (Cloud Next '19)
-https://www.youtube.com/watch?v=0cgTHQFXYPQ
+https://youtu.be/0cgTHQFXYPQ
 
 [Building Globally Scalable Services with Istio and ASM](https://youtu.be/clu7t0LVhcw)
 All about multi clusters pattern and distributed services. Ameer does a really great job to explain the advantages and responsibilities to come from monolith, going to microserives, embracing service mesh to what's the value of Istio and Anthos Service Mesh. In other words, that's the presentation you need if you would like to understand what's a service mesh, and why you may need one (or not)!
@@ -23,18 +23,18 @@ Extending your Istio service mesh across GKE clusters and Compute Engine instanc
 https://cloud.google.com/solutions/extend-istio-service-mesh-across-gke-clusters-compute-instances
 
 Canary deployments with Istio
-https://www.youtube.com/watch?v=CmZWau04ZS4
+https://youtu.be/CmZWau04ZS4
 
 https://github.com/GoogleCloudPlatform/microservices-demo
 
 https://cloud.google.com/anthos/service-mesh
 https://cloud.google.com/blog/topics/anthos/anthos-service-mesh-deep-dive
 https://cloud.google.com/blog/products/networking/welcome-to-the-service-mesh-era-introducing-a-new-istio-blog-post-series
-https://www.youtube.com/watch?v=SMhTI0Pjn1Q
-https://www.youtube.com/watch?v=7cINRP0BFY8
+https://youtu.be/SMhTI0Pjn1Q
+https://youtu.be/7cINRP0BFY8
 
 Understanding SLOs and Error Budgets With Istio (Cloud Next '19)
-https://www.youtube.com/watch?v=AKh8uuVCpFI
+https://youtu.be/AKh8uuVCpFI
 
 https://codelabs.developers.google.com/codelabs/cloud-hello-istio/index.html?index=..%2F..index#0
 https://codelabs.developers.google.com/codelabs/cloud-istio-aspnetcore-part1/#0
@@ -42,11 +42,11 @@ https://codelabs.developers.google.com/codelabs/cloud-istio-aspnetcore-part1/#0
 https://cloud.google.com/istio
 https://istio.io/latest/docs/examples/bookinfo/
 
-https://www.youtube.com/watch?v=CFtGi1M8BIM
+https://youtu.be/CFtGi1M8BIM
 
-https://www.youtube.com/watch?v=QyxQfW-Izs8
+https://youtu.be/QyxQfW-Izs8
 
-https://www.youtube.com/watch?v=7cINRP0BFY8
+https://youtu.be/7cINRP0BFY8
 
 Emoji Vote from Linkerd
 https://linkerd.io/2/getting-started/
