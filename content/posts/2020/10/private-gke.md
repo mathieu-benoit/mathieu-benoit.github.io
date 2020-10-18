@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /private-gke/
 ---
+https://cloud.google.com/solutions/best-practices-vpc-design
 https://gkesecurity.guide/
 https://medium.com/google-cloud/completely-private-gke-clusters-with-no-internet-connectivity-945fffae1ccd
 https://github.com/andreyk-code/no-inet-gke-cluster

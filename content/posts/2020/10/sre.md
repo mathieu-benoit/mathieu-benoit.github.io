@@ -198,23 +198,13 @@ incident management.
 Google Cloud Professional Services team can support your
 organization’s adoption of SRE.
 
-https://cloud.google.com/blog/products/devops-sre/another-way-to-gauge-your-devops-performance-according-to-dora
-
-SRE Classroom: Distributed PubSub
-https://cloud.google.com/blog/products/devops-sre/join-sre-classroom-nalsd-workshops
-https://landing.google.com/sre/resources/practicesandprocesses/sre-classroom/
-
 How to build an SRE team
 https://www.blameless.com/blog/how-to-build-an-sre-team
 You don’t need SRE. What you need is SRE.
 https://sdarchitect.blog/2020/02/20/you-dont-need-sre-what-you-need-is-sre/
-Really great intro: Optimizing SRE Effectiveness at The New York Times (Cloud Next '19)
-https://youtu.be/QCRe-Vo-PPo
+
 https://queue.acm.org/detail.cfm?id=3404974
-https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-devops-vs-sre/
-https://landing.google.com/sre/books/
-Now SRE Everyone Else with CRE! 
-https://youtu.be/GQPzaq-owYM
+
 
 ## SLI, SLO, SLA and Error Budgets
 
@@ -227,16 +217,10 @@ The Art of SLOs workshop
 https://landing.google.com/sre/resources/practicesandprocesses/art-of-slos/
 Setting SLOs: a step-by-step guide
 https://cloud.google.com/blog/products/management-tools/practical-guide-to-setting-slos
-SLOs with Stackdriver Service Monitoring
-https://medium.com/google-cloud/slos-with-stackdriver-service-monitoring-62f193147b3f
-Automating Application Dashboard Creation for Services on GKE/Istio
-https://medium.com/google-cloud/automating-application-dashboard-creation-for-services-on-gke-istio-a55a5a79aa15
 Building good SLOs—CRE life lessons
 https://cloud.google.com/blog/products/gcp/building-good-slos-cre-life-lessons
 SRE fundamentals: SLIs, SLAs and SLOs
 https://cloudplatform.googleblog.com/2018/07/sre-fundamentals-slis-slas-and-slos.html
-Implementing GCP Stackdriver and Adapting SRE Practices to Samsung’s AI System (Cloud Next '19)
-https://youtu.be/45UoGDxuwto
 The Art of SLOs Handbook letter
 https://static.googleusercontent.com/media/landing.google.com/en//sre/static/pdf/art-of-slos-handbook-letter.pdf
 SRE and the art of SLOs at the DevOpsDays 2019 Chicago: https://youtu.be/fWvNzDVOJDE
@@ -263,7 +247,6 @@ Experienced SREs:
 - establish and document processes
 
 Reduce organizational silos with SLOs and Error Budgets
-SLI, SLO, SLA
 
 Unify vision, foster collaboration and communications, and share knowledge
 
@@ -282,8 +265,22 @@ Building Secure & Reliable Systems
 
 [The Site Reliability Workbook](https://landing.google.com/sre/workbook/toc/) - _hands-on companion to the Site Reliability Engineering book and uses concrete examples to show how to put SRE principles and practices to work._
 
+## Technical Implementations
+
+Implementing GCP Stackdriver and Adapting SRE Practices to Samsung’s AI System (Cloud Next '19)
+https://youtu.be/45UoGDxuwto
+SLOs with Stackdriver Service Monitoring
+https://medium.com/google-cloud/slos-with-stackdriver-service-monitoring-62f193147b3f
+Automating Application Dashboard Creation for Services on GKE/Istio
+https://medium.com/google-cloud/automating-application-dashboard-creation-for-services-on-gke-istio-a55a5a79aa15
+SRE Classroom: Distributed PubSub
+https://cloud.google.com/blog/products/devops-sre/join-sre-classroom-nalsd-workshops
+https://landing.google.com/sre/resources/practicesandprocesses/sre-classroom/
+
 ## Complementary and further resources
 
+Gauge the effectiveness of your DevOps organization running in Google Cloud
+https://cloud.google.com/blog/products/devops-sre/another-way-to-gauge-your-devops-performance-according-to-dora
 Achieving Resiliency on Google Cloud
 https://youtu.be/DplYhUrADao
 --> priority on user activities
@@ -296,7 +293,11 @@ Know thy enemy: how to prioritize and communicate risks—CRE life lessons
 https://cloud.google.com/blog/products/gcp/know-thy-enemy-how-to-prioritize-and-communicate-risks-cre-life-lessons
 Coursera - Site Reliability Engineering: Measuring and Managing Reliability
 https://www.coursera.org/learn/site-reliability-engineering-slos
+Really great intro: Optimizing SRE Effectiveness at The New York Times (Cloud Next '19)
+https://youtu.be/QCRe-Vo-PPo
+Site Reliability Engineering (SRE) 101 with DevOps vs SRE
+https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-devops-vs-sre/
 
-Hope you enjoyed all this walkthrough and resources about Site Reliability Engineering (SRE) and hope you will find few tips for your own company and projects.
+Hope you enjoyed all this walkthrough and resources about Site Reliability Engineering (SRE) and hope you will find few tips that will inspire you for your own company, projects or role.
 
 Cheers!
