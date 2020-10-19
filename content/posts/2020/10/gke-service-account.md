@@ -1,7 +1,7 @@
 ---
 title: gke's service account
 date: 2020-10-18
-tags: [gcp, containers, kubernetes, security]
+tags: [gcp, kubernetes, security]
 description: let's discuss about how to deal with gke's service account and few tips to improve your security posture, especially with fine-grained identity and authorization for applications with workload identity
 aliases:
     - /gke-service-account/
@@ -24,7 +24,7 @@ There is already 2 important aspects to improve your security posture here:
 - [Auto-upgrading nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades)
     - _Keeping the version of Kubernetes up to date is one of the simplest things you can do to improve your security. Kubernetes frequently introduces new security features and provides security patches._
 - [`cos_containerd`](https://cloud.google.com/container-optimized-os/docs/concepts/security)
-    - `cos_containerd` is the preferred image for GKE as it has been custom built, optimized, and hardened specifically for running containers.
+    - _`cos_containerd` is the preferred image for GKE as it has been custom built, optimized, and hardened specifically for running containers._
 
 I also watched the video below which is referenced in the [first article I mentioned](https://darkbit.io/blog/cve-2020-15157-containerdrip). As I'm improving my knowledge and skills with cloud security principles, such approach and point of view from an hacker perspective is really insightful. Here below, they are talking about [lateral movement and privilege escalation in GCP](https://youtu.be/Z-JFVJZ-HDA):
 
@@ -34,11 +34,12 @@ There is 3 important aspects to improve your security posture here:
 - [Default node service account and Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
     - _This `Compute Engine default service account` is overprivileged by default as the [Editor role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) allows you to access and edit essentially everything in the project._
     - You could [disable automatic grants to default service accounts](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_service_account_default_grants) at your Organization Policies level.
-    - Here I would like to call out [this very well written article](https://code.kiwi.com/towards-secure-by-default-google-cloud-platform-service-accounts-244ad9fc772) to see the impacts of this and some real life examples of compagnies hacked because they didn't pay attention of this least privilege principle for the identity of their applications.
+    - Here, I would like to call out [this very well written article](https://code.kiwi.com/towards-secure-by-default-google-cloud-platform-service-accounts-244ad9fc772) to see the impacts of this and some real life examples of compagnies hacked because they didn't pay attention of this least privilege principle for the identity of their applications.
 - [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
+    - _Workload Identity is the recommended way to access Google Cloud services from applications running within GKE due to its improved security properties and manageability._
 - [IAM Recommender](https://cloud.google.com/iam/docs/recommender-overview)
     - _IAM recommender helps you enforce the principle of least privilege by ensuring that members have only the permissions that they actually need._
-    - Great story here where the 2 authors provided improvement to the product group team managing the new IAM Analyzer service. Love it!
+    - Great story here where the 2 authors provided improvement to the product group team managing the new IAM Recommender service. Love it!
 
 Let's translate this least privilege setup for the identity of your nodes and workloads with few `gcloud` commands:
 ```
@@ -79,7 +80,7 @@ gcloud container clusters create $clusterName \
 
 Then you could easily [follow these instructions](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#authenticating_to) to allow your applications authenticate to Google Cloud using Workload Identity, typically by assigning a Kubernetes service account to the application and configure it to act as a Google service account.
 
-> With Workload Identity, you can configure a Kubernetes service account to act as a Google service account. Any application running as the Kubernetes service account automatically authenticates as the Google service account when accessing Google Cloud APIs. This enables you to assign fine-grained identity and authorization for applications in your cluster.
+> With [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), you can configure a Kubernetes service account to act as a Google service account. Any application running as the Kubernetes service account automatically authenticates as the Google service account when accessing Google Cloud APIs. This enables you to assign fine-grained identity and authorization for applications in your cluster.
 
 _Note: there is [few limitations currently with Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#limitations) that you should be aware of._
 
@@ -103,7 +104,7 @@ Complementary resources:
 - [GKE Security bulletins](https://cloud.google.com/kubernetes-engine/docs/security-bulletins)
 - [Stop Downloading Google Cloud Service Account Keys!](https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9)
 
-That's a wrap! We discussed about features you could enable on your GKE cluster and more importantly the concept of least privilege service account instead of the default one for your GKE clusters. Yeah for sure, you could say to yourself "how an hacker could get my cluster credentials to be able to operate such attack?". Yeah that's for sure something that's won't happen every day, but it's only a matter of worst case scenario + making sure you have different layers in place to improve your security posture. How do you think data leaks happen? How do you make sure you could prevent data leaks in your organization?
+That's a wrap! We discussed about features you could enable on your GKE cluster (especially with Workload Identity) and more importantly the concept of least privilege service account instead of the default one for your GKE clusters. Yeah for sure, you could say to yourself "how an hacker could get my cluster credentials to be able to operate such attack?". Yeah that's for sure something which won't happen every day, but it's only a matter of worst case scenario + making sure you have different layers in place to improve your security posture. How do you think data leaks happen? How do you make sure you could prevent data leaks in your organization?
 
 _Important note: this article got illustrations with GKE, but they apply for any Kubernetes, on any Cloud provider since they got very similar implementation, principles and features._
 
