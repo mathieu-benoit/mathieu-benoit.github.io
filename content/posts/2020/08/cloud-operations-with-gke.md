@@ -78,6 +78,9 @@ Another feature I find very valuable is the [concept of service monitoring combi
 
 > To determine if an SLO (Service Level Objective) is met/successful, you need a measurement. That measurement is called the SLI (Service Level Indicator). An SLI measures the level of a particular service that you're delivering to your customer. Ideally, the SLI is tied to an accepted CUJ (Critical User Journey).
 
+Have a look at how it's easy to [setup your SLOs for GKE services](https://youtu.be/wB9AKdPDv0Q):
+{{< youtube wB9AKdPDv0Q >}}
+
 And that's it for now, like you could see how easy it is to leverage the Cloud Operations Suite with GKE to get visibility about your GKE cluster and the containerized apps you deployed in it with no code changes. So no excuses to not leverage this from day 0! ;)
 
 Complementary resources:
