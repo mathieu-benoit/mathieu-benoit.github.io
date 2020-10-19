@@ -18,7 +18,7 @@ How to check if you are impacted if you are using a `containerd` node image, you
 - `OS-IMAGE`: `Container-Optimized OS from Google`
 - `CONTAINER-RUNTIME`: `containerd://1.4.1`
 
-So all good here, but the goal of this article today is to see what are the features you could leverage to make a robust security posture.
+So all good here, but nonetheless the goal of this article today is to see what are the features you could leverage to make a robust security posture.
 
 There is already 2 important aspects to improve your security posture here:
 - [Auto-upgrading nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades)
@@ -34,18 +34,19 @@ There is 3 important aspects to improve your security posture here:
 - [Default node service account and Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
     - _This `Compute Engine default service account` is overprivileged by default as the [Editor role](https://cloud.google.com/iam/docs/understanding-roles#primitive_role_definitions) allows you to access and edit essentially everything in the project._
     - You could [disable automatic grants to default service accounts](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_service_account_default_grants) at your Organization Policies level.
-    - Here, I would like to call out [this very well written article](https://code.kiwi.com/towards-secure-by-default-google-cloud-platform-service-accounts-244ad9fc772) to see the impacts of this and some real life examples of compagnies hacked because they didn't pay attention of this least privilege principle for the identity of their applications.
+    - Here, I would like to call out [this very well written article](https://code.kiwi.com/towards-secure-by-default-google-cloud-platform-service-accounts-244ad9fc772) to see the impacts of this and some real life examples of companies hacked because they didn't pay attention of this least privilege principle for the identity of their clusters or applications.
 - [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
     - _Workload Identity is the recommended way to access Google Cloud services from applications running within GKE due to its improved security properties and manageability._
 - [IAM Recommender](https://cloud.google.com/iam/docs/recommender-overview)
     - _IAM recommender helps you enforce the principle of least privilege by ensuring that members have only the permissions that they actually need._
-    - Great story here where the 2 authors provided improvement to the product group team managing the new IAM Recommender service. Love it!
+    - Great story here where the 2 authors provided improvements to the product group team managing the new IAM Recommender service. Love it!
 
 Let's translate this least privilege setup for the identity of your nodes and workloads with few `gcloud` commands:
 ```
 projectId=FIXME
 clusterName=FIXME
 
+# First we need to create a dedicated service account (instead of the default one with Editor role on the project) with the least privilege:
 gcloud services enable cloudresourcemanager.googleapis.com
 saId=$clusterName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $clusterName \
