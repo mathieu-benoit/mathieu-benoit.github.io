@@ -10,9 +10,9 @@ While preparing my presentation with [Maxime Coquerel](https://www.linkedin.com/
 
 First of all I went through the official Kubernetes documentation: [Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/).
 
-From there I did some research to see how I could apply this for my own projects, for example [myblog](https://github.com/mathieu-benoit/myblog) and [MyMonthlyBlogArticle.Bot](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot).
+From there I did some research to see how I could apply this for my own projects, for example [myblog - `nginx`](https://github.com/mathieu-benoit/myblog) and [MyMonthlyBlogArticle.Bot - `dotnetcore`](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot).
 
-And I found those very insightful resources:
+And I found these very insightful resources:
 - [Sample project for a Kubernetes friendly ASP.NET core application](https://github.com/Lybecker/k8s-friendly-aspnetcore)
 - [Securing you kubernetes configuration (with Nginx). Not so simple!](https://blog.asksven.io/posts/securing-kubernetes-configuration)
     - _I agree with this statement "Not so simple!"._
@@ -32,8 +32,10 @@ Note: you could locally test your Docker container with:
 - `docker run --rm --read-only` to anticipate `readOnlyRootFilesystem: true` on Kubernetes
 - `docker diff` on your running container to see if there is any folder it is writing in and you could mount as `emptyDir` on Kubernetes
 
-Now on a policy or governance standpoint, how to control this across your kubernetes deployments? Officially, there is the notion of [Pod Security Policy](https://kubernetes.io/docs/concepts/policy/pod-security-policy), you could [give it a try to this PSP concept in Preview with AKS](https://docs.microsoft.com/azure/aks/use-pod-security-policies). But it seems that this concept won't graduate anymore in Kubernetes and will let more room for the new concept of [Gatekeeper](https://github.com/open-policy-agent/gatekeeper) and [Open Policy Agent](https://www.openpolicyagent.org). In AKS you could [give it a try to this new way by leveraging Azure Policy](https://docs.microsoft.com/azure/governance/policy/concepts/rego-for-aks). Stay tuned for sure on this!
+Now on a policy or governance standpoint, how to control this across your kubernetes deployments? That's where you could [Use admission controllers to enforce policy](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#admission_controllers).
 
-Hope you enjoyed and learned something with this blog article and you will be able to leverage those resources for your own context and security posture!
+As an illustration, you could also read [here about the CVE-2020-14386](https://cloud.google.com/blog/products/containers-kubernetes/how-gvisor-protects-google-cloud-services-from-cve-2020-14386), uses the `CAP_NET_RAW` capability of the Linux kernel to cause memory corruption, allowing an attacker to gain root access when they should not have. And that's also a good opportunity to learn more about the investments and innovations Google is doing on an open source and security perspectives: the [`gVisor` project](https://cloud.google.com/blog/products/gcp/open-sourcing-gvisor-a-sandboxed-container-runtime) is a great example.
+
+Hope you enjoyed and learned something with this blog article and you will be able to leverage these resources for your own context and security posture!
 
 Cheers! ;)
