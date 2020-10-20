@@ -46,7 +46,13 @@ Let's translate this least privilege setup for the identity of your nodes and wo
 projectId=FIXME
 clusterName=FIXME
 
-# First we need to create a dedicated service account (instead of the default one with Editor role on the project) with the least privilege:
+# First we need to enable the Kubernetes API on the current project
+gcloud services enable container.googleapis.com
+# Delete the default compute engine service account if you don't have have the Org policy iam.automaticIamGrantsForDefaultServiceAccounts in place
+projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
+gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
+
+# Then we need to create a dedicated service account (instead of the default one with Editor role on the project) with the least privilege:
 gcloud services enable cloudresourcemanager.googleapis.com
 saId=$clusterName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $clusterName \

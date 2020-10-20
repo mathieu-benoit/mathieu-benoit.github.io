@@ -236,6 +236,9 @@ SLO with GKE at Equifax: https://cloud.withgoogle.com/next/sf/sessions?session=O
 - Error Budgets
     - _inverse of availability: amount of errors allowed based on SLAs_
 
+SLOs for GKE services
+https://youtu.be/wB9AKdPDv0Q
+
 ## Where to start?
 
 [Introduction: How Google runs Production systems](https://landing.google.com/sre/sre-book/chapters/introduction/)
