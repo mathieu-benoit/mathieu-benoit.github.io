@@ -1,10 +1,8 @@
 steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
-- name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA', '${_APP_NAME}/.']
-- name: gcr.io/cloud-builders/docker
-  args: ['push', 'gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA']
+- name: gcr.io/kaniko-project/executor
+  args: ['--context', 'dir://${_APP_NAME}/.', '--destination', 'gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA', '--cache=true']
 - name: 'ubuntu'
   args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA," k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/kubectl
@@ -25,4 +23,3 @@ substitutions:
     _CLOUDSDK_COMPUTE_ZONE: us-east4-a
     _CLOUDSDK_CONTAINER_CLUSTER: mygkecluster845
     _CLOUDSDK_CORE_PROJECT: mabenoit-myblog
-images: ['gcr.io/$PROJECT_ID/${_APP_NAME}:$SHORT_SHA']
