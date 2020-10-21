@@ -7,6 +7,13 @@ draft: true
 aliases:
     - /sre/
 ---
+https://www.youtube.com/watch?v=7Oe8mYPBZmw
+https://www.youtube.com/watch?v=oyJFxr4gYXc
+https://www.youtube.com/watch?v=tmpm1XI-Oac
+https://www.youtube.com/watch?v=nQv9ySa8MTU
+https://www.youtube.com/watch?v=3qB7tqx7ZUI
+https://www.youtube.com/watch?v=j6zB7emiobY
+
 [![](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
 
 > Site Reliability Engineering (SRE) is the practice of balancing the velocity of development features with the risk to reliability
