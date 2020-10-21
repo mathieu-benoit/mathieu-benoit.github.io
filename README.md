@@ -33,5 +33,5 @@ gcloud beta builds triggers create github \
     --repo-name=myblog \
     --repo-owner=mathieu-benoit \
     --branch-pattern="master" \
-    --build-config=cloudbuild-ci.yaml
+    --build-config=cloudbuild.yaml
 ```
