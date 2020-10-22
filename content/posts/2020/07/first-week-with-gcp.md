@@ -76,18 +76,7 @@ gcloud beta billing projects link $projectId \
 
 # Build and Push the Container in GCR
 gcloud services enable containerregistry.googleapis.com
-saName=docker-push
-gcloud iam service-accounts create $saName \
-    --display-name $saName
-saFullName=$saName@$projectId.iam.gserviceaccount.com
-gcloud projects add-iam-policy-binding $projectId \
-    --member serviceAccount:$saFullName \
-    --role roles/storage.admin
-gcloud iam service-accounts keys create ~/key.json \
-    --iam-account $saFullName
-gcloud auth activate-service-account $saFullName \
-    --key-file ~/key.json
-gcloud auth configure-docker
+gcloud auth configure-docker gcr.io
 docker build -t gcr.io/$projectId/myblog:1 .
 docker push gcr.io/$projectId/myblog:1
 ```
