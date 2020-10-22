@@ -14,8 +14,8 @@ The [Google Cloud Adoption Framework](https://cloud.google.com/adoption-framewor
 
 Which is heading us to this interesting resource: [Managing change in the Cloud](https://services.google.com/fh/files/misc/managing_change_in_the_cloud.pdf). Organizations will only realize the full potential of new technology if employees use it, if they know how to make the most of it, and if they are empowered to do things differently than before:
 1. Focus on the people, and all else will follow
-2. Measure, measure, measure — so you’ll know if you’ve been successful
-3. Be clear about the critical capabilities you will need in the future, and where you’ll get them — either internally or through your partner(s)
+2. Measure, measure, measure - so you’ll know if you’ve been successful
+3. Be clear about the critical capabilities you will need in the future, and where you’ll get them - either internally or through your partner(s)
 4. Fast is better than slow. But finding your balance between central control and agility can be hard
 5. Sweat the basics: people will look to you for guidance
 6. Ensure that there is a "nontech" learning plan available
@@ -31,11 +31,10 @@ Another important aspect is the notion of Cloud Center of Excellence (CCoE), I f
 
 Complementery to this, I also found very insightful such external articles:
 - [Building a CCOE in 2020: 13 Pitfalls and Practical Steps](https://www.contino.io/insights/cloud-centre-of-excellence-2020)
-    - Think of a CCoE as an enablement function. On the one hand, a CCoE is there to provide a product (i.e. the cloud) but on the other hand it exists to enable consumers (i.e. the product and development teams) to consume this product. It does this by providing a set of repeatable standards, governance frameworks and best practices for the rest of the business to follow during the cloud migration. At Contino, they recommend using [Simon Wardley’s organisational model](https://medium.com/wardleymaps/getting-started-yourself-e1a359b785a2) of Town Planners, Settlers and Pioneers (PST) to tailor and model the products and services being offered by the CCoE. The ‘PST’ model uses a cell-based organisational structure in which there are three groups of consumers that represent different levels of cloud maturity.
+    - Think of a CCoE as an enablement function. On the one hand, a CCoE is there to provide a product (i.e. the cloud) but on the other hand it exists to enable consumers (i.e. the product and development teams) to consume this product. It does this by providing a set of repeatable standards, governance frameworks and best practices for the rest of the business to follow during the cloud migration.
 - [Why Organizations Choose a Multicloud Strategy by Gartner](https://www.gartner.com/smarterwithgartner/why-organizations-choose-a-multicloud-strategy/)
     - Most organizations adopt a multicloud strategy out of a desire to avoid vendor lock-in or to take advantage of best-of-breed solutions
-- [Hybrid & Multi Cloud](https://www.contino.io/insights/multi-cloud)
-- [A case against “Platform Teams”](https://kislayverma.com/organizations/a-case-against-platform-teams/)
+- [Multi-Cloud: When It Makes Sense...and When It Doesn’t](https://www.contino.io/insights/multi-cloud)
 
 
 Where to start with your Google Cloud Foundation? Here comes the [Google Cloud setup checklist](https://cloud.google.com/docs/enterprise/onboarding-checklist) and the associated illustrations with [Best practices for enterprise organizations](https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations). These resources will get you started with Identity, Governance, Security, Networking, etc. and all aspects you need to have in place for your GCP Foundation.
