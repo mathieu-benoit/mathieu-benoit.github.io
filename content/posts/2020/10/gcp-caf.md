@@ -34,7 +34,6 @@ Complementery to this, I also found very insightful such external articles:
     - Think of a CCoE as an enablement function. On the one hand, a CCoE is there to provide a product (i.e. the cloud) but on the other hand it exists to enable consumers (i.e. the product and development teams) to consume this product. It does this by providing a set of repeatable standards, governance frameworks and best practices for the rest of the business to follow during the cloud migration.
 - [Why Organizations Choose a Multicloud Strategy by Gartner](https://www.gartner.com/smarterwithgartner/why-organizations-choose-a-multicloud-strategy/)
     - Most organizations adopt a multicloud strategy out of a desire to avoid vendor lock-in or to take advantage of best-of-breed solutions
-- [Multi-Cloud: When It Makes Sense...and When It Doesn’t](https://www.contino.io/insights/multi-cloud)
 
 
 Where to start with your Google Cloud Foundation? Here comes the [Google Cloud setup checklist](https://cloud.google.com/docs/enterprise/onboarding-checklist) and the associated illustrations with [Best practices for enterprise organizations](https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations). These resources will get you started with Identity, Governance, Security, Networking, etc. and all aspects you need to have in place for your GCP Foundation.
