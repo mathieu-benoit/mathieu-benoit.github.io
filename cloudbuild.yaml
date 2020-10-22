@@ -1,8 +1,10 @@
 steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
-- name: gcr.io/kaniko-project/executor
-  args: ['--context', 'dir://${_APP_NAME}/.', '--destination', 'gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA', '--cache=true']
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA', '${_APP_NAME}/.']
+- name: gcr.io/cloud-builders/docker
+  args: ['push', 'gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA']
 - name: 'ubuntu'
   args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA," k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/kubectl
