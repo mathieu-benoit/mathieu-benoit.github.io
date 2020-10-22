@@ -103,6 +103,7 @@ In addition to this, here are 3 other aspects to still improve and complete your
     - _Binary Authorization is a deploy-time security control that ensures only trusted container images are deployed on GKE._
 
 Complementary resources:
+- [CVE-2020-15157: Vulnerability in Containerd Can Leak Cloud Credentials](https://blog.aquasec.com/cve-2020-15157-containerd-container-vulnerability)
 - [Preparing a Google Kubernetes Engine environment for production](https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod)
 - [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster)
 - [Preventing lateral movement in Google Compute Engine](https://cloud.google.com/blog/products/identity-security/preventing-lateral-movement-in-google-compute-engine)
