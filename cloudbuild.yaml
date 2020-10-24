@@ -8,13 +8,7 @@ steps:
 - name: 'ubuntu'
   args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA," k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/kubectl
-  args: ['apply', '-f', 'k8s/namespace.yaml']
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
-  - 'CLOUDSDK_CORE_PROJECT=${_CLOUDSDK_CORE_PROJECT}'
-- name: gcr.io/cloud-builders/kubectl
-  args: ['apply', '-f', 'k8s/', '-n', 'myblog']
+  args: ['apply', '-f', 'k8s/namespace.yaml', '-f', 'k8s/', '-n', 'myblog']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
