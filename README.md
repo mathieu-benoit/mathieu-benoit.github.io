@@ -65,8 +65,7 @@ gcloud projects add-iam-policy-binding $projectId \
 gcloud projects add-iam-policy-binding $projectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/logging.logWriter
-
-gcloud projects remove-iam-policy-binding $projectId \
+gcloud projects add-iam-policy-binding $projectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/source.reader
 
