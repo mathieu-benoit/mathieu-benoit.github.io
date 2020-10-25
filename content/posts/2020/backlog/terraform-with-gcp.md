@@ -36,3 +36,6 @@ https://youtu.be/mCtEMTW8Ksw
 
 Protecting your GCP infrastructure with Forseti Config Validator part four: Using Terraform Validator
 https://cloud.google.com/blog/products/identity-security/using-forseti-config-validator-with-terraform-validator
+
+Automate Terraform with GH Actions
+https://learn.hashicorp.com/tutorials/terraform/github-actions
