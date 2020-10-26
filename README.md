@@ -91,10 +91,12 @@ gcloud projects add-iam-policy-binding $gkeProjectId \
 # Manually install the Cloud Build app on GitHub:
 # https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers#installing_the_cloud_build_app
 
+gkeClusterName=FIXME
 gcloud beta builds triggers create github \
     --name=myblog-master \
     --repo-name=myblog \
     --repo-owner=mathieu-benoit \
     --branch-pattern="master" \
-    --build-config=cloudbuild.yaml
+    --build-config=cloudbuild.yaml \
+    --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId
 ```
