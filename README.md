@@ -69,7 +69,7 @@ gcloud projects add-iam-policy-binding $projectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/source.reader
 
-gcloud projects add-iam-policy-binding $projectId \
+gcloud projects remove-iam-policy-binding $projectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/pubsub.editor
 
