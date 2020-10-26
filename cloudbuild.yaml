@@ -2,11 +2,11 @@ steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
 - name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA', '${_APP_NAME}/.']
+  args: ['build', '-t', 'gcr.io/${_CLOUDSDK_CORE_PROJECT}/${_APP_NAME}:$SHORT_SHA', '${_APP_NAME}/.']
 - name: gcr.io/cloud-builders/docker
-  args: ['push', 'gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA']
+  args: ['push', 'gcr.io/${_CLOUDSDK_CORE_PROJECT}/${_APP_NAME}:$SHORT_SHA']
 - name: 'ubuntu'
-  args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,gcr.io/${_GCR_PROJECT_ID}/${_APP_NAME}:$SHORT_SHA," k8s/deployment.yaml']
+  args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,gcr.io/${_CLOUDSDK_CORE_PROJECT}/${_APP_NAME}:$SHORT_SHA," k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/kubectl
   args: ['apply', '-f', 'k8s/namespace.yaml', '-f', 'k8s/', '-n', 'myblog']
   env:
@@ -14,9 +14,8 @@ steps:
   - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
   - 'CLOUDSDK_CORE_PROJECT=${_CLOUDSDK_CORE_PROJECT}'
 substitutions:
-    _GCR_PROJECT_ID: mabenoitgke
     _APP_NAME: myblog
     _REPO_OWNER: mathieu-benoit
     _CLOUDSDK_COMPUTE_ZONE: us-east4-a
-    _CLOUDSDK_CONTAINER_CLUSTER: mabenoitgke
-    _CLOUDSDK_CORE_PROJECT: mabenoitgke
+    _CLOUDSDK_CONTAINER_CLUSTER: mygke-580
+    _CLOUDSDK_CORE_PROJECT: mygke-580

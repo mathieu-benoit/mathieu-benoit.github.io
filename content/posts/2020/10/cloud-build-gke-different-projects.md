@@ -13,14 +13,47 @@ Since my first setup of myblog (FIXME) and mygkecluster (FIXME) I now need to sp
 
 Here is the minimal setup for the GKE's project:
 ```
+gkeProjectId=FIXME
+gcloud config set project $gkeProjectId
 
+## GKE setup
+gcloud services enable container.googleapis.com
+gcloud container clusters create $clusterName \
+    --zone us-east1-b
+
+## GCR setup
+gcloud services enable containerregistry.googleapis.com
+gcloud projects add-iam-policy-binding $projectId \
+    --member "serviceAccount:$gkeSaId" \
+    --role roles/storage.objectViewer
+# To get the GCS backend, we need to manually push a first image
+gcloud auth configure-docker gcr.io
+scratchImageName=gcr.io/$gkeProjectId/scratch
+(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t $scratchImageName -
+docker push $scratchImageName
+docker rmi $scratchImageName
+gcloud container images delete $scratchImageName --quiet
 ```
 
 We are also enabling the container registry in this shared project to be able to get all the container images of the different apps.
 
 So here we are, now we need to create the Cloud Build setup for a sepcific apps, myblog in this case, here are the associated command lines to accomplish that:
+FIXME - take a previous article as a reference and first setup
 ```
+# Configuration to be able to push images to GCR in another project
+gcrProjectId=FIXME
+gcloud projects add-iam-policy-binding $gcrProjectId \
+    --member serviceAccount:$cloudBuildSa \
+    --role roles/storage.admin
+gsutil iam ch serviceAccount:$cloudBuildSa:objectAdmin gs://artifacts.$gcrProjectId.appspot.com
 
+# Configuration to be able to deploy a container to GKE in another project
+gcloud services enable container.googleapis.com
+gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
+gkeProjectId=FIXME
+gcloud projects add-iam-policy-binding $gkeProjectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/container.developer
 ```
 
 Complementary to this, we would like improve our security posture here, more specifically by respecting the least privilege principle with the different service account involved here:
@@ -29,7 +62,25 @@ For the GKE's project, we just need to follow what I have already documented her
 
 For the apps' project, FIXME
 ```
-
+cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
+gcloud projects remove-iam-policy-binding $projectId \
+    --member serviceAccount:$cloudBuildSa \
+    --role roles/cloudbuild.builds.builder
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/cloudbuild.builds.editor
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/storage.objectAdmin
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/logging.logWriter
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/source.reader
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/pubsub.editor
 ```
 So typically, by doing this, we just get rid off these permissions: `storage.buckets.create|get|list`, `artifactregistry.*`, and `containeranalysis.occurrences.*` which are not necessary in my context.
 

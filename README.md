@@ -33,8 +33,9 @@ kubectl apply -f k8s/
 ## Setup the Cloud Build trigger
 
 ```
-projectId=myblog
 projectName=myblog
+randomSuffix=$(shuf -i 100-999 -n 1)
+projectId=$projectName-$randomSuffix
 folderId=FIXME
 
 gcloud projects create $projectId \
@@ -84,11 +85,6 @@ gcloud services enable container.googleapis.com
 gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceaccount.com --quiet
 gkeProjectId=FIXME
 gcloud projects add-iam-policy-binding $gkeProjectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/container.developer
-
-# TMP/TO TEST:
-gcloud projects add-iam-policy-binding $projectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/container.developer
 
