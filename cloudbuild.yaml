@@ -17,5 +17,5 @@ substitutions:
     _APP_NAME: myblog
     _REPO_OWNER: mathieu-benoit
     _CLOUDSDK_COMPUTE_ZONE: us-east4-a
-    _CLOUDSDK_CONTAINER_CLUSTER: mygke-580
+    _CLOUDSDK_CONTAINER_CLUSTER: mygke
     _CLOUDSDK_CORE_PROJECT: mygke-580
