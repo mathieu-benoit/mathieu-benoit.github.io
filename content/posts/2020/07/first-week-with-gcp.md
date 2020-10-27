@@ -6,8 +6,6 @@ description: let's share some learnings during my first week leveraging gcp, too
 aliases:
     - /first-week-with-gcp/
 ---
-[![](https://media-exp1.licdn.com/dms/image/C4E16AQHxLntx_KDIlA/profile-displaybackgroundimage-shrink_350_1400/0?e=1600905600&v=beta&t=n9sWYjd0vqL108qKfABjKX_5WDERMlE43wYS-tGbFr0)](https://media-exp1.licdn.com/dms/image/C4E16AQHxLntx_KDIlA/profile-displaybackgroundimage-shrink_350_1400/0?e=1600905600&v=beta&t=n9sWYjd0vqL108qKfABjKX_5WDERMlE43wYS-tGbFr0)
-
 This blog article is my first one related to GCP (Google Cloud Platform). [I just started as Cloud Customer Engineer at Google](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB) this week. So here are some learnings I would like to write down and share.
 
 The onboarding process is really inspiring and well structured, driven by the collaboration and a learning experience led by practicing. Among different trainings and tools received, I got a great experience with G Suite and my Pixelbook, that's concretely my very first time with them. Really impressive productivity! 

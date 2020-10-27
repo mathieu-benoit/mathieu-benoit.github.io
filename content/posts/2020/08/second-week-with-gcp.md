@@ -6,8 +6,6 @@ description: let's share some learnings during my second week leveraging gcp, fo
 aliases:
     - /second-week-with-gcp/
 ---
-[![](https://media-exp1.licdn.com/dms/image/C4E16AQHxLntx_KDIlA/profile-displaybackgroundimage-shrink_350_1400/0?e=1600905600&v=beta&t=n9sWYjd0vqL108qKfABjKX_5WDERMlE43wYS-tGbFr0)](https://media-exp1.licdn.com/dms/image/C4E16AQHxLntx_KDIlA/profile-displaybackgroundimage-shrink_350_1400/0?e=1600905600&v=beta&t=n9sWYjd0vqL108qKfABjKX_5WDERMlE43wYS-tGbFr0)
-
 Since [last week]({{< ref "/posts/2020/07/first-week-with-gcp.md" >}}) and to continue the beginning of my learning journey with GCP, this week I would like to deep dive with GKE, around few advanced setup and features.
 
 First I needed to complete the setup of this blog on GKE by setting up my SSL certificate and map my DNS https://alwaysupalwayson.com with the new Public IP address exposed. To accomplish this I'm using the [Google-managed SSL certificates](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs) (which is still in Beta as we speak). Pretty straight forward by following the tutorial. I just needed to align the version of my cluster and the version of the Managed Certificates feature:
