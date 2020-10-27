@@ -99,4 +99,13 @@ gcloud beta builds triggers create github \
     --branch-pattern="master" \
     --build-config=cloudbuild.yaml \
     --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId
+
+# Finally, we need to create a static external IP address to be able to generate a managed certificates later
+gcloud config set project $gkeProjectId
+staticIpName=myblog
+gcloud compute addresses create $staticIpName \
+    --global
+staticIpAddress=$(gcloud compute addresses describe $staticIpName \
+    --global \
+    --format "value(address)")
 ```
