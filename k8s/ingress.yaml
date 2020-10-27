@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: myblog
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: myblog-static-ip
+    kubernetes.io/ingress.global-static-ip-name: myblog
     networking.gke.io/managed-certificates: myblog
 spec:
   backend:
