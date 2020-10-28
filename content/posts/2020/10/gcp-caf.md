@@ -38,12 +38,6 @@ Complementery to this, I also found very insightful such external articles:
 
 Where to start with your Google Cloud Foundation? Here comes the [Google Cloud setup checklist](https://cloud.google.com/docs/enterprise/onboarding-checklist) and the associated illustrations with [Best practices for enterprise organizations](https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations). These resources will get you started with Identity, Governance, Security, Networking, etc. and all aspects you need to have in place for your GCP Foundation.
 
-[Cost Control and Financial Governance Best Practices (Cloud Next '19)](https://youtu.be/MM4wZ5JwYdE) is great feedback from Deloitte, Etsy, Broad Institute, and Vendasta on how they are managing their businesses on GCP and increasing the predictability of their cloud costs with financial governance policies, controls, and cost optimizations. Build proactive alerts, dashboard and reports visible to a broad list of stakeholders: transparency, shared responsibilities, encourage collaboration, etc.
-{{< youtube MM4wZ5JwYdE >}}
-
-[Cloud is Complex. Managing It Shouldn’t Be](https://cloud.withgoogle.com/next/sf/sessions?session=CMP100#infrastructure). Active Assist is making it easier for customers to manage their cloud efficiently and securely with smart analytics and machine learning built into Google Cloud itself. Learn how to better understand your cloud, prevent problems, and get actionable insights and recommendations on how to optimize and improve your environment with the tools that Google provides:
-{{< youtube A2tvDIfevos >}}
-
 Now do you want to go more technical and hands-on? Here you are with the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf)!
 > The goal of this security foundations blueprint is to provide you with curated, opinionated guidance and accompanying automation that helps you build a secure starting point for your Google Cloud deployment. This security foundations blueprint covers the following: Google Cloud organization structure, Authentication and authorization, Resource hierarchy and deployment, Networking (segmentation and security), Logging, Detective controls and Billing setup.
 

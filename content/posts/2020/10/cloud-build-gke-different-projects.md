@@ -5,11 +5,11 @@ tags: [gcp, kubernetes, security]
 description: fixme
 draft: true
 aliases:
-    - /fixme/
+    - /cloud-build-gke-different-projects/
 ---
 + diagram
 
-Since my first setup of myblog (FIXME) and mygkecluster (FIXME) I now need to split the resources from each other. The typical scenario is I would like to have one project per application I'm deploying in my GKE cluster. With that in place I have more control over the cost, the security and the governance at the project level for each app. The GKE cluster and its project are seen here as shared resources. The above diagram illustrates this scenario.
+Since my first setup of [`myblog`]() and [`mygkecluster`](https://github.com/mathieu-benoit/mygkecluster) I now need to split the resources from each other. The typical scenario is I would like to have one project per application I'm deploying in my GKE cluster. With that in place I have more control over the cost, the security and the governance at the project level for each app. The GKE cluster and its project are seen here as shared resources. The above diagram illustrates this scenario.
 
 Here is the minimal setup for the GKE's project:
 ```
@@ -26,7 +26,7 @@ gcloud services enable containerregistry.googleapis.com
 gcloud projects add-iam-policy-binding $projectId \
     --member "serviceAccount:$gkeSaId" \
     --role roles/storage.objectViewer
-# To get the GCS backend, we need to manually push a first image
+# To get the GCS backend, we need to manually push a first image, then we will be able to setup a service account with the proper privileg to push containers into GCR
 gcloud auth configure-docker gcr.io
 scratchImageName=gcr.io/$gkeProjectId/scratch
 (echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t $scratchImageName -
@@ -35,9 +35,7 @@ docker rmi $scratchImageName
 gcloud container images delete $scratchImageName --quiet
 ```
 
-We are also enabling the container registry in this shared project to be able to get all the container images of the different apps.
-
-So here we are, now we need to create the Cloud Build setup for a sepcific apps, myblog in this case, here are the associated command lines to accomplish that:
+So here we are, we have a shared GKE and GCR services for the different projects to push their containers into. Now we need to create the Cloud Build setup for a sepcific apps, myblog in this case, here are the associated command lines to accomplish that:
 FIXME - take a previous article as a reference and first setup
 ```
 # Configuration to be able to push images to GCR in another project
@@ -54,6 +52,15 @@ gkeProjectId=FIXME
 gcloud projects add-iam-policy-binding $gkeProjectId \
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/container.developer
+
+# In the case of my app myblog, I need to provision a static external IP address to be able to leverage ManagedCertificate. In this case, I need to provision this IP address in the GKE's project
+gcloud config set project $gkeProjectId
+staticIpName=myblog
+gcloud compute addresses create $staticIpName \
+    --global
+staticIpAddress=$(gcloud compute addresses describe $staticIpName \
+    --global \
+    --format "value(address)")
 ```
 
 Complementary to this, we would like improve our security posture here, more specifically by respecting the least privilege principle with the different service account involved here:

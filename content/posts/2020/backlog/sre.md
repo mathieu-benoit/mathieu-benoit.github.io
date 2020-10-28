@@ -7,7 +7,10 @@ draft: true
 aliases:
     - /sre/
 ---
-https://www.youtube.com/watch?v=7Oe8mYPBZmw
+Preparing for peak holiday shopping in 2020: War rooms go virtual
+https://cloud.google.com/blog/topics/retail/preparing-for-peak-holiday-season-while-wfh
+
+https://www.youtube.com/watch?v=c-w_GYvi0eA
 https://www.youtube.com/watch?v=oyJFxr4gYXc
 https://www.youtube.com/watch?v=tmpm1XI-Oac
 https://www.youtube.com/watch?v=nQv9ySa8MTU
@@ -243,6 +246,19 @@ SLO with GKE at Equifax: https://cloud.withgoogle.com/next/sf/sessions?session=O
 - Error Budgets
     - _inverse of availability: amount of errors allowed based on SLAs_
 
+Error Budget = 1 - SLA; removes major source SRE-DEV conflict (it's a math problem, not an opinion or power conflict)
+Error Budget Policy is what you agree to do when the application exceeds it's error budget. This is not pay $$$. Must be something that will visibly improve reliability.
+Example: until the application is again meeting its SLO and has some Error Budget:
+- No new features launches allowed
+- Sprint planning may only pull postmortem action items from the backlog
+- Software Development Team must meet with SRE Team daily to outline their improvements
+SRE Principle #1:
+- Any organisation, even without hiring a single SRE can have an Error Budget Policy
+- This is any leverage you can use to keep your customers from experience pain using your application
+- you can implement this today: measure, account and act.
+
+
+
 SLOs for GKE services
 https://youtu.be/wB9AKdPDv0Q
 
@@ -266,6 +282,41 @@ Unify vision, foster collaboration and communications, and share knowledge
     - Google found that establishing a culture of blameless postmortems results in more reliable systems and is critical to creating and maintaining a successful SRE organization.
 3. Form an SRE Team
     - Start with an advocate for SRE within an organization and decide how to embed them, such as within development, operations or horizontally (consulting) across teams. Evaluate the pros/cons of each model.
+
+> Making tomorrow better than today.
+- SLOs and Error Budgets are the first step
+- The next step is staffing an SRE role
+- Real responsibility
+- Defining and refining the SLOs
+- Making sure that the application meets the reliability for its end users
+
+Project Work for SRE Team:
+- Consulting on System Architecture and Design
+- Authoring and iterating on Monitoring
+- Automation of repetitive work
+- Coordinating implementation of postmortem action items
+
+> SREs have time to make tomorrow better than today.
+
+Sharing responsibility: providing an SRE team some way of giving back-pressure to their dev partners provides balance.
+
+- Give 5% of the operational work to the developers: on-call shifts, rollout management, ops tasks.
+- Track the project work of the SRE team: if it's not delivering completed projects: there's something wrong
+- Analyse new production systems and only on-board them if they can be operated safely
+- If every problem with a system has to be esacalated to its developer: give the pager to the developer instead.
+- an SRE organisation within a company needs a mandate
+- without leadership buy-in, it can not work
+- when applications miss their SLOs and run out of Error Budget: it puts additional load on the SRE team: need to devote more company resources to addressing reliability concerns or loosen the SLO.
+- fixing a product after launch is always more expensive
+
+The SRE Principles:
+- SRE needs SLOs, with consequences
+- SREs have time to make tomorrow better than today
+- SRE teams have the ability to regulate their workload
+
+New Relic's Two Roles:
+- Pure SRE: build and support our core internal platform, container fabric, networking systems
+- Embedded SRE: partner with Eng. Teams Domain Experts in Reliability, Tooling and Scaling
 
 ## SRE Books
 
