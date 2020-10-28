@@ -88,8 +88,7 @@ https://cloud.google.com/vpc-service-controls/docs/set-up-gke
 https://cloud.google.com/vpc-service-controls/docs/supported-products#build
 https://cloud.google.com/access-context-manager/docs/create-basic-access-level#members-example
 
-
-
+```
 region=us-east4
 randomSuffix=$(shuf -i 100-999 -n 1)
 clusterName=mygkecluster$randomSuffix
@@ -116,6 +115,7 @@ gcloud container clusters create $clusterName \
     --enable-master-authorized-networks \
     --enable-private-nodes \
     --enable-private-endpoint
+```
 
 Complementary and further resources:
 - [Preparing a Google Kubernetes Engine environment for production](https://cloud.google.com/solutions/prep-kubernetes-engine-for-prod)
