@@ -14,7 +14,6 @@ https://github.com/andreyk-code/no-inet-gke-cluster
 https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
 https://cloud.google.com/blog/products/devops-sre/using-the-cloud-foundation-toolkit-with-terraform
 
-
 --> https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#gcloud
 
 # Networking
