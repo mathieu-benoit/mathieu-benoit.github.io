@@ -31,4 +31,4 @@ Further and complementary resources:
 - [Confidential GKE Nodes Limitations](https://cloud.google.com/kubernetes-engine/docs/how-to/confidential-gke-nodes#limitations)
 - [Confidential computing consortium](https://confidentialcomputing.io/)
 
-Hope you enjoyed that one, cheers!
+Hope you enjoyed that one, stay safe, cheers!
