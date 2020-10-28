@@ -6,7 +6,7 @@ description: let's see how easy it is to enable confidential computing on a gke 
 aliases:
     - /confidential-computing/
 ---
-> Hardware based memory encryption to keep data and code protected when being processed.
+[Confidential Computing](https://cloud.google.com/confidential-computing) is an hardware based memory encryption to keep data and code protected when being processed. It's simple, easy-to-use deployment that doesn't compromise on performance:
 
 {{< youtube RUFhIKFNshI >}}
 
@@ -22,12 +22,13 @@ gcloud beta container clusters create \
   --enable-confidential-nodes
 ```
 
-And that's it in addition to data encrypted at rest and in transit, you now have data encrypted while being processed! Furthermore, you don't need to do anything in your apps, you just need to deploy them as usual on your GKE cluster.
+And that's it, in addition to data encrypted at rest and in-transit, you now have data encrypted while being processed on your Confidential GKE Nodes! [Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes) feature is also leveraged by default to offer protection against rootkit and bootkits, helping to ensure the integrity of the operating system you run on your Confidential GKE Nodes. It provides an even deeper and multi-layer defense-in-depth protection against data exfiltration attacks.
+
+Furthermore, you don't need to do anything in your apps, you just need to deploy them as-is on your GKE cluster. But optionally, you could use the `nodeSelector` `cloud.google.com/gke-confidential-nodes: true` to ensure your sensitive workloads can only be scheduled on Confidential GKE Nodes.
 
 Further and complementary resources:
 - [Encryption in Transit in Google Cloud](https://cloud.google.com/security/encryption-in-transit/resources/encryption-in-transit-whitepaper.pdf)
-- [Confidential Computing](https://cloud.google.com/confidential-computing)
-- [Limitations](https://cloud.google.com/kubernetes-engine/docs/how-to/confidential-gke-nodes#limitations)
+- [Confidential GKE Nodes Limitations](https://cloud.google.com/kubernetes-engine/docs/how-to/confidential-gke-nodes#limitations)
 - [Confidential computing consortium](https://confidentialcomputing.io/)
 
 Hope you enjoyed that one, cheers!
