@@ -18,7 +18,7 @@ So typically, here is the command to create your GKE cluster with Confidential C
 ```
 gcloud beta container clusters create \
   --release-channel=rapid \
-  --machine-type=n2d-standard-2 \ 
+  --machine-type=n2d-standard-2 \
   --enable-confidential-nodes
 ```
 

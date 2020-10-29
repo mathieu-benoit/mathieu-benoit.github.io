@@ -86,6 +86,7 @@ And that's it for now, like you could see how easy it is to leverage the Cloud O
 Complementary resources:
 - [SRE books](https://landing.google.com/sre/books/)
 - [StackDoctor on Youtube by Yuri Grinshteyn](https://www.youtube.com/results?search_query=%23StackDoctor)
+- [Setting up Cloud Operations for GKE](https://medium.com/google-cloud/setting-up-cloud-operations-for-gke-a21b49979693)
 - [21 new ways we're improving observability with Cloud Ops](https://cloud.google.com/blog/products/management-tools/cloud-operations-suite-gets-21-new-features)
 - [Qwiklabs - Google Cloud's Operations Suite on GKE](https://www.qwiklabs.com/quests/133)
 - [SLOs with Stackdriver Service Monitoring](https://medium.com/google-cloud/slos-with-stackdriver-service-monitoring-62f193147b3f)

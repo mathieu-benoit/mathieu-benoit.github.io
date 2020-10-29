@@ -100,9 +100,11 @@ gcloud app deploy \
 # Deploy this container on GKE (~ 5min)
 gcloud services enable container.googleapis.com
 clusterName=mygkecluster
+zone=us-east1-b
 gcloud container clusters create $clusterName \
-    --zone us-east1-b
-gcloud container clusters get-credentials $clusterName
+    --zone $zone
+gcloud container clusters get-credentials $clusterName \
+    --zone $zone
 kubectl run myblog \
     --image=gcr.io/$projectId/myblog:1 \
     --generator=run-pod/v1
