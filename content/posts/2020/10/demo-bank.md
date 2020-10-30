@@ -59,27 +59,27 @@ kubectl config set-context \
 ksaName=bank-ksa
 kubectl create serviceaccount $ksaName
 gsaName=$gkeProjectId-bank-gsa
+gsaAccountName=$gsaName@$gkeProjectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $gsaName
 gcloud iam service-accounts add-iam-policy-binding \
     --role roles/iam.workloadIdentityUser \
     --member "serviceAccount:$gkeProjectId.svc.id.goog[$namespace/$ksaName]" \
-    $gsaName@$gkeProjectId.iam.gserviceaccount.com
+    $gsaAccountName
 kubectl annotate serviceaccount \
     $ksaName \
-    iam.gke.io/gcp-service-account=$gsaName@$gkeProjectId.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account=$gsaAccountName
 gcloud projects add-iam-policy-binding $gkeProjectId \
-    --member "serviceAccount:$gsaName@$gkeProjectId.iam.gserviceaccount.com" \
+    --member "serviceAccount:$gsaAccountName" \
     --role roles/cloudtrace.agent
 gcloud projects add-iam-policy-binding $gkeProjectId \
-    --member "serviceAccount:$gsaName@$gkeProjectId.iam.gserviceaccount.com" \
+    --member "serviceAccount:$gsaAccountName" \
     --role roles/monitoring.metricWriter
-mkdir -p wi-kubernetes-manifests
 files="`pwd`/kubernetes-manifests/*"
-for f in $files; do sed "s/serviceAccountName: default/serviceAccountName: $ksaName/g" $f > wi-kubernetes-manifests/`basename $f`; done
+for f in $files; do sed -i "s/serviceAccountName: default/serviceAccountName: $ksaName/g" $f; done
 kubectl apply \
     -f ./extras/jwt/jwt-secret.yaml
 kubectl apply \
-    -f ./wi-kubernetes-manifests
+    -f ./kubernetes-manifests
 kubectl get all,secrets,configmaps,sa
 kubectl get service frontend | awk '{print $4}'
 ```
