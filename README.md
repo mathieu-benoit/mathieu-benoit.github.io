@@ -45,11 +45,12 @@ docker pull nginxinc/nginx-unprivileged:$nginxVersion
 docker tag nginxinc/nginx-unprivileged:$nginxVersion gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
 docker push gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
 
-docker build -t blog . \
+docker build -t blog \
     --build-arg ALPINE_BASE_IMAGE=gcr.io/$gcrProjectId/alpine \
     --build-arg ALPINE_VERSION=$alpineVersion \
     --build-arg NGINX_BASE_IMAGE=gcr.io/$gcrProjectId/nginx-unprivileged \
-    --build-arg NGINX_VERSION=$nginxVersion
+    --build-arg NGINX_VERSION=$nginxVersion \
+    .
 ```
 
 ## Setup the Cloud Build trigger
