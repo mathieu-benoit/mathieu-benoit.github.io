@@ -1,4 +1,4 @@
-FROM alpine as build
+FROM alpine:3.12.1 as build
 ARG HUGO_VERSION=0.76.5
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 RUN apk add --update wget ca-certificates && \
