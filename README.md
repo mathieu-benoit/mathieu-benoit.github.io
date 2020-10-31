@@ -30,6 +30,29 @@ kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/
 ```
 
+## Prepare your own base images in your own GCR
+
+```
+gcrProjectId=FIXME
+
+alpineVersion=FIXME
+docker pull alpine:$alpineVersion
+docker tag alpine:$alpineVersion gcr.io/$gcrProjectId/alpine:$alpineVersion
+docker push gcr.io/$gcrProjectId/alpine:$alpineVersion
+
+nginxVersion=FIXME
+docker pull nginxinc/nginx-unprivileged:$nginxVersion
+docker tag nginxinc/nginx-unprivileged:$nginxVersion gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
+docker push gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
+
+docker build -t blog \
+    --build-arg ALPINE_BASE_IMAGE=gcr.io/$gcrProjectId/alpine \
+    --build-arg ALPINE_VERSION=$alpineVersion \
+    --build-arg NGINX_BASE_IMAGE=gcr.io/$gcrProjectId/nginx-unprivileged \
+    --build-arg NGINX_VERSION=$nginxVersion \
+    .
+```
+
 ## Setup the Cloud Build trigger
 
 ```
