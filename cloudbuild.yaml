@@ -1,6 +1,8 @@
 steps:
 - name: gcr.io/cloud-builders/git
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
+- name: 'ubuntu'
+  args: ['bash','-c','sed -i "s,FROM alpine,FROM gcr.io/${_CLOUDSDK_CORE_PROJECT}/alpine," Dockerfile']
 - name: gcr.io/cloud-builders/docker
   args: ['build', '-t', 'gcr.io/${_CLOUDSDK_CORE_PROJECT}/${_APP_NAME}:$SHORT_SHA', '${_APP_NAME}/.']
 - name: gcr.io/cloud-builders/docker
