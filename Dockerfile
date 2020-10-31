@@ -1,8 +1,8 @@
 ARG ALPINE_BASE_IMAGE=alpine
 ARG ALPINE_VERSION=3.12.1
-ARG HUGO_VERSION=0.76.5
 
 FROM ${ALPINE_BASE_IMAGE}:${ALPINE_VERSION} as build
+ARG HUGO_VERSION=0.76.5
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 RUN apk add --update wget ca-certificates && \
     cd /tmp/ && \
