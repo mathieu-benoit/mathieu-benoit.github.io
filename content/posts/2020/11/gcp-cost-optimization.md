@@ -1,12 +1,14 @@
 ---
 title: cost optimization on gcp
-date: 2020-10-18
+date: 2020-11-18
 tags: [gcp]
 description: fixme
 draft: true
 aliases:
     - /gcp-co/
 ---
+
+https://cloud.google.com/blog/products/management-tools/optimize-google-cloud-resources-with-active-assist
 
 tagging
 policy

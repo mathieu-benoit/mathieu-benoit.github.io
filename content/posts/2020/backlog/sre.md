@@ -262,6 +262,9 @@ SRE Principle #1:
 SLOs for GKE services
 https://youtu.be/wB9AKdPDv0Q
 
+https://github.com/ocervell/slo-repository
+https://github.com/ocervell/slo-generator-gke
+
 ## Where to start?
 
 [Introduction: How Google runs Production systems](https://landing.google.com/sre/sre-book/chapters/introduction/)
@@ -362,3 +365,7 @@ https://www.cncf.io/blog/2020/07/17/site-reliability-engineering-sre-101-with-de
 Hope you enjoyed all this walkthrough and resources about Site Reliability Engineering (SRE) and hope you will find few tips that will inspire you for your own company, projects or role.
 
 Cheers!
+
+
+Why What How
+building blocks for reliable systems: SRE best practices, SLI/SLO/SLA and Error budget
