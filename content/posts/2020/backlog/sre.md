@@ -10,6 +10,9 @@ aliases:
 Preparing for peak holiday shopping in 2020: War rooms go virtual
 https://cloud.google.com/blog/topics/retail/preparing-for-peak-holiday-season-while-wfh
 
+How Mercari reduced request latency by 15% with Cloud Profiler
+https://cloud.google.com/blog/products/management-tools/mercari-uses-cloud-profiler-to-reduce-service-latency
+
 https://www.youtube.com/watch?v=c-w_GYvi0eA
 https://www.youtube.com/watch?v=oyJFxr4gYXc
 https://www.youtube.com/watch?v=tmpm1XI-Oac
