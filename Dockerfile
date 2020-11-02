@@ -4,7 +4,7 @@ ARG NGINX_BASE_IMAGE=nginxinc/nginx-unprivileged
 ARG NGINX_VERSION=1.19.3-alpine
 
 FROM ${ALPINE_BASE_IMAGE}:${ALPINE_VERSION} as build
-ARG HUGO_VERSION=0.76.5
+ARG HUGO_VERSION=0.77.0
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 RUN apk add --update wget ca-certificates && \
     cd /tmp/ && \
