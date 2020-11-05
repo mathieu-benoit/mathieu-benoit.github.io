@@ -15,15 +15,6 @@ The Binary Authorization and Container Analysis APIs are based upon the open sou
 - [Grafeas](https://grafeas.io/) defines an API spec for managing metadata about software resources, such as container images, Virtual Machine (VM) images, JAR files, and scripts. You can use Grafeas to define and aggregate information about your project’s components.
 - [Kritis](https://github.com/grafeas/kritis) defines an API for ensuring a deployment is prevented unless the artifact (container image) is conformant to central policy and optionally has the necessary attestations present.
 
-TODO:
-- Setup your cluster
-- Apply cluster policies
-- See audit logs
-
-
-
-
-
 ## Setup your GKE cluster
 
 ```
@@ -38,14 +29,12 @@ gcloud container clusters create \
 
 # You could also enable this feature on an existing cluster
 gcloud container clusters update $clusterName \
-    --enable-binauthz \
-    --zone us-east4-a
+    --enable-binauthz
 
 # Deploy the hello-world container from DockerHub
 kubectl create deployment hello-world \
     --image=hello-world
 kubectl get pods
-kubectl delete deployment hello-world
 
 # Deploy the hello-world container from your private GCR
 docker pull hello-world
@@ -55,7 +44,6 @@ docker push gcr.io/$projectId/hello-world
 kubectl create deployment hello-world \
     --image=gcr.io/$projectId/hello-world
 kubectl get pods
-kubectl delete deployment hello-world
 ```
 
 ## Apply cluster policies
@@ -64,7 +52,7 @@ Securing the cluster with a policy, as a policy creator:
 ```
 # Get the default policy in place
 gcloud container binauthz policy export > policy.yaml
-cat /tmp/policy.yaml
+cat policy.yaml
 
 # Find all the default additional global policies in place
 gcloud container binauthz policy export --project=binauthz-global-policy
@@ -115,5 +103,8 @@ https://cloud.google.com/binary-authorization/docs/making-attestations
 https://cloud.google.com/binary-authorization/docs/cloud-build
 
 Further and complementary resources:
+- [End-To-End Security and Compliance for Your Kubernetes Software Supply Chain (Cloud Next '19)](https://youtu.be/UkzfQvLpI0M)
 - [Binary Authorization pricing](https://cloud.google.com/binary-authorization/pricing)
 - [Securing with VPC Service Controls](https://cloud.google.com/binary-authorization/docs/securing-with-vpcsc)
+
+Hope you enjoyed that one, happy sailing, stay safe!
