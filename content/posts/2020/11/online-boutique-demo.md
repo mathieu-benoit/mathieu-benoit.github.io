@@ -3,6 +3,7 @@ title: demo bank on gke
 date: 2020-10-29
 tags: [gcp, containers, kubernetes, security]
 description: let's see how to deploy the demo bank (aka bank of anthos) solution on gke, w/ or w/o workload identity
+draft: true
 aliases:
     - /demo-bank/
 ---
