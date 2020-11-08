@@ -12,11 +12,6 @@ Today we'll deploy the [`Demo Bank` source code](https://github.com/GoogleCloudP
 
 > `Demo Bank` (aka `Bank of Anthos`) is a sample HTTP-based web app that simulates a bank's payment processing network, allowing users to create artificial bank accounts and complete transactions.
 
-```
-git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
-cd bank-of-anthos
-```
-
 | Service | Language | Description |
 | ------- | -------- | ----------- |
 | [frontend](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/frontend) | Python | Exposes an HTTP server to serve the website. Contains login page, signup page, and home page |
@@ -29,14 +24,34 @@ cd bank-of-anthos
 | [accounts-db](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/accounts-db) | PostgreSQL | Database for user accounts and associated data. Option to pre-populate with demo users |
 | [loadgenerator](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/loadgenerator) | Python/Locust | Continuously sends requests imitating users to the frontend. Periodically creates new accounts and simulates transactions between them |
 
-## Deployment on GKE
-
 ```
+git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
+cd bank-of-anthos
+
+# Assumption here that you already have a GCP project and a GKE cluster in it
+projectId=FIXME
+clusterName=FIXME
+clusterZone=FIXME
+gcloud config set project $projectId
+gcloud container clusters get-credentials $clusterName \
+    --zone $zone
+
+# Create a dedicated namespace
 namespace=bank
-kubectl create namespace $namespace
+kubectl create ns $namespace
 kubectl config set-context \
     --current \
     --namespace $namespace
+```
+
+Now, I provide 3 options with associated script to deploy this solution on GKE:
+- [With pre-built images]({{< ref "#deployment-on-gke-with-pre-built-images" >}})
+- [With custom and private images]({{< ref "#deployment-on-gke-with-custom-and-private-images" >}})
+- [With Workload Identity]({{< ref "#deployment-on-gke-with-workload-identity" >}})
+
+## Deployment on GKE with pre-built images
+
+```
 kubectl apply \
     -f ./extras/jwt/jwt-secret.yaml
 kubectl apply \
@@ -45,37 +60,63 @@ kubectl get all,secrets,configmaps
 kubectl get service frontend | awk '{print $4}'
 ```
 
+## Deployment on GKE with custom and private images
+
+In some cases you may want to only deploy container images coming from your own private GCR, for example if you have whitelisted container registries on your GKE cluster with [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
+
+```
+publicGcrRepo=gcr.io/bank-of-anthos
+privateGcrRepo=gcr.io/$projectId/bank-of-anthos
+services="accounts-db balancereader contacts frontend ledger-db ledgerwriter loadgenerator transactionhistory userservice"
+imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/bank-of-anthos/releases | jq -r '[.[]] | .[0].tag_name')
+
+# Copy the pre-built images into your own private GCR:
+for s in $services; do docker pull $publicGcrRepo/$s:$imageTag; docker tag $publicGcrRepo/$s:$imageTag $privateGcrRepo/$s:$imageTag; docker push $privateGcrRepo/$s:$imageTag; done
+
+# Update the Kubernetes manifests with these new container images
+cd kubernetes-manifests
+mv transaction-history.yaml transactionhistory.yaml; mv ledger-writer.yaml ledgerwriter.yaml; mv balance-reader.yaml balancereader.yaml # tmp to have consistent namings to properly execute the next command.
+for s in $services; do sed -i "s,image: $publicGcrRepo/$s:$imageTag,image: $privateGcrRepo/$s:$imageTag,g" $s.yaml; done
+
+# Deploy the solution
+kubectl apply \
+    -f ./extras/jwt/jwt-secret.yaml
+kubectl apply \
+    -f ./kubernetes-manifests
+kubectl get all,secrets,configmaps,sa
+kubectl get service frontend | awk '{print $4}'
+```
+
 ## Deployment on GKE with Workload Identity
 
 _Note: It's highly recommended to have your GKE clusters with Workload Identity enabled, I discussed about the why and how if you are interested in knowing more, here: [GKE’s service account]({{< ref "/posts/2020/10/gke-service-account.md" >}})._
 
 ```
-gkeProjectId=FIXME
-namespace=bank
-kubectl create namespace $namespace
-kubectl config set-context \
-    --current \
-    --namespace $namespace
+# Create a dedicated service account
 ksaName=bank-ksa
 kubectl create serviceaccount $ksaName
-gsaName=$gkeProjectId-bank-gsa
-gsaAccountName=$gsaName@$gkeProjectId.iam.gserviceaccount.com
+gsaName=$projectId-bank-gsa
+gsaAccountName=$gsaName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $gsaName
 gcloud iam service-accounts add-iam-policy-binding \
     --role roles/iam.workloadIdentityUser \
-    --member "serviceAccount:$gkeProjectId.svc.id.goog[$namespace/$ksaName]" \
+    --member "serviceAccount:$projectId.svc.id.goog[$namespace/$ksaName]" \
     $gsaAccountName
 kubectl annotate serviceaccount \
     $ksaName \
     iam.gke.io/gcp-service-account=$gsaAccountName
-gcloud projects add-iam-policy-binding $gkeProjectId \
+gcloud projects add-iam-policy-binding $projectId \
     --member "serviceAccount:$gsaAccountName" \
     --role roles/cloudtrace.agent
-gcloud projects add-iam-policy-binding $gkeProjectId \
+gcloud projects add-iam-policy-binding $projectId \
     --member "serviceAccount:$gsaAccountName" \
     --role roles/monitoring.metricWriter
+
+# Update the Kubernetes manifests with this service account
 files="`pwd`/kubernetes-manifests/*"
 for f in $files; do sed -i "s/serviceAccountName: default/serviceAccountName: $ksaName/g" $f; done
+
+# Deploy the solution
 kubectl apply \
     -f ./extras/jwt/jwt-secret.yaml
 kubectl apply \
