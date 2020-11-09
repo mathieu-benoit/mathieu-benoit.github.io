@@ -41,8 +41,8 @@ gcloud builds submit \
     .
 
 gcloud builds list
-gcloud beta container images list
-gcloud beta container images list-tags gcr.io/$projectId/$appName
+gcloud container images list
+gcloud container images list-tags gcr.io/$projectId/$appName
 ```
 
 And that's it, with 2 steps we are able to manually use Google Cloud Build to build and push a containerized app in Google Container Registry. We are using here the built-in `gcr.io/cloud-builders/docker` step wich is a container, you could find [here the list of the other built-in builder images](https://github.com/GoogleCloudPlatform/cloud-builders) or the [community-contributed builders and custom builders](https://cloud.google.com/cloud-build/docs/configuring-builds/use-community-and-custom-builders) or even the [Docker Hub images](https://cloud.google.com/cloud-build/docs/interacting-with-dockerhub-images). In addition to this, you may want to [substitute variable values](https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values) in your build config.
@@ -61,7 +61,7 @@ Another feature you may want to leverage with Google Container Registry is [Cont
 gcloud services enable containeranalysis.googleapis.com
 gcloud services enable containerscanning.googleapis.com
 ```
-From there, the vulnerabilities scans will be in place as soon as you will push an image in the Container Registry. See the associated pricing page for this feature [here](https://cloud.google.com/container-registry/pricing#vulnerability_scanning). You could check the result of the scan by re-running this command `gcloud beta container images list-tags gcr.io/$projectId/myblog` and look at the value of the `VULNERABILITY_SCAN_STATUS` column.
+From there, the vulnerabilities scans will be in place as soon as you will push an image in the Container Registry. See the associated pricing page for this feature [here](https://cloud.google.com/container-registry/pricing#vulnerability_scanning). You could check the result of the scan by re-running this command `gcloud container images list-tags gcr.io/$projectId/myblog` and look at the value of the `VULNERABILITY_SCAN_STATUS` column.
 
 I love the fact that the [build config definition is very light and easy to understand](https://cloud.google.com/cloud-build/docs/build-config), for example no extra fields to define a step or to do conditions, dependencies with other build configs, etc. You may have other experiences with other CI/CD tools with Azure DevOps and feel like me that this could be a limitation. But at the end of the day, isn't it better to have few features instead of a ton of them with multiple ways to accomplish what you are trying to do? Here, I haven't felt yet to be lost or that I was looking for what is the best way to do something, it seems pretty straight forward and powerful enough. For example, how to add conditions on a Git branch or other variables or context? Actually, you could either have different build config definitions (YAML or JSON files), different triggers based on the Git branch or you could also have more control with bash scripts at any step to be more flexible.
 
