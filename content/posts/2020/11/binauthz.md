@@ -1,17 +1,17 @@
 ---
-title: fixme
-date: 2020-11-02
+title: binary authorization on gke
+date: 2020-11-08
 tags: [gcp, containers, kubernetes, security]
-description: fixme
+description: let's see how you can only run what you trust (tl;dr whitelisted registries and signed containers) on gke with binauthz
 draft: true
 aliases:
     - /binauthz/
 ---
 [![](https://github.com/GoogleCloudPlatform/gke-binary-auth-demo/raw/master/images/sdlc.png)](https://github.com/GoogleCloudPlatform/gke-binary-auth-demo/raw/master/images/sdlc.png)
 
-> [Binary Authorization](https://cloud.google.com/binary-authorization) is a deploy-time security control that ensures only trusted container images are deployed on Google Kubernetes Engine (GKE). With Binary Authorization, you can require images to be signed by trusted authorities during the development process and then enforce signature validation when deploying. By enforcing validation, you can gain tighter control over your container environment by ensuring only verified images are integrated into the build-and-release process.
+> Binary Authorization is a deploy-time security control that ensures only trusted container images are deployed on Google Kubernetes Engine (GKE). With Binary Authorization, you can require images to be signed by trusted authorities during the development process and then enforce signature validation when deploying. By enforcing validation, you can gain tighter control over your container environment by ensuring only verified images are integrated into the build-and-release process.
 
-The Binary Authorization and Container Analysis APIs are based upon the open source projects:
+The [Binary Authorization](https://cloud.google.com/binary-authorization) and [Container Analysis](https://cloud.google.com/container-registry/docs/container-analysis) are based upon the open source projects:
 - [Grafeas](https://grafeas.io/) defines an API spec for managing metadata about software resources, such as container images, Virtual Machine (VM) images, JAR files, and scripts. You can use Grafeas to define and aggregate information about your project’s components.
 - [Kritis](https://github.com/grafeas/kritis) defines an API for ensuring a deployment is prevented unless the artifact (container image) is conformant to central policy and optionally has the necessary attestations present.
 
@@ -92,18 +92,57 @@ kubectl get pod
 
 That's how easy it is to whitelist and blacklist container registries on your GKE clusters. You could find [more policies examples here](https://cloud.google.com/binary-authorization/docs/example-policies). An interesting feature to be aware of is the [dry run mode](https://cloud.google.com/binary-authorization/docs/enabling-dry-run) which checks policy compliance at Pod creation time but without actually blocking the Pod from being created. Less radical and more gradual way to integrate Binary authorization on your existing GKE clusters.
 
-## Setup attestor and attestation
+## Setup of the attestor and attestation
 
 https://cloud.google.com/binary-authorization/docs/creating-attestors-cli
 
+## Setup of an attestation by signing a container
+
 https://cloud.google.com/binary-authorization/docs/making-attestations
 
-## Update your Cloud Build definition
+```
+imageName=gcr.io/$projectId/hello-world
+imageToAttest=$(gcloud container images describe $imageName --format='get(image_summary.fully_qualified_digest)')
+gcloud beta container binauthz attestations sign-and-create \
+    --project=$projectId \
+    --artifact-url=$imageToAttest \
+    --attestor=$attestorName \
+    --attestor-project=$attestorProjectId \
+    --keyversion-project=$kmsKeyProjectId \
+    --keyversion-location=$kmsKeyLocation \
+    --keyversion-keyring=$kmsKeyringName \
+    --keyversion-key=$kmsKeyName \
+    --keyversion=$kmsKeyVersion
+```
 
-https://cloud.google.com/binary-authorization/docs/cloud-build
+Let's now say you would like to run this exact same common from within Cloud Build, you will need to update the IAM roles of its service account:
+```
+projectId=FIXME
+projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
+cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
+gcloud projects add-iam-policy-binding $projectId \
+    --member serviceAccount:$cloudBuildSa \
+    --role roles/binaryauthorization.attestorsViewer
+gcloud projects add-iam-policy-binding $projectId \
+    --member serviceAccount:$cloudBuildSa \
+    --role roles/cloudkms.signerVerifier
+gcloud projects add-iam-policy-binding $projectId \
+    --member serviceAccount:$cloudBuildSa \
+    --role roles/containeranalysis.notes.attacher
+```
+
+## Deploy a signed container
+
+https://cloud.google.com/binary-authorization/docs/deploying-containers
+
+Now, your container image `gcr.io/$PROJECT_ID/${APP_NAME}:latest` in the above example is signed and ready to be properly deployed in your GKE cluster with your associated BinAuthz's attestation setup.
+
+
+That's a wrap! Binary Authorization allows to add more security in your CI/CD pipeline with more control on you GKE clusters with container registries whitelisting as well as allowing only signed container images.
 
 Further and complementary resources:
 - [End-To-End Security and Compliance for Your Kubernetes Software Supply Chain (Cloud Next '19)](https://youtu.be/UkzfQvLpI0M)
+- [Codelab: Securing Your GKE Deployments with Binary Authorization](https://codelabs.developers.google.com/codelabs/cloud-binauthz-intro/index.html#0)
 - [Binary Authorization pricing](https://cloud.google.com/binary-authorization/pricing)
 - [Securing with VPC Service Controls](https://cloud.google.com/binary-authorization/docs/securing-with-vpcsc)
 
