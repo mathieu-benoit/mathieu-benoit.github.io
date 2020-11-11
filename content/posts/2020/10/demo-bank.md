@@ -105,12 +105,8 @@ gcloud iam service-accounts add-iam-policy-binding \
 kubectl annotate serviceaccount \
     $ksaName \
     iam.gke.io/gcp-service-account=$gsaAccountName
-gcloud projects add-iam-policy-binding $projectId \
-    --member "serviceAccount:$gsaAccountName" \
-    --role roles/cloudtrace.agent
-gcloud projects add-iam-policy-binding $projectId \
-    --member "serviceAccount:$gsaAccountName" \
-    --role roles/monitoring.metricWriter
+roles="roles/cloudtrace.agent roles/monitoring.metricWriter"
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gsaAccountName" --role $r; done
 
 # Update the Kubernetes manifests with this service account
 files="`pwd`/kubernetes-manifests/*"

@@ -15,6 +15,8 @@ aliases:
 git clone https://github.com/GoogleCloudPlatform/microservices-demo
 cd microservices-demo
 
+gcloud services enable cloudprofiler.googleapis.com
+
 # Assumption here that you already have a GCP project and a GKE cluster in it
 projectId=FIXME
 clusterName=FIXME
@@ -61,12 +63,8 @@ gcloud iam service-accounts add-iam-policy-binding \
 kubectl annotate serviceaccount \
     $ksaName \
     iam.gke.io/gcp-service-account=$gsaAccountName
-gcloud projects add-iam-policy-binding $projectId \
-    --member "serviceAccount:$gsaAccountName" \
-    --role roles/cloudtrace.agent
-gcloud projects add-iam-policy-binding $projectId \
-    --member "serviceAccount:$gsaAccountName" \
-    --role roles/monitoring.metricWriter
+roles="roles/cloudtrace.agent roles/monitoring.metricWriter roles/cloudprofiler.agent roles/clouddebugger.agent"
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gsaAccountName" --role $r; done
 
 # Now let's deploy these containers images on GKE with Workload Identity enabled
 files="`pwd`/src/*"
