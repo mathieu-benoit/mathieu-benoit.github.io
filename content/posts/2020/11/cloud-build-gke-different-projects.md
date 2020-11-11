@@ -73,21 +73,8 @@ cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
 gcloud projects remove-iam-policy-binding $projectId \
     --member serviceAccount:$cloudBuildSa \
     --role roles/cloudbuild.builds.builder
-gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/cloudbuild.builds.editor
-gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/storage.objectAdmin
-gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/logging.logWriter
-gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/source.reader
-gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/pubsub.editor
+roles="roles/cloudbuild.builds.editor roles/storage.objectAdmin roles/logging.logWriter roles/source.reader roles/pubsub.editor"
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$cloudBuildSa" --role $r; done
 ```
 So typically, by doing this, we just get rid off these permissions: `storage.buckets.create|get|list`, `artifactregistry.*`, and `containeranalysis.occurrences.*` which are not necessary in my context.
 

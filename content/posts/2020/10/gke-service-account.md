@@ -57,19 +57,8 @@ gcloud services enable cloudresourcemanager.googleapis.com
 saId=$clusterName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $clusterName \
   --display-name=$clusterName
-gcloud projects add-iam-policy-binding $projectId \
-  --member serviceAccount:$saId \
-  --role roles/logging.logWriter
-gcloud projects add-iam-policy-binding $projectId \
-  --member serviceAccount:$saId \
-  --role roles/monitoring.metricWriter
-gcloud projects add-iam-policy-binding $projectId \
-  --member serviceAccount:$saId \
-  --role roles/monitoring.viewer
-# If your cluster pulls private images from GCR:
-gcloud projects add-iam-policy-binding $projectId \
-  --member serviceAccount:$saId \
-  --role roles/storage.objectViewer
+roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer roles/storage.objectViewer"
+for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$saId" --role $r; done
 
 # Now you could create your cluster with this service account:
 gcloud container clusters create $clusterName \
