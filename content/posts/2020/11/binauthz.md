@@ -100,15 +100,106 @@ That's how easy it is to whitelist and blacklist container registries on your GK
 
 ## Create an attestor
 
-https://cloud.google.com/binary-authorization/docs/creating-attestors-cli
+We need to [create an attestor](https://cloud.google.com/binary-authorization/docs/creating-attestors-cli):
 
 ```
-FIXME
+deployerProjectId=FIXME
+deployerProjectNumber=$(gcloud projects describe "$deployerProjectId" --format="value(projectNumber)")
+attestorProjectId=FIXME
+attestorProjectNumber=$(gcloud projects describe "$attestorProjectId" --format="value(projectNumber)")
+deployerSa="service-$deployerProjectNumber@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
+attestorSa="service-$attestorProjectNumber@gcp-sa-binaryauthorization.iam.gserviceaccount.com"
+# Create a Container Analysis note
+noteId=NOTE_ID
+noteUri="projects/$attestorProjectId/notes/$noteId"
+description=FIXME
+cat > /tmp/note_payload.json << EOM
+{
+  "name": "$noteUri",
+  "attestation": {
+    "hint": {
+      "human_readable_name": "$description"
+    }
+  }
+}
+EOM
+curl \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)"  \
+    -H "x-goog-user-project: $attestorProjectId" \
+    --data-binary @/tmp/note_payload.json  \
+    "https://containeranalysis.googleapis.com/v1/projects/$attestorProjectId/notes/?noteId=$noteId"
+curl \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)"  \
+    -H "x-goog-user-project: $attestorProjectId" \
+    "https://containeranalysis.googleapis.com/v1/projects/$attestorProjectId/notes/"
+# Set permissions on the note
+cat > /tmp/iam_request.json << EOM
+{
+  "resource": "$noteUri",
+  "policy": {
+    "bindings": [
+      {
+        "role": "roles/containeranalysis.notes.occurrences.viewer",
+        "members": [
+          "serviceAccount:$attestorSa"
+        ]
+      }
+    ]
+  }
+}
+EOM
+curl -X POST  \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "x-goog-user-project: $attestorProjectId" \
+    --data-binary @/tmp/iam_request.json \
+    "https://containeranalysis.googleapis.com/v1/projects/$attestorProjectId/notes/noteId:setIamPolicy"
+# Generate a key pair
+pricateKeyFile="/tmp/ec_private.pem"
+openssl ecparam -genkey -name prime256v1 -noout -out $pricateKeyFile
+publicKeyFile="/tmp/ec_public.pem"
+openssl ec -in $pricateKeyFile -pubout -out $publicKeyFile
+# Create the attestor
+attestorName=FIXME
+gcloud container binauthz attestors create $attestorName \
+    --project $attestorProjectId \
+    --attestation-authority-note $noteId \
+    --attestation-authority-note-project $attestorProjectId
+gcloud beta container binauthz attestors add-iam-policy-binding "projects/$attestorProjectId/attestors/$attestorName" \
+    --member="serviceAccount:$deployerSa" \
+    --role=roles/binaryauthorization.attestorsVerifier
+# Add the public key to the attestor via Cloud KMS
+kmsKeyProjectId=FIXME
+kmsKeyringName=my-binauthz-keyring
+kmsKeyName=my-binauthz-kms-key-name
+kmsKeyLocation=global
+kmsKeyVersion=1
+gcloud kms keyrings create $kmsKeyringName \
+    --location $kmsKeyLocation
+gcloud kms keys create $kmsKeyName \
+    --location $kmsKeyLocation \
+    --keyring $kmsKeyringName  \
+    --purpose asymmetric-signing \
+    --default-algorithm ec-sign-p256-sha256 \
+    --protection-level software
+gcloud container binauthz attestors public-keys add \
+    --project $attestorProjectId \
+    --attestor $attestorName \
+    --keyversion-project $kmsKeyProjectId \
+    --keyversion-location $kmsKeyLocation \
+    --keyversion-keyring $kmsKeyringName \
+    --keyversion-key $kmsKeyName \
+    --keyversion $kmsKeyVersion
+# Verify that the attestor was created
+gcloud container binauthz attestors list \
+    --project $attestorProjectId
 ```
 
 ## Create an attestation
 
-Let's [create an attestation with a Cloud Key Management Service-based PKIX signature](https://cloud.google.com/binary-authorization/docs/making-attestations#create_an_attestation_with_a-based_pkix_signature):
+Let's now [create an attestation with a Cloud Key Management Service-based PKIX signature](https://cloud.google.com/binary-authorization/docs/making-attestations#create_an_attestation_with_a-based_pkix_signature):
 
 ```
 imageName=gcr.io/$projectId/hello-world
@@ -137,8 +228,6 @@ for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "
 ## Deploy a signed container
 
 Last step is to actually [deploy the container on GKE](https://cloud.google.com/binary-authorization/docs/deploying-containers), you will need to get the `digest` instead of the `tag` like we did earlier with the `imageToAttest` variable.
-
-
 
 That's a wrap! Binary Authorization allows to add more security in your CI/CD pipeline with more control on you GKE clusters with container registries whitelisting as well as allowing only container images with a valid attestation.
 
