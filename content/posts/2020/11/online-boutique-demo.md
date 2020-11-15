@@ -1,15 +1,16 @@
 ---
 title: online boutique demo
-date: 2020-11-08
+date: 2020-11-15
 tags: [gcp, containers, kubernetes, security]
 description: let's see how to deploy the online boutique solution on gke, w/ or w/o workload identity
-draft: true
 aliases:
     - /online-boutique-demo/
 ---
 [![](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)
 
-> [`Online Boutique`](https://github.com/GoogleCloudPlatform/microservices-demo) is a cloud-native microservices demo application. Online Boutique consists of a 10-tier microservices application. The application is a web-based e-commerce app where users can browse items, add them to the cart, and purchase them.
+Today we'll deploy the [`Online Boutique` source code](https://github.com/GoogleCloudPlatform/microservices-demo) on a GKE cluster.
+
+> [`Online Boutique`](https://github.com/GoogleCloudPlatform/microservices-demo) (aka `Microservices Demo`) is a cloud-native microservices demo application. Online Boutique consists of a 10-tier microservices application. The application is a web-based e-commerce app where users can browse items, add them to the cart, and purchase them.
 
 ```
 git clone https://github.com/GoogleCloudPlatform/microservices-demo
@@ -26,34 +27,60 @@ gcloud container clusters get-credentials $clusterName \
     --zone $zone
 
 # Create a dedicated namespace
-namespace=online-boutique
+namespace=boutique
 kubectl create ns $namespace
 kubectl config set-context \
     --current \
     --namespace $namespace
 ```
 
-## Deploy on GKE
+Now, here is 3 options with associated scripts to deploy this solution on GKE:
+- [With pre-built images]({{< ref "#deployment-on-gke-with-pre-built-images" >}})
+- [With custom and private images]({{< ref "#deployment-on-gke-with-custom-and-private-images" >}})
+- [With Workload Identity]({{< ref "#deployment-on-gke-with-workload-identity" >}})
 
-https://github.com/GoogleCloudPlatform/microservices-demo#option-2-running-on-google-kubernetes-engine-gke
+## Deployment on GKE with pre-built images
 
-You could for quick deployments do `kubectl apply -f release/kubernetes-manifests.yaml` or `skaffold run --default-repo=gcr.io/$projectId`. In my case I would like to manually build and push the container images and then deploy the on my GKE with Workload Identity enabled:
 ```
-# Let's build and push the container images in our own private GCR (duration ~40 min)
-gcrRepo=gcr.io/$projectId/microservices-demo
-tag=v0.2.1
-files="`pwd`/src/*"
-for f in $files; do docker build -t $gcrRepo/`basename $f`:$tag $f; docker push $gcrRepo/`basename $f`:$tag; done
+kubectl apply \
+    -f ./release/kubernetes-manifests.yaml
+kubectl get all,secrets,configmaps
+kubectl get service frontend-external | awk '{print $4}'
+```
 
-# Let's create the namespace and service account
-namespace=online-boutique
-kubectl create namespace $namespace
-kubectl config set-context \
-    --current \
-    --namespace $namespace
-ksaName=online-boutique-ksa
+## Deployment on GKE with custom and private images
+
+In some cases you may need to only deploy container images coming from your own private GCR, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
+
+```
+publicGcrRepo=gcr.io/google-samples/microservices-demo
+privateGcrRepo=gcr.io/$projectId/boutique
+services="adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
+imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/microservices-demo/releases | jq -r '[.[]] | .[0].tag_name')
+
+# Copy the pre-built images into your own private GCR:
+for s in $services; do docker pull $publicGcrRepo/$s:$imageTag; docker tag $publicGcrRepo/$s:$imageTag $privateGcrRepo/$s:$imageTag; docker push $privateGcrRepo/$s:$imageTag; done
+
+# Update the Kubernetes manifests with these new container images
+cd kubernetes-manifests
+for s in $services; do sed -i "s,image: $s,image: $privateGcrRepo/$s:$imageTag,g" $s.yaml; done
+
+# Deploy the solution
+kubectl apply \
+    -f ./kubernetes-manifests
+kubectl get all,secrets,configmaps,sa
+kubectl get service frontend-external | awk '{print $4}'
+```
+
+## Deployment on GKE with Workload Identity
+
+_Note: It's highly recommended to have your GKE clusters with Workload Identity enabled, I discussed about the why and how if you are interested in knowing more, here: [GKE’s service account]({{< ref "/posts/2020/10/gke-service-account.md" >}})._
+
+```
+# Create a dedicated service account
+ksaName=boutique-ksa
 kubectl create serviceaccount $ksaName
-gsaName=$projectId-online-boutique-gsa
+gsaName=$projectId-boutique-gsa
 gsaAccountName=$gsaName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $gsaName
 gcloud iam service-accounts add-iam-policy-binding \
@@ -66,16 +93,18 @@ kubectl annotate serviceaccount \
 roles="roles/cloudtrace.agent roles/monitoring.metricWriter roles/cloudprofiler.agent roles/clouddebugger.agent"
 for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$gsaAccountName" --role $r; done
 
-# Now let's deploy these containers images on GKE with Workload Identity enabled
-files="`pwd`/src/*"
-for f in $files; do sed -i "s,serviceAccountName: default,serviceAccountName: $ksaName,g;s,image: `basename $f`,image: $gcrRepo/`basename $f`:$tag,g" ./kubernetes-manifests/`basename $f`.yaml; done
+# Update the Kubernetes manifests with this service account
+files="`pwd`/kubernetes-manifests/*"
+for f in $files; do sed -i "s/serviceAccountName: default/serviceAccountName: $ksaName/g" $f; done
+
+# Deploy the solution
+kubectl apply \
+    -f ./extras/jwt/jwt-secret.yaml
 kubectl apply \
     -f ./kubernetes-manifests
 kubectl get all,secrets,configmaps,sa
-kubectl get service frontend | awk '{print $4}'
+kubectl get service frontend-external | awk '{print $4}'
 ```
-
-+ Cloud Memorystore? https://cloud.google.com/memorystore/docs/redis/connect-redis-instance-gke
 
 That's a wrap! We now have handy scripts for the `Online Boutique` solution, ready to be deployed on both GKE w/ or w/o Workload Identity.
 

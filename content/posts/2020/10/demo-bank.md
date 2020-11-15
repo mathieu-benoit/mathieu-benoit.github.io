@@ -62,7 +62,7 @@ kubectl get service frontend | awk '{print $4}'
 
 ## Deployment on GKE with custom and private images
 
-In some cases you may want to only deploy container images coming from your own private GCR, for example if you have whitelisted container registries on your GKE cluster with [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
+In some cases you may need to only deploy container images coming from your own private GCR, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
 
 ```
 publicGcrRepo=gcr.io/bank-of-anthos
@@ -86,6 +86,8 @@ kubectl apply \
 kubectl get all,secrets,configmaps,sa
 kubectl get service frontend | awk '{print $4}'
 ```
+
+_Note: Instead of moving the container images from the public registry to your own private registry, you may want to leverage both `Docker` and [`Jib`](https://github.com/GoogleContainerTools/jib#jib) to build your own container images from the source code._
 
 ## Deployment on GKE with Workload Identity
 
