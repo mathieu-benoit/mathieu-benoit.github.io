@@ -26,7 +26,7 @@ Then, I need to expose `myblog` with a `NodePort` Service:
 ```
 $projectId=FIXME
 kubectl run myblog \
-    --image=gcr.io/$projectId/myblog \
+    --image=$imageName \
     --generator=run-pod/v1
 kubectl expose pod myblog \
     --type NodePort \

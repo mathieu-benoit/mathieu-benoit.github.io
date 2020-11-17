@@ -9,7 +9,7 @@ aliases:
 ---
 + diagram
 
-Since my first setup of [`myblog`]() and [`mygkecluster`](https://github.com/mathieu-benoit/mygkecluster) I now need to split the resources from each other. The typical scenario is I would like to have one project per application I'm deploying in my GKE cluster. With that in place I have more control over the cost, the security and the governance at the project level for each app. The GKE cluster and its project are seen here as shared resources. The above diagram illustrates this scenario.
+Since my first setup of [`myblog`](https://github.com/mathieu-benoit/myblog) and [`mygkecluster`](https://github.com/mathieu-benoit/mygkecluster) I now need to split the resources from each other. The typical scenario is I would like to have one project per application I'm deploying in my GKE cluster. With that in place I have more control over the cost, the security and the governance at the project level for each app. The GKE cluster and its project are seen here as shared resources. The above diagram illustrates this scenario.
 
 Here is the minimal setup for the GKE's project:
 ```
@@ -18,21 +18,21 @@ gcloud config set project $gkeProjectId
 
 ## GKE setup
 gcloud services enable container.googleapis.com
+zone=us-east1-b
 gcloud container clusters create $clusterName \
-    --zone us-east1-b
+    --zone $zone
 
-## GCR setup
-gcloud services enable containerregistry.googleapis.com
-gcloud projects add-iam-policy-binding $projectId \
+## Container registry setup
+region=us-east1
+gcloud services enable artifactregistry.googleapis.com
+containerRegistryName=containers
+gcloud artifacts repositories create $containerRegistryName \
+    --location $region \
+    --repository-format docker
+gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
+    --location $region \
     --member "serviceAccount:$gkeSaId" \
-    --role roles/storage.objectViewer
-# To get the GCS backend, we need to manually push a first image, then we will be able to setup a service account with the proper privileg to push containers into GCR
-gcloud auth configure-docker gcr.io
-scratchImageName=gcr.io/$gkeProjectId/scratch
-(echo 'FROM scratch'; echo 'LABEL maintainer=scratch') | docker build -t $scratchImageName -
-docker push $scratchImageName
-docker rmi $scratchImageName
-gcloud container images delete $scratchImageName --quiet
+    --role roles/artifactregistry.reader
 ```
 
 So here we are, we have a shared GKE and GCR services for the different projects to push their containers into. Now we need to create the Cloud Build setup for a sepcific apps, myblog in this case, here are the associated command lines to accomplish that:
@@ -78,7 +78,7 @@ for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "
 ```
 So typically, by doing this, we just get rid off these permissions: `storage.buckets.create|get|list`, `artifactregistry.*`, and `containeranalysis.occurrences.*` which are not necessary in my context.
 
-That's a wrap! So we just saw how to properly setup Cloud Build able to push containers in GCR as well as deploying them in GKE by being in a different GCP project than the one actually hosting GCR and GKE. You could now repeat this scenario for any apps deployed in a shared GKE cluster. Furthermore, you could leverage this to manage different environments (DEV, QA, PROD) by having their respective GCP projects for example.
+That's a wrap! So we just saw how to properly setup Cloud Build able to push containers in Artifact Registry as well as deploying them in GKE by being in a different GCP project than the one actually hosting GAR and GKE. You could now repeat this scenario for any apps deployed in a shared GKE cluster. Furthermore, you could leverage this to manage different environments (DEV, QA, PROD) by having their respective GCP projects for example.
 
 Hope you enjoyed that one, cheers!
 

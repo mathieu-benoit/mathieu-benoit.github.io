@@ -64,20 +64,23 @@ kubectl get service frontend-external | awk '{print $4}'
 
 ## Deployment on GKE with custom and private images
 
-In some cases you may need to only deploy container images coming from your own private GCR, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
+In some cases you may need to only deploy container images coming from your own private container registry, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
 
 ```
-publicGcrRepo=gcr.io/google-samples/microservices-demo
-privateGcrRepo=gcr.io/$projectId/boutique
+publicContainerRegistry=gcr.io/google-samples/microservices-demo
+privateContainerRegistry=us-east4-docker.pkg.dev/$projectId/containers/boutique
 services="adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
 imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/microservices-demo/releases | jq -r '[.[]] | .[0].tag_name')
 
 # Copy the pre-built images into your own private GCR:
-for s in $services; do docker pull $publicGcrRepo/$s:$imageTag; docker tag $publicGcrRepo/$s:$imageTag $privateGcrRepo/$s:$imageTag; docker push $privateGcrRepo/$s:$imageTag; done
+for s in $services; do docker pull $publicContainerRegistry/$s:$imageTag; docker tag $publicContainerRegistry/$s:$imageTag $privateContainerRegistry/$s:$imageTag; docker push $privateContainerRegistry/$s:$imageTag; done
+docker pull redis:alpine
+docker tag redis:alpine us-east4-docker.pkg.dev/$projectId/containers/boutique/redis:alpine
+docker push us-east4-docker.pkg.dev/$projectId/containers/boutique/redis:alpine
 
 # Update the Kubernetes manifests with these new container images
-cd kubernetes-manifests
-for s in $services; do sed -i "s,image: $s,image: $privateGcrRepo/$s:$imageTag,g" $s.yaml; done
+for s in $services; do sed -i "s,image: $s,image: $privateContainerRegistry/$s:$imageTag,g" ./kubernetes-manifests/$s.yaml; done
+sed -i "s,image: redis:alpine,image: $privateContainerRegistry/redis:alpine,g" ./kubernetes-manifests/redis.yaml
 
 # Deploy the solution
 kubectl apply \
@@ -112,8 +115,6 @@ files="`pwd`/kubernetes-manifests/*"
 for f in $files; do sed -i "s/serviceAccountName: default/serviceAccountName: $ksaName/g" $f; done
 
 # Deploy the solution
-kubectl apply \
-    -f ./extras/jwt/jwt-secret.yaml
 kubectl apply \
     -f ./kubernetes-manifests
 kubectl get all,secrets,configmaps,sa

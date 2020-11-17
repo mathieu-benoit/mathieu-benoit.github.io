@@ -10,7 +10,7 @@ aliases:
 
 > Binary Authorization is a deploy-time security control that ensures only trusted container images are deployed on Google Kubernetes Engine (GKE). With Binary Authorization, you can require images to be signed by trusted authorities during the development process and then enforce signature validation when deploying. By enforcing validation, you can gain tighter control over your container environment by ensuring only verified images are integrated into the build-and-release process.
 
-The [Binary Authorization](https://cloud.google.com/binary-authorization) and [Container Analysis](https://cloud.google.com/container-registry/docs/container-analysis) are based upon the open source projects:
+The [Binary Authorization](https://cloud.google.com/binary-authorization) and [Container Analysis](https://cloud.google.com/artifact-registry/docs/analysis) are based upon the open source projects:
 - [Grafeas](https://grafeas.io/) defines an API spec for managing metadata about software resources, such as container images, Virtual Machine (VM) images, JAR files, and scripts. You can use Grafeas to define and aggregate information about your project’s components.
 - [Kritis](https://github.com/grafeas/kritis) defines an API for ensuring a deployment is prevented unless the artifact (container image) is conformant to central policy and optionally has the necessary attestations present.
 
@@ -25,6 +25,7 @@ The [Binary Authorization](https://cloud.google.com/binary-authorization) and [C
 
 ```
 projectId=FIXME
+registryName=$location-docker.pkg.dev/$projectId/containers
 gcloud config set project $projectId
 
 gcloud services enable container.googleapis.com
@@ -39,16 +40,16 @@ gcloud container clusters update $clusterName \
 
 # Deploy the hello-world container from DockerHub
 kubectl create deployment hello-world \
-    --image=hello-world
+    --image=hello-world:latest
 kubectl get pods
 
-# Deploy the hello-world container from your private GCR
-docker pull hello-world
-docker tag hello-world gcr.io/$projectId/hello-world
+# Deploy the hello-world container from your private container registry
+docker pull hello-world:latest
+docker tag hello-world:latest $registryName/hello-world:latest
 gcloud auth configure-docker --quiet
-docker push gcr.io/$projectId/hello-world
+docker push $registryName/hello-world:latest
 kubectl create deployment hello-world \
-    --image=gcr.io/$projectId/hello-world
+    --image=$registryName/hello-world:latest
 kubectl get pods
 ```
 
@@ -69,16 +70,16 @@ gcloud container binauthz policy import policy.yaml
 
 # Check that any new deployment will fail with "Denied by default admission rule" error message in events
 kubectl create deployment hello-world \
-    --image=hello-world
+    --image=hello-world:latest
 kubectl get event
 kubectl create deployment hello-world \
-    --image=gcr.io/$projectId/hello-world
+    --image=$registryName/hello-world:latest
 kubectl get event
 
-# Change the admissionWhitelistPatterns list by removing the redundant global policies and adding our own GCR
+# Change the admissionWhitelistPatterns list by removing the redundant global policies and adding our own container registry
 cat > policy.yaml << EOF
 admissionWhitelistPatterns:
-- namePattern: gcr.io/$projectId/*
+- namePattern: $registryName/*
 defaultAdmissionRule:
   enforcementMode: ENFORCED_BLOCK_AND_AUDIT_LOG
   evaluationMode: ALWAYS_DENY
@@ -87,12 +88,12 @@ name: projects/$projectId/policy
 EOF
 gcloud container binauthz policy import policy.yaml
 
-# Check that the DockerHub deployment will fail with "Denied by default admission rule" error message in events but in the other end, the gcr.io/$projectId/hello-world will work now
+# Check that the DockerHub deployment will fail with "Denied by default admission rule" error message in events but in the other end, the $registryName/hello-world will work now
 kubectl create deployment hello-world \
-    --image=hello-world
+    --image=hello-world:latest
 kubectl get event
 kubectl create deployment hello-world \
-    --image=gcr.io/$projectId/hello-world
+    --image=$registryName/hello-world:latest
 kubectl get pod
 ```
 
@@ -202,8 +203,8 @@ gcloud container binauthz attestors list \
 Let's now [create an attestation with a Cloud Key Management Service-based PKIX signature](https://cloud.google.com/binary-authorization/docs/making-attestations#create_an_attestation_with_a-based_pkix_signature):
 
 ```
-imageName=gcr.io/$projectId/hello-world
-imageToAttest=$(gcloud container images describe $imageName --format='get(image_summary.fully_qualified_digest)')
+imageName=$registryName/hello-world:latest
+imageToAttest=$(gcloud artifacts docker images describe $imageName --format='get(image_summary.fully_qualified_digest)')
 gcloud beta container binauthz attestations sign-and-create \
     --project=$projectId \
     --artifact-url=$imageToAttest \
@@ -229,7 +230,7 @@ for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "
 
 Last step is to actually [deploy the container on GKE](https://cloud.google.com/binary-authorization/docs/deploying-containers), you will need to get the `digest` instead of the `tag` like we did earlier with the `imageToAttest` variable.
 
-That's a wrap! Binary Authorization allows to add more security in your CI/CD pipeline with more control on you GKE clusters with container registries whitelisting as well as allowing only container images with a valid attestation.
+That's a wrap! Binary Authorization allows to add more security in your CI/CD pipeline with more control on you GKE clusters with container registries whitelisting as well as allowing only container images with a valid attestation. And all of this with any container registries (even outside GCP) because at the end of the day, that's just Attestor/Attestation on GCP on any container images digest (whereever this container image is) ;)
 
 Further and complementary resources:
 - [End-To-End Security and Compliance for Your Kubernetes Software Supply Chain (Cloud Next '19)](https://youtu.be/UkzfQvLpI0M)

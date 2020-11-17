@@ -62,21 +62,22 @@ kubectl get service frontend | awk '{print $4}'
 
 ## Deployment on GKE with custom and private images
 
-In some cases you may need to only deploy container images coming from your own private GCR, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
+In some cases you may need to only deploy container images coming from your own private container registry, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
 
 ```
-publicGcrRepo=gcr.io/bank-of-anthos
-privateGcrRepo=gcr.io/$projectId/bank-of-anthos
+publicContainerRegistry=gcr.io/bank-of-anthos
+privateContainerRegistry=us-east4-docker.pkg.dev/$projectId/containers/bank-of-anthos
 services="accounts-db balancereader contacts frontend ledger-db ledgerwriter loadgenerator transactionhistory userservice"
 imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/bank-of-anthos/releases | jq -r '[.[]] | .[0].tag_name')
 
 # Copy the pre-built images into your own private GCR:
-for s in $services; do docker pull $publicGcrRepo/$s:$imageTag; docker tag $publicGcrRepo/$s:$imageTag $privateGcrRepo/$s:$imageTag; docker push $privateGcrRepo/$s:$imageTag; done
+for s in $services; do docker pull $publicContainerRegistry/$s:$imageTag; docker tag $publicContainerRegistry/$s:$imageTag $privateContainerRegistry/$s:$imageTag; docker push $privateContainerRegistry/$s:$imageTag; done
 
 # Update the Kubernetes manifests with these new container images
 cd kubernetes-manifests
 mv transaction-history.yaml transactionhistory.yaml; mv ledger-writer.yaml ledgerwriter.yaml; mv balance-reader.yaml balancereader.yaml # tmp to have consistent namings to properly execute the next command.
-for s in $services; do sed -i "s,image: $publicGcrRepo/$s:$imageTag,image: $privateGcrRepo/$s:$imageTag,g" $s.yaml; done
+for s in $services; do sed -i "s,image: $publicContainerRegistry/$s:$imageTag,image: $privateContainerRegistry/$s:$imageTag,g" $s.yaml; done
+cd ..
 
 # Deploy the solution
 kubectl apply \

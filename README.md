@@ -30,25 +30,26 @@ kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/
 ```
 
-## Prepare your own base images in your own GCR
+## Prepare your own base images in your own container registry
 
 ```
-gcrProjectId=FIXME
+containerRegistryProjectId=FIXME
+containerRegistryName=us-east4-docker.pkg.dev/$containerRegistryProjectId/containers
 
 alpineVersion=FIXME
 docker pull alpine:$alpineVersion
-docker tag alpine:$alpineVersion gcr.io/$gcrProjectId/alpine:$alpineVersion
-docker push gcr.io/$gcrProjectId/alpine:$alpineVersion
+docker tag alpine:$alpineVersion $containerRegistryName/alpine:$alpineVersion
+docker push $containerRegistryName/alpine:$alpineVersion
 
 nginxVersion=FIXME
 docker pull nginxinc/nginx-unprivileged:$nginxVersion
-docker tag nginxinc/nginx-unprivileged:$nginxVersion gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
-docker push gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
+docker tag nginxinc/nginx-unprivileged:$nginxVersion $containerRegistryName/nginx-unprivileged:$nginxVersion
+docker push $containerRegistryName/nginx-unprivileged:$nginxVersion
 
 docker build -t blog \
-    --build-arg ALPINE_BASE_IMAGE=gcr.io/$gcrProjectId/alpine \
+    --build-arg ALPINE_BASE_IMAGE=$containerRegistryName/alpine \
     --build-arg ALPINE_VERSION=$alpineVersion \
-    --build-arg NGINX_BASE_IMAGE=gcr.io/$gcrProjectId/nginx-unprivileged \
+    --build-arg NGINX_BASE_IMAGE=$containerRegistryName/nginx-unprivileged \
     --build-arg NGINX_VERSION=$nginxVersion \
     .
 ```
@@ -84,11 +85,10 @@ roles="roles/cloudbuild.builds.editor roles/storage.objectAdmin roles/logging.lo
 for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$cloudBuildSa" --role $r; done
 
 # Configuration to be able to push images to GCR in another project
-gcrProjectId=FIXME
-gcloud projects add-iam-policy-binding $gcrProjectId \
+gcloud projects add-iam-policy-binding $containerRegistryProjectId \
     --member serviceAccount:$cloudBuildSa \
     --role roles/storage.admin
-gsutil iam ch serviceAccount:$cloudBuildSa:objectAdmin gs://artifacts.$gcrProjectId.appspot.com
+gsutil iam ch serviceAccount:$cloudBuildSa:objectAdmin gs://artifacts.$containerRegistryProjectId.appspot.com
 
 # Configuration to be able to deploy a container to GKE in another project
 gcloud services enable container.googleapis.com
@@ -108,7 +108,7 @@ gcloud beta builds triggers create github \
     --repo-owner=mathieu-benoit \
     --branch-pattern="master" \
     --build-config=cloudbuild.yaml \
-    --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId
+    --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId,_CONTAINER_REGISTRY_NAME=$containerRegistryName
 
 # Finally, we need to create a static external IP address to be able to generate a managed certificates later
 gcloud config set project $gkeProjectId
