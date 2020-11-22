@@ -6,7 +6,7 @@ description: let's see how you can only run what you trust (tl;dr whitelisted re
 aliases:
     - /binauthz/
 ---
-[![](https://github.com/GoogleCloudPlatform/gke-binary-auth-demo/raw/master/images/sdlc.png)](https://github.com/GoogleCloudPlatform/gke-binary-auth-demo/raw/master/images/sdlc.png)
+[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/How_Voucher_simplifies_a_secure_supply_cha.max-1400x1400.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/How_Voucher_simplifies_a_secure_supply_cha.max-1400x1400.jpg)
 
 > Binary Authorization is a deploy-time security control that ensures only trusted container images are deployed on Google Kubernetes Engine (GKE). With Binary Authorization, you can require images to be signed by trusted authorities during the development process and then enforce signature validation when deploying. By enforcing validation, you can gain tighter control over your container environment by ensuring only verified images are integrated into the build-and-release process.
 
@@ -226,6 +226,8 @@ roles="roles/binaryauthorization.attestorsViewer roles/cloudkms.signerVerifier r
 for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$cloudBuildSa" --role $r; done
 ```
 
+_Note: Shopify in collaboration with Google, just released the [`voucher` project](https://cloud.google.com/blog/products/devops-sre/introducing-voucher-service-help-secure-container-supply-chain) to add more security with your BinAuthz Attestation creation during your CI/CD pipeline._
+
 ## Deploy a signed container
 
 Last step is to actually [deploy the container on GKE](https://cloud.google.com/binary-authorization/docs/deploying-containers), you will need to get the `digest` instead of the `tag` like we did earlier with the `imageToAttest` variable.
@@ -233,6 +235,7 @@ Last step is to actually [deploy the container on GKE](https://cloud.google.com/
 That's a wrap! Binary Authorization allows to add more security in your CI/CD pipeline with more control on you GKE clusters with container registries whitelisting as well as allowing only container images with a valid attestation. And all of this with any container registries (even outside GCP) because at the end of the day, that's just Attestor/Attestation on GCP on any container images digest (whereever this container image is) ;)
 
 Further and complementary resources:
+- [Binary Authorization for Borg: how Google verifies code provenance and implements code identity](https://cloud.google.com/security/binary-authorization-for-borg/)
 - [End-To-End Security and Compliance for Your Kubernetes Software Supply Chain (Cloud Next '19)](https://youtu.be/UkzfQvLpI0M)
 - [Codelab: Securing Your GKE Deployments with Binary Authorization](https://codelabs.developers.google.com/codelabs/cloud-binauthz-intro/index.html#0)
 - [Binary Authorization pricing](https://cloud.google.com/binary-authorization/pricing)

@@ -115,6 +115,7 @@ Here are few resources to help you navigate throughout the capabilities and feat
 That's a wrap! Hope you enjoyed this blog article and hopefully you will be able to leverage such impressive services and features for your own needs and context ;)
 
 Complementary and further resources:
+- [How we're advancing intelligent automation in network security](https://cloud.google.com/blog/products/identity-security/security-enhancements-on-google-cloud-platform-november-2020)
 - [Cloud Load Balancing Deep Dive and Best Practices (Cloud Next '18)](https://youtu.be/J5HJ1y6PeyE)
 - [GKE Networking Differentiators (Cloud Next '19)](https://youtu.be/RjcjaXi-vVY)
 - [Scalable and Manageable: A Deep-Dive Into GKE Networking Best Practices (Cloud Next '19)](https://youtu.be/fI-5LkBDap8)

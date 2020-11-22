@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /sre/
 ---
+From Sysadmin to SRE
+https://octopus.com/blog/sysadmin-to-sre
+
 Preparing for peak holiday shopping in 2020: War rooms go virtual
 https://cloud.google.com/blog/topics/retail/preparing-for-peak-holiday-season-while-wfh
 

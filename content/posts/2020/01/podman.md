@@ -61,6 +61,7 @@ I now invite you to see how you could build our own OCI Container (not Docker ;)
 
 # Further readings
 
+- [Transitioning from Docker to Podman](https://developers.redhat.com/blog/2020/11/19/transitioning-from-docker-to-podman/)
 - [Reintroduction of Podman](https://www.projectatomic.io/blog/2018/02/reintroduction-podman/)
 - [Container Security and new container technologies](https://events.redhat.com/accounts/register123/redhat/events/7013a000002d2jvaas/Quebec_Container_Security_and_New_Container_Technologies.pdf)
 - [Demystifying Containers – Part II: Container Runtimes](https://www.cncf.io/blog/2019/07/15/demystifying-containers-part-ii-container-runtimes/)
