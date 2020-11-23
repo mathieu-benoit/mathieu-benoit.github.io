@@ -34,7 +34,9 @@ kubectl apply -f k8s/
 
 ```
 containerRegistryProjectId=FIXME
-containerRegistryName=us-east4-docker.pkg.dev/$containerRegistryProjectId/containers
+containerRegistryLocation=us-east4
+containerRegistryRepository=containers
+containerRegistryName=$containerRegistryLocation-docker.pkg.dev/$containerRegistryProjectId/$containerRegistryRepository
 
 alpineVersion=FIXME
 docker pull alpine:$alpineVersion
@@ -75,20 +77,14 @@ gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 
 gcloud services enable cloudbuild.googleapis.com
-
-# Least privilege for the cloud build's sa
 cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
-gcloud projects remove-iam-policy-binding $projectId \
-    --member serviceAccount:$cloudBuildSa \
-    --role roles/cloudbuild.builds.builder
-roles="roles/cloudbuild.builds.editor roles/storage.objectAdmin roles/logging.logWriter roles/source.reader roles/pubsub.editor"
-for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$cloudBuildSa" --role $r; done
 
-# Configuration to be able to push images to GCR in another project
-gcloud projects add-iam-policy-binding $containerRegistryProjectId \
-    --member serviceAccount:$cloudBuildSa \
-    --role roles/storage.admin
-gsutil iam ch serviceAccount:$cloudBuildSa:objectAdmin gs://artifacts.$containerRegistryProjectId.appspot.com
+# Configuration to be able to push images to ArtifactRegistry in another project
+gcloud artifacts repositories add-iam-policy-binding $containerRegistryRepository \
+    --project=$containerRegistryProjectId \
+    --location=$containerRegistryLocation \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/artifactregistry.writer
 
 # Configuration to be able to deploy a container to GKE in another project
 gcloud services enable container.googleapis.com
