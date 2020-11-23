@@ -56,17 +56,17 @@ gcloud iam service-accounts delete $projectNumber-compute@developer.gserviceacco
 gcloud services enable cloudresourcemanager.googleapis.com
 saId=$clusterName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $clusterName \
-  --display-name=$clusterName
-roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer roles/storage.objectViewer"
+    --display-name=$clusterName
+roles="roles/logging.logWriter roles/monitoring.metricWriter roles/monitoring.viewer"
 for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$saId" --role $r; done
 
 # Now you could create your cluster with this service account:
 gcloud container clusters create $clusterName \
-  --service-account=$saId
+    --service-account=$saId
 
 # Interestingly, you could have a different service account by nodepool (important if you would like to have different workloads on different node pools):
 gcloud container node-pools create \
-  --service-account=$saId
+    --service-account=$saId
 
 # And ultimately, you could enable Workload Identity on your cluster (which is even more important for fine-grained identity and authorization for applications):
 gcloud container clusters create $clusterName \

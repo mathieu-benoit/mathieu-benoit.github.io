@@ -30,25 +30,28 @@ kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/
 ```
 
-## Prepare your own base images in your own GCR
+## Prepare your own base images in your own container registry
 
 ```
-gcrProjectId=FIXME
+containerRegistryProjectId=FIXME
+containerRegistryLocation=us-east4
+containerRegistryRepository=containers
+containerRegistryName=$containerRegistryLocation-docker.pkg.dev/$containerRegistryProjectId/$containerRegistryRepository
 
 alpineVersion=FIXME
 docker pull alpine:$alpineVersion
-docker tag alpine:$alpineVersion gcr.io/$gcrProjectId/alpine:$alpineVersion
-docker push gcr.io/$gcrProjectId/alpine:$alpineVersion
+docker tag alpine:$alpineVersion $containerRegistryName/alpine:$alpineVersion
+docker push $containerRegistryName/alpine:$alpineVersion
 
 nginxVersion=FIXME
 docker pull nginxinc/nginx-unprivileged:$nginxVersion
-docker tag nginxinc/nginx-unprivileged:$nginxVersion gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
-docker push gcr.io/$gcrProjectId/nginx-unprivileged:$nginxVersion
+docker tag nginxinc/nginx-unprivileged:$nginxVersion $containerRegistryName/nginx-unprivileged:$nginxVersion
+docker push $containerRegistryName/nginx-unprivileged:$nginxVersion
 
 docker build -t blog \
-    --build-arg ALPINE_BASE_IMAGE=gcr.io/$gcrProjectId/alpine \
+    --build-arg ALPINE_BASE_IMAGE=$containerRegistryName/alpine \
     --build-arg ALPINE_VERSION=$alpineVersion \
-    --build-arg NGINX_BASE_IMAGE=gcr.io/$gcrProjectId/nginx-unprivileged \
+    --build-arg NGINX_BASE_IMAGE=$containerRegistryName/nginx-unprivileged \
     --build-arg NGINX_VERSION=$nginxVersion \
     .
 ```
@@ -74,21 +77,14 @@ gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 
 gcloud services enable cloudbuild.googleapis.com
-
-# Least privilege for the cloud build's sa
 cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
-gcloud projects remove-iam-policy-binding $projectId \
-    --member serviceAccount:$cloudBuildSa \
-    --role roles/cloudbuild.builds.builder
-roles="roles/cloudbuild.builds.editor roles/storage.objectAdmin roles/logging.logWriter roles/source.reader roles/pubsub.editor"
-for r in $roles; do gcloud projects add-iam-policy-binding $projectId --member "serviceAccount:$cloudBuildSa" --role $r; done
 
-# Configuration to be able to push images to GCR in another project
-gcrProjectId=FIXME
-gcloud projects add-iam-policy-binding $gcrProjectId \
-    --member serviceAccount:$cloudBuildSa \
-    --role roles/storage.admin
-gsutil iam ch serviceAccount:$cloudBuildSa:objectAdmin gs://artifacts.$gcrProjectId.appspot.com
+# Configuration to be able to push images to ArtifactRegistry in another project
+gcloud artifacts repositories add-iam-policy-binding $containerRegistryRepository \
+    --project=$containerRegistryProjectId \
+    --location=$containerRegistryLocation \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/artifactregistry.writer
 
 # Configuration to be able to deploy a container to GKE in another project
 gcloud services enable container.googleapis.com
@@ -108,7 +104,7 @@ gcloud beta builds triggers create github \
     --repo-owner=mathieu-benoit \
     --branch-pattern="master" \
     --build-config=cloudbuild.yaml \
-    --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId
+    --substitutions=_CLOUDSDK_CONTAINER_CLUSTER=$gkeClusterName,_CLOUDSDK_CORE_PROJECT=$gkeProjectId,_CONTAINER_REGISTRY_NAME=$containerRegistryName
 
 # Finally, we need to create a static external IP address to be able to generate a managed certificates later
 gcloud config set project $gkeProjectId

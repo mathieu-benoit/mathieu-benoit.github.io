@@ -42,7 +42,7 @@ Here are few general resources I have captured to keep as references:
     - [Here is the `gcloud` CLI cheat-sheet](https://cloud.google.com/sdk/docs/cheatsheet)
 
 Well, that's really cool, but now let's take one of [my containerized app: `myblog`]({{< ref "/posts/2020/05/myblog.md" >}}) and delpoy it on GCP! For that we will leverage 4 services in GCP:
-- [Google Container Registry](https://cloud.google.com/container-registry)
+- [Google Artifact Registry](https://cloud.google.com/artifact-registry)
 - [Google Cloud Run](https://cloud.google.com/run), yep [Cloud Run could run website too](https://medium.com/google-cloud/can-cloud-run-handle-these-9-workloads-serverless-toolbox-afddeab87819)! ;)
 - [Google Cloud App Engine](https://cloud.google.com/appengine)
 - [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
@@ -73,19 +73,29 @@ gcloud beta billing projects link $projectId \
     --billing-account $billingAccountId
 
 # Build and Push the Container in GCR
-gcloud services enable containerregistry.googleapis.com
-gcloud auth configure-docker gcr.io
-docker build -t gcr.io/$projectId/myblog:1 .
-docker push gcr.io/$projectId/myblog:1
+gcloud services enable artifactregistry.googleapis.com
+location=us-east4
+registryName=containers
+gcloud artifacts repositories create $registryName \
+    --location $location \
+    --repository-format docker
+registryHostName=$location-docker.pkg.dev
+gcloud auth configure-docker $registryHostName --quiet
+imageName=$registryHostName/$projectId/$registryName/myblog:1
+docker build -t $imageName .
+docker push $imageName
+
+# Check the image pushed
+gcloud artifacts docker images list $imageName
 ```
 
-From here, we could now deploy this container from GCR to any services capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
+From here, we could now deploy this container from Artifact Registry to any services capable of hosting a container and which has access to pull the image. By default, any GCP service in the GCR's Project, has the proper access to do this. Now let's deploy this container image in three different services: Cloud Run, App Engine and Kubernetes Engine.
 
 ```
 # Deploy this container on Cloud Run (< 1min)
 gcloud services enable run.googleapis.com
 gcloud run deploy myblog \
-    --image gcr.io/$projectId/myblog \
+    --image $imageName \
     --region us-east1 \
     --platform managed \
     --allow-unauthenticated
@@ -95,7 +105,7 @@ gcloud services enable appengineflex.googleapis.com
 echo "runtime: custom" >> app.yaml
 echo "env: flex" >> app.yaml
 gcloud app deploy \
-    --image-url gcr.io/$projectId/myblog:1
+    --image-url $imageName
 
 # Deploy this container on GKE (~ 5min)
 gcloud services enable container.googleapis.com
@@ -106,7 +116,7 @@ gcloud container clusters create $clusterName \
 gcloud container clusters get-credentials $clusterName \
     --zone $zone
 kubectl run myblog \
-    --image=gcr.io/$projectId/myblog:1 \
+    --image=$imageName \
     --generator=run-pod/v1
 kubectl expose pod myblog \
     --type=LoadBalancer \
