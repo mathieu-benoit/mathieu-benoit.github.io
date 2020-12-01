@@ -4,8 +4,9 @@ title: presentations
 
 Here is the list of the 30 public presentations and workshop I delivered.
 
-## 2020 (7)
+## 2020 (8)
 
+- 2020-11 - [Applications Modernization with Google Cloud](https://github.com/mathieu-benoit/presentations/raw/main/2020-11-Apps%20Modernization%20with%20Google%20Cloud.pdf)
 - 2020-09 - [Kubernetes and beyond on Google Cloud Platform - Google for Startups Accelerator Program](https://github.com/mathieu-benoit/presentations/raw/main/2020-09-Kubernetesandbeyond-StartupAcceleratorProgram.pdf)
   - [Link to the event](https://events.withgoogle.com/google-for-startups-accelerator-canada-1/#content)
 - 2020-06 - [At scale Kubernetes Clusters and Apps management with Azure Arc](https://www.youtube.com/watch?v=HJ9uCj8MWyw&list=PLCfLScXpEyAQ0k9pNr8SlGK42CSd-buYv&index=12)
