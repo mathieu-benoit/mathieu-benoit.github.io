@@ -6,6 +6,8 @@ description: let's add more security context to your containers on kubernetes
 aliases:
     - /pod-security-context/
 ---
+_2020-11 - I did my first Capture The Flag (CTF) experience illustrating those concepts explained on this article, you could find more information [here]({{< ref "/posts/2020/11/k8s-ctf.md" >}})_
+
 While preparing my presentation with [Maxime Coquerel](https://www.linkedin.com/in/maximecoquerel) for our [16 Security Best Practices with Kubernetes on Azure (AKS)](https://youtu.be/BCDSXyrJUJQ) presentation in French, I took the opportunity to learn about the Pod Security Context in Kubernetes. Here, in this blog article, are my learnings.
 
 First of all I went through the official Kubernetes documentation: [Configure a Security Context for a Pod or Container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/).
@@ -21,7 +23,7 @@ So here are the results of my own implementations based on this:
 - [PR to implement this with myblog](https://github.com/mathieu-benoit/myblog/pull/6)
     - `Dockerfile` to have the official base image `nginxinc/nginx-unprivileged`
     - Container's port as `8080` instead of `80`
-    - `podSecurityContext` with `securityContext.capabilities.drop: all`, `runAsNonRoot: true`, `allowPrivilegeEscalation: false` and `readOnlyRootFilesystem: true`
+    - `podSecurityContext` with `securityContext.capabilities.drop: all`, `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `automountServiceAccountToken: false` and `readOnlyRootFilesystem: true`
     - Mount `tmp` as `emptyDir` on Kubernetes
 - [PR to implement this with MyMonthlyBlogArticle.Bot](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot/pull/35)
     - `Dockerfile` to have these environment variables: `ENV ASPNETCORE_URLS=http://+:5000` and `COMPlus_EnableDiagnostics=0`
