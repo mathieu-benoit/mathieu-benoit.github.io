@@ -1,5 +1,5 @@
 ---
-title: my first capture the flag (ctf) experience during kubecon north america 2020
+title: my capture the flag (ctf) experience during kubecon na 2020
 date: 2020-11-30
 tags: [containers, kubernetes, security]
 description: let's see what I have learned during my first kubecon conference as well as my first capture the flag (ctf) experience to improve my knowledge about security with containers and kubernetes.
