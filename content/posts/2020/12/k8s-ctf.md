@@ -12,8 +12,9 @@ Doing this remotely is definitely not the same feeling as I would have experienc
 - [KubeCon 2020 Highlights and Key Takeaways by StackRox](https://www.stackrox.com/post/2020/11/kubecon-2020-highlights-and-key-takeaways/)
 - [KubeCon North America 2020 virtual recap by Anthony Dahanne](https://blog.dahanne.net/2020/11/18/kubecon-north-america-2020-virtual-recap/)
 - [My experience at KubeCon 2020 North-America (Virtual) by Karol Deland](https://www.pragmacoders.net/my-experience-at-kubecon-2020-north-america-virtual/)
+- [Different perspectives and takeaways were also discussed during the Eastern Canadian CNCF meetup December 2020](https://youtu.be/bgp6qls2bi8?t=454)
 
-You could also watch this [KubeCon NA 2020 Wrap Up Panel](https://youtu.be/EvIjXCAfhoo):
+You could also watch this [KubeCon NA 2020 Wrap Up Panel](https://youtu.be/EvIjXCAfhoo) where David McKay is with his all star panel guests, they are discussing all the major news and talking about their favourite talks; giving you everything you need to know in a friendly one hour session:
 {{< youtube EvIjXCAfhoo >}}
 
 As I have been educating myself more and more about security, especially around Kubernetes, during KubeCon I mostly focused my time on sessions related to Security. Here are 2 announcements I'm really excited about:
@@ -135,7 +136,7 @@ Further and complementary resources:
 - [Best practices for building containers](https://cloud.google.com/solutions/best-practices-for-building-containers)
 - [Best practices for operating containers](https://cloud.google.com/solutions/best-practices-for-operating-containers)
 
-Security is a shared responsibility: your code, your containers and your Kubernetes clusters are not secured by default, let's democratize security since day 0 at the different levels of your IT solutions!
+Security is a shared responsibility: your code, your containers and your Kubernetes clusters are not secured by default, let's democratize security since day 0 at the different levels and layers of your IT solutions!
 
 Hope you enjoyed that one, stay safe, happy sailing and happy honking! ;)
 
