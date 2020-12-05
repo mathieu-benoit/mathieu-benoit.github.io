@@ -14,7 +14,7 @@ Doing this remotely is definitely not the same feeling as I would have experienc
 - [My experience at KubeCon 2020 North-America (Virtual) by Karol Deland](https://www.pragmacoders.net/my-experience-at-kubecon-2020-north-america-virtual/)
 - [Different perspectives and takeaways were also discussed during the Eastern Canadian CNCF meetup December 2020](https://youtu.be/bgp6qls2bi8?t=454)
 
-Note: here are the [on-demand sessions are now available, enjoy! ;)](https://www.youtube.com/playlist?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut).
+_Note: here are the [on-demand sessions are now available, enjoy! ;)](https://www.youtube.com/playlist?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut)._
 
 You could also watch this [KubeCon NA 2020 Wrap Up Panel](https://youtu.be/EvIjXCAfhoo) where David McKay is with his all star panel guests, they are discussing all the major news and talking about their favourite talks; giving you everything you need to know in a friendly one hour session:
 {{< youtube EvIjXCAfhoo >}}
