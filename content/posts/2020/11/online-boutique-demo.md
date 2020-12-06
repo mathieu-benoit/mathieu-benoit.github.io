@@ -38,7 +38,7 @@ clusterName=FIXME
 clusterZone=FIXME
 gcloud config set project $projectId
 gcloud container clusters get-credentials $clusterName \
-    --zone $zone
+    --zone $clusterZone
 
 # Create a dedicated namespace
 namespace=boutique
