@@ -44,6 +44,7 @@ Here is visual demonstration of IAP and Access Context Manager for both HTTPS (w
 
 And here are concrete implementations of IAP if you are looking for more examples:
 - [How to ssh into your GCE machine without a public IP](https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e)
+- [Control access to your web sites with Identity-Aware Proxy](https://cloud.google.com/blog/topics/developers-practitioners/control-access-your-web-sites-identity-aware-proxy)
 - [Verify the identity and context of a client before serving an App Engine app](https://medium.com/google-cloud/beyond-corp-in-a-bottle-uncorked-5e8c7acce52)
 - [Use BeyondCorp with any identity provider and any back-end](https://medium.com/google-cloud/zero-trust-for-enterprise-cooking-up-some-access-controls-cfd05ba54d12)
 

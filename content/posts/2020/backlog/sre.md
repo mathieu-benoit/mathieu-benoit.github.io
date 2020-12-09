@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /sre/
 ---
+https://linkedin.github.io/school-of-sre/
+
 From Sysadmin to SRE
 https://octopus.com/blog/sysadmin-to-sre
 

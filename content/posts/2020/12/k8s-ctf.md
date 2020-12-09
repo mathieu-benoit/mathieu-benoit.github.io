@@ -130,6 +130,7 @@ From there I was excited to do some research around other materials I could leve
 - [The Path Less Traveled: Abusing Kubernetes Defaults](https://youtu.be/HmoVSmTIOxM) - [Presentation](https://speakerdeck.com/iancoldwater/the-path-less-traveled-abusing-kubernetes-defaults)
 
 Further and complementary resources:
+- [What is CTF? An introduction to security Capture The Flag competitions](https://youtu.be/8ev9ZX9J45A)
 - [11 Ways (Not) to Get Hacked](https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/)
 - [`kubesec` by controlplane](https://kubesec.io/)
 - [Cloud native security for your clusters](https://kubernetes.io/blog/2020/11/18/cloud-native-security-for-your-clusters/)

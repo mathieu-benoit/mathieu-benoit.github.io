@@ -97,7 +97,7 @@ kubectl create deployment hello-world \
 kubectl get pod
 ```
 
-That's how easy it is to whitelist and blacklist container registries on your GKE clusters. You could find [more policies examples here](https://cloud.google.com/binary-authorization/docs/example-policies). An interesting feature to be aware of is the [dry run mode](https://cloud.google.com/binary-authorization/docs/enabling-dry-run) which checks policy compliance at Pod creation time but without actually blocking the Pod from being created. Less radical and more gradual way to integrate Binary authorization on your existing GKE clusters.
+That's how easy it is to authorize or not container images from specific container registries on your GKE clusters. You could find [more policies examples here](https://cloud.google.com/binary-authorization/docs/example-policies). An interesting feature to be aware of is the [dry run mode](https://cloud.google.com/binary-authorization/docs/enabling-dry-run) which checks policy compliance at Pod creation time but without actually blocking the Pod from being created. Less radical and more gradual way to integrate Binary authorization on your existing GKE clusters.
 
 ## Create an attestor
 
