@@ -128,10 +128,12 @@ From there I was excited to do some research around other materials I could leve
 - [KubeCon NA 2017 - Hacking and Hardening Kubernetes Clusters by Example](https://youtu.be/vTgQLzeBfRU) - [Presentation](http://goo.gl/TNRxtd) - [Demos](http://goo.gl/fwwbgB)
 - [KubeCon NA 2019 CTF - Tutorial: Attacking and Defending Kubernetes Clusters: A Guided Tour](https://youtu.be/UdMFTdeAL1s) - [Demos](https://securekubernetes.com/)
 - [The Path Less Traveled: Abusing Kubernetes Defaults](https://youtu.be/HmoVSmTIOxM) - [Presentation](https://speakerdeck.com/iancoldwater/the-path-less-traveled-abusing-kubernetes-defaults)
+- [KubeCon EU 2020 - Getting Started With Cloud-Native Security](https://youtu.be/MisS3wSds40) - [Workshop](https://tutorial.kubernetes-security.info/)
 
 Further and complementary resources:
 - [What is CTF? An introduction to security Capture The Flag competitions](https://youtu.be/8ev9ZX9J45A)
 - [11 Ways (Not) to Get Hacked](https://kubernetes.io/blog/2018/07/18/11-ways-not-to-get-hacked/)
+- [Security in KubeCon Europe 2020](https://blog.aquasec.com/kubecon-2020-europe)
 - [`kubesec` by controlplane](https://kubesec.io/)
 - [Cloud native security for your clusters](https://kubernetes.io/blog/2020/11/18/cloud-native-security-for-your-clusters/)
 - [Hack my mis-configured Kubernetes – privileged pods](https://www.cncf.io/blog/2020/10/16/hack-my-mis-configured-kubernetes-privileged-pods/)
