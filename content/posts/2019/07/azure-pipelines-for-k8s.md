@@ -6,7 +6,7 @@ description: let's build and deploy a containerized app in kubernetes via azure 
 aliases:
     - /azure-pipelines-for-k8s/
 ---
-Back in October 1st 2018, I published [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html), then I updated it on October 12th 2018 with [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html), to finally published on November 27th 2018 a more generic and professional one in the official Microsoft Open Source blog: [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm).
+Back in October 1st 2018, I published [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html), then I updated it on October 12th 2018 with [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html), to finally published on November 27th 2018 a more generic and professional one in the official Microsoft Open Source blog: [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm). Enventually the latter got a major refresh on November 2019 (few information of this current blog article may differ though).
 
 I got great feedback from customers and colleagues which brought to my attention few ideas of improvements.
 
@@ -42,16 +42,15 @@ _Note: previously we were using a Kubernetes Service Endpoint which typically al
 
 # 3. YAML definition for both the Build and the Release pipelines
 
-[Since Multi-Stage pipeline is supported with the YAML definition](https://devblogs.microsoft.com/devops/whats-new-with-azure-pipelines/) we could now integrate our Release definition and our Build definition with our Azure pipeline.
-On that regard, we will have 3 files:
-- [azure-pipelines.yml](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/phippy/azure-pipelines.yml), which will define the entire CI/CD pipeline with 3 Stages: Build, Development and Production
-- [build-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/common/build-steps-template.yml), acting as the template for the Build steps (CI)
-- [stage-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/common/stage-steps-template.yml), acting as the template for the Release steps (CD - Development and Production)
+[Since Multi-Stage pipeline is supported with the YAML definition](https://devblogs.microsoft.com/devops/whats-new-with-azure-pipelines/) we could now integrate our Release definition and our Build definition with our Azure pipelines.
+On that regard, we will have 4 files:
+- [ci-pipeline.yml](https://github.com/Azure/phippyandfriends/blob/master/phippy/ci-pipeline.yml) and [cd-pipeline.yml](https://github.com/Azure/phippyandfriends/blob/master/phippy/cd-pipeline.yml), which will define the entire CI/CD pipeline with 3 Stages: Build, Development and Production
+- [ci-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/master/common/ci-steps-template.yml), acting as the template for the Build steps (CI)
+- [cd-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/master/common/cd-steps-template.yml), acting as the template for the Release steps (CD - Development and Production)
 
 ![Screenshot of the summary of successfull run of an Azure Pipeline showing the 3 stages: Build, Development and Production.](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s640/Capture.PNG)
 
 TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line) to create your Azure pipeline definition based on this YAML file: `az pipelines create --yml-path`.
-_Note: There is currently a limitation with Azure pipeline with YAML definition where we don't have yet the ability to use Gates or Pre-Condition for each Stage, [but it's coming](https://dev.azure.com/mseng/AzureDevOpsRoadmap/_workitems/edit/1510336)! As a workaround currently, I'm using a boolean variable deployToProduction [as a condition for the Production Stage](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/phippy/cicd/azure-pipelines.yml#L51)._
 
 # 4. Azure Key Vault to store and retrieve the secrets
 
