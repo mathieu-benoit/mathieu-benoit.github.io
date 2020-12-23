@@ -6,7 +6,7 @@ description: let's discuss why my new blog is a containerized hugo website hoste
 aliases:
     - /myblog/
 ---
-My new blog is [here](http://alwaysupalwayson.com)! The old one was [there on Blogger](https://alwaysupalwayson.blogspot.com).
+My new blog is [here](https://alwaysupalwayson.com)! The old one was [there on Blogger](https://alwaysupalwayson.blogspot.com).
 
 I just migrated my old articles to this new one by doing a "purge", meaning by removing some articles and just keeping the more important ones with the more value for others according to my focus: Open Source, Containers, DevOps, Cloud, Security and Kubernetes.
 

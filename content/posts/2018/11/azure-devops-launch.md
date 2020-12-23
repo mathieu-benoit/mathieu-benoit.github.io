@@ -24,6 +24,6 @@ To complete this, here are some resources you could leverage that I have written
 - [Docker, Kubernetes, DevOps and OSS at the Agile Tours Montreal and Quebec city](https://alwaysupalwayson.blogspot.com/2018/11/docker-kubernetes-devops-and-oss-at.html) 
 - [Azure DevOps to deploy your apps/services into a Kubernetes cluster](https://alwaysupalwayson.blogspot.com/2018/10/azure-devops-to-deploy-your.html)
 - [Helm charts repository with Azure Container Registry](https://alwaysupalwayson.blogspot.com/2018/10/helm-charts-repository-with-azure.html) 
-- [Global DevOps Bootcamp 2018 - second edition](https://alwaysupalwayson.blogspot.com/2018/06/global-devops-bootcamp-2018-second.html) 
+- [Global DevOps Bootcamp 2018 - second edition]({{< ref "/posts/2018/06/global-devops-bootcamp-2018.md" >}})
 
 Cheers!

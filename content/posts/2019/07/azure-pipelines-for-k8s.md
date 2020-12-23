@@ -22,7 +22,7 @@ The workflow is now:
 
 # 1. Helm chart versioning improvement
 
-Again I got great feedback from my original blog article, here is the story about how I have improved the Helm chart versioning: [Helm chart management in CI/CD with ACR and Azure DevOps](https://alwaysupalwayson.blogspot.com/2019/07/helm-chart-management-in-cicd-with-acr.html).
+Again I got great feedback from my original blog article, here is the story about how I have improved the Helm chart versioning: [Helm chart management in CI/CD with ACR and Azure DevOps]({{< ref "/posts/2019/07/ci-cd-with-helm-chart.md" >}}).
 
 # 2. Specific Service Principal to deploy apps in AKS
 
