@@ -17,7 +17,7 @@ The agenda was:
 We were 30 people sharing expertise and knowledge around Azure DevOps, really love this kind of session driven by the community eager to share and learn!  
 We got Subway lunch boxes and Azure DevOps t-shirts and stickers, thanks Microsoft and the local community!  
 
-[![](https://2.bp.blogspot.com/-tnbs0wIIfXg/W_9ZI_Ya0_I/AAAAAAAASLM/VltsHP7yEPQl0GBPXPTOGpIrVwtwSgBpwCLcBGAs/s640/devops-t-shirts.jpg)](https://2.bp.blogspot.com/-tnbs0wIIfXg/W_9ZI_Ya0_I/AAAAAAAASLM/VltsHP7yEPQl0GBPXPTOGpIrVwtwSgBpwCLcBGAs/s1600/devops-t-shirts.jpg)
+![Photo of the participants wearing the Azure DevOps t-shirt.](https://2.bp.blogspot.com/-tnbs0wIIfXg/W_9ZI_Ya0_I/AAAAAAAASLM/VltsHP7yEPQl0GBPXPTOGpIrVwtwSgBpwCLcBGAs/s640/devops-t-shirts.jpg)
 
 To complete this, here are some resources you could leverage that I have written about Azure DevOps:  
 - [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://open.microsoft.com/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm/)

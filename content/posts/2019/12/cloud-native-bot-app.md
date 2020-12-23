@@ -19,7 +19,7 @@ Before trying to reinvent the wheel I found those following insightful and inspi
 
 From this and as we speak in December 2019, I have been able to leverage latest and greatest features and technologies to modernize and containerize my Bot, here below are few highlights and concepts you will be able to find with my own implementation:
 
-[![](https://1.bp.blogspot.com/-ZvSZ8KCoQ9w/Xg0lnjh7ZnI/AAAAAAAAUls/zp9FgCt49GkUekauUqX4Ulowwl-zZtBmwCLcBGAsYHQ/s1600/FlowAndArchitecture.PNG)](https://1.bp.blogspot.com/-ZvSZ8KCoQ9w/Xg0lnjh7ZnI/AAAAAAAAUls/zp9FgCt49GkUekauUqX4Ulowwl-zZtBmwCLcBGAsYHQ/s1600/FlowAndArchitecture.PNG)
+![Architecture diagram showing the app and its interactions with the different technologies and services such as Terraform, Application Insights, Helm, AKS and Azure Search.](https://1.bp.blogspot.com/-ZvSZ8KCoQ9w/Xg0lnjh7ZnI/AAAAAAAAUls/zp9FgCt49GkUekauUqX4Ulowwl-zZtBmwCLcBGAsYHQ/s1600/FlowAndArchitecture.PNG)
 
 # .NET Core 3.1
 
@@ -38,7 +38,7 @@ The size of my image is now 112 MB.
 
 Inspired by my blog article [Tutorial: Using Azure DevOps to setup a CI/CD pipeline and deploy to Kubernetes](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm) I was able to implement both CI/Build and CD/Release in YAML, to build the Docker image and Helm chart, push them in ACR to then trigger the deployment in AKS via Helm. In addition to that, I was able to leverage my blog article [A recipe to deploy your Azure resources with Terraform via Azure DevOps]({{< ref "/posts/2019/09/deploy-terraform-via-azure-pipelines.md" >}}) to combine my CI/CD with Terraform within the same Appplication's pipeline. I also added an [Approval/Check point between the Build/CI and Release/CD Stages](https://docs.microsoft.com/azure/devops/pipelines/process/approvals) (note: it's a manual process for now).
 
-[![](https://1.bp.blogspot.com/-s251aiDj80I/Xg5JBR9s_uI/AAAAAAAAUl4/yjUvRnN-Fkgey-RvynUbk76sCwXWEXNdwCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-s251aiDj80I/Xg5JBR9s_uI/AAAAAAAAUl4/yjUvRnN-Fkgey-RvynUbk76sCwXWEXNdwCLcBGAsYHQ/s1600/Capture.PNG)
+![Screenshot of the summary of a successfull run of the Build and Release phases in Azure DevOps.](https://1.bp.blogspot.com/-s251aiDj80I/Xg5JBR9s_uI/AAAAAAAAUl4/yjUvRnN-Fkgey-RvynUbk76sCwXWEXNdwCLcBGAsYHQ/s1600/Capture.PNG)
 
 # Kubernetes Ingress Controller
 

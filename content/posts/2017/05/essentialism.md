@@ -10,7 +10,7 @@ Taking place and time for stepping back is important. I used to do that as often
 
 Today I would like to highlight and share one of my readings: [Essentialism, The Discipline Pursuit of Less by Greg McKeown](http://gregmckeown.com/book/).
 
-[![](https://2.bp.blogspot.com/-jNrFgew0FYc/WSmFV5NUR1I/AAAAAAAAOBM/WFHsQyyuF9sVXCCyhFzKi57y5zLqsEKiwCLcB/s320/41qANxacOkL._SY346_.jpg)](https://2.bp.blogspot.com/-jNrFgew0FYc/WSmFV5NUR1I/AAAAAAAAOBM/WFHsQyyuF9sVXCCyhFzKi57y5zLqsEKiwCLcB/s1600/41qANxacOkL._SY346_.jpg)
+![Book cover of "Essentialism, The Discipline Pursuit of Less".](https://2.bp.blogspot.com/-jNrFgew0FYc/WSmFV5NUR1I/AAAAAAAAOBM/WFHsQyyuF9sVXCCyhFzKi57y5zLqsEKiwCLcB/s320/41qANxacOkL._SY346_.jpg)
 
 This reference was given to me while flying to Toronto for business meetings by reading [enRoute - May 2017](http://enroute.aircanada.com/fr/magazine/d-aventure-en-aventure-sur-l-ile-de-bornholm-au-danemark). There is 2 pages (p. 40-41) about [Alex Strohl](http://www.alexstrohl.com/), "_A photographer opens his bag_" and he mentioned he just finished this book. He is a photographer and a traveler - as hobbies I love both, why not give it a try for my own library of inspiration!
 

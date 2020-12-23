@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.istiobyexample.dev/
+
 https://youtu.be/LFfAGDMvJG8
 
 Incrementally Adopting Istio (Cloud Next '19)

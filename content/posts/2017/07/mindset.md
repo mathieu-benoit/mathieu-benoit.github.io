@@ -16,8 +16,7 @@ Satya is very inspiring to me, he has this mindset and this leadership that I ad
 
 > _"Every day I ask myself if I am approaching my work with a growth mindset and more importantly recognizing all the fixed mindset moments that I can learn from."_
 
-[![](https://4.bp.blogspot.com/-GmDs_2iG7ao/WXyy7aVMRzI/AAAAAAAAOcU/K9-JBnweJEAh0dawwmTdQ-6i0Y603ycUgCLcBGAs/s320/51FexyX8WQL._SX322_BO1%252C204%252C203%252C200_.jpg)](https://4.bp.blogspot.com/-GmDs_2iG7ao/WXyy7aVMRzI/AAAAAAAAOcU/K9-JBnweJEAh0dawwmTdQ-6i0Y603ycUgCLcBGAs/s1600/51FexyX8WQL._SX322_BO1%252C204%252C203%252C200_.jpg)
-
+![Book cover of "Mindset, the new psychology of success"](https://4.bp.blogspot.com/-GmDs_2iG7ao/WXyy7aVMRzI/AAAAAAAAOcU/K9-JBnweJEAh0dawwmTdQ-6i0Y603ycUgCLcBGAs/s320/51FexyX8WQL._SX322_BO1%252C204%252C203%252C200_.jpg)
 
 On the front cover we could find what this book is going to deal with: "How we can learn to fulfill our potential for: parenting, business, school, relationships". The author, based on personal and professional stories and illustrations by research studies, brings us throughout this book in a journey between two mindsets: fixed versus growth.
 
@@ -149,7 +148,7 @@ Here are some of the statements I have found really interesting to understand an
 - At the dinner table each evening, you and your partner structure the discussion around the growth mindset, asking each child: what did you learn today? what mistake did you make that taught your something? what did you try hard at today?
 - Champs are the people who work the hardest. You can become a champ. Tomorrow tell me something you've done to become a champ.
 
-[![](https://1.bp.blogspot.com/-VXtJDTaE93g/WYR_8aROP_I/AAAAAAAAOek/NLIvZ9LMrOcOq2bAVWXkwyQPcsxjeEZDACLcBGAs/s640/Mindset.jpg)](https://1.bp.blogspot.com/-VXtJDTaE93g/WYR_8aROP_I/AAAAAAAAOek/NLIvZ9LMrOcOq2bAVWXkwyQPcsxjeEZDACLcBGAs/s1600/Mindset.jpg)
+![One-pager graphic showing the differences between fixed versus growth mindsets.](https://1.bp.blogspot.com/-VXtJDTaE93g/WYR_8aROP_I/AAAAAAAAOek/NLIvZ9LMrOcOq2bAVWXkwyQPcsxjeEZDACLcBGAs/s640/Mindset.jpg)
 
 The author concludes this book by providing some tips about "The journey to a (true) growth mindset":  
 1.  Acknowledge that you have both mindsets: fixed and growth;

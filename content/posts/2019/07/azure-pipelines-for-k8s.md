@@ -18,7 +18,7 @@ Today, I would like to walk you through 4 improvements I have made:
 
 The workflow is now:
 
-[![](https://1.bp.blogspot.com/-ahnbFR-xLbc/XQrcr5v5oII/AAAAAAAATO0/Eqmr-lefZx4uf_Bhwz7z2bhVDzaKd97MACLcBGAs/s640/Picture2.png)](https://1.bp.blogspot.com/-ahnbFR-xLbc/XQrcr5v5oII/AAAAAAAATO0/Eqmr-lefZx4uf_Bhwz7z2bhVDzaKd97MACLcBGAs/s1600/Picture2.png)
+![Architecture diagram showing the worklflow of the different steps and components such as Source repository, to the build, to the release into AKS going through the container registry.](https://1.bp.blogspot.com/-ahnbFR-xLbc/XQrcr5v5oII/AAAAAAAATO0/Eqmr-lefZx4uf_Bhwz7z2bhVDzaKd97MACLcBGAs/s640/Picture2.png)
 
 # 1. Helm chart versioning improvement
 
@@ -29,12 +29,12 @@ Again I got great feedback from my original blog article, here is the story abou
 From Azure DevOps pipelines we need to get access to the AKS cluster to be able then to deploy our Helm chart. Typically we will get the kubeconfig file to be able to run the helm upgrade command. To do so we will need to do az login and then az aks get-credendials.
 Furthermore, we would like to respect the Least privilege Security Principle [by restricting the role and scope of the associated Service Principal](https://docs.microsoft.com/azure/aks/control-kubeconfig-access). Here is how you will achieve that:
 ```
-$ aksSpSecret=$(az ad sp create-for-rbac -n aks-sp --skip-assignment --query password -o tsv)  
-$ aksSpId=$(az ad sp show --id http://aks-sp --query appId -o tsv)  
-$ aks=_<your-aks-cluster-name>_  
-$ aksId=$(az aks show -g $aks -n $aks --query id)  
-$ az role assignment create --assignee $aksSpId --role "Azure Kubernetes Service Cluster User Role" --scope aksId  
-$ aksSpTenantId=$(az account show --query tenantId -o tsv)  
+aksSpSecret=$(az ad sp create-for-rbac -n aks-sp --skip-assignment --query password -o tsv)  
+aksSpId=$(az ad sp show --id http://aks-sp --query appId -o tsv)  
+aks=_<your-aks-cluster-name>_  
+aksId=$(az aks show -g $aks -n $aks --query id)  
+az role assignment create --assignee $aksSpId --role "Azure Kubernetes Service Cluster User Role" --scope aksId  
+aksSpTenantId=$(az account show --query tenantId -o tsv)  
 ```
 We will use those values later.
 
@@ -48,7 +48,7 @@ On that regard, we will have 3 files:
 - [build-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/common/build-steps-template.yml), acting as the template for the Build steps (CI)
 - [stage-steps-template.yml](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/common/stage-steps-template.yml), acting as the template for the Release steps (CD - Development and Production)
 
-[![](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s640/Capture.PNG)](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s1600/Capture.PNG)
+![Screenshot of the summary of successfull run of an Azure Pipeline showing the 3 stages: Build, Development and Production.](https://1.bp.blogspot.com/-4StA1t_kQCA/XR6j-7ybn4I/AAAAAAAATUA/eP0yN6k4R80l_p3aeT3-EiHTk0sp37J5gCLcBGAs/s640/Capture.PNG)
 
 TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line) to create your Azure pipeline definition based on this YAML file: `az pipelines create --yml-path`.
 _Note: There is currently a limitation with Azure pipeline with YAML definition where we don't have yet the ability to use Gates or Pre-Condition for each Stage, [but it's coming](https://dev.azure.com/mseng/AzureDevOpsRoadmap/_workitems/edit/1510336)! As a workaround currently, I'm using a boolean variable deployToProduction [as a condition for the Production Stage](https://github.com/Azure/phippyandfriends/blob/mathieu-benoit/azure-pipelines/phippy/cicd/azure-pipelines.yml#L51)._
@@ -57,28 +57,28 @@ _Note: There is currently a limitation with Azure pipeline with YAML definition 
 
 Here the goal is to store secrets needed throughout the CI/CD pipeline in Azure Key Vault to be more secure.
 ```
-$ rg=<your-rg>
-$ kv=<your-kv>
-$ subscriptionId=$(az account show --query id -o tsv)
-$ tenantId=$(az account show --query tenantId -o tsv)
+rg=<your-rg>
+kv=<your-kv>
+subscriptionId=$(az account show --query id -o tsv)
+tenantId=$(az account show --query tenantId -o tsv)
 
 # Create an Azure Key Vault instance
-$ az group create -n $rg -l $location
-$ az keyvault create -l $location -n $kv -g $rg
+az group create -n $rg -l $location
+az keyvault create -l $location -n $kv -g $rg
   
 # Create a Service Principal which will be able to read the secrets from that specific Azure Key Vault
-$ kvSpSecret=$(az ad sp create-for-rbac -n $kv --skip-assignment --query password -o tsv)
-$ kvSpId=$(az ad sp show --id http://$kv --query appId -o tsv)
-$ kvId=$(az keyvault show -n $kv --query id -o tsv)
-$ az role assignment create --assignee $kvSpId --role Reader --scope $kvId
+kvSpSecret=$(az ad sp create-for-rbac -n $kv --skip-assignment --query password -o tsv)
+kvSpId=$(az ad sp show --id http://$kv --query appId -o tsv)
+kvId=$(az keyvault show -n $kv --query id -o tsv)
+az role assignment create --assignee $kvSpId --role Reader --scope $kvId
   
 # Add the specific policies to this Service Principal  
-$ az keyvault set-policy -n $kv --spn $kvSpId --secret-permissions get list
+az keyvault set-policy -n $kv --spn $kvSpId --secret-permissions get list
 ```
 
 TIPS: you could leverage the [Azure DevOps CLI](https://devblogs.microsoft.com/devops/using-azure-devops-from-the-command-line) to create your Service Endpoint based on this specific Service Principal created for your Azure Key Vault:
 ```
-$ az devops service-endpoint create \
+az devops service-endpoint create \
     --authorization-scheme ServicePrincipal \
     --service-endpoint-type azurerm \
     --azure-rm-service-principal-id $kvSpId \
@@ -86,15 +86,15 @@ $ az devops service-endpoint create \
     --azure-rm-tenant-id $tenantId
   
 # Now let's add our secrets into our Azure Key Vault for our Development Environment (for other Environments like Production, you could repeat the exact same way accordingly)  
-$ az keyvault secret set --vault-name $kv -n dev-aksSpTenantId --value $tenantId  
-$ az keyvault secret set --vault-name $kv -n dev-aksSpId --value $aksSpId  
-$ az keyvault secret set --vault-name $kv -n dev-aksSpSecret --value $aksSpSecret  
+az keyvault secret set --vault-name $kv -n dev-aksSpTenantId --value $tenantId  
+az keyvault secret set --vault-name $kv -n dev-aksSpId --value $aksSpId  
+az keyvault secret set --vault-name $kv -n dev-aksSpSecret --value $aksSpSecret  
 ```
 Note: You could also store your Azure Container Registry login and password (see the [original blog article](https://cloudblogs.microsoft.com/opensource/2018/11/27/tutorial-azure-devops-setup-cicd-pipeline-kubernetes-docker-helm) to see how to get them).
 
 From there, you could now create a [Variable Group in Azure DevOps linked to this Azure Key Vault](https://docs.microsoft.com/azure/devops/pipelines/library/variable-groups#link-secrets-from-an-azure-key-vault) by leveraging this Service Principal just created.
 
-[![](https://1.bp.blogspot.com/-iPmxCkZX2a4/XSYEdoFEmwI/AAAAAAAATWU/AVTMPPZYijAABiNT_Z897KGStYdVR3cOwCLcBGAs/s640/Capture2.PNG)](https://1.bp.blogspot.com/-iPmxCkZX2a4/XSYEdoFEmwI/AAAAAAAATWU/AVTMPPZYijAABiNT_Z897KGStYdVR3cOwCLcBGAs/s1600/Capture2.PNG)
+![Screenshot of the Variable Groups tab in the Phippy's build definition in Azure Pipelines.](https://1.bp.blogspot.com/-iPmxCkZX2a4/XSYEdoFEmwI/AAAAAAAATWU/AVTMPPZYijAABiNT_Z897KGStYdVR3cOwCLcBGAs/s640/Capture2.PNG)
 
 And voila, for today!
 

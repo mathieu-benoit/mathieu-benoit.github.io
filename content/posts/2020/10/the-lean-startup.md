@@ -6,7 +6,7 @@ description: let's see few principles of the lean startup
 aliases:
     - /the-lean-startup/
 ---
-[![](https://images-na.ssl-images-amazon.com/images/I/51T-sMqSMiL._SX329_BO1,204,203,200_.jpg)](https://images-na.ssl-images-amazon.com/images/I/51T-sMqSMiL._SX329_BO1,204,203,200_.jpg)
+![Book cover of "The Lean Startup".](https://images-na.ssl-images-amazon.com/images/I/51T-sMqSMiL._SX329_BO1,204,203,200_.jpg)
 
 _tl;dr: I haven't read yet The Lean Startup book, but instead I read an article from someone who is referencing it while talking about how he "failed his startup". Truly and deeply inspiring._
 

@@ -6,7 +6,7 @@ description: let's see in details what is google next onair 2020 and more specif
 aliases:
     - /app-modernization-google-next-2020/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
+![Representation of DevOps as an infinite and continuous loop.](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
 
 _tl;dr: There is a lot of content and sessions discussed in this blog article, in case you would like to know what are the top 5 sessions I found very insightful on an App Modernization standpoint, here you are:_
 - _[An App Modernization Story with Cloud Run](https://cloud.withgoogle.com/next/sf/sessions?session=APP236#application-modernization) [[Youtube](https://youtu.be/KY4DozBVV1Y)], great journey from monolith (Windows VM) to microservices (serverless Linux Container)._
@@ -16,9 +16,7 @@ _tl;dr: There is a lot of content and sessions discussed in this blog article, i
 - _[Anthos Deep Dive: Part Two](https://cloud.withgoogle.com/next/sf/sessions?session=APP317#application-modernization) [[Youtube](https://youtu.be/jIkymJYsCR4)], great walkthrough of ASM and Cloud Run for Anthos._
 
 _Furthermore if you are looking for all the announcements in one place, here you are: [Next OnAir as it happens: All the announcements in one place](https://cloud.google.com/blog/topics/google-cloud-next/complete-list-of-announcements-from-google-cloud-next20-onair). There is also this one pager below:_
-[![](https://thecloudgirl.dev/images/NEXT2020.jpg)](https://thecloudgirl.dev/images/NEXT2020.jpg)
-
-
+![Next 2020 Wrap up in one pager illustrated by thecloudgirl.dev.](https://thecloudgirl.dev/images/NEXT2020.jpg)
 
 What a perfect timing! While I'm doing my onboarding as [a Noogler](https://www.linkedin.com/posts/mathieubenoitqc_cloud-innovation-continuouslearning-activity-6685996290330947584-bKkB), I have the opportunity to (e-)attend my first Google conference. Yes for sure, I'm a bit disapointed because like everyone I won't be able to travel to San Francisco or somewhere else to attend in-person such conference during 4-5 days. But I actually feel more lucky than if I would have. In deed, without traveling I have 9 weeks of content thanks to this incredible new format of Google Next: [Google Next OnAir 2020](https://cloud.withgoogle.com/next/sf/)!
 

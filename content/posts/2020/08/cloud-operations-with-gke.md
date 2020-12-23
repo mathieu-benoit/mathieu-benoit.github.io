@@ -6,7 +6,7 @@ description: let's see how to leverage google cloud operations (aka stackdriver)
 aliases:
     - /cloud-operations-with-gke/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/google_sre.max-500x500.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/google_sre.max-500x500.jpg)
+![Illustration of the interactions between the main personas using Google Cloud Operations Suite: such as GCP users, Observability partners, SRE and developers.](https://storage.googleapis.com/gweb-cloudblog-publish/images/google_sre.max-500x500.jpg)
 
 [Cloud Operations](https://cloud.google.com/products/operations) (formerly known as Stackdriver) helps to monitor, troubleshoot, and improve application performance on your Google Cloud environment. It's a combination of different features such as Cloud Logging, Cloud Monitoring, Cloud Trace, Cloud Debugger and Cloud Profiler and [many more](https://cloud.google.com/products/operations#all-features).
 

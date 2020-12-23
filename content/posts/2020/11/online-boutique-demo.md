@@ -6,7 +6,7 @@ description: let's see how to deploy the online boutique solution on gke, w/ or 
 aliases:
     - /online-boutique-demo/
 ---
-[![](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)
+![Architecture diagram of the Microservices demo repository showing the 10 apps and their dependencies.](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)
 
 Today we'll deploy the [`Online Boutique` source code](https://github.com/GoogleCloudPlatform/microservices-demo) on a GKE cluster.
 

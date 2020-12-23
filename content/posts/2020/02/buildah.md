@@ -10,7 +10,7 @@ My previous blog article was about some [findings and learnings I got with podm
 
 Now what about building your own OCI Container images? If you would like to successfully run the command podman build, you will need to install [buildah](https://buildah.io/) too.
 
-[![](https://camo.githubusercontent.com/843f7639202a27bf5b6abc2afcc405e82804156a/68747470733a2f2f63646e2e7261776769742e636f6d2f636f6e7461696e6572732f6275696c6461682f6d61737465722f6c6f676f732f6275696c6461682d6c6f676f5f6c617267652e706e67)](https://camo.githubusercontent.com/843f7639202a27bf5b6abc2afcc405e82804156a/68747470733a2f2f63646e2e7261776769742e636f6d2f636f6e7461696e6572732f6275696c6461682f6d61737465722f6c6f676f732f6275696c6461682d6c6f676f5f6c617267652e706e67)
+![Logo of buildah.](https://camo.githubusercontent.com/843f7639202a27bf5b6abc2afcc405e82804156a/68747470733a2f2f63646e2e7261776769742e636f6d2f636f6e7461696e6572732f6275696c6461682f6d61737465722f6c6f676f732f6275696c6461682d6c6f676f5f6c617267652e706e67)
 
 _Image taken from [here](https://github.com/containers/buildah)_
 
@@ -88,11 +88,11 @@ I won't go through the commands `pull|push` I presented in [my previous blog art
 
 In ACR, the icon of your Container image type will differ like you could see on the image below, on your left an image built with Docker and on your right an image built with podman/buildah:
 
-[![](https://1.bp.blogspot.com/-5bTcYqKRE6o/XjYWEynYptI/AAAAAAAAUuM/qAiBX7Ri6O0qEN4wj9LD3SVud2We_rXSgCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-5bTcYqKRE6o/XjYWEynYptI/AAAAAAAAUuM/qAiBX7Ri6O0qEN4wj9LD3SVud2We_rXSgCLcBGAsYHQ/s1600/Capture.PNG)
+![Docker container image icon versus Buildah container image icon on the Azure portal.](https://1.bp.blogspot.com/-5bTcYqKRE6o/XjYWEynYptI/AAAAAAAAUuM/qAiBX7Ri6O0qEN4wj9LD3SVud2We_rXSgCLcBGAsYHQ/s1600/Capture.PNG)]
 
 Since [I'm using Azure Security Center (ASC) to scan my Container images in ACR]({{< ref "/posts/2019/11/scanning-containers-with-asc.md" >}}), I found out that for now there is an issue ("Scan error" without any details information) meaning that is not yet supported (I reached out to the Product Group Team, will see what they'll say):
 
-[![](https://1.bp.blogspot.com/-2VprSVf_nEw/XjYXqBqOmvI/AAAAAAAAUuY/U1xyUXN6fqcu753npuNnn_b5it04XPwNQCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-2VprSVf_nEw/XjYXqBqOmvI/AAAAAAAAUuY/U1xyUXN6fqcu753npuNnn_b5it04XPwNQCLcBGAsYHQ/s1600/Capture.PNG)
+![Container images built with buildah appear as "Scan error" on the Azure portal.](https://1.bp.blogspot.com/-2VprSVf_nEw/XjYXqBqOmvI/AAAAAAAAUuY/U1xyUXN6fqcu753npuNnn_b5it04XPwNQCLcBGAsYHQ/s1600/Capture.PNG)
 
 # Deploying an OCI Container Image on AKS
 

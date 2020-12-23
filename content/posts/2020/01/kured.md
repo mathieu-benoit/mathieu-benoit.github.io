@@ -6,7 +6,7 @@ description: let's be more flexible while deploying kured thanks to its helm cha
 aliases:
     - /kured/
 ---
-[![](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
+![Logo of Kured.](https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png)
 
 Kured (KUbernetes REboot Daemon) is the proper way to keep your Linux Nodes up-to-date automatically with Kubernetes: [https://docs.microsoft.com/azure/aks/node-updates-kured](https://docs.microsoft.com/azure/aks/node-updates-kured). That's one of your responsibility to setup this tool (or any other alternative you may have) for your own Security Posture.
 
@@ -77,7 +77,7 @@ helm install kured stable/kured \
     --set extraArgs.slack-hook-url=<your-webhook-url>
 ```
 
-[![](https://1.bp.blogspot.com/-wOWxotvcloI/Xhe6wz0N7TI/AAAAAAAAUms/FGg7nwSMNOg1Uj_g-4j6bpi1n4c9TSU_wCLcBGAsYHQ/s1600/Capture.PNG)](https://1.bp.blogspot.com/-wOWxotvcloI/Xhe6wz0N7TI/AAAAAAAAUms/FGg7nwSMNOg1Uj_g-4j6bpi1n4c9TSU_wCLcBGAsYHQ/s1600/Capture.PNG)
+![Screenshot of the messages happening in Microsoft Teams.](https://1.bp.blogspot.com/-wOWxotvcloI/Xhe6wz0N7TI/AAAAAAAAUms/FGg7nwSMNOg1Uj_g-4j6bpi1n4c9TSU_wCLcBGAsYHQ/s1600/Capture.PNG)
 
 # Set a schedule when kured should reboot the nodes
 

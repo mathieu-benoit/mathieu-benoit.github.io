@@ -36,7 +36,7 @@ Because I love practicing while learning, here is a scenario where I was able to
 - API talks to DB
 - Not any other exposures nor communications, just this.
 
-[![](https://github.com/mathieu-benoit/k8s-netpol/raw/master/db-api-web-deployments.png)](https://github.com/mathieu-benoit/k8s-netpol/raw/master/db-api-web-deployments.png)
+![Architecture diagram showing the interactions between the different apps and the kube-dns pod to illustrate the NetworkPolicies setup.](https://github.com/mathieu-benoit/k8s-netpol/raw/master/db-api-web-deployments.png)
 
 Let's have a look to share with you my learnings there!
 

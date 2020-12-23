@@ -6,7 +6,7 @@ description: let's discuss about how to deal with gke's service account and few 
 aliases:
     - /gke-service-account/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/GCP_Security_kLUG9v5.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/GCP_Security_kLUG9v5.max-2200x2200.jpg)
+![Representation of security with a shield and a padlock on it.](https://storage.googleapis.com/gweb-cloudblog-publish/images/GCP_Security_kLUG9v5.max-2200x2200.jpg)
 
 I just went through the description of this [CVE-2020-15157 "ContainerDrip" Write-up](https://darkbit.io/blog/cve-2020-15157-containerdrip). I found these information very insightful especially since there is some illustrations and great story with GKE.
 

@@ -6,7 +6,7 @@ description: let's go through resources such as the google cloud adoption framew
 aliases:
     - /gcp-caf/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Blog_CloudMigration_B_L8be8Js.max-2200x2200.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Blog_CloudMigration_B_L8be8Js.max-2200x2200.jpg)
+![Representation of data movement between on-premises and the Cloud.](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Blog_CloudMigration_B_L8be8Js.max-2200x2200.jpg)
 
 The [Google Cloud Adoption Framework](https://cloud.google.com/adoption-framework/) builds a structure on the rubric of people, process, and technology that you can work with, providing a solid assessment of where you are in your journey to the cloud and actionable programs that get you to where you want to be. It’s informed by Google’s own evolution in the cloud and many years of experience helping customers. This [Google Cloud Adoption Framework whitepaper](https://services.google.com/fh/files/misc/google_cloud_adoption_framework_whitepaper.pdf) goes through the following concepts:
 - 4 cloud adoption themes: Lean, Lead, Scale, Secure

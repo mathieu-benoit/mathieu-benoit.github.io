@@ -12,7 +12,7 @@ I took the opportunity to play with [podman](https://podman.io/), an interesting
 
 If you would like to have a detailed description of podman and buildah in comparison of Docker, I highly encourage you to read this great blog article on the RedHat Developers blog: [Podman and Buildah for Docker users](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/).
 
-[![](https://developers.redhat.com/blog/wp-content/uploads/2019/02/fig2.png)](https://developers.redhat.com/blog/wp-content/uploads/2019/02/fig2.png)
+![Podman in between the layers Image Registry and Containers/Images/Kernel.](https://developers.redhat.com/blog/wp-content/uploads/2019/02/fig2.png)
 
 _Image reused [from this blog article](https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users/)_
 

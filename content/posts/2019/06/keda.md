@@ -6,13 +6,13 @@ description: let's see what's keda what it is in action
 aliases:
     - /keda/
 ---
-[![](https://avatars3.githubusercontent.com/u/49917779?s=200&v=4)](https://avatars3.githubusercontent.com/u/49917779?s=200&v=4)
+![Logo of Keda.](https://avatars3.githubusercontent.com/u/49917779?s=200&v=4)
 
 Recently during the Microsoft //build 2019 conference, [KEDA was announced as a component bringing event-driven containers and functions to Kubernetes](https://cloudblogs.microsoft.com/opensource/2019/05/06/announcing-keda-kubernetes-event-driven-autoscaling-containers).
 
 > _KEDA allows for fine grained autoscaling (including to/from zero) for event driven Kubernetes workloads. KEDA serves as a Kubernetes Metrics Server and allows users to define autoscaling rules using a dedicated Kubernetes custom resource definition._
 
-[![](https://1.bp.blogspot.com/-u2qV3-VC2xk/XPwHQzCBq9I/AAAAAAAATNE/4FFU3iiNPwEann60bkV0S95EM_ovFTZcQCLcBGAs/s640/Capture.PNG)](https://1.bp.blogspot.com/-u2qV3-VC2xk/XPwHQzCBq9I/AAAAAAAATNE/4FFU3iiNPwEann60bkV0S95EM_ovFTZcQCLcBGAs/s1600/Capture.PNG)
+![Architecture diagram showing the different components of Keda in a Kubernetes cluster.](https://1.bp.blogspot.com/-u2qV3-VC2xk/XPwHQzCBq9I/AAAAAAAATNE/4FFU3iiNPwEann60bkV0S95EM_ovFTZcQCLcBGAs/s640/Capture.PNG)
 
 [You could find 6 samples](https://github.com/kedacore/keda) to get started:
 - [JavaScript Azure Functions + Azure Queue](https://github.com/kedacore/sample-hello-world-azure-functions)

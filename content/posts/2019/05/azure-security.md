@@ -27,11 +27,11 @@ But Security is a shared responsibility, on your end, you could also leverage th
 - [Azure Security](https://docs.microsoft.com/azure/security/)
 - [Microsoft Trust Center](https://www.microsoft.com/trustcenter/security/azure-security)
 
-[![](https://2.bp.blogspot.com/-UaEFRGNHXa4/XN2EgfKu-wI/AAAAAAAAS-4/kHYESCHDf7wZSWJaO3p62ru0httjRZoFwCLcBGAs/s640/ProtectDetectRespond.PNG)](https://2.bp.blogspot.com/-UaEFRGNHXa4/XN2EgfKu-wI/AAAAAAAAS-4/kHYESCHDf7wZSWJaO3p62ru0httjRZoFwCLcBGAs/s1600/ProtectDetectRespond.PNG)
+![Illustration of "Your security posture" in the middle of the 3 main actions: Protect, Detect and Respond.](https://2.bp.blogspot.com/-UaEFRGNHXa4/XN2EgfKu-wI/AAAAAAAAS-4/kHYESCHDf7wZSWJaO3p62ru0httjRZoFwCLcBGAs/s640/ProtectDetectRespond.PNG)
 
 The [Microsoft Cybersecurity Reference Architecture](https://aka.ms/MCRA) provides an interesting landscape of the Microsoft security products and services:
 
-[![](https://3.bp.blogspot.com/-Yh59KPPoVts/XNzLDnzZInI/AAAAAAAAS-s/GuK7EWVDE6oPuoEUmZLtTx0mFnbOEseLgCLcBGAs/s640/MCRA.PNG)](https://3.bp.blogspot.com/-Yh59KPPoVts/XNzLDnzZInI/AAAAAAAAS-s/GuK7EWVDE6oPuoEUmZLtTx0mFnbOEseLgCLcBGAs/s1600/MCRA.PNG)
+![One pager of the Cybersecurity Reference Architecture.](https://3.bp.blogspot.com/-Yh59KPPoVts/XNzLDnzZInI/AAAAAAAAS-s/GuK7EWVDE6oPuoEUmZLtTx0mFnbOEseLgCLcBGAs/s640/MCRA.PNG)
 
 You will tell me that's a lot, too much! Where to start in Azure? I recommend starting with [Azure Security Center and Azure Sentinel](https://azure.microsoft.com/en-us/blog/securing-the-hybrid-cloud-with-azure-security-center-and-azure-sentinel).
 Give [Azure Security Center](https://azure.microsoft.com/services/security-center) a try, it's free to start! And check out your [Secure score](https://docs.microsoft.com/azure/security-center/security-center-secure-score), what does it tell you?

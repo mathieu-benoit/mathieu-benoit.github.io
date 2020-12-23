@@ -6,7 +6,7 @@ description: let's go through the latest and greatest of helm 3
 aliases:
     - /helm3/
 ---
-[![](https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png)](https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png)
+![Logo of Helm.](https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png)
 
 Recent and official announcements here: [Helm 3.0.0 has been released!](https://helm.sh/blog/helm-3-released/), here: [Helm 3: Simpler and more secure](https://cloudblogs.microsoft.com/opensource/2019/11/13/helm-3-available-simpler-more-secure/) or here: [Helm Reaches Version 3](https://www.cncf.io/announcement/2019/11/13/helm-reaches-version-3/).
 

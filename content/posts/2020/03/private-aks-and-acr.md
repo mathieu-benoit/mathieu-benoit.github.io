@@ -12,7 +12,7 @@ Private AKS cluster just reached GA and private ACR has just been announced in P
 
 Here is how the architecture of my AKS cluster looks like now:  
 
-[![](https://github.com/mathieu-benoit/myakscluster/raw/master/myakscluster.png)](https://github.com/mathieu-benoit/myakscluster/raw/master/myakscluster.png)
+![Architecture diagram illustrating the different services and components involved in this blog article and GitHub repository.](https://github.com/mathieu-benoit/myakscluster/raw/master/myakscluster.png)
 
 To summarize what I have made:  
 - [Private AKS](https://docs.microsoft.com/azure/aks/private-clusters) cluster in its own Subnet with Private Endpoint

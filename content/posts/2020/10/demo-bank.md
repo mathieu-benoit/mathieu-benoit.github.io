@@ -6,7 +6,7 @@ description: let's see how to deploy the demo bank (aka bank of anthos) solution
 aliases:
     - /demo-bank/
 ---
-[![](https://github.com/GoogleCloudPlatform/bank-of-anthos/raw/master/docs/architecture.png)](https://github.com/GoogleCloudPlatform/bank-of-anthos/raw/master/docs/architecture.png)
+![Architecture diagram of the Demo Bank demo repository showing the 8 microservices and their dependencies.](https://github.com/GoogleCloudPlatform/bank-of-anthos/raw/master/docs/architecture.png)
 
 Today we'll deploy the [`Demo Bank` source code](https://github.com/GoogleCloudPlatform/bank-of-anthos/) on a GKE cluster. This source code was leveraged during one of the keynotes of [Google Next OnAir 2020, App Modernization week]({{< ref "/posts/2020/08/app-modernization-google-next-2020.md" >}}): [Hands-on Keynote: Building trust for speedy innovation](https://youtu.be/7QR1z35h_yc).
 

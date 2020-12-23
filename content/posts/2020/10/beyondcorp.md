@@ -7,7 +7,7 @@ aliases:
     - /beyondcorp/
     - /iap/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/BeyondCorps_high-level_architecture.max-900x900.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/BeyondCorps_high-level_architecture.max-900x900.jpg)
+![Workflow showing the 4 main features of IAP with: Identity, Context, Rules engine and Enforcement point before reaching to the apps.](https://storage.googleapis.com/gweb-cloudblog-publish/images/BeyondCorps_high-level_architecture.max-900x900.jpg)
 
 Have you heard about [BeyondCorp or ZeroTrust security model](https://cloud.google.com/beyondcorp)?
 

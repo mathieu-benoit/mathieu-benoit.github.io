@@ -6,7 +6,7 @@ description: let's see how to use google cloud build to build and deploy a conta
 aliases:
     - /cloud-build-with-gke/
 ---
-[![](https://cloud.google.com/container-registry/images/builder.png)](https://cloud.google.com/container-registry/images/builder.png)
+![Logo of the Google Cloud Build service.](https://cloud.google.com/container-registry/images/builder.png)
 Today we will see how to build and deploy a containerized app on GKE by leveraging [Google Cloud Build](https://cloud.google.com/cloud-build/).
 
 We will first setup the [Continuous Integration (CI)]({{< ref "#ci" >}}) part to build and push the containerized app in Google Artifact Registry and then we will setup the [Continuous Delivery (CD)]({{< ref "#cd" >}}) part to eventually deploy this containerized app on GKE.

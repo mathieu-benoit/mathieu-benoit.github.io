@@ -6,7 +6,7 @@ description: let's see how you can only run what you trust (tl;dr whitelisted re
 aliases:
     - /binauthz/
 ---
-[![](https://storage.googleapis.com/gweb-cloudblog-publish/images/How_Voucher_simplifies_a_secure_supply_cha.max-1400x1400.jpg)](https://storage.googleapis.com/gweb-cloudblog-publish/images/How_Voucher_simplifies_a_secure_supply_cha.max-1400x1400.jpg)
+![6 steps of a CI/CD worklow showing 2 of the related to Binary Authorization: signing in container registry and validating at runtime on Kubernetes.](https://storage.googleapis.com/gweb-cloudblog-publish/images/How_Voucher_simplifies_a_secure_supply_cha.max-1400x1400.jpg)
 
 > Binary Authorization is a deploy-time security control that ensures only trusted container images are deployed on Google Kubernetes Engine (GKE). With Binary Authorization, you can require images to be signed by trusted authorities during the development process and then enforce signature validation when deploying. By enforcing validation, you can gain tighter control over your container environment by ensuring only verified images are integrated into the build-and-release process.
 

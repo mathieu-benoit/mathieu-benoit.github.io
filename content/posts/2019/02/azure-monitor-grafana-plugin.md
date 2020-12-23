@@ -43,7 +43,7 @@ _It is recommended that you use a volume to save the Grafana data in. Otherwise 
 Then I created a dedicated Service Principal with the Reader role for the setup of the Azure Monitor and Log Analytics datasources and also an Application Insights Key with the Reader role too for the Application Insights datasource. All of this is described with the two tutorials above.
 
 Finally, I was able to setup some panels leveraging the available metrics to create my dashboard:
-[![](https://1.bp.blogspot.com/-J84sZM0oLlo/XGDuxHaf6zI/AAAAAAAASks/CZrNT6M1uz0FNXi1-cu93ajHP_ghPDobgCLcBGAs/s640/Grafana.PNG)](https://1.bp.blogspot.com/-J84sZM0oLlo/XGDuxHaf6zI/AAAAAAAASks/CZrNT6M1uz0FNXi1-cu93ajHP_ghPDobgCLcBGAs/s1600/Grafana.PNG)
+![Sceenshot of the dashboard in Grafana.](https://1.bp.blogspot.com/-J84sZM0oLlo/XGDuxHaf6zI/AAAAAAAASks/CZrNT6M1uz0FNXi1-cu93ajHP_ghPDobgCLcBGAs/s640/Grafana.PNG)
 
 For the Log Analytics metrics you could build your own custom queries for example [with Container Insights you have access to these data-collection](https://docs.microsoft.com/azure/azure-monitor/insights/container-insights-analyze#container-data-collection-details) and you could have your own [Kusto Queries](https://docs.microsoft.com/azure/azure-monitor/log-query/query-language).
 

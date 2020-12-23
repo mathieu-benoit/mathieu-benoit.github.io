@@ -6,7 +6,7 @@ description: let's see which resources I used to prepare my google professional 
 aliases:
     - /pca/
 ---
-[![](https://inthecloud.withgoogle.com/certification-preparation/static/img/Cloud-certificationbadge-cloudarchitect.png)](https://inthecloud.withgoogle.com/certification-preparation/static/img/Cloud-certificationbadge-cloudarchitect.png)
+![Badge of the Google Professional Cloud Architect certification.](https://inthecloud.withgoogle.com/certification-preparation/static/img/Cloud-certificationbadge-cloudarchitect.png)
 
 I just successfully passed my [Google Professional Cloud Architect](https://cloud.google.com/certification/cloud-architect) certification. I'm really happy about that! Let me share with you the public materials and resources I leveraged for my preparation.
 

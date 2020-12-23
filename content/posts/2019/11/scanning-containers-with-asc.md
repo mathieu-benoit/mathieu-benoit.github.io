@@ -31,7 +31,7 @@ As a result:
 
 Here is an example from within the Azure portal of what I fixed today for the PHP base image:
 
-[![](https://1.bp.blogspot.com/---mC40Qlk9Q/XeGPd5r2Y7I/AAAAAAAAUaE/S-TThL0YNSAq8zaugZI2S7FeYMYv6Sv0QCLcBGAsYHQ/s1600/phippy.PNG)](https://1.bp.blogspot.com/---mC40Qlk9Q/XeGPd5r2Y7I/AAAAAAAAUaE/S-TThL0YNSAq8zaugZI2S7FeYMYv6Sv0QCLcBGAsYHQ/s1600/phippy.PNG)
+![Screenshot of a scan result showing an important CVE fixed with the implementation of this blog article.](https://1.bp.blogspot.com/---mC40Qlk9Q/XeGPd5r2Y7I/AAAAAAAAUaE/S-TThL0YNSAq8zaugZI2S7FeYMYv6Sv0QCLcBGAsYHQ/s1600/phippy.PNG)
 
 Really interesting! I have learned a lot through the research I have made to update those base images.
 
