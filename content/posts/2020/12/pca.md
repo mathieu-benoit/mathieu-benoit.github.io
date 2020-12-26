@@ -12,7 +12,7 @@ I just successfully passed my [Google Professional Cloud Architect](https://clou
 
 First of all, I'm a *learning-by-doing* person, so since I joined Google (~5 months ago) [I practiced by doing hands-on activities I documented on my blog]({{< ref "/tags/gcp" >}}) as well as doing engagements with my customers. Learning by doing the real stuffs! ;)
 
-The other consideration is that I have already some Cloud Architecture knowlegdge with Microsoft Azure, so I leveraged this resource [Google Cloud for Azure professionals](https://cloud.google.com/docs/compare/azure) to help me get up to speed based on my previous experiences. If you are coming from the AWS world, you could find the same resource [here](https://cloud.google.com/docs/compare/aws).
+The other consideration is that I have already some Cloud Architecture knowledge with Microsoft Azure, so I leveraged this resource [Google Cloud for Azure professionals](https://cloud.google.com/docs/compare/azure) to help me get up to speed based on my previous experiences. If you are coming from the AWS world, you could find the same resource [here](https://cloud.google.com/docs/compare/aws).
 
 To be honest with all of that said, my focus was not on the PCA by itself during the last 5 months, but more on broad architecture concepts focused on infrastructure, networking and security. And then few days/weeks before, I narrowed my focus based on few materials publicly available to prepare the PCA:
 - [Official Exam guide](https://cloud.google.com/certification/guides/professional-cloud-architect)
