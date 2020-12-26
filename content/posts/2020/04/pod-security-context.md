@@ -1,12 +1,12 @@
 ---
 title: container security context on kubernetes
 date: 2020-04-28
-tags: [kubernetes, containers, security]
+tags: [kubernetes, containers, security, dotnet]
 description: let's add more security context to your containers on kubernetes
 aliases:
     - /pod-security-context/
 ---
-_2020-11 - I did my first Capture The Flag (CTF) experience illustrating those concepts explained on this article, you could find more information [here]({{< ref "/posts/2020/12/k8s-ctf.md" >}})_
+_2020-12 - I did my first Capture The Flag (CTF) experience illustrating those concepts explained on this article, you could find more information [here]({{< ref "/posts/2020/12/k8s-ctf.md" >}})_
 
 While preparing my presentation with [Maxime Coquerel](https://www.linkedin.com/in/maximecoquerel) for our [16 Security Best Practices with Kubernetes on Azure (AKS)](https://youtu.be/BCDSXyrJUJQ) presentation in French, I took the opportunity to learn about the Pod Security Context in Kubernetes. Here, in this blog article, are my learnings.
 

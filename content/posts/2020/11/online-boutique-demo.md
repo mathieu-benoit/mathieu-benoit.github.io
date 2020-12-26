@@ -1,7 +1,7 @@
 ---
 title: online boutique demo
 date: 2020-11-15
-tags: [gcp, containers, kubernetes, security]
+tags: [gcp, containers, kubernetes, security, dotnet]
 description: let's see how to deploy the online boutique solution on gke, w/ or w/o workload identity
 aliases:
     - /online-boutique-demo/
