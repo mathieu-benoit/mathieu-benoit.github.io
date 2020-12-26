@@ -54,5 +54,6 @@ Further and complementary resources:
 - [GCP Training](https://cloud.google.com/training)
 - [Google Cloud for Azure professionals](https://cloud.google.com/docs/compare/azure)
 - [Google Cloud for AWS Professionals](https://cloud.google.com/docs/compare/aws)
+- [How to reach 100% availability at half the cost](https://www.benchmarkcorp.com/immutable-clouds-whitepaper)
 
 Cheers!
