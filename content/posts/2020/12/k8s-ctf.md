@@ -129,6 +129,8 @@ From there I was excited to do some research around other materials I could leve
 - [KubeCon NA 2019 CTF - Tutorial: Attacking and Defending Kubernetes Clusters: A Guided Tour](https://youtu.be/UdMFTdeAL1s) - [Demos](https://securekubernetes.com/)
 - [The Path Less Traveled: Abusing Kubernetes Defaults](https://youtu.be/HmoVSmTIOxM) - [Presentation](https://speakerdeck.com/iancoldwater/the-path-less-traveled-abusing-kubernetes-defaults)
 - [KubeCon EU 2020 - Getting Started With Cloud-Native Security](https://youtu.be/MisS3wSds40) - [Workshop](https://tutorial.kubernetes-security.info/)
+- [Container Hackfest by TrendMicro and Benchmark](https://resources.trendmicro.com/CONTAINER-HACKFEST-2020-RECORDING.html)
+- [Kubernetes Goat - intentional vulnerable cluster environment to learn and practice Kubernetes security](https://madhuakula.com/kubernetes-goat/)
 
 Further and complementary resources:
 - [What is CTF? An introduction to security Capture The Flag competitions](https://youtu.be/8ev9ZX9J45A)
