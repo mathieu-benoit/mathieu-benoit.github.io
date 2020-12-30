@@ -22,5 +22,6 @@ ARG NGINX_BASE_IMAGE
 ARG NGINX_VERSION
 
 FROM ${NGINX_BASE_IMAGE}:${NGINX_VERSION}
+USER 1000
 COPY config/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /site/public /usr/share/nginx/html
