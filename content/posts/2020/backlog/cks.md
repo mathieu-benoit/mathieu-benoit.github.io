@@ -8,3 +8,5 @@ aliases:
     - /fixme/
 ---
 https://itnext.io/cks-exam-series-3-immutable-pods-3812cf76cff4
+
+https://github.com/walidshaari/Certified-Kubernetes-Security-Specialist
