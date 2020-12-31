@@ -66,7 +66,7 @@ Psychology of change and resistance to change
 - Victims: need to express emotions, take change personally, listen to and empathize with them
 - Bystanders: are difficult to understand, do not know what's going on, continue with normal routine, communicate with them, ascertain their feelings
 
-There is different motional responses to change: denial, resistance, acceptance, exploration, commitment and growth. Involve people in change, set realistic expectations, identify opportunities for co-creation and provide coaching instead of solutions, simplify messaging and focus on key concepts per user group, ensure that communications are engaging and training is interactive, allow people time to build new habits.
+There is different emotional responses to change: denial, resistance, acceptance, exploration, commitment and growth. Involve people in change, set realistic expectations, identify opportunities for co-creation and provide coaching instead of solutions, simplify messaging and focus on key concepts per user group, ensure that communications are engaging and training is interactive, allow people time to build new habits.
 
 ## Toil automation
 
@@ -95,16 +95,17 @@ CI/CD and Canarying to reduce the cost of failure. Excessive toil involves caree
 Definitions:
 - Critical User Journey (CUJ): Specific steps that a user takes to accomplish goals.
 - Reliability: The number of “good” interactions divided by the number of total interactions. This leaves you with a numerical fraction of real users who experience a service that is available and working.
-- Service level indicator (SLI): A quantifiable measure of the reliability of your service from your users' perspective.
-- Service level objective (SLO): Sets the target for an SLI over a period of time.
-- Error budgets: The amount of unreliability you are willing to tolerate.
+- Service level Indicator (SLI): A quantifiable measure of the reliability of your service from your users' perspective. A well-defined measure of successful enough.
+- Service level Objective (SLO): Sets the target for an SLI over a period of time. A top-line target for fraction of successful interactions.
+- Service Level Agreement: Consequences of not respecting SLOs.
+- Error Budgets: The amount of unreliability you are willing to tolerate. Inverse of availability, amount of errors allowed based on SLAs. 
 
 Key principles:
 - The most important feature of any system is reliability
 - Monitoring doesn't decide for reliability - Users do
 - Well engineered software can only get you to 99.9%
-  Well engineered operations --> 99.99%
-  Well engineered business --> 99.999%
+- Well engineered operations --> 99.99%
+- Well engineered business --> 99.999%
 
 The Art of SLOs workshop
 https://landing.google.com/sre/resources/practicesandprocesses/art-of-slos/
@@ -119,37 +120,23 @@ https://static.googleusercontent.com/media/landing.google.com/en//sre/static/pdf
 SRE and the art of SLOs at the DevOpsDays 2019 Chicago: https://youtu.be/fWvNzDVOJDE
 SLO with GKE at Equifax: https://cloud.withgoogle.com/next/sf/sessions?session=OPS200
 
-- SLI: service level indicator
-    - _a well-defined measure of successful enough_
-- SLO: service level objective
-    - _a top-line target for fraction of successful interactions_
-- SLA: service level agreement
-    - _consequences_
-- Error Budgets
-    - _inverse of availability: amount of errors allowed based on SLAs_
-
-Error Budget = 1 - SLA; removes major source SRE-DEV conflict (it's a math problem, not an opinion or power conflict)
-Error Budget Policy is what you agree to do when the application exceeds it's error budget. This is not pay $$$. Must be something that will visibly improve reliability.
-Example: until the application is again meeting its SLO and has some Error Budget:
+Error Budget = 1 - SLA; removes major source SRE-DEV conflict (it's a math problem, not an opinion or power conflict). Error Budget Policy is what you agree to do when the application exceeds it's error budget. This is not pay $$$. Must be something that will visibly improve reliability. Example: until the application is again meeting its SLO and has some Error Budget:
 - No new features launches allowed
 - Sprint planning may only pull postmortem action items from the backlog
 - Software Development Team must meet with SRE Team daily to outline their improvements
-SRE Principle #1:
-- Any organisation, even without hiring a single SRE can have an Error Budget Policy
-- This is any leverage you can use to keep your customers from experience pain using your application
-- you can implement this today: measure, account and act.
 
 SLOs for GKE services
 https://youtu.be/wB9AKdPDv0Q
 
 https://github.com/ocervell/slo-repository
+https://github.com/google/slo-generator
 https://github.com/ocervell/slo-generator-gke
 
 Measure everything by quantifying toil and reliability
-Bad metrics: CPU, Memory, Load time will fire more frequently alerts, but are they actually degredating your user happiness?
-Measuring toil to reduce efforts and get more collaboration
-What to monitor: symptoms, rather than causes, error budget burn, 
-4 golden signals: latency, traffic, errors, saturation
+- Bad metrics: CPU, Memory, Load time will fire more frequently alerts, but are they actually degredating your user happiness?
+- Measuring toil to reduce efforts and get more collaboration
+- What to monitor: symptoms, rather than causes, error budget burn.
+- 4 golden signals: latency, traffic, errors, saturation
 
 - Goal setting, transparency, and data-based decision making Measure reliability with good service level indicators (SLIs).
 - A good SLI correlates with user experience with your service; that is, a good SLI tells you when users are happy or unhappy.
@@ -340,7 +327,10 @@ Reduce unplanned incidents:
 
 
 - Dev going on-call often.
-- Training sessions: on-call, chaos, etc.
+- Training sessions: on-call, chaos, game days, training, workshops, etc.
 - Documenting: what are we measuring, do we have a disaster recovery plan, what are the dependencies, operational readiness checklist
 - Setup metrics understandable for product owners, devs and stakeholders - you have to learn how to paint pictures with data, not feelings
 - Need to be familiar with: Bash, Terraform, Docker, Kubernetes
+
+
+https://github.com/danluu/post-mortems
