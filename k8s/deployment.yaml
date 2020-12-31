@@ -33,6 +33,13 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          resources:
+            limits:
+              cpu: 12m
+              memory: 10Mi
+            requests:
+              cpu: 6m
+              memory: 5Mi
           readinessProbe:
             httpGet:
               port: 8080
