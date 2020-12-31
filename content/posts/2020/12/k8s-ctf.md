@@ -142,6 +142,7 @@ Further and complementary resources:
 - [Introducing Voucher by Shopify, a service to help secure the container supply chain](https://cloud.google.com/blog/products/devops-sre/introducing-voucher-service-help-secure-container-supply-chain)
 - [Best practices for building containers](https://cloud.google.com/solutions/best-practices-for-building-containers)
 - [Best practices for operating containers](https://cloud.google.com/solutions/best-practices-for-operating-containers)
+- [CVE-2020-15275: New Vulnerability Exploits containerd-shim API](https://blog.aquasec.com/cve-2020-15257-containerd-shim-api-vulnerability)
 
 Security is a shared responsibility: your code, your containers and your Kubernetes clusters are not secured by default, let's democratize security since day 0 at the different levels and layers of your IT solutions!
 
