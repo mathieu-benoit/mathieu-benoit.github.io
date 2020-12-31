@@ -1,12 +1,12 @@
 ---
-title: advanced continuous integration for containers
+title: advanced continuous integration pipeline for containers
 date: 2020-12-30
 tags: [gcp, containers, security, kubernetes, dotnet]
 description: let's setup an advanced continuous integration pipeline for containers
 aliases:
     - /ci-for-k8s/
 ---
-Today, I will document how to setup an advanced continuous integration (CI) for containers. All the concepts and tools mentioned in this blog article could be easily leveraged from within any CI tool like GitHub Actions, Jenkins, Azure DevOps, [Google Cloud Build]({{< ref "/posts/2020/08/cloud-build-with-gke.md" >}}), etc.
+Today, I will document how to setup an advanced continuous integration (CI) pipeline for containers. Even if I will leverage GitHub Actions in this blog article, all the concepts and tools mentioned in this blog article could be easily leveraged from within any other CI tool like Jenkins, Azure DevOps, [Google Cloud Build]({{< ref "/posts/2020/08/cloud-build-with-gke.md" >}}), etc.
 
 First, let's write a simple GitHub Actions definition to build and push a container into GitHub container registry:
 ```
@@ -34,10 +34,10 @@ jobs:
 That's how simple it is. We are pushing the container in the container registry only if the trigger is a commit on the `main` branch. Otherwise we are just building the container on Pull requests.
 
 Now let's have a more complex and complete continuous integration pipeline with different checks and tests. Here are the tools I will use below on that regard:
-- `conftest` to check the compliance of the `Dockerfile` with OPA
-- `Docker`, to run unit tests, build the container, run the container, push the container in a registry
-- `Trivy`, to scan the container and see if there is any `CRITICAL` or `HIGH` vulnerabilities
-- `KinD`, to run the container on a local Kubernetes cluster
+- [`conftest`](https://www.conftest.dev/) to check the compliance of the `Dockerfile` with [Open Policy Agent (OPA)](https://www.openpolicyagent.org/)
+- [`Docker`](https://www.docker.com/), to run unit tests, build the container, run the container, push the container in a registry
+- [`Trivy`](https://github.com/aquasecurity/trivy), to scan the container and see if there is any `CRITICAL` or `HIGH` vulnerabilities
+- [`KinD`](https://kind.sigs.k8s.io/), to run the container on a local Kubernetes cluster
 - (_coming soon_) Google Artifact Registry (+ security scanning)
 - (_coming soon_) [`Google Binary Authorization`]({{< ref "/posts/2020/11/binauthz.md" >}})
 
@@ -108,7 +108,7 @@ jobs:
           docker push ${IMAGE_NAME}
 ```
 
-Complementary to this, I also enabled [`dependabot`](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates) on my GitHub repository to frequently check if my `Nuget` packages or my container base images are up-to-date (really important on a security standpoint). [Here](https://github.com/mathieu-benoit/dotnet-on-kubernetes/blob/main/.github/dependabot.yml) is the file I have with that.
+Complementary to this, I also enabled GitHub's [`dependabot`](https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates) on my GitHub repository to frequently check if my `Nuget` packages or my container base images are up-to-date (really important on a security standpoint). [Here](https://github.com/mathieu-benoit/dotnet-on-kubernetes/blob/main/.github/dependabot.yml) is an example of a file I have with that.
 
 Notes:
 - GitHub container registry [doesn't really support yet public images](https://github.community/t/docker-pull-from-public-github-package-registry-fail-with-no-basic-auth-credentials-error/16358/37), `docker pull` requires login/password.
