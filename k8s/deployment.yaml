@@ -45,9 +45,8 @@ spec:
               port: 8080
               path: /
           livenessProbe:
-            httpGet:
+            tcpSocket:
               port: 8080
-              path: /
           volumeMounts:
           - mountPath: /tmp
             name: tmp
