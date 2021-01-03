@@ -38,7 +38,7 @@ Complementery to this, I also found very insightful such external articles:
 
 Where to start with your Google Cloud Foundation? Here comes the [Google Cloud setup checklist](https://cloud.google.com/docs/enterprise/onboarding-checklist) and the associated illustrations with [Best practices for enterprise organizations](https://cloud.google.com/docs/enterprise/best-practices-for-enterprise-organizations). These resources will get you started with Identity, Governance, Security, Networking, etc. and all aspects you need to have in place for your GCP Foundation.
 
-{{< youtube OJq_PMReLIQ >}}
+{{< youtube id="OJq_PMReLIQ" title="10 steps for setting up Google Cloud for enterprise workloads">}}
 
 Now do you want to go more technical and hands-on? Here you are with the [Google Cloud security foundations guide](https://services.google.com/fh/files/misc/google-cloud-security-foundations-guide.pdf)!
 > The goal of this security foundations blueprint is to provide you with curated, opinionated guidance and accompanying automation that helps you build a secure starting point for your Google Cloud deployment. This security foundations blueprint covers the following: Google Cloud organization structure, Authentication and authorization, Resource hierarchy and deployment, Networking (segmentation and security), Logging, Detective controls and Billing setup.

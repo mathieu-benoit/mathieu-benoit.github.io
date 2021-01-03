@@ -11,7 +11,7 @@ aliases:
 
 > Site Reliability Engineering (SRE) is the practice of balancing the velocity of development features with the risk to reliability
 
-{{< youtube 1NF6N2RwVoc >}}
+{{< youtube id="1NF6N2RwVoc" title="The History of SRE" >}}
 
 According to Ben Treynor Sloss at Google, who coined the term SRE, “_SRE is what happens when you ask a software engineer to design an operations function_”. In 2003, Ben was asked to lead Google’s existing “Production Team” which at the time consisted of seven software engineers. The team started as a software engineering team, and since Ben continued to grow a team that he, as a software engineer, would still want to work on. [He gave a talk at SREcon14](https://www.usenix.org/conference/srecon14/technical-sessions/presentation/keys-sre) where he shared the principles of SRE learned over 11 years of building the team at Google.
 

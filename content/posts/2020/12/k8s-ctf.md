@@ -17,7 +17,7 @@ Doing this remotely is definitely not the same feeling as I would have experienc
 _Note: here are all the [on-demand sessions from KubeCon NA 2020, enjoy! ;)](https://www.youtube.com/playlist?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut)._
 
 You could also watch this [KubeCon NA 2020 Wrap Up Panel](https://youtu.be/EvIjXCAfhoo) where David McKay is with his all star panel guests, they are discussing all the major news and talking about their favourite talks; giving you everything you need to know in a friendly one hour session:
-{{< youtube EvIjXCAfhoo >}}
+{{< youtube id="EvIjXCAfhoo" title="KubeCon NA 2020 Wrap Up Panel">}}
 
 As I have been educating myself more and more about security, especially around Kubernetes, during KubeCon I mostly focused my time on sessions related to Security. Here are 2 announcements I'm really excited about:
 - [Announcing the Cloud Native Security White Paper](https://www.cncf.io/blog/2020/11/18/announcing-the-cloud-native-security-white-paper/)

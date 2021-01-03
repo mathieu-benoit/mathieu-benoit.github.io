@@ -6,7 +6,7 @@ description: let's deploy azure cognitive services as docker containers
 aliases:
     - /azure-cognitive-services-containers/
 ---
-{{< youtube hdfbn4Q8jbo >}}
+{{< youtube id="hdfbn4Q8jbo" title="Bringing AI to the edge: Azure Cognitive Services in Containers">}}
 
 > _[Azure Cognitive Services](https://aka.ms/cognitive-services) is a set of APIs, SDKs and container images that enables developers to integrate ready-made AI directly into their applications. Azure Cognitive Services contains a broad set of capabilities including text analytics; facial detection, speech and vision recognition; natural language understanding, and more.
 > Container support in Azure Cognitive Services allow developers to use the same rich APIs that are available in Azure but with the flexibility that comes with containers. See [Container support in Azure Cognitive Services](http://aka.ms/cognitive-services-containers) for details._

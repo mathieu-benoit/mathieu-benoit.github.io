@@ -28,7 +28,7 @@ There is already 2 important aspects to improve your security posture here:
 
 I also watched the video below which is referenced in the [first article I mentioned](https://darkbit.io/blog/cve-2020-15157-containerdrip). As I'm improving my knowledge and skills with cloud security principles, such approach and point of view from an hacker perspective is really insightful. Here below, they are talking about [lateral movement and privilege escalation in GCP](https://youtu.be/Z-JFVJZ-HDA):
 
-{{< youtube Z-JFVJZ-HDA >}}
+{{< youtube id="Z-JFVJZ-HDA" title="DEF CON Safe Mode - Dylan Ayrey and Allison Donovan - Lateral Movement & Privilege Escalation in GCP" >}}
 
 There is 3 important aspects to improve your security posture here:
 - [Default node service account and Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa)
@@ -81,7 +81,7 @@ Then you could easily [follow these instructions](https://cloud.google.com/kuber
 _Note: there is [few limitations currently with Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity#limitations) that you should be aware of._
 
 You could learn more about [Workload Identity with this session when it was launched on 2019](https://cloud.google.com/blog/products/containers-kubernetes/introducing-workload-identity-better-authentication-for-your-gke-applications):
-{{< youtube s4NYEJDFc0M >}}
+{{< youtube id="s4NYEJDFc0M" title="Keyless Entry: Securely Access GCP Services From Kubernetes (Cloud Next '19)" >}}
 
 In addition to this, here are 3 other aspects to still improve and complete your security posture that you may want to leverage:
 - [Shielded GKE Nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes)

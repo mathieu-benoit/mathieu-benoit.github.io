@@ -12,7 +12,7 @@ aliases:
 Have you heard about [BeyondCorp or ZeroTrust security model](https://cloud.google.com/beyondcorp)?
 
 Here you are for a quick visual introduction: [What is BeyondCorp? What is Identity Aware Proxy (IAP)](https://medium.com/google-cloud/what-is-beyondcorp-what-is-identity-aware-proxy-de525d9b3f90)?
-{{< youtube TtmsV-xq0r0 >}}
+{{< youtube id="TtmsV-xq0r0" title="What is BeyondCorp? What is IAP">}}
 
 By reading this whitepaper [BeyondCorp: A New Approach to Enterprise Security, 2014](https://research.google/pubs/pub43231/), we could learn that BeyondCorp is a security-oriented engineering effort which begun in 2012 to re-architect the Google Corp network to remove any privileges granted solely on the basis of having a Corp IP, instead basing authentication on more secure factors.
 
@@ -40,7 +40,7 @@ Why Zero Trust Networks?
 > IAP can help you control access to your public cloud apps, your on-prem apps and your VMs running on Google Cloud. IAP works by verifying a users’s identity and considering the context of their request to determine if they should be allowed access. This is one building block in the zero trust model of access, an enterprise security model that enables every employee to work from untrusted networks without the use of a VPN.
 
 Here is visual demonstration of IAP and Access Context Manager for both HTTPS (web app) and SSH/TCP (VM) resources:
-{{< youtube RC5IhUF1618 >}}
+{{< youtube id="RC5IhUF1618" title="Learn how to control access to your web apps and VMs with Google Cloud">}}
 
 And here are concrete implementations of IAP if you are looking for more examples:
 - [How to ssh into your GCE machine without a public IP](https://medium.com/google-cloud/how-to-ssh-into-your-gce-machine-without-a-public-ip-4d78bd23309e)
@@ -49,7 +49,7 @@ And here are concrete implementations of IAP if you are looking for more example
 - [Use BeyondCorp with any identity provider and any back-end](https://medium.com/google-cloud/zero-trust-for-enterprise-cooking-up-some-access-controls-cfd05ba54d12)
 
 Still a bit confused about how to get started with BeyondCorp and IAP? Here you are:
-{{< youtube goAWiQGRefw >}}
+{{< youtube id="goAWiQGRefw" title="Getting started with BeyondCorp: A deeper look into IAP">}}
 
 
 Further and complementary resources:

@@ -8,11 +8,11 @@ aliases:
 ---
 [Confidential Computing](https://cloud.google.com/confidential-computing) is an hardware based memory encryption to keep data and code protected when being processed. It's simple, easy-to-use deployment that doesn't compromise on performance:
 
-{{< youtube RUFhIKFNshI >}}
+{{< youtube id="RUFhIKFNshI" title="Confidential Computing: The next frontier in data protection">}}
 
 You could now leverage Confidential Computing [with GKE, recently announced in Beta](https://cloud.google.com/blog/products/identity-security/confidential-gke-nodes-now-available):
 
-{{< youtube 1YPpNcOYJvo >}}
+{{< youtube id="1YPpNcOYJvo" title="How do I get started on Confidential GKE Nodes?">}}
 
 So typically, here is the command to create your GKE cluster with Confidential Computing enabled:
 ```
