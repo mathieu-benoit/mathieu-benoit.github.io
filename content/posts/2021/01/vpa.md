@@ -3,7 +3,6 @@ title: vertical pod autoscaler
 date: 2020-01-04
 tags: [gcp, kubernetes]
 description: let's discuss about the vertical pod autoscaler and how it could help setting your Kubernetes resources request and limits.
-draft: true
 aliases:
     - /vpa/
 ---
