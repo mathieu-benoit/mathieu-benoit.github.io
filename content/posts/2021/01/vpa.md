@@ -6,19 +6,23 @@ description: let's discuss about the vertical pod autoscaler and how it could he
 aliases:
     - /vpa/
 ---
-With applications running on Kubernetes it's important to properly set the [CPU resources)[https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/] and [Memory resources](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/). But it could be hard to find and choose the proper values for `cpu` and `memory`. 
+With applications running on Kubernetes it's important to properly set the [CPU resources](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/) and [Memory resources](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/). But it could be hard to find and choose the proper values for `cpu` and `memory`. 
 
-Using [monitoring tools with Kubernetes clusters]({{< ref "/posts/2020/08/cloud-operations-with-gke.md" >}}) for getting insights about the usage of `cpu` and `memory` of application could help. Complementary to this, `kubectl top pods` to get complementary insights. All of this on Production environment as well as running load tests to simulate more usage and stress on my application.
+Using [monitoring tools with Kubernetes clusters]({{< ref "/posts/2020/08/cloud-operations-with-gke.md" >}}) for getting insights about the usage of `cpu` and `memory` of application could help. Complementary to this, `kubectl top pods` to get more insights may help too. In the meantime, you could run load tests and simulate more usage of your applications, the more close to what you could have in Production with high traffic, the better.
 
 I recently discovered that [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) is better at it since that's its job.
 
 > Resource request is a contract between your workload and the Kubernetes scheduler.
+
 > Setting resource request and limit is hard, VPA is here to help.
+
 > Observes usage, Recommends resources and Updates resources (if `Auto` mode).
 
 {{< youtube id="Y4vnYaqhS74" title="Rightsize Your Pods with Vertical Pod Autoscaling - Beata Skiba, Google" >}}
 
-Here is how easy it is to leverage [VPA on a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/vertical-pod-autoscaling), first enable the VPA feature on it:
+Let's now see in actions how easy it is to leverage [VPA on a GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/vertical-pod-autoscaling).
+
+First enable VPA:
 ```
 # For a new cluster
 gcloud container clusters create --enable-vertical-pod-autoscaling
@@ -76,7 +80,7 @@ In this illustration, I'm using the `updateMode: "Off"`, with that I need to man
 ...
 ```
 
-_Note: those numbers could be applied automatically and continuously if you are using `updateMode: "Auto"` instead. There is also [some known limitations with VPA](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler#limitations_for_vertical_pod_autoscaling) to be aware of._
+_Notes: those numbers could be applied automatically and continuously if you are using `updateMode: "Auto"` instead. Furthermore, there is also [some known limitations with VPA](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler#limitations_for_vertical_pod_autoscaling) to be aware of._
 
 Complementary and further resources:
 - [VPA on GKE](https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler)
