@@ -16,3 +16,5 @@ https://www.aubm.net/posts/the-certified-kubernetes-application-developer-and-ad
 https://www.linkedin.com/posts/walterwlee_packt-kubernetes-kubernetessecurity-activity-6750877656000163840-aLsa
 
 https://vocon-it.com/2019/07/19/certified-kubernetes-administrator-labs-1-the-challenge/
+
+https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-challenge-86318d85b4d

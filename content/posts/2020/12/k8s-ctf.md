@@ -43,6 +43,7 @@ I won't go all the scenario one-by-one but instead will summarize commands an at
 - am I on a container? on kubernetes? is it a recent version of Kubernetes `curl -k https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}/version`?
 - is the serviceaccount mounted? what is `ls /var/run/secrets/kubernetes.io/serviceaccount/` telling me? Which actions can I do `kubectl auth can-i --list`, `kubectl auth can-i create pods`?
 - is the `docker.sock` mounted? can I leverage few `docker` commands to get more sensitive information or even move laterally?
+- do I already know the `INTERNAL-IP` of a Node? If yes, what `curl http://NODE-IP:10255/pods | jq .` is giving me?
 
 More advanced scenario attackers will try, could be:
 - Install `amicontained` to find out what container runtime is being used as well as features available: `cd /tmp; curl -L -o amicontained https://github.com/genuinetools/amicontained/releases/download/v0.4.9/amicontained-linux-amd64; chmod 555 amicontained; ./amicontained`
@@ -59,6 +60,7 @@ So let's now talk about how to prevent and avoid such exploits, here are few tip
 - don't use privileged pod to prevent running as root and avoiding attacker installing tools in there
 - don't mount the serviceaccount in your pod if you don't need it
 - setup networking policies to restrict to the least minimum ingress and egress rules for your pods
+- setup proper resources limits on your deployments could prevent more activities with unusual `cpu` and `memory` usage
 
 Now you could deploy the same `ubuntu` container but with more security features, illustrated below, and from there, you could try again the above commands from an attacker perspective (tl,dr their live will be more complicated ;)):
 ```
@@ -97,6 +99,13 @@ spec:
             - "604800"
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -114,6 +123,7 @@ kubectl exec -it ubuntu-xxx -- bash
 On my end, that's kind of setup and security posture I have been taking, here are more examples I have documented about this:
 - [NetworkPolicies with Calico]({{< ref "/posts/2019/09/calico.md" >}})
 - [PodSecurityContext]({{< ref "/posts/2020/04/pod-security-context.md" >}})
+- [Vertical Pod Autoscaler to properly set resources limits and requests]({{< ref "/posts/2021/01/vpa.md" >}})
 
 Complementary to this, here are other security features I'm leveraging with my Kubernetes cluster to add extra security layers:
 - [Binary Authorization to sign your containers]({{< ref "/posts/2020/11/binauthz.md" >}})
