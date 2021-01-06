@@ -1,12 +1,12 @@
 ---
-title: container linter for compliances and security checks
+title: container linter for compliances and security
 date: 2021-01-06
 tags: [containers, security]
 description: let's see how to use open policy agent or dockle to check your containers on a security and compliances perspectives.
 aliases:
     - /container-linter/
 ---
-Let's see how we could easily leverage 2 tools/linter to add more security and complicances tests and checks for our containers.
+Let's see how we could easily leverage 2 tools/linters to add more security and complicances tests and checks for our containers.
 
 # OPA
 
@@ -40,7 +40,7 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock --rm goodwithtech/dockle
     myblog
 ```
 
-That's a wrap! We saw two approaches to add more checks and tests on a security and compliance perspectives. On one hand OPA: extensible, broad use cases and for containers we saw it in actions to analyse your `Dockerfile` with your own custom policies. On the other hand `Dockle`, we saw how easy it is to use it with complex and out of the box policies to analyse a container image.
+That's a wrap! We saw two approaches to add more checks and tests on a security and a compliance perspectives. On one hand OPA: extensible, broad use cases and for containers we saw it in actions to analyse your `Dockerfile` with your own custom policies. On the other hand `Dockle`, we saw how easy it is to use it with complex and out of the box policies to analyse a container image.
 
 Further and complementary resources:
 - [Open Policy Agent Intro - Patrick East, Styra & Max Smythe, Google](https://youtu.be/-_1wvU0v9UI?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut)
