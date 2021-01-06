@@ -4,7 +4,7 @@ steps:
 - name: gcr.io/cloud-builders/docker
   args: ['build', '-t', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA', '--build-arg', 'ALPINE_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/alpine', '--build-arg', 'NGINX_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/nginx-unprivileged', '${_APP_NAME}/.']
 - name: gcr.io/cloud-builders/docker
-  args: ['run', '-d', -p 8080:8080', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+  args: ['run', '-d', '-p 8080:8080', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   args: ['push', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: 'ubuntu'
