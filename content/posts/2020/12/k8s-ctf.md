@@ -123,6 +123,7 @@ kubectl exec -it ubuntu-xxx -- bash
 On my end, that's kind of setup and security posture I have been taking, here are more examples I have documented about this:
 - [NetworkPolicies with Calico]({{< ref "/posts/2019/09/calico.md" >}})
 - [PodSecurityContext]({{< ref "/posts/2020/04/pod-security-context.md" >}})
+- [Container linter for compliances and security checks]({{< ref "/posts/2021/01/container-linter.md" >}})
 - [Vertical Pod Autoscaler to properly set resources limits and requests]({{< ref "/posts/2021/01/vpa.md" >}})
 
 Complementary to this, here are other security features I'm leveraging with my Kubernetes cluster to add extra security layers:

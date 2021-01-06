@@ -18,3 +18,5 @@ https://www.linkedin.com/posts/walterwlee_packt-kubernetes-kubernetessecurity-ac
 https://vocon-it.com/2019/07/19/certified-kubernetes-administrator-labs-1-the-challenge/
 
 https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-challenge-86318d85b4d
+
+https://zaidcloud.com/2021/01/06/certified-kubernetes-administrator-cka-prep/

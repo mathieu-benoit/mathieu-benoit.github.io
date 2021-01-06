@@ -8,15 +8,13 @@ aliases:
 ---
 With applications running on Kubernetes it's important to properly set the [CPU resources](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/) and [Memory resources](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/). But it could be hard to find and choose the proper values for `cpu` and `memory`. 
 
+> Resource request is a contract between your workload and the Kubernetes scheduler.
+
 Using [monitoring tools with Kubernetes clusters]({{< ref "/posts/2020/08/cloud-operations-with-gke.md" >}}) for getting insights about the usage of `cpu` and `memory` of application could help. Complementary to this, `kubectl top pods` to get more insights may help too. In the meantime, you could run load tests and simulate more usage of your applications, the more close to what you could have in Production with high traffic, the better.
 
 I recently discovered that [Vertical Pod Autoscaler](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler) is better at it since that's its job.
 
-> Resource request is a contract between your workload and the Kubernetes scheduler.
-
-> Setting resource request and limit is hard, VPA is here to help.
-
-> Observes usage, Recommends resources and Updates resources (if `Auto` mode).
+> Setting resource request and limit is hard, VPA is here to help. Observes usage, Recommends resources and Updates resources (if `Auto` mode).
 
 {{< youtube id="Y4vnYaqhS74" title="Rightsize Your Pods with Vertical Pod Autoscaling - Beata Skiba, Google" >}}
 
