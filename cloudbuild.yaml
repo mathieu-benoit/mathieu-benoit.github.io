@@ -6,7 +6,9 @@ steps:
 - name: 'ubuntu'
   args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA,g" k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/docker
-  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle:latest', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+- name: gcr.io/cloud-builders/docker
+  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   args: ['run', '-d', '-p', '8080:8080', '--read-only', '--cap-drop=ALL', '--user=1000', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
