@@ -1,21 +1,27 @@
 steps:
 - name: gcr.io/cloud-builders/git
+  id: git-clone
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
 - name: gcr.io/cloud-builders/docker
+  id: docker-build
   args: ['build', '-t', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA', '--build-arg', 'ALPINE_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/alpine', '--build-arg', 'NGINX_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/nginx-unprivileged', '${_APP_NAME}/.']
-- name: 'ubuntu'
-  args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA,g" k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/docker
+  id: dockle
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
+  id: trivy
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
+  id: docker-run
   args: ['run', '-d', '-p', '8080:8080', '--read-only', '--cap-drop=ALL', '--user=1000', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
+  id: docker-push
   args: ['push', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: 'ubuntu'
+  id: sed-k8s-yaml
   args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA,g" k8s/deployment.yaml']
 - name: gcr.io/cloud-builders/kubectl
+  id: kubectl-apply
   args: ['apply', '-f', 'k8s/namespace.yaml', '-f', 'k8s/', '-n', 'myblog']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
