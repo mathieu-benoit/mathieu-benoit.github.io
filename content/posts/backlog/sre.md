@@ -337,3 +337,6 @@ https://github.com/danluu/post-mortems
 
 0 to SRE: Lessons from a First-Year SRE
 https://content.sonatype.com/2020addo-sre/addo2020-sre-davis
+
+SRECon 2020
+https://www.usenix.org/conference/srecon20americas/program

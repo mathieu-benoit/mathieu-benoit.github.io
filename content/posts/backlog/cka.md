@@ -20,3 +20,5 @@ https://vocon-it.com/2019/07/19/certified-kubernetes-administrator-labs-1-the-ch
 https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-challenge-86318d85b4d
 
 https://zaidcloud.com/2021/01/06/certified-kubernetes-administrator-cka-prep/
+
+https://github.com/walidshaari/Kubernetes-Certified-Administrator

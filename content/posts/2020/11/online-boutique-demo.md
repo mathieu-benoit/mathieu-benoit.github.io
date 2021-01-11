@@ -124,4 +124,5 @@ kubectl get service frontend-external | awk '{print $4}'
 That's a wrap! We now have handy scripts for the `Online Boutique` solution, ready to be deployed on both GKE w/ or w/o Workload Identity.
 
 Further and complementary resources:
+- [Debugging Apps on Google Kubernetes Engine with the OnlineBoutique repo](https://www.qwiklabs.com/focuses/13066?parent=catalog)
 - [Cloud Operations Sandbox based on the OnlineBoutique repo](https://github.com/GoogleCloudPlatform/cloud-ops-sandbox)
