@@ -5,7 +5,7 @@ metadata:
   annotations:
     cloud.google.com/neg: '{"ingress": true}'
   labels:
-    app.kubernetes.io/name: myblog
+    app: myblog
 spec:
   type: NodePort
   ports:
@@ -14,4 +14,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: myblog
+    app: myblog
