@@ -35,11 +35,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 3m
-              memory: 4Mi
+              cpu: 5m
+              memory: 6Mi
             limits:
-              cpu: 6m
-              memory: 5Mi
+              cpu: 15m
+              memory: 122Mi
           readinessProbe:
             httpGet:
               port: 8080
