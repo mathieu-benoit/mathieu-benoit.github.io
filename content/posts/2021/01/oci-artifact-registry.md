@@ -38,7 +38,10 @@ gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/
 gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/$chart:v1
 
 # Pull the chart back:
-rm 
+helm chart remove $region-docker.pkg.dev/$project/$repository/$chart:v1
+helm chart pull $region-docker.pkg.dev/$project/$repository/$chart:v1
+helm chart export mycontainerregistry.azurecr.io/helm/hello-world:v1 \
+  --destination ./install
 
 # From there you could deploy this chart via `helm upgrade|install`...
 ```
@@ -63,6 +66,7 @@ docker run -i --rm -v $(pwd):/workspace orasbot/oras push \
 
 # Verify the chart is there:
 gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/sample-txt
+gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/sample-txt:v1
 
 # Pull the file back:
 rm artifact.txt
@@ -82,18 +86,19 @@ curl https://raw.githubusercontent.com/mathieu-benoit/mygkecluster/master/policy
 
 # And push it in Google Artifact Registry:
 docker run -i --rm -v $(pwd):/workspace orasbot/oras push \
-    $region-docker.pkg.dev/$project/$repository/container-policies.rego:v1 \
+    $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
     ./container-policies.rego \
     -u oauth2accesstoken \
     -p $(gcloud auth print-access-token)
 
 # Verify the chart is there:
-gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/container-policies.rego
+gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/container-policies
+gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/container-policies:v1
 
 # Pull the file back:
 rm container-policies.rego
 docker run -i --rm -v $(pwd):/workspace orasbot/oras pull \
-    $region-docker.pkg.dev/$project/$repository/container-policies.rego:v1 \
+    $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
     -u oauth2accesstoken \
     -p $(gcloud auth print-access-token)
 cat container-policies.rego
