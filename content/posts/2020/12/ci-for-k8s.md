@@ -144,6 +144,7 @@ Notes:
 - `Dependabot` [doesn't support yet base image in the `FROM` instruction with `ARGS`](https://github.com/dependabot/dependabot-core/issues/2057).
 
 Complementary resources:
+- [Deploying to serverless platforms with GitHub Actions](https://cloud.google.com/blog/topics/developers-practitioners/deploying-serverless-platforms-github-actions)
 - [Automating CI/CD pipelines with GitHub Actions and Google Cloud](https://resources.github.com/webcasts/Automating-CI-CD-Actions-Google-Cloud/)
 
 Here we are, hope you enjoyed that one and that you learned different tips for your own CI pipelines. Like you could see, compliance and security checks are shifted left, in other words they are taking into account early in the development process thanks to this CI definition. From there, we have a container ready to be deploy in Kubernetes.
