@@ -46,12 +46,9 @@ docker pull nginxinc/nginx-unprivileged:$nginxVersion
 docker tag nginxinc/nginx-unprivileged:$nginxVersion $containerRegistryName/nginx-unprivileged:$nginxVersion
 docker push $containerRegistryName/nginx-unprivileged:$nginxVersion
 
-docker build -t blog \
-    --build-arg ALPINE_BASE_IMAGE=$containerRegistryName/alpine \
-    --build-arg ALPINE_VERSION=$alpineVersion \
-    --build-arg NGINX_BASE_IMAGE=$containerRegistryName/nginx-unprivileged \
-    --build-arg NGINX_VERSION=$nginxVersion \
-    .
+sed -i "s,FROM alpine/FROM $containerRegistryName/alpine,g" Dockerfile
+sed -i "s,FROM nginxinc/FROM $containerRegistryName,g" Dockerfile
+docker build -t blog .
 ```
 
 ## Setup the Cloud Build trigger
