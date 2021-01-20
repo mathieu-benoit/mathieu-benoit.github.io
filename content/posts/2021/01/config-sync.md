@@ -11,8 +11,8 @@ Today, let's see a GitOps setup in actions on GKE with [Config Sync](https://clo
 {{< youtube id="yIAa5wHsfw4" title="Kelsey, Kubernetes, and GitOps - GitHub Universe 2020" >}}
 
 What I love about GitOps:
-- Everything-as-Code in a Git repository
-- PRs/branches workflow
+- Everything-as-Code in a Git repository: infrastructure, platform, config, policies, etc. as code
+- Git flow as the continuous deployments workflow via Pull Requests and branches
 - Continuous deployments by pulling Kubernetes manifests instead of having agent/tool pushing stuffs in Kubernetes: more secure, more centralized and way more simplified setup and control.
 
 Now we have the concepts, what we would like to do here is creating a Git repository ready to host the Kubernetes manifests associated to the applications I would like to deploy on my Kubernetes cluster(s).
@@ -97,17 +97,22 @@ kubectl apply -f ~/tmp/config-management.yaml
 
 Wait for few seconds, and check everything is deployed and synchronized properly:
 ```
+# You should see your cluster's status as SYNCED:
 nomos status
+
+# You should now see the hello namespace we defined earlier:
 kubectl get ns
+
+# This hello namespace should be tagged as managed by Config Sync too:
 kubectl get ns -l app.kubernetes.io/managed-by=configmanagement.gke.io
 ```
 
 And that's it! Now, any update on this repository with any Kubernetes manifests will be synchronized and applied by Config Sync for you. From here, you may want to have different branches pointing to different clusters and having in place a solid and easy continuous deployments workflow via Pull Requests and branches.
 
 Notes:
-- Both `config-sync-operator.yaml` and `sdf` were dropped in the `~/tmp` folder because as a good practice they shouldn't be in the same repository than the one having your Kubernetes manifest. They could be in the same other repository having the scripts for provisioning the infrastrcture, such as the GKE cluster, etc.
+- Both `config-sync-operator.yaml` and `config-management.yaml` were dropped in the `~/tmp` folder because as a good practice they shouldn't be in the same repository than the one having your Kubernetes manifests. They could be in the same other repository having the scripts for provisioning the infrastrcture, such as the GKE cluster, etc.
 - I used a public GitHub repository, in the real life you will need to [grant the Config Sync Operator access to your private Git repository](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#git-creds-secret).
-- If you delete the Kubernetes objects managed and synchronized by Config Sync, they will be recreated by Config Sync.
+- If you delete in your cluster the Kubernetes objects managed and synchronized by Config Sync, they will be recreated by Config Sync.
 - You could managed the deployments on multi-clusters from within the same Git repository by using the concept of [Cluster selectors](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/clusterselectors).
 - For update of `nomos` and the Config Sync Operator, it's documented [here](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#upgrading_versions) but actually the release page of the Config Sync is not up to date. You may want to follow the Anthos release page, Config Sync version and release are following the Anthos ones apparently.
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
