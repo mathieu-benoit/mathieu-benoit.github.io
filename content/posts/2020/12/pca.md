@@ -25,6 +25,8 @@ To be honest with all of that said, my focus was not on the PCA by itself during
 
 The last part of my preparation, because it was my first GCP certification ever, was about to reach out to colleagues and the community to get few feedback about what a GCP certification looks like, get few tips and tricks, etc. For example, with a quick search you could find this recent one: [How I got my Google Cloud Professional Architect certificate](https://medium.com/gdgeurope/how-i-got-my-google-cloud-professional-architect-certificate-4a522897eb0b). You could find a lot of examples like this in there too: [Awesome GCP Certifications resources](https://github.com/sathishvj/awesome-gcp-certifications/blob/master/professional-cloud-architect.md).
 
+_Note: my tips for you are 1/ read carefully the questions (and the case studies) 2/ don't find the right answer but do find the best answer (most of the time, all the questions are correct, but there is just one answering best the question based on the criteria, requirements, etc.)._
+
 Certifications are a great way to learn, validate knowledge and make room for improvements. I learned a lot while preparing that one and I have already few pointers to improve my knowledge and skills on GCP ;) My next certification with GCP will be either the [Cloud Security Engineer](https://cloud.google.com/certification/cloud-security-engineer) or the new [Cloud Developer](https://cloud.google.com/certification/cloud-developer). Stay tuned!
 
 Hope you will be able to leverage few pointers from this one for your own path to the Google PCA certification, cheers!

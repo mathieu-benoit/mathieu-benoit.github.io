@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://medium.com/@jryancanty/hashicorp-vault-and-terraform-on-google-cloud-security-best-practices-3d94de86a3e9
+
 Example of a Private GKE cluster with Terraform:
 https://github.com/GoogleCloudPlatform/gke-private-cluster-demo
 
@@ -26,7 +28,7 @@ Infrastructure Quest and select the IAM Qwik Start lab: https://goo.gl/ez5Vzw
 
 https://www.linkedin.com/posts/ravindrabhargava_googlecloudcertified-infrastructureascode-ugcPost-6697020152669728768-a5dn
 
-https://medium.com/@jryancanty/hashicorp-vault-and-terraform-on-google-cloud-security-best-practices-3d94de86a3e9
+
 
 https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9
 https://medium.com/wescale/how-to-generate-and-use-temporary-credentials-on-google-cloud-platform-b425ef95a00d

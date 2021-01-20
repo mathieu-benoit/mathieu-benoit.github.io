@@ -114,6 +114,8 @@ Complementary and further resources:
 - [Managing your containers with Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/docker)
 - [Use Google Artifact Registry with Cloud Build and GKE]({{< ref "/posts/2020/08/cloud-build-with-gke.md" >}})
 - [OCI Artifacts, Push it all to the registry!](https://jzelinskie.com/posts/oci-artifacts/)
+- [Sharing Is Caring! Push Your Cloud Application to an OCI Registry](https://youtu.be/MIAJaAr3gCk?list=PLj6h78yzYM2O1wlsM-Ma-RYhfT5LKq0XC)
+- [Managing Cloud Native Artifacts for Large Scale Kubernetes Cluster](https://youtu.be/BNQHowtj2dY?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut)
 - [Push and pull Helm charts to ACR](https://docs.microsoft.com/azure/container-registry/container-registry-helm-repos)
 - [Push and pull an OCI artifact using ACR](https://docs.microsoft.com/azure/container-registry/container-registry-oci-artifacts)
 - [Pushing an Helm chart to ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/push-oci-artifact.html)

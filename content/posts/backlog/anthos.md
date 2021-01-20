@@ -25,3 +25,25 @@ https://www.youtube.com/watch?v=xhC5LZd5Nc4&list=PLCfLScXpEyAQ0k9pNr8SlGK42CSd-b
 
 Automating Kubernetes Multi-Cluster Config With Argo CD, inspired by ASM
 https://www.cncf.io/blog/2020/10/09/automating-kubernetes-multi-cluster-config-with-argo-cd/
+
+
+Using MicroK8s with Anthos Config Management in the world of IoT
+https://opensource.googleblog.com/2020/12/using-microk8s-with-anthos-config-management-.html
+--> attached clusters, ACM
+
+How GitOps and the KRM make multi-cloud less scary
+https://seroter.com/2021/01/12/how-gitops-and-the-krm-make-multi-cloud-less-scary/
+--> attached clusters, ACM, Config Connector
+
+Protecting your Kubernetes deployments with Policy Controller
+https://cloud.google.com/blog/products/application-development/protecting-your-kubernetes-deployments-policy-controller
+--> ACM (Policy Controller)
+
+
+
+I do declare! Infrastructure automation with Configuration as Data
+https://cloud.google.com/blog/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes
+
+
+Anthos Config Management Examples
+https://github.com/GoogleCloudPlatform/csp-config-management
