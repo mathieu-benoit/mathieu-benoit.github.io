@@ -20,20 +20,7 @@ steps:
 - name: gcr.io/cloud-builders/docker
   id: docker-push
   args: ['push', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
-- name: 'ubuntu'
-  id: sed-k8s-yaml
-  args: ['bash','-c','sed -i "s,CONTAINER_IMAGE_NAME,${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA,g" k8s/deployment.yaml']
-- name: gcr.io/cloud-builders/kubectl
-  id: kubectl-apply
-  args: ['apply', '-f', 'k8s/namespace.yaml', '-f', 'k8s/', '-n', 'myblog']
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=${_CLOUDSDK_COMPUTE_ZONE}'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLOUDSDK_CONTAINER_CLUSTER}'
-  - 'CLOUDSDK_CORE_PROJECT=${_CLOUDSDK_CORE_PROJECT}'
 substitutions:
     _APP_NAME: myblog
     _REPO_OWNER: mathieu-benoit
     _CONTAINER_REGISTRY_NAME: SUBSTITUTE_ME
-    _CLOUDSDK_COMPUTE_ZONE: us-east4-a
-    _CLOUDSDK_CONTAINER_CLUSTER: SUBSTITUTE_ME
-    _CLOUDSDK_CORE_PROJECT: SUBSTITUTE_ME
