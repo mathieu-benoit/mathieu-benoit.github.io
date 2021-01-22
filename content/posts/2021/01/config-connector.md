@@ -19,3 +19,13 @@ https://seroter.com/2021/01/12/how-gitops-and-the-krm-make-multi-cloud-less-scar
 
 
 https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions
+
+```
+# Your cluster need to be on Regular or Rapid channel 
+gcloud container clusters create CLUSTER_NAME \
+    --addons ConfigConnector
+
+
+gcloud container clusters update CLUSTER_NAME \
+    --update-addons ConfigConnector=ENABLED
+``

@@ -114,7 +114,7 @@ Notes:
 - I used a public GitHub repository, in the real life you will need to [grant the Config Sync Operator access to your private Git repository](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#git-creds-secret).
 - If you delete in your cluster the Kubernetes objects managed and synchronized by Config Sync, they will be recreated by Config Sync.
 - You could managed the deployments on multi-clusters from within the same Git repository by using the concept of [Cluster selectors](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/clusterselectors).
-- For update of `nomos` and the Config Sync Operator, it's documented [here](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#upgrading_versions) but actually the release page of the Config Sync is not up to date. You may want to follow the Anthos release page, Config Sync version and release are following the Anthos ones apparently.
+- For the upgrade of `nomos` and the Config Sync Operator, it's documented [here](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#upgrading_versions).
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
 
 Complementary and further resources:

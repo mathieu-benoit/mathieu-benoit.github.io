@@ -22,3 +22,5 @@ https://levelup.gitconnected.com/kubernetes-cka-example-questions-practical-chal
 https://zaidcloud.com/2021/01/06/certified-kubernetes-administrator-cka-prep/
 
 https://github.com/walidshaari/Kubernetes-Certified-Administrator
+
+https://sch-shmuel.medium.com/how-to-ace-the-cka-certified-kubernetes-administrator-exam-67dca7f71cfe
