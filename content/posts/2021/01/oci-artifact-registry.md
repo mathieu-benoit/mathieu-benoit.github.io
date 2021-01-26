@@ -8,7 +8,7 @@ aliases:
 ---
 [Google Artifact Registry](https://cloud.google.com/blog/products/devops-sre/artifact-registry-is-ga) is great to securely store and manage container images but we could do more with [its supported formats](https://cloud.google.com/artifact-registry/docs/supported-formats). One of the use case could be to store your own Helm charts that you could reuse and share privately in your company, accross different projects, etc.
 
-Let's see in actions how we could store our own Helm chart in Google Artifact Registry!
+Let's see in actions how we could [store our own Helm chart in Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/helm)!
 ```
 region=us-east4
 project=FIXME
