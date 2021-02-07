@@ -60,6 +60,7 @@ gcloud beta builds triggers create github \
     --repo-owner=mathieu-benoit \
     --branch-pattern="master" \
     --build-config=cloudbuild.yaml \
+    --ignore-files="README.md,.github/**,gcloud/**" \
     --substitutions=_CONTAINER_REGISTRY_NAME=$containerRegistryName
 
 # Finally, we need to create a static external IP address to be able to generate a managed certificates later
@@ -77,5 +78,3 @@ staticIpAddress=$(gcloud compute addresses describe $staticIpName \
 ```
 gcloud monitoring dashboards create --config-from-file=gcloud/monitoring/dashboard.yaml
 ```
-
-Test
