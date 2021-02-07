@@ -77,3 +77,5 @@ staticIpAddress=$(gcloud compute addresses describe $staticIpName \
 ```
 gcloud monitoring dashboards create --config-from-file=gcloud/monitoring/dashboard.yaml
 ```
+
+Test
