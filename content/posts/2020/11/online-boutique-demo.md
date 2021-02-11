@@ -75,8 +75,8 @@ imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/microservice
 # Copy the pre-built images into your own private GCR:
 for s in $services; do docker pull $publicContainerRegistry/$s:$imageTag; docker tag $publicContainerRegistry/$s:$imageTag $privateContainerRegistry/$s:$imageTag; docker push $privateContainerRegistry/$s:$imageTag; done
 docker pull redis:alpine
-docker tag redis:alpine us-east4-docker.pkg.dev/$projectId/containers/boutique/redis:alpine
-docker push us-east4-docker.pkg.dev/$projectId/containers/boutique/redis:alpine
+docker tag redis:alpine $privateContainerRegistry/redis:alpine
+docker push $privateContainerRegistry/redis:alpine
 
 # Update the Kubernetes manifests with these new container images
 for s in $services; do sed -i "s,image: $s,image: $privateContainerRegistry/$s:$imageTag,g" ./kubernetes-manifests/$s.yaml; done
