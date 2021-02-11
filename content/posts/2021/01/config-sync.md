@@ -118,6 +118,8 @@ Notes:
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
 
 Complementary and further resources:
+- [Config Sync downloads](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/downloads)
+- [Config Sync errors reference](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/reference/errors)
 - [Guide to GitOps by Weavework](https://www.weave.works/technologies/gitops/)
 - [More Anthos Config Management samples](https://github.com/GoogleCloudPlatform/csp-config-management)
 - [How GitOps and the KRM make multi-cloud less scary](https://seroter.com/2021/01/12/how-gitops-and-the-krm-make-multi-cloud-less-scary/)

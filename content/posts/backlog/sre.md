@@ -7,6 +7,18 @@ draft: true
 aliases:
     - /sre/
 ---
+Features vs. Reliability --> Reliability is a Feature
+Monitoring doesn't decide reliability
+CUJ (As a... I want to... so I... and... and....)
+SLIs, SLOs, SLAs
+100% is the wrong reliability
+SLOs should be set so that, if barely met, the typical customer of a service will be happy
+Error budget
+Incident response: outages will happen, make the outage as short as possible, have clearly defined roles and communications, have automating playbooks
+"Incident is an unplanned investment"
+Blameless postmortem
+Automate away the toil (manual, repetitive, automatable, tactical, no enduring value, scales linearly with service growth)
+
 ![Representation of DevOps as an infinite and continuous loop.](https://storage.googleapis.com/gweb-cloudblog-publish/images/DevOps_BlogHeader_D_Rnd3.max-2200x2200.jpg)
 
 > Site Reliability Engineering (SRE) is the practice of balancing the velocity of development features with the risk to reliability

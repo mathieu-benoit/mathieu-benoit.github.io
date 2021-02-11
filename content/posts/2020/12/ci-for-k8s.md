@@ -48,7 +48,7 @@ artifactRegistryLocation=FIXME
 
 gcloud config set project $projectId
 
-saName=gha-containerregistry-push-sa
+saName=gha-$projectId-registry-push-sa
 saId=$saName@$projectId.iam.gserviceaccount.com
 gcloud iam service-accounts create $saName \
     --display-name=$saName

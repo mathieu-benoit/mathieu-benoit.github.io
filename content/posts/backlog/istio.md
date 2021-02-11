@@ -7,7 +7,14 @@ draft: true
 aliases:
     - /fixme/
 ---
+How to Make Istio Work with Your Apps
+https://www.stackrox.com/post/2019/11/how-to-make-istio-work-with-your-apps/
+
+https://youtu.be/7cINRP0BFY8
+https://youtu.be/FbYBO7Pi2d8
 https://www.istiobyexample.dev/
+https://github.com/GoogleCloudPlatform/istio-samples/tree/master/istio-canary-gke
+https://istio.io/latest/docs/reference/config/analysis/
 
 https://youtu.be/LFfAGDMvJG8
 
