@@ -28,11 +28,12 @@ So here are the results of my own implementations based on this:
 - [PR to implement this with MyMonthlyBlogArticle.Bot](https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Bot/pull/35)
     - `Dockerfile` to have these environment variables: `ENV ASPNETCORE_URLS=http://+:5000` and `COMPlus_EnableDiagnostics=0`
     - Container's port as `5000` instead of `80`
-    - `podSecurityContext` with `securityContext.capabilities.drop: all`, `runAsNonRoot: true`, `allowPrivilegeEscalation: false` and `readOnlyRootFilesystem: true`
+    - `podSecurityContext` with `securityContext.capabilities.drop: all`, `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `automountServiceAccountToken: false` and `readOnlyRootFilesystem: true`
 
-Note: you could locally test your Docker container with:
-- `docker run --rm --read-only` to anticipate `readOnlyRootFilesystem: true` on Kubernetes
-- `docker diff` on your running container to see if there is any folder it is writing in and you could mount as `emptyDir` on Kubernetes
+Notes: you could locally test your Docker container with:
+- `docker run --read-only --cap-drop=ALL --user=1000` to anticipate few options on Kubernetes listed above
+- `docker diff` on your running container to see if there is any folder it is writing in that you could mount as `emptyDir` on Kubernetes
+- If you are using Istio, you will get an issue with the `istio-proxy` sidecar if you are using `automountServiceAccountToken: false`. The sidecar needs a [service account token to talk to the control plane](https://github.com/istio/istio/issues/22193)
 
 Now on a policy or governance standpoint, how to control this across your kubernetes deployments? That's where you could [Use admission controllers to enforce policy](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#admission_controllers).
 
