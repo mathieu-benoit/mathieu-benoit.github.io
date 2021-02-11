@@ -2,11 +2,19 @@
 title: presentations
 ---
 
-Here is the list of the 30 public presentations and workshop I delivered.
+Here is the list of the 33 public presentations and workshop I delivered.
+
+## 2021 (2)
+
+- 2021-02-10 - [Sail Sharp, .NET & Kubernetes - .NET QC Meetup [fr]](https://github.com/mathieu-benoit/sail-sharp)
+  - [Link to the event](https://www.meetup.com/DotNet-Quebec/events/275866695/)
+- 2021-01-28 - [Cloud Run - GDG Cloud Quebec city [fr]](https://github.com/mathieu-benoit/presentations/raw/main/2021-01-28-Cloud%20Run-GDG-QC.pdf)
+  - [Link to the event](https://gdg.community.dev/e/m9pykp/)
 
 ## 2020 (8)
 
-- 2020-11 - [Applications Modernization with Google Cloud](https://github.com/mathieu-benoit/presentations/raw/main/2020-11-Apps%20Modernization%20with%20Google%20Cloud.pdf)
+- 2020-11 - [Applications Modernization with Google Cloud - GDG Cloud Quebec city](https://github.com/mathieu-benoit/presentations/raw/main/2020-11-Apps%20Modernization%20with%20Google%20Cloud.pdf)
+  - [Link to the event]()
 - 2020-09 - [Kubernetes and beyond on Google Cloud Platform - Google for Startups Accelerator Program](https://github.com/mathieu-benoit/presentations/raw/main/2020-09-Kubernetesandbeyond-StartupAcceleratorProgram.pdf)
   - [Link to the event](https://events.withgoogle.com/google-for-startups-accelerator-canada-1/#content)
 - 2020-06 - [At scale Kubernetes Clusters and Apps management with Azure Arc](https://www.youtube.com/watch?v=HJ9uCj8MWyw&list=PLCfLScXpEyAQ0k9pNr8SlGK42CSd-buYv&index=12)
