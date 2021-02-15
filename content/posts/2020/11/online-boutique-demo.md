@@ -36,6 +36,7 @@ gcloud services enable cloudprofiler.googleapis.com
 projectId=FIXME
 clusterName=FIXME
 clusterZone=FIXME
+clusterRegion=FIXME
 gcloud config set project $projectId
 gcloud container clusters get-credentials $clusterName \
     --zone $clusterZone
@@ -48,10 +49,11 @@ kubectl config set-context \
     --namespace $namespace
 ```
 
-Now, here is 3 options with associated scripts to deploy this solution on GKE:
+Now, here is 4 options with associated scripts to deploy this solution on GKE:
 - [With pre-built images]({{< ref "#deployment-on-gke-with-pre-built-images" >}})
 - [With custom and private images]({{< ref "#deployment-on-gke-with-custom-and-private-images" >}})
 - [With Workload Identity]({{< ref "#deployment-on-gke-with-workload-identity" >}})
+- [Replace the in-cluster redis database by Google Cloud Memorystore]({{< ref "#replace-the-in-cluster-redis-database-by-google-cloud-memorystore" >}})
 
 ## Deployment on GKE with pre-built images
 
@@ -68,7 +70,7 @@ In some cases you may need to only deploy container images coming from your own 
 
 ```
 publicContainerRegistry=gcr.io/google-samples/microservices-demo
-privateContainerRegistry=us-east4-docker.pkg.dev/$projectId/containers/boutique
+privateContainerRegistry=$clusterRegion-docker.pkg.dev/$projectId/containers/boutique
 services="adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
 imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/microservices-demo/releases | jq -r '[.[]] | .[0].tag_name')
 
@@ -121,8 +123,34 @@ kubectl get all,secrets,configmaps,sa
 kubectl get service frontend-external | awk '{print $4}'
 ```
 
-That's a wrap! We now have handy scripts for the `Online Boutique` solution, ready to be deployed on both GKE w/ or w/o Workload Identity.
+## Replace the in-cluster redis database by Google Cloud Memorystore
+
+Important notes:
+- You can connect to a Memorystore (redis) instance from GKE clusters that are in the same region and use the same network as your instance.
+- You cannot connect to a Memorystore (redis) instance from a GKE cluster without VPC-native/IP aliasing enabled. For this you should create a GKE cluster with this option `--enable-ip-alias`.
+
+```
+# Create the Memorystore (redis) instance
+gcloud services enable redis.googleapis.com
+gcloud redis instances create redis-cart --size=1 --region=$clusterRegion --zone=$clusterZone--redis-version=redis_5_0
+gcloud redis instances list --region $clusterRegion
+
+# Update the Kubernetes manifests
+REDIS_IP=$(gcloud redis instances describe redis-cart --region=$clusterRegion --format='get(host)')
+sed -i 's/value: "redis-cart:6379"/value: "${REDIS_IP}"/g' ./release/kubernetes-manifests.yaml
+# You could also remove the `Deployment` and `Service` related to the not needed anymore `redis-cart`.
+
+# Deploy the solution
+kubectl apply -f ./release/kubernetes-manifests.yaml
+kubectl get pods
+kubectl delete deployment redis-cart
+kubectl detele service redis-cart
+kubectl get service frontend-external | awk '{print $4}'
+```
+
+That's a wrap! We now have handy scripts for the `Online Boutique` solution, ready to be deployed on both GKE w/ or w/o Workload Identity and as a bonus we also replaced the in-cluster `redis` container by Memorystore (redis).
 
 Further and complementary resources:
 - [Debugging Apps on Google Kubernetes Engine with the OnlineBoutique repo](https://www.qwiklabs.com/focuses/13066?parent=catalog)
-- [Cloud Operations Sandbox based on the OnlineBoutique repo](https://github.com/GoogleCloudPlatform/cloud-ops-sandbox)
+- [Cloud Operations Sandbox based on the OnlineBoutique repo](https://cloud.google.com/blog/products/operations/on-the-road-to-sre-with-cloud-operations-sandbox)
+- [Connecting to a Redis instance from a Google Kubernetes Engine cluster](https://cloud.google.com/memorystore/docs/redis/connect-redis-instance-gke)
