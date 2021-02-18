@@ -137,7 +137,7 @@ gcloud redis instances list --region $clusterRegion
 
 # Update the Kubernetes manifests
 REDIS_IP=$(gcloud redis instances describe redis-cart --region=$clusterRegion --format='get(host)')
-sed -i 's/value: "redis-cart:6379"/value: "${REDIS_IP}"/g' ./release/kubernetes-manifests.yaml
+sed -i "s/value: \"redis-cart:6379\"/value: \"${REDIS_IP}\"/g" ./release/kubernetes-manifests.yaml
 # You could also remove the `Deployment` and `Service` related to the not needed anymore `redis-cart`.
 
 # Deploy the solution
