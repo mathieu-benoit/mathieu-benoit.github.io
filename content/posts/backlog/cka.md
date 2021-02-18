@@ -7,6 +7,11 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/
+https://kubernetes.io/docs/tasks/
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way
+
 https://www.linkedin.com/pulse/how-prepare-kubernetes-certification-cka-prasad-kundeti/
 
 https://redshubh.medium.com/new-cka-ckad-v1-19-0-exam-notes-95f456464864
