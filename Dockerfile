@@ -1,4 +1,4 @@
-FROM alpine:3.13.1 as build
+FROM alpine:3.13.2 as build
 ARG HUGO_VERSION=0.80.0
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 RUN apk add --update wget ca-certificates && \
@@ -13,7 +13,7 @@ WORKDIR /site
 COPY . .
 RUN hugo -v -s /site -d /site/public
 
-FROM nginxinc/nginx-unprivileged:1.19.6-alpine
+FROM nginxinc/nginx-unprivileged:1.19.7-alpine
 USER 1000
 COPY config/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /site/public /usr/share/nginx/html
