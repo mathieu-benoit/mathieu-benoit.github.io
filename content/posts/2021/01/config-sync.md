@@ -110,7 +110,7 @@ kubectl get ns -l app.kubernetes.io/managed-by=configmanagement.gke.io
 And that's it! Now, any update on this repository with any Kubernetes manifests will be synchronized and applied by Config Sync for you. From here, you may want to have different branches pointing to different clusters and having in place a solid and easy continuous deployments workflow via Pull Requests and branches.
 
 Notes:
-- Both `config-sync-operator.yaml` and `config-management.yaml` were dropped in the `~/tmp` folder because as a good practice they shouldn't be in the same repository than the one having your Kubernetes manifests. They could be in the same other repository having the scripts for provisioning the infrastrcture, such as the GKE cluster, etc.
+- Both `config-sync-operator.yaml` and `config-management.yaml` were dropped in the `~/tmp` folder because as a good practice they shouldn't be in the same repository than the one having your Kubernetes manifests. They could be in an other repository having the scripts for provisioning the infrastructure, such as the GKE cluster, etc.
 - I used a public GitHub repository, in the real life you will need to [grant the Config Sync Operator access to your private Git repository](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#git-creds-secret).
 - If you delete in your cluster the Kubernetes objects managed and synchronized by Config Sync, they will be recreated by Config Sync.
 - You could managed the deployments on multi-clusters from within the same Git repository by using the concept of [Cluster selectors](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/clusterselectors).
