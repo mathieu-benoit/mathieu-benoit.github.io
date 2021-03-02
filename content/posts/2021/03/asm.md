@@ -1,12 +1,15 @@
 ---
 title: service mesh to the rescue of completing my kubernetes journey
-date: 2021-02-18
+date: 2021-03-18
 tags: [containers, security, gcp, kubernetes, service-mesh, sre]
 description: let's see why a service mesh is an important piece for your kubernetes journey
 draft: true
 aliases:
     - /asm/
 ---
+Zero Configuration Istio
+https://istio.io/latest/blog/2021/zero-config-istio/
+
 I recently learned what a Service Mesh is for and what it could bring, Istio and Anthos Service Mesh (ASM), here is my story to illustrate how it was the missing piece of my Kubernetes journey.
 
 I have a developer background and until my introduction to Kubernetes, my DevOps definition was about CI/CD, IaC and continuous monitoring/learning mostly (roughly summarized).

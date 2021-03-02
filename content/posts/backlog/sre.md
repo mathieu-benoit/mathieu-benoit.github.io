@@ -7,6 +7,11 @@ draft: true
 aliases:
     - /sre/
 ---
+https://sre.google/classroom/imageserver/
+
+With SRE, failing to plan is planning to fail
+https://cloud.google.com/blog/products/devops-sre/sre-success-starts-with-getting-leadership-on-board
+
 Features vs. Reliability --> Reliability is a Feature
 Monitoring doesn't decide reliability
 CUJ (As a... I want to... so I... and... and....)
