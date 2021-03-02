@@ -173,4 +173,4 @@ Complementary resources:
 - [Forbes - Google Makes Kubernetes Invisible In The Cloud With GKE Autopilot](https://www.forbes.com/sites/janakirammsv/2021/02/26/google-makes-kubernetes-invisible-in-the-cloud-with-gke-autopilot)
 - [How to use GitLab with GKE Autopilot](https://about.gitlab.com/blog/2021/02/24/gitlab-gke-autopilot/)
 
-That's a wrap! Hope you enjoyed that one, happy sailing and feel free to turn your Autopilot mode on! ;)
+That's a wrap! Hope you enjoyed that one, happy sailing and enjoy turning your GKE Autopilot mode on! ;)
