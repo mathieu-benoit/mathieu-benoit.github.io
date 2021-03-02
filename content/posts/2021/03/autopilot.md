@@ -57,7 +57,7 @@ Here are the other options you may want to leverage too:
 
 For example, to have a more secure Autopilot cluster, you want to provide [your own `--service-account` with least privileges]({{< ref "/posts/2020/10/gke-service-account.md" >}}). Using `--enable-private-endpoint` and `--enable-private-nodes` could be a good thing to improve your security posture too.
 
-And from there, that's just business as usual, you could retrieve your GKE clsuter credientials `gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION --project $PROJECT_ID` and then do your `kubectl` commands to be able to interact with your cluster.
+And from there, that's just business as usual, you could retrieve your GKE cluster credentials `gcloud container clusters get-credentials $CLUSTER_NAME --region $REGION --project $PROJECT_ID` and then do your `kubectl` commands to be able to interact with your cluster.
 
 Now let's see what we have in place once this Autopilot is deployed:
 ```
@@ -134,7 +134,7 @@ Events:
 ```
 
 We could see we got few `FailedScheduling` events to eventually get the `hello-app` Pod deployed until a new Node is provisioned. `kubectl get nodes` will show you this new 3rd nodes. Why's that?!
-Actually, in the way we deployed our `hello-app`, we didn't provide any `resources.request` nor `resources.limit`, so by default Autopilot assigns half-a-CPU, 2 GiB of RAM and 1 GiB of storage to a pod.
+Actually, in the way we deployed our `hello-app`, we didn't provide any `resources.requests`, so by default Autopilot assigns half-a-CPU, 2 GiB of RAM and 1 GiB of storage to a pod.
 
 What we could see also is that our Pod got this annotation [`seccomp.security.alpha.kubernetes.io/pod: runtime/default`](https://kubesec.io/basics/metadata-annotations-seccomp-security-alpha-kubernetes-io-pod/) injected, [which enforces a hardened configuration for your Pods with Autopilot](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#container_isolation). `securityContext.capabilities.drop: NET_RAW` is also applied on our Pod for us.
 
