@@ -17,9 +17,10 @@ GKE just got a new mode: [Autopilot](https://cloud.google.com/blog/products/cont
 Autopilot:
 - is GA :metal:
 - is GKE
-- is a Nodeless Kubernetes
+- brings the concept of Nodeless Kubernetes
 - provides a [Pod level SLA](https://cloud.google.com/kubernetes-engine/sla) (Pods in Multi Zones, Autopilot cluster is regional)
 - has a [per Pod billing](https://cloud.google.com/kubernetes-engine/pricing) (per second for vCPU, memory and disk resource requests)
+  - Is it going to be cheaper per month than GKE Standard, certainly not. But it will for sure get you have a lower TCO and help you set best practices with your workloads on Kubernetes.
 - is pre-configured with an optimized cluster configuration that is ready for production workloads with: [COS-containerd](https://cloud.google.com/kubernetes-engine/docs/concepts/node-images#cos-variants), [VPC-native](https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips), [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity), [Shielded nodes](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes), [Secure boot](https://cloud.google.com/kubernetes-engine/docs/how-to/shielded-gke-nodes#secure_boot), [NodeLocal DNSCache](https://cloud.google.com/kubernetes-engine/docs/how-to/nodelocal-dns-cache)
 - upgrades automatically your nodes, [see more information here](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades-autopilot#automatic_upgrades)
 - won't answer all your needs, there is [Workloads](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#limits), [Security](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#security_limitations) and [other](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#other_limitations) limitations, so you may need to still use the Standard edition with more controls.
@@ -134,7 +135,34 @@ Events:
 ```
 
 We could see we got few `FailedScheduling` events to eventually get the `hello-app` Pod deployed until a new Node is provisioned. `kubectl get nodes` will show you this new 3rd nodes. Why's that?!
-Actually, in the way we deployed our `hello-app`, we didn't provide any `resources.requests`, so by default Autopilot assigns half-a-CPU, 2 GiB of RAM and 1 GiB of storage to a pod.
+Actually, in the way we deployed our `hello-app`, we didn't provide any `resources.requests`, so by default [Autopilot assigns half-a-CPU, 2 GiB of RAM and 1 GiB of storage to a pod](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#default_container_resource_requests).
+
+Now as a good practice, it's recommended to set your own granular and optimal `resources.requests`. After running the example below, you could see with `kubectl get pods -o wide` that you have some of the `my-app` pods running on existing nodes and not involving the creation of new nodes.
+```
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      run: my-app
+  template:
+    metadata:
+      labels:
+        run: my-app
+    spec:
+      containers:
+      - name: hello-app
+        image: gcr.io/google-samples/hello-app:1.0
+        resources:
+            requests:
+              cpu: 10m
+              memory: 10Mi
+EOF
+```
 
 What we could see also is that our Pod got this annotation [`seccomp.security.alpha.kubernetes.io/pod: runtime/default`](https://kubesec.io/basics/metadata-annotations-seccomp-security-alpha-kubernetes-io-pod/) injected, [which enforces a hardened configuration for your Pods with Autopilot](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#container_isolation). `securityContext.capabilities.drop: NET_RAW` is also applied on our Pod for us.
 
