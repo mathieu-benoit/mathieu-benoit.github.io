@@ -17,6 +17,7 @@ GKE just got a new mode: [Autopilot](https://cloud.google.com/blog/products/cont
 Autopilot:
 - is GA :metal:
 - is GKE
+- is the a GKE mode, [see the differences with the Standard mode](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#comparison)
 - brings the concept of Nodeless Kubernetes
 - provides a [Pod level SLA](https://cloud.google.com/kubernetes-engine/sla) (Pods in Multi Zones, Autopilot cluster is regional)
 - has a [per Pod billing](https://cloud.google.com/kubernetes-engine/pricing) (per second for vCPU, memory and disk resource requests)
