@@ -29,9 +29,6 @@ Autopilot:
 
 Let's see [how to create your first GKE Autopilot](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-an-autopilot-cluster) in actions:
 ```
-CLUSTER_NAME=FIXME
-REGION=FIXME
-PROJECT_ID=FIXME
 gcloud container clusters create-auto $CLUSTER_NAME \
     --region $REGION \
     --project $PROJECT_ID
