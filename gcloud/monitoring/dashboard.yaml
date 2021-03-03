@@ -208,8 +208,6 @@ mosaicLayout:
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="istio.io/service/server/request_count" resource.type="istio_canonical_service"
                 resource.label."canonical_service_name"="myblog"
-              secondaryAggregation:
-                alignmentPeriod: 60s
         timeshiftDuration: 0s
         yAxis:
           label: y1Axis
@@ -263,7 +261,7 @@ mosaicLayout:
     yPos: 15
   - height: 5
     widget:
-      title: Server Request Count for myblog [SUM]
+      title: Server Request Count for myblog [COUNT]
       xyChart:
         chartOptions:
           mode: COLOR
@@ -275,13 +273,15 @@ mosaicLayout:
             timeSeriesFilter:
               aggregation:
                 alignmentPeriod: 60s
-                crossSeriesReducer: REDUCE_SUM
+                crossSeriesReducer: REDUCE_COUNT
                 groupByFields:
                 - metric.label."response_code"
                 - resource.label."canonical_service_name"
-                perSeriesAligner: ALIGN_SUM
+                perSeriesAligner: ALIGN_COUNT
               filter: metric.type="istio.io/service/server/request_count" resource.type="istio_canonical_service"
                 resource.label."canonical_service_name"="myblog"
+              secondaryAggregation:
+                alignmentPeriod: 60s
         timeshiftDuration: 0s
         yAxis:
           label: y1Axis
@@ -305,8 +305,6 @@ mosaicLayout:
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="logging.googleapis.com/byte_count" resource.type="k8s_container"
                 metadata.user_labels."app"="myblog"
-              secondaryAggregation:
-                alignmentPeriod: 60s
         timeshiftDuration: 0s
         yAxis:
           label: y1Axis
