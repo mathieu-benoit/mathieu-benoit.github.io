@@ -14,6 +14,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="kubernetes.io/container/cpu/limit_utilization"
                 resource.type="k8s_container" metadata.user_labels."app"="myblog"
@@ -34,10 +35,12 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_RATE
               filter: metric.type="kubernetes.io/container/cpu/core_usage_time" resource.type="k8s_container"
                 metadata.user_labels."app"="myblog"
               secondaryAggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
         timeshiftDuration: 0s
         yAxis:
@@ -57,6 +60,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="kubernetes.io/container/memory/limit_utilization"
                 resource.type="k8s_container" metadata.user_labels."app"="myblog"
@@ -78,6 +82,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="kubernetes.io/container/memory/used_bytes" resource.type="k8s_container"
                 metadata.user_labels."app"="myblog"
@@ -100,10 +105,12 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
-                perSeriesAligner: ALIGN_RATE
+                alignmentPeriod: 60s
+                perSeriesAligner: ALIGN_DELTA
               filter: metric.type="kubernetes.io/container/restart_count" resource.type="k8s_container"
                 metadata.user_labels."app"="myblog"
               secondaryAggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
         timeshiftDuration: 0s
         yAxis:
@@ -123,6 +130,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
               filter: metric.type="kubernetes.io/container/uptime" resource.type="k8s_container"
                 metadata.user_labels."app"="myblog"
@@ -145,10 +153,12 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
-                perSeriesAligner: ALIGN_RATE
+                alignmentPeriod: 60s
+                perSeriesAligner: ALIGN_DELTA
               filter: metric.type="kubernetes.io/pod/network/received_bytes_count"
                 resource.type="k8s_pod" metadata.user_labels."app"="myblog"
               secondaryAggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
         timeshiftDuration: 0s
         yAxis:
@@ -168,10 +178,12 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
-                perSeriesAligner: ALIGN_RATE
+                alignmentPeriod: 60s
+                perSeriesAligner: ALIGN_DELTA
               filter: metric.type="kubernetes.io/pod/network/sent_bytes_count" resource.type="k8s_pod"
                 metadata.user_labels."app"="myblog"
               secondaryAggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_MEAN
         timeshiftDuration: 0s
         yAxis:
@@ -192,11 +204,12 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
-                perSeriesAligner: ALIGN_RATE
+                alignmentPeriod: 60s
+                perSeriesAligner: ALIGN_MEAN
               filter: metric.type="istio.io/service/server/request_count" resource.type="istio_canonical_service"
                 resource.label."canonical_service_name"="myblog"
               secondaryAggregation:
-                perSeriesAligner: ALIGN_MEAN
+                alignmentPeriod: 60s
         timeshiftDuration: 0s
         yAxis:
           label: y1Axis
@@ -215,6 +228,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_PERCENTILE_50
               filter: metric.type="istio.io/service/server/request_bytes" resource.type="istio_canonical_service"
                 resource.label."canonical_service_name"="myblog"
@@ -237,6 +251,7 @@ mosaicLayout:
           timeSeriesQuery:
             timeSeriesFilter:
               aggregation:
+                alignmentPeriod: 60s
                 perSeriesAligner: ALIGN_PERCENTILE_50
               filter: metric.type="istio.io/service/server/response_latencies" resource.type="istio_canonical_service"
                 resource.label."canonical_service_name"="myblog"
@@ -246,3 +261,55 @@ mosaicLayout:
           scale: LINEAR
     width: 6
     yPos: 15
+  - height: 5
+    widget:
+      title: Server Request Count for myblog [SUM]
+      xyChart:
+        chartOptions:
+          mode: COLOR
+        dataSets:
+        - legendTemplate: ${metric.labels.response_code}
+          minAlignmentPeriod: 60s
+          plotType: STACKED_BAR
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: 60s
+                crossSeriesReducer: REDUCE_SUM
+                groupByFields:
+                - metric.label."response_code"
+                - resource.label."canonical_service_name"
+                perSeriesAligner: ALIGN_SUM
+              filter: metric.type="istio.io/service/server/request_count" resource.type="istio_canonical_service"
+                resource.label."canonical_service_name"="myblog"
+        timeshiftDuration: 0s
+        yAxis:
+          label: y1Axis
+          scale: LOG10
+    width: 6
+    xPos: 6
+    yPos: 15
+  - height: 4
+    widget:
+      title: Log bytes for myblog [MEAN]
+      xyChart:
+        chartOptions:
+          mode: COLOR
+        dataSets:
+        - minAlignmentPeriod: 60s
+          plotType: LINE
+          timeSeriesQuery:
+            timeSeriesFilter:
+              aggregation:
+                alignmentPeriod: 60s
+                perSeriesAligner: ALIGN_MEAN
+              filter: metric.type="logging.googleapis.com/byte_count" resource.type="k8s_container"
+                metadata.user_labels."app"="myblog"
+              secondaryAggregation:
+                alignmentPeriod: 60s
+        timeshiftDuration: 0s
+        yAxis:
+          label: y1Axis
+          scale: LINEAR
+    width: 6
+    yPos: 18
