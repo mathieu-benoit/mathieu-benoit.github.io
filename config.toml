@@ -3,6 +3,7 @@ languageCode = "en-us"
 theme = "hello-friend"
 paginate = 5
 enableEmoji = true
+enableRobotsTXT = true
 
 [params]
   contentTypeName = "posts"
