@@ -7,6 +7,14 @@ draft: true
 aliases:
     - /asm/
 ---
+
+Managed ASM:
+- https://cloud.google.com/service-mesh/docs/release-notes#March_04_2021
+- https://cloud.google.com/service-mesh/docs/managed-control-plane
+- https://cloud.google.com/service-mesh/docs/supported-features-mcp
+
+Canary, Rollouts are progressive, organized in stages
+
 Zero Configuration Istio
 https://istio.io/latest/blog/2021/zero-config-istio/
 
@@ -40,7 +48,12 @@ separating business logics from security, network resilience, policies and obser
 
 service registry, security (workload certs, mTLS, authN), policies enforcement (rate limiting, quota, authZ), traffic management (traffic split, canary rollouts, mirroring drain, secure ingress), resiliency (circuit breaking, fault injection) and observability (metrics, logs, traces)
 
-install_asm
+./install_asm \
+  --project_id $projectId \
+  --cluster_name $clusterName \
+  --cluster_location $zone \
+  --mode install \
+  --enable-all
 
 k get istio-system
 k get asm-system
@@ -73,6 +86,20 @@ spec:
         k8s:
           serviceAnnotations:
             cloud.google.com/neg: '{"ingress": true}'
+```
+
+https://cloud.google.com/service-mesh/docs/scripted-install/gke-upgrade
+Update ASM:
+```
+./install_asm \
+  --project_id $projectId \
+  --cluster_name $clusterName \
+  --cluster_location $zone \
+  --mode upgrade \
+  --enable-all
+oldVersion=asm-183-2
+kubectl delete Service,Deployment,HorizontalPodAutoscaler,PodDisruptionBudget istiod-$oldVersion -n istio-system --ignore-not-found=true
+kubectl delete IstioOperator installed-state-$oldVersion -n istio-system
 ```
 
 Further and complementary resources:

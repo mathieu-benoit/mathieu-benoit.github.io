@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /sre/
 ---
+https://sre.google/resources/practices-and-processes/practical-guide-to-cloud-migration/
+
 https://sre.google/classroom/imageserver/
 
 With SRE, failing to plan is planning to fail
