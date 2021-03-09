@@ -65,11 +65,18 @@ nomos vet
 
 Install Config Sync Operator on your current Kubernetes cluster:
 ```
+# Option 1: Config Sync as standalone
 gsutil cp gs://config-management-release/released/latest/config-sync-operator.yaml ~/tmp/config-sync-operator.yaml
 kubectl apply -f ~/tmp/config-sync-operator.yaml
+
+# Option 2: Config Sync via Anthos Config Management (ACM)
+gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ~/tmp/config-management-operator.yaml
+kubectl apply -f ~/tmp/config-management-operator.yaml
 ```
 
-Give the Config Sync Operator the proper configuration to get read-only access to this GitHub repository on your current Kubernetes cluster:
+## Setup the continuous deployments
+
+Setup the Config Sync Operator created earlier, to actually synchronised that repo in your current Kubernetes cluster:
 ```
 clusterName=FIXME
 syncRepo=FIXME
@@ -86,12 +93,6 @@ spec:
     secretType: none
     policyDir: .
 EOF
-```
-
-## Setup the continuous deployments
-
-Setup the Config Sync Operator created earlier, to actually synchronised that repo in your current Kubernetes cluster:
-```
 kubectl apply -f ~/tmp/config-management.yaml
 ```
 
@@ -99,6 +100,7 @@ Wait for few seconds, and check everything is deployed and synchronized properly
 ```
 # You should see your cluster's status as SYNCED:
 nomos status
+gcloud alpha container hub config-management status
 
 # You should now see the hello namespace we defined earlier:
 kubectl get ns
