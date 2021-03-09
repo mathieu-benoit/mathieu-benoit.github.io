@@ -132,7 +132,7 @@ Events:
   Normal   Started           50m                kubelet                                Started container hello-app
 ```
 
-We could see we got few `FailedScheduling` events to eventually get the `hello-app` Pod deployed until a new Node is provisioned. `kubectl get nodes` will show you this new 3rd nodes. Why's that?!
+We could see we got few `FailedScheduling` events to eventually get the `hello-app` Pod deployed until a new Node is provisioned. `kubectl get nodes` will show you this new 3rd node. Why's that?!
 Actually, in the way we deployed our `hello-app`, we didn't provide any `resources.requests`, so by default [Autopilot assigns half-a-CPU, 2 GiB of RAM and 1 GiB of storage to a pod](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#default_container_resource_requests).
 
 Now as a good practice, it's recommended to set your own granular and optimal `resources.requests`. After running the example below, you could see with `kubectl get pods -o wide` that you have some of the `my-app` pods running on existing nodes and not involving the creation of new nodes.
