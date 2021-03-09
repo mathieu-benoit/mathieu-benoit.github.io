@@ -11,11 +11,11 @@ I recently delivered a 1h-session named [Sail Sharp, .NET Core & Kubernetes](htt
 
 The intent of this session was to show new great features with .NET 5 with a containerized gRPC API. And the goal was to show best practices to build containers and deploy them on Kubernetes by making sure governance and security checkpoints are in place as early as possible in the supply chain (i.e. CI/CD).
 
-First, it's all about Personas and Stakeholders involved while dealing with Kubernetes. The exercise here is to say that Developers shouldn't do/touch Kubernetes in their day-to-day job (if possible). We are making a distinction and kind of contract of collaboration between the different personas involved: Apps developer, Apps operator, Security operator, Platform operator, Services operator and Organisation admin. Don't make me wrong, no silos at all, but streamlined collaboration with a lot of automation.
+First, it's all about Personas and Stakeholders involved while dealing with Kubernetes. The exercise here is to say that Developers shouldn't do/touch Kubernetes in their day-to-day job (if possible). We are making a distinction and kind of contract of collaboration between the different personas involved: Apps developer, Apps operator, Security operator, Platform operator, Services operator and Infrastucture operator. Don't make me wrong, no silos at all, but streamlined collaboration with a lot of automation.
 
 ![Workflow and Personas from code to monitoring by going through CI/CD.](https://github.com/mathieu-benoit/sail-sharp/raw/main/personas.png)
 
-Yes for sure those personas should know each others, collaborate, exchange roles, etc. and could even be the same person (depending on the size of the team or its maturity). But the idea here is that at the end of the day, developers should focus on what they do best, shiping code with value to the end users. And not doing Kubernetes, Terraform, etc. The latters should be for other personas like Apps, Security, Platform and Service operators.
+Yes for sure those personas should know each others, collaborate, exchange roles, etc. and could even be the same person (depending on the size of the team or its maturity). But the idea here is that at the end of the day, developers should focus on what they do best, shiping code with value to the end users. And not doing Kubernetes, Terraform, etc. The latters should be for other personas like Apps, Security, Platform, Service and Infrastructure operators.
 
 The demo itself to show all that goodies, is the [`cartservice` I have updated](https://github.com/mathieu-benoit/cartservice) from the `OnlineBoutique` (aka `microservices-demo`) solution.
 
@@ -34,10 +34,10 @@ The demo itself to show all that goodies, is the [`cartservice` I have updated](
 
 In the [`Dockerfile`](https://github.com/mathieu-benoit/cartservice/blob/main/Dockerfile) you will see best practices to optimize the size of your images, the time of build, and make the final image more secure. Here are some examples:
 - Multi-stage build to distinguish intermediary build images versus the final image
-- `alpine`-based image to reduce the size, surface of attack, etc. of the final image
+- `alpine`-based image to reduce the size and surface of attack of the final image
 - Unit tests run during the `docker build` command to make sure we have rapid feedback on them
 - `dotnet restore` is in a different step/layer than `dotnet publish` to optimize build time by reusing cache when possible
-- The size of the .NET package is reduce at the bare minimu with those options `-p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release`
+- The size of the .NET package is reduce at the bare minimum with those options `-p:PublishSingleFile=true -r linux-musl-x64 --self-contained true -p:PublishTrimmed=True -p:TrimMode=Link -c release`
 - `grpc-health-probe` binary should be embedded into your image, that will allow to implement `livenessProbe` and `readinessProbe` properly in your Kubernetes manifest later.
 - The final container image built is unprivilege thanks to few features enabled in the `Dockerfile`: `EXPOSE 7070`, `ENV ASPNETCORE_URLS=http://*:7070`, `USER 1000` and `ENV COMPlus_EnableDiagnostics=0`.
 - Being up-to-date with new container base images versions could be tough but very important, so I'm using [`dependabot`](https://github.com/mathieu-benoit/cartservice/blob/main/.github/dependabot.yml) to help me with this.
@@ -81,4 +81,28 @@ And that's it! I have put together [few resources as pointers and references the
 
 If you have any issue, feedback, improvement to share with me regarding all of this, please feel free to drop me a note [here](https://github.com/mathieu-benoit/cartservice/issues) or [here](https://github.com/mathieu-benoit/my-kubernetes-deployments/issues), thanks!
 
-Hope you enjoyed that one, happy sailing, and don't forget, [stay sharp](https://youtu.be/x_IGNq4snx8)! ;)
+## Resources
+
+- .NET
+  - [Series: Deploying ASP.NET Core applications to Kubernetes](https://andrewlock.net/series/deploying-asp-net-core-applications-to-kubernetes/)
+  - [Single-File Executables in .NET](https://levelup.gitconnected.com/single-file-executables-in-net-core-3-1-and-the-quest-for-a-sub-50mb-docker-container-f44cb1274121)
+  - [App Trimming in .NET 5](https://devblogs.microsoft.com/dotnet/app-trimming-in-net-5/)
+  - [Build High-performance Microservices with gRPC and .NET](https://www.youtube.com/watch?v=EJ8M2Em5Zzc) + [gRPC Web with .NET](https://channel9.msdn.com/Shows/On-NET/gRPC-Web-with-NET)
+- Docker
+  - [Runtime privilege and Linux capabilities](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)
+  - [Staying safe with .NET containers](https://devblogs.microsoft.com/dotnet/staying-safe-with-dotnet-containers/)
+- Kubernetes
+  - [container security context on kubernetes](https://alwaysupalwayson.com/pod-security-context/)
+  - [kubernetes network policies](https://alwaysupalwayson.com/posts/2019/09/calico/)
+  - [Intro to Microservice Patterns for .NET Developers](https://www.youtube.com/watch?v=zW4INO353Xg)
+  - [Production checklist for web apps on Kubernetes](https://srcco.de/posts/web-service-on-kubernetes-production-checklist-2019.html)
+  - [Health checking your gRPC servers on Kubernetes](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke)
+- Istio
+  - [Istio by example](https://www.istiobyexample.dev/)
+  - [Deploy ASP.NET Core app to Google Kubernetes Engine with Istio (Part 1)](https://codelabs.developers.google.com/codelabs/cloud-istio-aspnetcore-part1#0)
+  - [Deploy ASP.NET Core app to Google Kubernetes Engine with Istio (Part 2)](https://codelabs.developers.google.com/codelabs/cloud-istio-aspnetcore-part2#0)
+- GitHub actions
+  - [Automating CI/CD pipelines with GitHub Actions and Google Cloud](https://resources.github.com/webcasts/Automating-CI-CD-Actions-Google-Cloud-thankyou)
+  - [How We Set Up a Production Ready CI Workflow Using GitHub Actions](https://hackernoon.com/how-we-set-up-a-production-ready-ci-workflow-using-github-actions-ca2n3w1j)
+
+That's a wrap! Hope you enjoyed that one, happy sailing, and don't forget, [stay sharp](https://youtu.be/x_IGNq4snx8)! ;)
