@@ -8,7 +8,7 @@ aliases:
 ---
 ![Logo of Open Policy Agent.](https://github.com/open-policy-agent/opa/raw/master/logo/logo-144x144.png)
 
-My [last Kubecon 2020 experience]({{< ref "/posts/2020/12/k8s-ctf.md" >}}) told me that I really needed to give both OPA and Gatekeeper a try. Since then I learned how to use [OPA as a container linter]({{< ref "/posts/2021/01/container-linter.md" >}}). What I now need to do is to leverage OPA/Gatekeeper on my Kubernetes cluster.
+My [last Kubecon 2020 experience]({{< ref "/posts/2020/12/k8s-ctf.md" >}}) told me that I really needed to give both OPA and Gatekeeper a try. Since then I learned how to use [OPA as a container linter]({{< ref "/posts/2021/01/container-linter.md" >}}). What I now need to do is to leverage OPA Gatekeeper on my Kubernetes cluster.
 
 > The [Open Policy Agent](https://www.openpolicyagent.org/) (OPA, pronounced “oh-pa”) is an open source, general-purpose policy engine that unifies policy enforcement across the stack. OPA provides a high-level declarative language that lets you specify policy as code and simple APIs to offload policy decision-making from your software. 
 
