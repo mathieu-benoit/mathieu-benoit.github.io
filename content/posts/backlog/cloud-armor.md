@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /asm/
 ---
+What is Cloud Armor?
+https://google.smh.re/5LA
+
 > [Google Cloud Armor](https://cloud.google.com/armor) helps protect your applications and websites against denial of service and web attacks.
 
 OWASP Top 10 Vulnerabilities

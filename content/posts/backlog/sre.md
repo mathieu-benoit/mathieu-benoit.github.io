@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /sre/
 ---
+cre.page.link/art-of-slos
+
 https://sre.google/resources/practices-and-processes/practical-guide-to-cloud-migration/
 
 https://sre.google/classroom/imageserver/
