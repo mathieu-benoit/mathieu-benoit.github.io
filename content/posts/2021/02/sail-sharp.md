@@ -74,6 +74,7 @@ Kubernetes manifest
 -VPA
 Kubeval
 OPA
+Gatekeeper ({{< ref "/posts/2021/03/policy-controller.md" >}})
 
 If you are interested in seeing this in action, [here is the recording of this session in French](https://youtu.be/FqwjSZqpJs8), I walked the talk by releasing a new version by pointing the `cartservice` to Google Memorystore (redis) instead of having `redis` as container on Kubernetes, fix a bug with `cartservice` regarding the increment of the quantity in the cart and finally increase traffic from 10% to 50% on the `preview` route of the `frontend` app.
 

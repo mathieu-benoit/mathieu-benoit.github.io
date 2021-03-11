@@ -125,6 +125,7 @@ On my end, that's kind of setup and security posture I have been taking, here ar
 - [PodSecurityContext]({{< ref "/posts/2020/04/pod-security-context.md" >}})
 - [Container linter for compliances and security checks]({{< ref "/posts/2021/01/container-linter.md" >}})
 - [Vertical Pod Autoscaler to properly set resources limits and requests]({{< ref "/posts/2021/01/vpa.md" >}})
+- [OPA Gatekeeper with Policy Controller]({{< ref "/posts/2021/03/policy-controller.md" >}})
 
 Complementary to this, here are other security features I'm leveraging with my Kubernetes cluster to add extra security layers:
 - [Binary Authorization to sign your containers]({{< ref "/posts/2020/11/binauthz.md" >}})
@@ -133,7 +134,6 @@ Complementary to this, here are other security features I'm leveraging with my K
 - [Minimal and optimized OS for my nodes with COS](https://cloud.google.com/container-optimized-os/) with [`containerd`](https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd) and auto-upgrade
 - Use [Confidential Computing and Shielded Nodes]({{< ref "/posts/2020/10/confidential-computing.md" >}})
 - Use [Private Cluster](https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept)
-- I will soon add an implementation of [`OPA/GateKeeper`](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/) too.
 
 From there I was excited to do some research around other materials I could leverage to learn more about CTF or Attacker/Defender scenario with Kubernetes, here are other interesting resources on that regard:
 - [KubeCon NA 2017 - Hacking and Hardening Kubernetes Clusters by Example](https://youtu.be/vTgQLzeBfRU) - [Presentation](http://goo.gl/TNRxtd) - [Demos](http://goo.gl/fwwbgB)
