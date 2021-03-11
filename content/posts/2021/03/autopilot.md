@@ -81,7 +81,7 @@ kube-system         Active   5m50s
 
 Doing a `kubectl describe node` could show us that Autopilot's Node type is `e2-medium` (2 vCPUs, 4 GB memory). We could also see that our nodes are spread across the different zones (`topology.kubernetes.io/zone=us-east4-a`) of our Autopilot cluster's region (`topology.kubernetes.io/region=us-east4`). You may want to leverage the [Pod affinity or anti-affinity](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-overview#pod_affinity_and_anti-affinity) with your workloads if you would like to avoid cross-zones communications between your Pods (like you will have to deal with any regional Kubernetes cluster). 
 
-Interestingly, another best practice GKE Autopilot brings to you is using [OPA Gatekeeper](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/) via [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) to be able to apply its own policies (you can't change anything here, so JFYI):
+Interestingly, another best practice GKE Autopilot brings to you is using [OPA Gatekeeper via Policy Controller]({{< ref "/posts/2021/03/policy-controller.md" >}}) to be able to apply its own policies (you can't change anything here, so JFYI):
 ```
 $ kubectl get ConstraintTemplates
 NAME                                    AGE
@@ -103,23 +103,23 @@ autopilotexternaliplimitation           31m
 autopilotvolumetypelimitation           31m
 
 $ kubectl get constraint
-NAME                                                                                                        AGE
-autogkehostpathvolumes.constraints.gatekeeper.sh/autogke-no-write-mode-hostpath                             31m
-autogkehostportlimitation.constraints.gatekeeper.sh/autogke-no-host-port                                    31m
-autogkemanagednamespaceslimitation.constraints.gatekeeper.sh/autogke-disallow-managed-namespace-access      31m
-autogkecsrlimitation.constraints.gatekeeper.sh/autogke-csr-limitation                                       31m
-autogkepodaffinitylimitation.constraints.gatekeeper.sh/autogke-pod-affinity-limitation                      31m
-autogkenodeaffinityselectorlimitation.constraints.gatekeeper.sh/autogke-node-affinity-selector-limitation   31m
-autogkepodlimitconstraints.constraints.gatekeeper.sh/autogke-pod-limit-constraints                          31m
-autogkepolicycrdlimitation.constraints.gatekeeper.sh/autogke-policy-crd-limitation                          31m
-autogkelinuxcapabilitieslimitation.constraints.gatekeeper.sh/autogke-default-linux-capabilities             31m
-autogkehostnamespaceslimitation.constraints.gatekeeper.sh/autogke-disallow-hostnamespaces                   31m
-autogkegpulimitation.constraints.gatekeeper.sh/autogke-gpu-limitation                                       31m
-autogkeprivilegedpodlimitation.constraints.gatekeeper.sh/autogke-disallow-privilege                         31m
-autogkeallowlistedworkloadlimitation.constraints.gatekeeper.sh/autogke-allowlisted-workload-limitation      31m
-autopilotvolumetypelimitation.constraints.gatekeeper.sh/autopilot-volume-type-limitation                    31m
-autopilotexternaliplimitation.constraints.gatekeeper.sh/autopilot-external-ip-limitation                    31m
-autogkenodelimitation.constraints.gatekeeper.sh/autogke-no-node-updates                                     31m
+NAME                                        AGE
+autogke-no-write-mode-hostpath              31m
+autogke-no-host-port                        31m
+autogke-disallow-managed-namespace-access   31m
+autogke-csr-limitation                      31m
+autogke-pod-affinity-limitation             31m
+autogke-node-affinity-selector-limitation   31m
+autogke-pod-limit-constraints               31m
+autogke-policy-crd-limitation               31m
+autogke-default-linux-capabilities          31m
+autogke-disallow-hostnamespaces             31m
+autogke-gpu-limitation                      31m
+autogke-disallow-privilege                  31m
+autogke-allowlisted-workload-limitation     31m
+autopilot-volume-type-limitation            31m
+autopilot-external-ip-limitation            31m
+autogke-no-node-updates                     31m
 ```
 
 Now let's try to deploy our first app in there:
