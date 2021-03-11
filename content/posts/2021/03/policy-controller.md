@@ -86,7 +86,7 @@ kubectl apply -f allowed-repos.yaml
 
 Another example could be to leverage the `K8sExternalIPs` template in order to [mitigate CVE-2020-8554](https://cloud.google.com/blog/products/application-development/protecting-your-kubernetes-deployments-policy-controller):
 ```
-kubectl describe kind: K8sExternalIPs
+kubectl describe K8sExternalIPs
 cat > no-external-ip-services.yaml << EOF
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sExternalIPs
