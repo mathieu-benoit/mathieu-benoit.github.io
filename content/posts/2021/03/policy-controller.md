@@ -14,7 +14,7 @@ My [last Kubecon 2020 experience]({{< ref "/posts/2020/12/k8s-ctf.md" >}}) told 
 
 > [OPA Gatekeeper](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/) is a new project that provides first-class integration between OPA and Kubernetes.
 
-Instead of installing Gatekeeper itself on my Kubernetes cluster, I will instead leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller).
+Instead of installing Gatekeeper itself on my Kubernetes cluster, I will rather leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller).
 
 > [Anthos Config Management](https://cloud.google.com/anthos/config-management)'s Policy Controller is a Kubernetes dynamic admission controller that checks, audits, and enforces your clusters' compliance with policies related to security, regulations, or arbitrary business rules. Policy Controller is built from the Gatekeeper open source project.
 
@@ -60,9 +60,9 @@ kubectl get constrainttemplates
 ```
 You could see this list [here](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library) too.
 
-Based on those templates, you could create your own constraints like described [here](https://cloud.google.com/anthos-config-management/docs/how-to/creating-constraints).
+Based on those templates, you could create your own [constraints](https://open-policy-agent.github.io/gatekeeper/website/docs/howto/#constraints) like described [here](https://cloud.google.com/anthos-config-management/docs/how-to/creating-constraints).
 
-Let's see an example, by leveraging the `K8sAllowedRepos` template, where we would like to allow only specific container registries for the images of the Pods running on our cluster:
+Let's see an example, by leveraging the `K8sAllowedRepos` template, with which we would like to allow only specific container registries for the images of the Pods running on our cluster:
 ```
 kubectl describe K8sAllowedRepos
 cat > allowed-repos.yaml << EOF
@@ -86,7 +86,7 @@ kubectl apply -f allowed-repos.yaml
 
 Another example could be to leverage the `K8sExternalIPs` template in order to [mitigate CVE-2020-8554](https://cloud.google.com/blog/products/application-development/protecting-your-kubernetes-deployments-policy-controller):
 ```
-kubectl describe K8sAllowedRepos
+kubectl describe kind: K8sExternalIPs
 cat > no-external-ip-services.yaml << EOF
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sExternalIPs
@@ -103,7 +103,7 @@ kubectl apply -f no-external-ip-services.yaml
 
 Leveraging the default templates is great because we don't have to write OPA regos for them. But, you may want to write your own template, [here](https://cloud.google.com/anthos-config-management/docs/how-to/write-a-constraint-template) you are for the guidance to accomplish this.
 
-And that's it, that's how easy it is to leverage OPA Gatekeeper via Policy Controller!
+And that's it, that's how easy it is to leverage OPA Gatekeeper via Policy Controller to have more governance in place and a better security posture on your Kubernetes clusters.
 
 ## Further and complementary resources
 
