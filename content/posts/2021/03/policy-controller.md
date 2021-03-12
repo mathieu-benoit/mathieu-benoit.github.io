@@ -81,6 +81,7 @@ spec:
       - "gcr.io"
       - "k8s.gcr.io"
       - "gke.gcr.io"
+EOF
 kubectl apply -f allowed-repos.yaml
 ```
 
@@ -107,9 +108,10 @@ And that's it, that's how easy it is to leverage OPA Gatekeeper via Policy Contr
 
 ## Further and complementary resources
 
-- [OPA Gatekeeper repository](https://github.com/open-policy-agent/gatekeeper)
 - [Intro to OPA](https://youtu.be/Yup1FUc2Qn0)
 - [OPA deep dive](https://youtu.be/Uj2N9S58GLU)
+- [OPA Gatekeeper repository](https://github.com/open-policy-agent/gatekeeper)
+- [Use constraints instead of `PodSecurityPolicies`](https://cloud.google.com/anthos-config-management/docs/how-to/using-constraints-to-enforce-pod-security)
 - [Gatekeeper integration with Security Command Center](https://github.com/GoogleCloudPlatform/gatekeeper-securitycenter)
 
 That's a wrap! Hope you enjoyed that one, sail safe out there, cheers! ;)
