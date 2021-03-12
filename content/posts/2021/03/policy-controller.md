@@ -112,6 +112,7 @@ And that's it, that's how easy it is to leverage OPA Gatekeeper via Policy Contr
 - [OPA deep dive](https://youtu.be/Uj2N9S58GLU)
 - [OPA Gatekeeper repository](https://github.com/open-policy-agent/gatekeeper)
 - [Use constraints instead of `PodSecurityPolicies`](https://cloud.google.com/anthos-config-management/docs/how-to/using-constraints-to-enforce-pod-security)
-- [Gatekeeper integration with Security Command Center](https://github.com/GoogleCloudPlatform/gatekeeper-securitycenter)
+- [Reporting Policy Controller audit violations in Security Command Center](https://cloud.google.com/architecture/reporting-policy-controller-audit-violations-security-command-center)
+- [Creating policy-compliant Google Cloud resources with Config Connector](https://cloud.google.com/solutions/policy-compliant-resources)
 
 That's a wrap! Hope you enjoyed that one, sail safe out there, cheers! ;)
