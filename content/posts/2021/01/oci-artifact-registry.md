@@ -1,5 +1,5 @@
 ---
-title: hosting helm charts in google artifact registry
+title: host helm charts in google artifact registry
 date: 2021-01-14
 tags: [containers, helm]
 description: let's see how we could host our own helm charts (and more generically, any oci artifacts) in google artifact registry
