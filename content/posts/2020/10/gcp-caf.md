@@ -5,6 +5,8 @@ tags: [gcp, inspiration]
 description: let's go through resources such as the google cloud adoption framework, cloud center of excellence, the google cloud setup checklist and best practices for enterprise organizations and eventually the google cloud security foundations guide
 aliases:
     - /gcp-caf/
+    - /caf/
+    - /adopt/
 ---
 ![Representation of data movement between on-premises and the Cloud.](https://storage.googleapis.com/gweb-cloudblog-publish/images/Google_Blog_CloudMigration_B_L8be8Js.max-2200x2200.jpg)
 
