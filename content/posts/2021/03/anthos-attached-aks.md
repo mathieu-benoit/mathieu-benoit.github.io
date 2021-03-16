@@ -67,3 +67,5 @@ kubectl create clusterrolebinding console-reader-${gcpAccessSa} \
 secretName=$(kubectl get serviceaccount $gcpAccessSa -o jsonpath='{$.secrets[0].name}')
 kubectl get secret ${secretName} -o jsonpath='{$.data.token}' | base64 --decode
 ```
+
+https://thenewstack.io/tutorial-connect-amazon-eks-and-azure-aks-clusters-with-google-anthos/
