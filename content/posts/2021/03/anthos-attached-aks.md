@@ -11,11 +11,11 @@ https://cloud.google.com/anthos/docs/version-and-upgrade-support
 
 ```
 group=mabenoit
-aksLocation=eastus
-aksClusterName=aks-cluster
-az group create --name $group --location $aksLocation
-az aks create --resource-group $group --name $aksClusterName --location $aksLocation --node-count 3 --no-ssh-key
-az aks get-credentials --resource-group $group --name $aksClusterName
+location=eastus
+cluster=aks-cluster
+az group create --name $group --location $location
+az aks create --resource-group $group --name $cluster --location $location --node-count 4  --node-vm-size Standard_DS3_v2 --no-ssh-key
+az aks get-credentials --resource-group $group --name $cluster
 ```
 
 https://cloud.google.com/anthos/multicluster-management/connect/prerequisites#create_sa
@@ -26,8 +26,8 @@ gcloud iam service-accounts create $aksSa --project $hubGcpProjectId
 gcloud projects add-iam-policy-binding ${hubGcpProjectId} \
     --member="serviceAccount:${aksSa}@${hubGcpProjectId}.iam.gserviceaccount.com" \
     --role="roles/gkehub.connect" \
-    --condition "expression=resource.name == 'projects/${hubGcpProjectId}/locations/global/memberships/${aksClusterName}',title=bind-${aksSa}-to-${aksClusterName}"
-gcloud iam service-accounts keys create ~tmp/aks-sa-${hubGcpProjectId}.json \
+    --condition="expression=resource.name == 'projects/${hubGcpProjectId}/locations/global/memberships/${cluster}',title=bind-${aksSa}-to-${cluster}"
+gcloud iam service-accounts keys create ~/tmp/aks-sa-${hubGcpProjectId}.json \
     --iam-account ${aksSa}@${hubGcpProjectId}.iam.gserviceaccount.com \
     --project ${hubGcpProjectId}
 ```
@@ -35,11 +35,11 @@ gcloud iam service-accounts keys create ~tmp/aks-sa-${hubGcpProjectId}.json \
 
 https://cloud.google.com/anthos/docs/setup/attached-clusters#gcloud
 ```
-gcloud container hub memberships register $aksClusterName \
-    --context $aksClusterName \
-    --service-account-key-file ~tmp/aks-sa-${hubGcpProjectId}.json
+gcloud container hub memberships register $cluster \
+    --context $cluster \
+    --service-account-key-file ~/tmp/aks-sa-${hubGcpProjectId}.json
 gcloud container hub memberships list
-gcloud container hub memberships describe $aksClusterName
+gcloud container hub memberships describe $cluster
 ```
 
 https://cloud.google.com/anthos/multicluster-management/console/logging-in

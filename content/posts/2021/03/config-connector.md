@@ -7,7 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
-https://github.com/GoogleCloudPlatform/k8s-config-connector
+
+gcloud alpha resource-config bulk-export --help
+
 https://cloud.google.com/config-connector/docs/reference/overview
 
 I do declare! Infrastructure automation with Configuration as Data
@@ -20,19 +22,21 @@ https://seroter.com/2021/01/12/how-gitops-and-the-krm-make-multi-cloud-less-scar
 Cloud Foundation Toolkit Config Connector Solutions
 https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/tree/master/config-connector/solutions
 
+
+Installation via Config Management:
 ```
-# Your cluster need to be on Regular or Rapid channel 
-gcloud container clusters create CLUSTER_NAME \
-    --addons ConfigConnector
-
-
-gcloud container clusters update CLUSTER_NAME \
-    --update-addons ConfigConnector=ENABLED
-``
-
+cat > ~/tmp/config-management.yaml << EOF
+apiVersion: configmanagement.gke.io/v1
+kind: ConfigManagement
+metadata:
+  name: config-management
+spec:
+  configConnector:
+    enabled: true
+EOF
+kubectl apply -f ~/tmp/config-management.yaml
 ```
-
-```
+Note: advanced installation via Operator: https://cloud.google.com/config-connector/docs/how-to/advanced-install
 
 ```
 # Check if the installation went well:
@@ -43,12 +47,15 @@ kubectl get ConfigConnector
 kubectl get crds --selector cnrm.cloud.google.com/managed-by-kcc=true
 ```
 
+FIXME:
+- How to get kcc version?
+- How to upgrade --> https://cloud.google.com/config-connector/docs/how-to/install-other-kubernetes#upgrading
+
 Get started as example?
 https://cloud.google.com/config-connector/docs/how-to/getting-started
 
-Notes:
-- The Config Connector add-on is upgraded to a new minor release along with your GKE cluster. The resources in your cluster are preserved whenever an upgrade occurs.
 - Config Connector's Release notes page: https://cloud.google.com/config-connector/docs/release-notes
+- Config Connector's GitHub repo: https://github.com/GoogleCloudPlatform/k8s-config-connector
 
 Cloud Native Resource Management (Cloud Next '19)
 https://youtu.be/s_hiFuRDJSE
