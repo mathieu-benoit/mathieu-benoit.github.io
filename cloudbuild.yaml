@@ -2,12 +2,14 @@ steps:
 - name: gcr.io/cloud-builders/git
   id: git-clone
   args: ['clone', '--recurse-submodules', 'https://github.com/${_REPO_OWNER}/${_APP_NAME}']
-- name: 'ubuntu'
-  id: sed-baseimages-dockerfile
-  args: ['bash','-c','sed -i "s,FROM alpine,FROM ${_CONTAINER_REGISTRY_NAME}/alpine,g;s,FROM nginxinc,FROM ${_CONTAINER_REGISTRY_NAME},g" Dockerfile']
 - name: gcr.io/cloud-builders/docker
   id: docker-build
-  args: ['build', '-t', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA', '--build-arg', 'ALPINE_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/alpine', '--build-arg', 'NGINX_BASE_IMAGE=${_CONTAINER_REGISTRY_NAME}/nginx-unprivileged', '${_APP_NAME}/.']
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    sed -i "s,FROM alpine,FROM ${_CONTAINER_REGISTRY_NAME}/alpine,g;s,FROM nginxinc,FROM ${_CONTAINER_REGISTRY_NAME},g" Dockerfile
+    docker build -t ${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA ${_APP_NAME}/.
 - name: gcr.io/cloud-builders/docker
   id: dockle
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
