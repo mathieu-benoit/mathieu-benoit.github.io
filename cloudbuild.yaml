@@ -8,7 +8,7 @@ steps:
   args:
   - '-c'
   - |
-    sed -i "s,FROM alpine,FROM ${_CONTAINER_REGISTRY_NAME}/alpine,g;s,FROM nginxinc,FROM ${_CONTAINER_REGISTRY_NAME},g" Dockerfile
+    sed -i "s,FROM alpine,FROM ${_CONTAINER_REGISTRY_NAME}/alpine,g;s,FROM nginxinc,FROM ${_CONTAINER_REGISTRY_NAME},g" ${_APP_NAME}/Dockerfile
     docker build -t ${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA ${_APP_NAME}/.
 - name: gcr.io/cloud-builders/docker
   id: dockle
