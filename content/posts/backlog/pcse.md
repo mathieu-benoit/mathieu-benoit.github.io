@@ -33,6 +33,7 @@ In my case I didn't know enough 2 topics, so I did more learnings around them:
 - KMS
 https://youtu.be/DB6UfKFo3ds
 https://cloud.google.com/security/key-management-deep-dive
+https://cloud.google.com/kubernetes-engine/docs/how-to/encrypting-secrets --> to understand DEK/KEK in action
 
 
 Complementary and further resources:

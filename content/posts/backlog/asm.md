@@ -48,6 +48,7 @@ separating business logics from security, network resilience, policies and obser
 
 service registry, security (workload certs, mTLS, authN), policies enforcement (rate limiting, quota, authZ), traffic management (traffic split, canary rollouts, mirroring drain, secure ingress), resiliency (circuit breaking, fault injection) and observability (metrics, logs, traces)
 
+curl https://storage.googleapis.com/csm-artifacts/asm/install_asm_1.9 > install_asm
 ./install_asm \
   --project_id $projectId \
   --cluster_name $clusterName \

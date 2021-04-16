@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /fixme/
 ---
+
+FIXME:
+- Integrate this? https://cloud.google.com/blog/products/identity-security/enable-keyless-access-to-gcp-with-workload-identity-federation
+
 https://cloud.google.com/anthos/docs/version-and-upgrade-support
 
 ```

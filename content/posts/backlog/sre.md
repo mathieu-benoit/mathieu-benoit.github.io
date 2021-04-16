@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /sre/
 ---
+GOTO 2021 • How Google SRE and Developers Work Together • Christof Leng
+https://youtu.be/DOQqOrHs3VY
+
 cre.page.link/art-of-slos
 
 https://sre.google/resources/practices-and-processes/practical-guide-to-cloud-migration/
