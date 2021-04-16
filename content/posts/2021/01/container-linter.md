@@ -10,7 +10,7 @@ Let's see how we could easily leverage 2 tools/linters to add more security and 
 
 # OPA
 
-![Logo of Open Policy Agent.](https://github.com/open-policy-agent/opa/raw/master/logo/logo-144x144.png)
+![Logo of Open Policy Agent.](https://github.com/open-policy-agent/opa/raw/main/logo/logo-144x144.png)
 
 [Open Policy Agent (OPA)](https://www.openpolicyagent.org/) is a unified toolset and framework for policy across the cloud native stack. You can use OPA to enforce policies in microservices, Kubernetes, CI/CD pipelines, API gateways, and more.
 > Whether for one service or for all your services, use OPA to decouple policy from the service's code so you can release, analyze, and review policies (which security and compliance teams love) without sacrificing availability or performance.

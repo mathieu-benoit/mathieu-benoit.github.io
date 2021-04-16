@@ -6,7 +6,7 @@ description: let's see in actions how we could easily leverage opa gatekeeper on
 aliases:
     - /policy-controller/
 ---
-![Logo of Open Policy Agent.](https://github.com/open-policy-agent/opa/raw/master/logo/logo-144x144.png)
+![Logo of Open Policy Agent.](https://github.com/open-policy-agent/opa/raw/main/logo/logo-144x144.png)
 
 My [last KubeCon 2020 experience]({{< ref "/posts/2020/12/k8s-ctf.md" >}}) told me that I really needed to give both OPA and Gatekeeper a try. Since then I learned how to use [OPA as a container linter]({{< ref "/posts/2021/01/container-linter.md" >}}). What I now need to do is to leverage OPA Gatekeeper on my Kubernetes cluster.
 
