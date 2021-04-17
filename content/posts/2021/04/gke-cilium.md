@@ -1,7 +1,7 @@
 ---
 title: ebpf and cilium, to bring more security and more networking capabilities in gke
 date: 2021-04-17
-tags: [security, container, kubernetes, gcp]
+tags: [security, containers, kubernetes, gcp]
 description: let's see ebpf and cilium on gke and how they are bringing more security and networking capabilities
 aliases:
     - /gke-ebpf/
@@ -15,7 +15,7 @@ aliases:
 
 ![Cilium, beyond the traditional Kubernetes CNI.](https://storage.googleapis.com/gweb-cloudblog-publish/images/Container_Networking_Interface.max-1100x1100.jpg)
 
-Last August 2020, I wrote a blog article about [4 main networking features GCP is providing for your GKE clusters]({{< ref "/posts/2020/09/container-native-networking.md" >}}), the GKE Dataplane V2 was one of them. I haven't tested until today, today is the day! ;)
+Last August 2020, I wrote a blog article about [4 main networking features GCP is providing for your GKE clusters]({{< ref "/posts/2020/09/container-native-networking.md" >}}), the GKE Dataplane V2 was one of them. I haven't tested this feature until today, but today is the day! ;)
 
 > [GKE Dataplane V2](https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2) is an opinionated dataplane that harnesses the power of eBPF and Cilium.
 
