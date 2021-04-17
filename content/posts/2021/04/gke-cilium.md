@@ -1,8 +1,8 @@
 ---
 title: ebpf and cilium, to bring more security and more networking capabilities in gke
-date: 2021-03-17
+date: 2021-04-17
 tags: [security, container, kubernetes, gcp]
-description: let's see ebpf and cilium on gke and how they are bringing more security and networking capabilities and visibility
+description: let's see ebpf and cilium on gke and how they are bringing more security and networking capabilities
 aliases:
     - /gke-ebpf/
     - /gke-cilium/
@@ -15,7 +15,7 @@ aliases:
 
 ![Cilium, beyond the traditional Kubernetes CNI.](https://storage.googleapis.com/gweb-cloudblog-publish/images/Container_Networking_Interface.max-1100x1100.jpg)
 
-Last August 2020, I wrote a blog article about [4 main networking features GCP is providing for your GKE clusters]({{< ref "/posts/2020/09/container-native-networking.md" >}}).
+Last August 2020, I wrote a blog article about [4 main networking features GCP is providing for your GKE clusters]({{< ref "/posts/2020/09/container-native-networking.md" >}}), the GKE Dataplane V2 was one of them. I haven't tested until today, today is the day! ;)
 
 > [GKE Dataplane V2](https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2) is an opinionated dataplane that harnesses the power of eBPF and Cilium.
 
@@ -31,9 +31,9 @@ gcloud beta container clusters create \
     --enable-dataplane-v2
 ```
 
-_Dataplane V2 comes with network policy enforcement built-in. This means that you don't need to enable network policy in clusters that use Dataplane V2. As of today, if you try to explicitly enable or disable network policy enforcement in a cluster that uses Dataplane V2, the request will fail._
+_Note: Dataplane V2 comes with network policy enforcement built-in. This means that you don't need to enable network policy in clusters that use Dataplane V2. As of today, if you try to explicitly enable or disable network policy enforcement in a cluster that uses Dataplane V2, the request will fail._
 
-From here, you could apply your `NetworkPolicies`. But there is more. You could actually leverage the associated [network policy logging](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging) (both `allow` and `deny`). For this you need to enable them with the below example:
+From here, you could apply your [`NetworkPolicies`]({{< ref "/posts/2019/09/calico.md" >}}) like you used to do with any Kubernetes cluster. But there is more. You could actually leverage the associated [network policy logging](https://cloud.google.com/kubernetes-engine/docs/how-to/network-policy-logging) (both `allow` and `deny`). For this you need to enable them with the below example:
 ```
 kind: NetworkLogging
 apiVersion: networking.gke.io/v1alpha1
