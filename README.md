@@ -63,7 +63,7 @@ gcloud beta builds triggers create github \
     --ignore-files="README.md,.github/**,gcloud/**" \
     --substitutions=_CONTAINER_REGISTRY_NAME=$containerRegistryName
 
-# Finally, we need to create a static external IP address to be able to generate a managed certificates later
+# We need to create a static external IP address to be able to generate a managed certificates later
 gcloud config set project $gkeProjectId
 staticIpName=myblog
 gcloud compute addresses create $staticIpName \
@@ -71,6 +71,11 @@ gcloud compute addresses create $staticIpName \
 staticIpAddress=$(gcloud compute addresses describe $staticIpName \
     --global \
     --format "value(address)")
+
+# We also need to define an SSL policy
+gcloud compute ssl-policies create myblog \
+    --profile COMPATIBLE  \
+    --min-tls-version 1.0
 ```
 
 ## Setup Cloud Monitoring
