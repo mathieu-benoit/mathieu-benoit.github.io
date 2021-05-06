@@ -7,6 +7,24 @@ draft: true
 aliases:
     - /sre/
 ---
+Site Reliability Engineering (SRE) best practices
+https://www.cncf.io/blog/2021/04/28/site-reliability-engineering-sre-best-practices/
+
+SRE at Google: Our complete list of CRE life lessons
+https://cloud.google.com/blog/products/devops-sre/sre-at-google-our-complete-list-of-cre-life-lessons
+
+5 resources to help you get started with SRE
+https://cloud.google.com/blog/products/devops-sre/5-google-sre-resources-to-get-started
+
+Free Introduction to DevOps and SRE course by CNCF
+https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/
+
+State of DevOps 2019
+https://services.google.com/fh/files/misc/state-of-devops-2019.pdf
+
+Incident Metrics in SRE - Google - Site Reliability Engineering
+https://sre.google/resources/practices-and-processes/incident-metrics-in-sre/
+
 GOTO 2021 • How Google SRE and Developers Work Together • Christof Leng
 https://youtu.be/DOQqOrHs3VY
 

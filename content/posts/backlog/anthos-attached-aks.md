@@ -8,6 +8,8 @@ aliases:
     - /fixme/
 ---
 
+https://cloud.google.com/blog/topics/anthos/how-anthos-makes-multicloud-possible-today
+
 FIXME:
 - Integrate this? https://cloud.google.com/blog/products/identity-security/enable-keyless-access-to-gcp-with-workload-identity-federation
 

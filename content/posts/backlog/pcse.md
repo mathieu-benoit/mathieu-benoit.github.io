@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /pcse/
 ---
+Transform data to secure it: Use Cloud DLP
+https://cloud.google.com/blog/products/identity-security/google-cloud-dlp-can-modify-data-to-protect-it
 
 /az-500/
 /tags/security/

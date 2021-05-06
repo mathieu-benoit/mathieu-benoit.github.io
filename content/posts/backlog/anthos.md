@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://cloud.google.com/blog/topics/anthos/how-anthos-makes-multicloud-possible-today
+
 Anthos under the hood eBook
 https://inthecloud.withgoogle.com/anthos-ebook/dl-cd-typ.html
 

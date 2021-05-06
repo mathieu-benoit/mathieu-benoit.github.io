@@ -64,7 +64,7 @@ filter="resource.type=\"k8s_node\" "\
 gcloud logging read --project $projectId "$filter"
 ```
 
-_Tips: if your cluster is enrolled with Anthos, you will also be able to see the number of those `deny` logs on the **Anthos > Security > Policy Summary > Kubernetes network policy** page._
+_Tips: if your cluster is enrolled with Anthos, you will also be able to see the number of those `deny` logs on the [**Anthos > Security > Policy Summary > Kubernetes network policy**](https://cloud.google.com/service-mesh/docs/observability/explore-dashboard) page._
 
 And that's it, that's how easy Cilium (eBPF) on GKE is bringing more security and more visibility for containers. I don't know for you, but the `NetworkLogging` is game changer for me, I finally and easily have visibility on `deny` logs with my `NetworkPolicies`!
 

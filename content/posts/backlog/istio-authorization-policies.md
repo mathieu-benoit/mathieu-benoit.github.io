@@ -15,3 +15,6 @@ https://istio.io/latest/docs/concepts/security/#dependency-on-mutual-tls
 
 Using Network Policy with Istio
 https://istio.io/latest/blog/2017/0.1-using-network-policy/
+
+mTLS with ASM
+https://cloud.google.com/service-mesh/docs/by-example/mtls

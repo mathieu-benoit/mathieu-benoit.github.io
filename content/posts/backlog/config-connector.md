@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /config-connector/
 ---
+Sign here! Creating a policy contract with Configuration as Data
+https://cloud.google.com/blog/products/containers-kubernetes/how-configuration-as-data-impacts-policy
+
+
 FIXME:
 - https://github.com/GoogleCloudPlatform/anthos-security-blueprints
 - https://cloud.google.com/architecture/blueprints/anthos-security-blueprints-faq

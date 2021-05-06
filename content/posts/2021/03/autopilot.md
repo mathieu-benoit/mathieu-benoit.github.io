@@ -191,5 +191,6 @@ Complementary resources:
 - [Autopilot cluster upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades-autopilot)
 - [Forbes - Google Makes Kubernetes Invisible In The Cloud With GKE Autopilot](https://www.forbes.com/sites/janakirammsv/2021/02/26/google-makes-kubernetes-invisible-in-the-cloud-with-gke-autopilot)
 - [How to use GitLab with GKE Autopilot](https://about.gitlab.com/blog/2021/02/24/gitlab-gke-autopilot/)
+- [Monitor applications on GKE Autopilot with the GKE Dashboard](https://cloud.google.com/blog/products/operations/monitor-applications-gke-autopilot-gke-dashboard)
 
 That's a wrap! Hope you enjoyed that one, happy sailing and enjoy turning your GKE Autopilot mode on! ;)
