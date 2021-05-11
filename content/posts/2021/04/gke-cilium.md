@@ -7,6 +7,8 @@ aliases:
     - /gke-ebpf/
     - /gke-cilium/
 ---
+_As of May 10th, 2021, GKE Dataplane V2 and Kubernetes Network Policy logging are generally available starting with GKE version `1.20.6-gke.700` and `gcloud 340.0.0`._
+
 ![Google, GKE, eBF and Cilium logo.](https://cilium.io/static/1a5e48f755419401103235a6a01de4fd/906b5/google_header.png)
 
 > Extended Berkeley Packet Filter (eBPF) is a new Linux networking paradigm that exposes programmable hooks to the network stack inside the Linux kernel. The ability to enrich the kernel with user-space information—without jumping back and forth between user and kernel spaces—enables context-aware operations on network packets at high speeds.
@@ -23,11 +25,9 @@ On [Cilium’s blog article for the announcement](https://cilium.io/blog/2020/08
 
 > Google clearly has incredible technical chops and could have just built their dataplane directly on eBPF, instead, the GKE team has decided to leverage Cilium and contribute back. This is of course a huge honor for everybody who has contributed to Cilium over the years and shows Google’s commitment to open collaboration.
 
-Even if it's still in `Beta`, let's see it in actions with GKE!
-
 First, let's create a new cluster [using Dataplane V2](https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2):
 ```
-gcloud beta container clusters create \
+gcloud container clusters create \
     --enable-dataplane-v2
 ```
 

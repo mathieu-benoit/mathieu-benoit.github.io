@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /sre/
 ---
+SRE fundamentals 2021: SLIs vs. SLAs. vs SLOs
+https://cloud.google.com/blog/products/devops-sre/sre-fundamentals-sli-vs-slo-vs-sla
+
 Site Reliability Engineering (SRE) best practices
 https://www.cncf.io/blog/2021/04/28/site-reliability-engineering-sre-best-practices/
 
