@@ -2,7 +2,7 @@
 title: cloud armor to protect your apps deployed on gke
 date: 2021-04-30
 tags: [security, gcp, kubernetes, service-mesh]
-description: typo----let's see how you could protect your apps deployed on gke against denial of service and web attacks
+description: let's see how you could protect your apps deployed on gke against denial of service and web attacks
 aliases:
     - /gke-cloud-armor/
     - /cloud-armor/
