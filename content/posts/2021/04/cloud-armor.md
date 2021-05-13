@@ -182,6 +182,7 @@ _Note: in the output, you could look at the fields `userAgent`, `requestMethod` 
 - [Google Cloud Armor Standard versus Managed Protection Plus](https://cloud.google.com/armor/docs/managed-protection-overview#standard_versus_plus)
 - [Cloud Armor pricing](https://cloud.google.com/armor/pricing)
 - [GKE Ingress features comparison](https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features)
+- [Exponential growth in DDoS attack volumes](https://cloud.google.com/blog/products/identity-security/identifying-and-protecting-against-the-largest-ddos-attacks)
 
 That's a wrap! That's how you are adding more security in front of your public endpoints against denial of service and web attacks.
 
