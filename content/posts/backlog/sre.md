@@ -7,6 +7,17 @@ draft: true
 aliases:
     - /sre/
 ---
+Recap of key terms: SLI, SLO, SLA bit.ly/SLOCheatSheet
+
+Are we there yet? Thoughts on assessing an SRE team’s maturity
+https://cloud.google.com/blog/products/devops-sre/evaluating-where-your-team-lies-on-the-sre-spectrum
+
+How Lowe’s meets customer demand with Google SRE practices
+https://cloud.google.com/blog/products/devops-sre/how-lowes-leverages-google-sre-practices
+
+Four steps to jumpstarting your SRE practice
+https://cloud.google.com/blog/products/devops-sre/four-steps-to-jumpstarting-your-sre-practice
+
 SRE fundamentals 2021: SLIs vs. SLAs. vs SLOs
 https://cloud.google.com/blog/products/devops-sre/sre-fundamentals-sli-vs-slo-vs-sla
 

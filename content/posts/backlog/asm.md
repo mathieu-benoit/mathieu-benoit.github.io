@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /asm/
 ---
+Parler de unprivileged container/pod par default (security context, non-root, etc.)
+
 
 Managed ASM:
 - https://cloud.google.com/service-mesh/docs/release-notes#March_04_2021

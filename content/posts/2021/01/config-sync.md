@@ -120,6 +120,7 @@ Notes:
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
 
 Complementary and further resources:
+- [Managing Kubernetes with Config Sync](https://youtu.be/_MrHbQKbPDY)
 - [Config Sync downloads](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/downloads)
 - [Config Sync errors reference](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/reference/errors)
 - [Guide to GitOps by Weavework](https://www.weave.works/technologies/gitops/)

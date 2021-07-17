@@ -7,6 +7,12 @@ draft: true
 aliases:
     - /pcse/
 ---
+Cloud Next 2020
+https://cloud.withgoogle.com/next/sf/sessions#security
+
+Cloud HSM Deep Dive and Best Practices
+https://cloud.withgoogle.com/next/sf/sessions?session=SEC208#security
+
 Transform data to secure it: Use Cloud DLP
 https://cloud.google.com/blog/products/identity-security/google-cloud-dlp-can-modify-data-to-protect-it
 

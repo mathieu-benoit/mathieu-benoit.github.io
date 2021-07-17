@@ -187,6 +187,7 @@ What we could see also is that our Pod got this annotation [`seccomp.security.al
 
 Complementary resources:
 - [GKE on Autopilot, Databricks on GKE and Multi-Cluster Service](https://www.linkedin.com/pulse/gke-autopilot-databricks-more-srikanth-desikan/)
+- [First look at GKE Autopilot](https://ahmet.im/blog/gke-autopilot/)
 - [Autopilot Architecture](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-architecture)
 - [Autopilot cluster upgrades](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-upgrades-autopilot)
 - [Forbes - Google Makes Kubernetes Invisible In The Cloud With GKE Autopilot](https://www.forbes.com/sites/janakirammsv/2021/02/26/google-makes-kubernetes-invisible-in-the-cloud-with-gke-autopilot)
