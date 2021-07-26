@@ -3,7 +3,6 @@ title: mix both internal and external load balancers to expose your crfa service
 date: 2021-07-25
 tags: [gcp, containers, kubernetes]
 description: let's see how to setup both external and internal load balancers to expose your services in the same crfa cluster
-draft: true
 aliases:
     - /crfa/
 ---

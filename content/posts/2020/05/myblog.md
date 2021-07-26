@@ -24,8 +24,10 @@ So yes, I just wanted to make it Cloud Native by leveraging different concepts y
 - And few more concepts and technologies such as: [`NetworkPolicies`]({{< ref "/posts/2019/09/calico.md" >}}), [`Pod Security Context`]({{< ref "/posts/2020/04/pod-security-context.md" >}}), `Nginx Ingress Controller`, `Cert-Manager`, etc.
 
 Updates on 2020-08-07:
-- Simplificattion of the Kubernetes manifests (not using Helm anymore) - see [`k8s` folder](https://github.com/mathieu-benoit/myblog/tree/master/k8s)
-- Simplification of the SSL certificate management by not using `Nginx Ingress Controller` nor `cert-manager` anymore, but the `ManagedCertificate` offered by GCP/GKE - see [`ingress.yaml` file](https://github.com/mathieu-benoit/myblog/blob/master/k8s/ingress.yaml)
+- Simplificattion of the Kubernetes manifests (not using Helm anymore) - [see here](https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/myblog)
+- Simplification of the SSL certificate management by not using `Nginx Ingress Controller` nor `cert-manager` anymore, but the `ManagedCertificate` offered by GCP/GKE - see [`ingress.yaml` file](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/ingress.yaml)
+- Add Istio's `AuthorizationPolicies` for more granular networking policies
+- Add Cloud Armor for DDOS and WAF protections
 - Using Google Cloud Build instead of Azure DevOps - see [`cloudbuild.yaml` file](https://github.com/mathieu-benoit/myblog/blob/master/cloudbuild.yaml)
 
 I have been learning a lot (yes, that's a continuous journey)!
