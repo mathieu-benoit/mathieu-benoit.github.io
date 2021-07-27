@@ -27,6 +27,7 @@ And that's it, in addition to data encrypted at rest and in-transit, you now hav
 Furthermore, you don't need to do anything in your apps, you just need to deploy them as-is on your GKE cluster. But optionally, you could use the `nodeSelector` `cloud.google.com/gke-confidential-nodes: true` to ensure your sensitive workloads can only be scheduled on Confidential GKE Nodes.
 
 Further and complementary resources:
+- [What you need to know about Confidential Computing](https://cloud.google.com/blog/products/identity-security/confidential-computing-data-encryption-during-processing)
 - [Encryption in Transit in Google Cloud](https://cloud.google.com/security/encryption-in-transit/resources/encryption-in-transit-whitepaper.pdf)
 - [Confidential GKE Nodes Limitations](https://cloud.google.com/kubernetes-engine/docs/how-to/confidential-gke-nodes#limitations)
 - [Confidential computing consortium](https://confidentialcomputing.io/)

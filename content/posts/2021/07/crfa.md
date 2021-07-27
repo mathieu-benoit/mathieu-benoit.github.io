@@ -6,6 +6,8 @@ description: let's see how to setup both external and internal load balancers to
 aliases:
     - /crfa/
 ---
+_Important Disclaimer: what you will see with this blog article is not officially supported by GCP. The intent here is to show you the concepts of CRfA as well as show you an advanced scenario that you may want to leverage on your own to satisfy your needs. Typically, the official guidance is to have two different CRfA cluster in order to have one with `EXTERNAL` endpoints (public load balancer) and the other one with `PRIVATE` endpoints (internal load balancer)._
+
 [Cloud Run for Anthos (CRfA)](https://cloud.google.com/anthos/run) is here to simplify the experience of developers and operators. [Knative](https://knative.dev/) on top of Kubernetes is how it accomplishes this.
 
 Create a CRfA cluster is very easy, it's just an option when you create your GKE cluster:
@@ -123,6 +125,94 @@ With that, we could successfully reach this specific `internal` service from a m
 curl $ilbIp -H "Host:${CUSTOM_DOMAIN}"
 ```
 
-That's it, we demonstrated how to combine and leverage both public load balancer and internal load balancer with the same CRfA cluster.
+To complete this setup, you may want to expose those internal endpoints via HTTPS, for this you could adapt and execute the commands below:
+```
+# We will use self-signed certificate as an experiment.
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj '/O=example Inc./CN=example.com' -keyout example.com.key -out example.com.crt
+openssl req -out ${CUSTOM_DOMAIN}.csr -newkey rsa:2048 -nodes -keyout ${CUSTOM_DOMAIN}.key -subj "/CN=${CUSTOM_DOMAIN}/O=httpbin organization"
+openssl x509 -req -days 365 -CA example.com.crt -CAkey example.com.key -set_serial 0 -in ${CUSTOM_DOMAIN}.csr -out ${CUSTOM_DOMAIN}.crt
+
+kubectl create -n gke-system secret tls custom-domain-credential --key=${CUSTOM_DOMAIN}.key --cert=${CUSTOM_DOMAIN}.crt
+
+# Configure LB service to support HTTPS
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-lb
+  namespace: gke-system
+  annotations:
+    cloud.google.com/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  selector:
+    istio: ingress-gke-system
+  ports:
+  - name: http2
+    port: 80
+    targetPort: 8081
+  - name: https
+    port: 443
+    targetPort: 443
+EOF
+
+# Create a gateway to support HTTPS
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: internal-lb-gateway
+  namespace: knative-serving
+spec:
+  selector:
+    istio: ingress-gke-system
+  servers:
+  - hosts:
+    - ${CUSTOM_DOMAIN}
+    port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: custom-domain-credential # must be the same as secret
+EOF
+
+# Ajust VS to bind to internal-lb-gateway
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ${CUSTOM_DOMAIN}
+  namespace: default
+spec:
+  # This is the gateway shared in knative service mesh.
+  gateways:
+  - knative-serving/internal-lb-gateway
+  # Set host to the domain name that you own.
+  hosts:
+  - ${CUSTOM_DOMAIN}
+  http:
+  - headers:
+      request:
+        add:
+          K-Original-Host: ${CUSTOM_DOMAIN}
+    rewrite:
+      authority: internal.default.svc.cluster.local
+    route:
+    - destination:
+        host: knative-local-gateway.gke-system.svc.cluster.local
+        port:
+          number: 80
+      weight: 100
+EOF
+```
+
+Now, we could successfully reach this specific `internal` service over https from a machine under the same VPC than the CRfA cluster:
+```
+curl https://${CUSTOM_DOMAIN} --resolve '${CUSTOM_DOMAIN}:443:${ILB_IP}' -k
+```
+
+That's it, we demonstrated how to combine and leverage both public load balancer and internal load balancer with the same CRfA cluster (as opposed to two clusters to accomplish this).
 
 Hope you enjoyed that one, cheers!
