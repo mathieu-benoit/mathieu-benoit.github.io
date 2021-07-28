@@ -6,7 +6,7 @@ description: let's see how to setup both external and internal load balancers to
 aliases:
     - /crfa/
 ---
-_Important Disclaimer: what you will see with this blog article is not officially supported by GCP. The intent here is to show you the concepts of CRfA as well as show you an advanced scenario that you may want to leverage on your own to satisfy your needs. Typically, the official guidance is to have two different CRfA cluster in order to have one with `EXTERNAL` endpoints (public load balancer) and the other one with `PRIVATE` endpoints (internal load balancer)._
+_Important disclaimer: what you will see with this blog article is not officially supported by GCP. The intent here is to show you the concepts of CRfA as well as show you an advanced scenario that you may want to leverage on your own to satisfy your needs. Typically, the official guidance is to have two different CRfA clusters in order to have one with `EXTERNAL` endpoints (public load balancer) and the other one with `PRIVATE` endpoints (internal load balancer)._
 
 [Cloud Run for Anthos (CRfA)](https://cloud.google.com/anthos/run) is here to simplify the experience of developers and operators. [Knative](https://knative.dev/) on top of Kubernetes is how it accomplishes this.
 
@@ -51,9 +51,11 @@ gcloud run deploy external \
 From there the `internal` service will only be accessible from within the cluster like explained above. In order to get the `external` service publicly reachable we need to [configure a domain](https://cloud.google.com/anthos/run/docs/default-domain). In our case we will leverage a temporary DNS with `nip.io`:
 ```
 publicIp=$(kubectl get svc istio-ingress -n gke-system -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
-# Replace the FIXME below by the IP address you just got above:
+cat <<EOF > patch.json
+{"data": {"example.com": null, "$publicIp.nip.io": ""}}
+EOF
 kubectl patch configmap config-domain --namespace knative-serving --patch \
-  '{"data": {"example.com": null, "FIXME.nip.io": ""}}'
+  --type=json -p="$(cat patch.json)"
 ```
 
 Then we are now able to ping the `external` service:
@@ -210,7 +212,7 @@ EOF
 
 Now, we could successfully reach this specific `internal` service over https from a machine under the same VPC than the CRfA cluster:
 ```
-curl https://${CUSTOM_DOMAIN} --resolve '${CUSTOM_DOMAIN}:443:${ILB_IP}' -k
+curl https://${CUSTOM_DOMAIN} --resolve '${CUSTOM_DOMAIN}:443:${ilbIp}' -k
 ```
 
 That's it, we demonstrated how to combine and leverage both public load balancer and internal load balancer with the same CRfA cluster (as opposed to two clusters to accomplish this).
