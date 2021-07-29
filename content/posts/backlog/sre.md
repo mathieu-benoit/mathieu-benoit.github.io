@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /sre/
 ---
+Designing for Reliability in Production - Ayelet Sachto, Google
+https://youtu.be/WQezU8iC5ho
+
 Recap of key terms: SLI, SLO, SLA bit.ly/SLOCheatSheet
 
 Are we there yet? Thoughts on assessing an SRE team’s maturity
