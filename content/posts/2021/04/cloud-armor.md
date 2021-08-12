@@ -175,6 +175,7 @@ _Note: in the output, you could look at the fields `userAgent`, `requestMethod` 
 
 ## Further and complementary resources
 
+- [OWASP Top 10 mitigation options on Google Cloud](https://cloud.google.com/architecture/owasp-top-ten-mitigation)
 - [Meeting the Challenges of Securing Modern Web Applications with WAAP](https://services.google.com/fh/files/misc/esg_google_waap_wp.pdf)
 - [Better together: Google Cloud Load Balancing, Cloud CDN, and Google Cloud Armor](https://cloud.google.com/blog/products/networking/using-cloud-armor-and-cloud-cdn-with-your-google-load-balancer)
 - [Qwiklabs - HTTP Load Balancer with Cloud Armor](https://www.qwiklabs.com/focuses/1232?parent=catalog)
