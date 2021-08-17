@@ -18,7 +18,8 @@ projectId=mycrfa
 gcloud container clusters create $clusterName \
     --project $projectId \
     --zone=$zone \
-    --addons=HttpLoadBalancing,CloudRun
+    --addons=HttpLoadBalancing,CloudRun \
+    --enable-stackdriver-kubernetes
 ```
 When provisioned, CRfA will have its own Istio flavor and will provision by default a public load balancer and IP address on top of its ingress gateway.
 
