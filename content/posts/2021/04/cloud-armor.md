@@ -157,7 +157,7 @@ EOF
 kubectl apply -f istio-ingressgateway-ingress.yaml
 ```
 
-From here, your ASM's Ingress Gateway is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress ingress-gateway -n istio-system`.
+From here, your ASM's Ingress Gateway is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress istio-ingressgateway -n istio-system`.
 
 ## Cloud Logging on HTTP Load Balancer
 
