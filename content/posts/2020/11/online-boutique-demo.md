@@ -132,7 +132,7 @@ Important notes:
 ```
 # Create the Memorystore (redis) instance
 gcloud services enable redis.googleapis.com
-gcloud redis instances create redis-cart --size=1 --region=$clusterRegion --zone=$clusterZone--redis-version=redis_5_0
+gcloud redis instances create redis-cart --size=1 --region=$clusterRegion --zone=$clusterZone --redis-version=redis_6_x
 gcloud redis instances list --region $clusterRegion
 
 # Update the Kubernetes manifests
