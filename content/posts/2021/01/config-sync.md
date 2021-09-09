@@ -6,7 +6,7 @@ description: let's see gitops in actions with gke's config sync
 aliases:
     - /config-sync/
 ---
-Today, let's see a GitOps setup in actions on GKE with [Config Sync](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync). I won't go with the definition of what is GitOps, but if you are new with the concept, [Weavework is doing a great job on explaining and illustrating what GitOps is](https://www.weave.works/technologies/gitops/). Another way to understand what is GitOps is to watch and listen to Kelsey Hightower during the last GitHub Universe conference: 
+Today, let's see a GitOps setup in actions on GKE with [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview). I won't go with the definition of what is GitOps, but if you are new with the concept, [Weavework is doing a great job on explaining and illustrating what GitOps is](https://www.weave.works/technologies/gitops/). Another way to understand what is GitOps is to watch and listen to Kelsey Hightower during the last GitHub Universe conference: 
 
 {{< youtube id="yIAa5wHsfw4" title="Kelsey, Kubernetes, and GitOps - GitHub Universe 2020" >}}
 
@@ -61,39 +61,46 @@ You could check the syntax and validity of the configs in your repository:
 nomos vet
 ```
 
-## Prepare the Kubernetes cluster
+## Prepare your GKE cluster
 
-Install Config Sync Operator on your current Kubernetes cluster:
+Register your GKE cluster with an Anthos entitlement:
 ```
-# Option 1: Config Sync as standalone
-gsutil cp gs://config-management-release/released/latest/config-sync-operator.yaml ~/tmp/config-sync-operator.yaml
-kubectl apply -f ~/tmp/config-sync-operator.yaml
+projectId=FIXME
+gcloud config set project $projectId
 
-# Option 2: Config Sync via Anthos Config Management (ACM)
-gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ~/tmp/config-management-operator.yaml
-kubectl apply -f ~/tmp/config-management-operator.yaml
+# ACM comes with Anthos
+gcloud services enable anthos.googleapis.com
+gcloud beta container hub config-management enable
+
+# Add our cluster as a Hub membership
+gkeUri=$(gcloud container clusters describe $clusterName -z us-east4-a --format="value(selfLink)")
+gcloud beta container hub memberships register $clusterName \
+  --gke-uri=$gkeUri \
+  --enable-workload-identity
 ```
 
 ## Setup the continuous deployments
 
-Setup the Config Sync Operator created earlier, to actually synchronised that repo in your current Kubernetes cluster:
+Setup Config Sync to actually synchronised that repo in your GKE cluster:
 ```
 clusterName=FIXME
 syncRepo=FIXME
-cat > ~/tmp/config-management.yaml << EOF
-apiVersion: configmanagement.gke.io/v1
-kind: ConfigManagement
-metadata:
-  name: config-management
+branch=FIXME
+cat > configsync-config.yaml << EOF
+applySpecVersion: 1
 spec:
-  clusterName: $clusterName
-  git:
+  configSync:
+    enabled: true
+    sourceFormat: hierarchy
     syncRepo: $syncRepo
-    syncBranch: main
+    syncBranch: $branch
     secretType: none
     policyDir: .
 EOF
-kubectl apply -f ~/tmp/config-management.yaml
+
+gcloud beta container hub config-management apply \
+  --membership=$clusterName \
+  --config=configsync-config.yaml
 ```
 
 Wait for few seconds, and check everything is deployed and synchronized properly:
@@ -112,17 +119,16 @@ kubectl get ns -l app.kubernetes.io/managed-by=configmanagement.gke.io
 And that's it! Now, any update on this repository with any Kubernetes manifests will be synchronized and applied by Config Sync for you. From here, you may want to have different branches pointing to different clusters and having in place a solid and easy continuous deployments workflow via Pull Requests and branches.
 
 Notes:
-- Both `config-sync-operator.yaml` and `config-management.yaml` were dropped in the `~/tmp` folder because as a good practice they shouldn't be in the same repository than the one having your Kubernetes manifests. They could be in an other repository having the scripts for provisioning the infrastructure, such as the GKE cluster, etc.
-- I used a public GitHub repository, in the real life you will need to [grant the Config Sync Operator access to your private Git repository](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#git-creds-secret).
+- I used a public GitHub repository, in the real life you will need to [grant the Config Sync Operator access to your private Git repository](https://cloud.google.com/anthos-config-management/docs/how-to/installing-config-sync#git-creds-secret).
 - If you delete the Kubernetes objects managed and synchronized by Config Sync in your cluster, they will be recreated by Config Sync.
-- You could manage the deployments on multi-clusters from within the same Git repository by using the concept of [Cluster selectors](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/clusterselectors).
-- For the upgrade of `nomos` and the Config Sync Operator, it's documented [here](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/installing#upgrading_versions).
+- You could manage the deployments on multi-clusters from within the same Git repository by using the concept of [Cluster selectors](https://cloud.google.com/anthos-config-management/docs/how-to/cluster-scoped-objects).
+- For the upgrade of `nomos` and Config Sync, it's respectively documented [here](https://cloud.google.com/anthos-config-management/docs/how-to/nomos-command#installing) and [here](https://cloud.google.com/anthos-config-management/docs/how-to/upgrading-config-sync).
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
 
 Complementary and further resources:
 - [Managing Kubernetes with Config Sync](https://youtu.be/_MrHbQKbPDY)
-- [Config Sync downloads](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/downloads)
-- [Config Sync errors reference](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/reference/errors)
+- [Config Management downloads](https://cloud.google.com/anthos-config-management/docs/downloads)
+- [Config Sync errors reference](https://cloud.google.com/anthos-config-management/docs/reference/errors)
 - [Guide to GitOps by Weavework](https://www.weave.works/technologies/gitops/)
 - [More Anthos Config Management samples](https://github.com/GoogleCloudPlatform/csp-config-management)
 - [How GitOps and the KRM make multi-cloud less scary](https://seroter.com/2021/01/12/how-gitops-and-the-krm-make-multi-cloud-less-scary/)
