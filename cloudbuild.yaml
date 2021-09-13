@@ -12,7 +12,7 @@ steps:
     docker build -t ${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA ${_APP_NAME}/.
 - name: gcr.io/cloud-builders/docker
   id: dockle
-  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle:v0.4.0', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle:v0.3.17', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   id: trivy
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '--severity', 'CRITICAL,HIGH', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
