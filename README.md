@@ -51,6 +51,12 @@ gcloud artifacts repositories add-iam-policy-binding $containerRegistryRepositor
     --member=serviceAccount:$cloudBuildSa \
     --role=roles/artifactregistry.writer
 
+# On-demand scanning
+gcloud services enable ondemandscanning.googleapis.com
+gcloud projects add-iam-policy-binding $projectId \
+    --member=serviceAccount:$cloudBuildSa \
+    --role=roles/ondemandscanning.admin
+
 # Manually install the Cloud Build app on GitHub:
 # https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers#installing_the_cloud_build_app
 
