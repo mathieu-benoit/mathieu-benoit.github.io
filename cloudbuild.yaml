@@ -15,10 +15,24 @@ steps:
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle:v0.3.17', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   id: trivy
-  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '--severity', 'CRITICAL,HIGH', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '--severity', '${_SEVERITY}', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   id: docker-run
   args: ['run', '-d', '-p', '8080:8080', '--read-only', '--cap-drop=ALL', '--user=1000', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+- id: scan
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - -c
+  - |
+    gcloud artifacts docker images scan '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA' --format='value(response.scan)' > scan_id.txt
+- id: severity check
+  name: gcr.io/cloud-builders/gcloud
+  entrypoint: /bin/bash
+  args:
+  - -c
+  - |
+    gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='value(vulnerability.effectiveSeverity)' | if grep -Fxq ${_SEVERITY}; then echo 'Failed vulnerability check' && exit 1; else exit 0; fi
 - name: gcr.io/cloud-builders/docker
   id: docker-push
   args: ['push', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
@@ -26,3 +40,4 @@ substitutions:
     _APP_NAME: myblog
     _REPO_OWNER: mathieu-benoit
     _CONTAINER_REGISTRY_NAME: SUBSTITUTE_ME
+    _SEVERITY: CRITICAL
