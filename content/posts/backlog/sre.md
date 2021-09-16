@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /sre/
 ---
+https://medium.com/google-cloud/measuring-reliability-in-gcp-step-by-step-slo-creation-guide-using-cloud-operation-sandbox-99043bd0e70f
+
 Designing for Reliability in Production - Ayelet Sachto, Google
 https://youtu.be/WQezU8iC5ho
 
