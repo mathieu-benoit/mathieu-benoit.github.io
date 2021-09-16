@@ -67,6 +67,8 @@ Here we know that we are with the `5.4.120+` of the COS's `KERNEL-VERSION` and `
 
 `v1.21.3-gke.110` --> `16108.470.1`
 `v1.21.3-gke.2000` --> `16108.470.11`
+`v1.21.3-gke.2001` --> `16108.470.11`
+`v1.21.4-gke.301` --> `16108.470.11`
 
 
 Statements:
