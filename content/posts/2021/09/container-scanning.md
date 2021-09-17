@@ -6,7 +6,7 @@ description: let's see how to scan your containers with gcp
 aliases:
     - /container-scanning/
 ---
-[Container scanning](https://cloud.google.com/container-analysis/docs/container-scanning-overview) on both [Container Registry]() or [Artifact Registry]() is a very important feature to enable in order to improve your security posture when dealing with containers.
+[Container scanning](https://cloud.google.com/container-analysis/docs/container-scanning-overview) on both [Container Registry]() or [Artifact Registry]() is a very important feature in order to improve your security posture when dealing with containers.
 
 > Software vulnerabilities are weaknesses that can either cause an accidental system failure or be intentionally exploited.
 
@@ -14,7 +14,7 @@ aliases:
 
 # Automated scanning
 
-Automated scanning scans new images when they're uploaded, and it's really easy to enable that feature:
+Automated scanning scans new images when they're uploaded, and it's really easy to enable it:
 ```
 gcloud services enable containerscanning.googleapis.com
 ```
@@ -50,7 +50,7 @@ gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) \
     then echo 'Failed vulnerability check' && exit 1; else exit 0; fi
 ```
 
-And that's it, that's how simple it is to scan your container images on-demand.
+And that's it, that's how simple it is to scan on-demand your container images.
 
 # Manual scanning in CI
 
@@ -91,9 +91,9 @@ At the beginning of your pipeline, you need to use the `GoogleCloudPlatform/gith
     project_id: ${{ secrets.CONTAINER_REGISTRY_PROJECT_ID }}
     service_account_key: ${{ secrets.CONTAINER_REGISTRY_PUSH_PRIVATE_KEY }}
 ```
-This `GoogleCloudPlatform/github-actions/setup-gcloud` is necessary in order to be able to successfully run the following `gcloud components install local-extract` command.
+This `GoogleCloudPlatform/github-actions/setup-gcloud` is necessary in order to successfully run the following `gcloud components install local-extract` command.
 
-And then here is the associated step you should include between your `docker build` and `docker push` steps:
+Then here is the associated step you should include between your `docker build` and `docker push` steps:
 ```
 - name: gcloud scan
   run: |
@@ -102,6 +102,8 @@ And then here is the associated step you should include between your `docker bui
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='table(vulnerability.effectiveSeverity, vulnerability.cvssScore, noteName, vulnerability.packageIssue[0].affectedPackage, vulnerability.packageIssue[0].affectedVersion.name, vulnerability.packageIssue[0].fixedVersion.name)'
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='value(vulnerability.effectiveSeverity)' | if grep -Fxq ${{ env.SEVERITY }}; then echo 'Failed vulnerability check' && exit 1; else exit 0; fi
 ```
+
+And that's it, you are now able to integrate your conainter images scanning within your CI pipeline.
 
 # Further and complementary resources
 
