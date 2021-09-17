@@ -69,7 +69,7 @@ gcloud projects add-iam-policy-binding $projectId \
 
 Nothing special to do, here is the associated step you should include between your `docker build` and `docker push` steps:
 ```
-- id: gcloud scan
+- id: container scanning
   name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
   args:
@@ -85,8 +85,8 @@ Nothing special to do, here is the associated step you should include between yo
 At the beginning of your pipeline, you need to use the `GoogleCloudPlatform/github-actions/setup-gcloud` action right after the `actions/checkout` one:
 
 ```
-- uses: actions/checkout@v2.3.4
-- uses: GoogleCloudPlatform/github-actions/setup-gcloud@v0.2.1
+- uses: actions/checkout@v2
+- uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
   with:
     project_id: ${{ secrets.CONTAINER_REGISTRY_PROJECT_ID }}
     service_account_key: ${{ secrets.CONTAINER_REGISTRY_PUSH_PRIVATE_KEY }}
@@ -95,7 +95,7 @@ This `GoogleCloudPlatform/github-actions/setup-gcloud` is necessary in order to 
 
 Then here is the associated step you should include between your `docker build` and `docker push` steps:
 ```
-- name: gcloud scan
+- name: container scanning
   run: |
     gcloud components install local-extract --quiet
     gcloud artifacts docker images scan ${IMAGE_NAME} --format='value(response.scan)' > scan_id.txt
