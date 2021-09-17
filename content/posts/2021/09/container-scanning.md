@@ -12,7 +12,7 @@ aliases:
 
 > Container Analysis provides automated and manual vulnerability scanning for containers in Artifact Registry and Container Registry.
 
-# Automated scanning
+## Automated scanning
 
 Automated scanning scans new images when they're uploaded, and it's really easy to enable it:
 ```
@@ -23,7 +23,7 @@ The important feature included is the Continuous analysis. After the initial sca
 
 _Important: Container Analysis only updates the vulnerability metadata for images that were pulled in the last 30 days. If you pull an image after this 30-day window, it can take additional time for Container Analysis to update the vulnerability occurrences._
 
-# Manual scanning
+## Manual scanning
 
 Manual (on-demand) scanning is a great way to scan your containers from your local environment or during your Continuous Integration (CI) pipeline in order to shift-left your security checkpoints.
 
@@ -52,7 +52,7 @@ gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) \
 
 And that's it, that's how simple it is to scan on-demand your container images.
 
-# Manual scanning in CI
+## Manual scanning in CI
 
 Based on what we just saw, let's see if there is anything else we should do to integrate this part either in Cloud Build pipelines or GitHub actions.
 
@@ -65,7 +65,7 @@ gcloud projects add-iam-policy-binding $projectId \
     --role=roles/ondemandscanning.admin
 ```
 
-## Cloud Build
+### Cloud Build
 
 Nothing special to do, here is the associated step you should include between your `docker build` and `docker push` steps:
 ```
@@ -80,7 +80,7 @@ Nothing special to do, here is the associated step you should include between yo
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='value(vulnerability.effectiveSeverity)' | if grep -Fxq ${_SEVERITY}; then echo 'Failed vulnerability check' && exit 1; else exit 0; fi
 ```
 
-## GitHub actions
+### GitHub actions
 
 At the beginning of your pipeline, you need to use the `GoogleCloudPlatform/github-actions/setup-gcloud` action right after the `actions/checkout` one:
 
@@ -105,7 +105,7 @@ Then here is the associated step you should include between your `docker build` 
 
 And that's it, you are now able to integrate your conainter images scanning within your CI pipeline.
 
-# Further and complementary resources
+## Further and complementary resources
 
 - [Vulnerabilities sources](https://cloud.google.com/container-analysis/docs/container-scanning-overview#sources)
 - [Pricing](https://cloud.google.com/container-analysis/pricing#vulnz)
