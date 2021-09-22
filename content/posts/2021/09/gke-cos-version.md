@@ -3,7 +3,6 @@ title: gke cos version
 date: 2021-09-21
 tags: [gcp, kubernetes, security]
 description: let's see how to get the version of the cos version of your gke nodes 
-draft: true
 aliases:
     - /gke-cos-version/
 ---
