@@ -6,7 +6,7 @@ description: let's see how to scan your containers with gcp
 aliases:
     - /container-scanning/
 ---
-[Container scanning](https://cloud.google.com/container-analysis/docs/container-scanning-overview) on both [Container Registry]() or [Artifact Registry]() is a very important feature in order to improve your security posture when dealing with containers.
+[Container scanning](https://cloud.google.com/container-analysis/docs/container-scanning-overview) on both [Container Registry](https://cloud.google.com/container-registry) or [Artifact Registry](https://cloud.google.com/artifact-registry) is a very important feature in order to improve your security posture when dealing with containers.
 
 > Software vulnerabilities are weaknesses that can either cause an accidental system failure or be intentionally exploited.
 

@@ -7,7 +7,7 @@ draft: true
 aliases:
     - /gke-cos-version/
 ---
-As one of the best practices for your Security posture with GKE is to use a `cos-containerd` image type for your nodes.
+One of the best practices for your Security posture with GKE is to use a `cos-containerd` image type for your GKE nodes.
 
 > Based on Chromium OS, [Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/concepts/security) from Google implements several security design principles to provide a well-configured platform for running production services.
 
@@ -87,15 +87,22 @@ From there we could repeat the previous command lines in order to get the `conta
 | rapid | 1.21.3-gke.2001 | 5.4.120 | [cos-89-16108.470.11](https://cloud.google.com/container-optimized-os/docs/release-notes/m89#cos-89-16108-470-11) | 1.4.4 |
 | rapid | 1.21.4-gke.301 | 5.4.120 | [cos-89-16108.470.11](https://cloud.google.com/container-optimized-os/docs/release-notes/m89#cos-89-16108-470-11) | 1.4.4 |
 
-Statements:
-- COS doesn't have latest containerd version, `1.4.3` or `1.4.4` as opposed to `1.4.9`
-- GKE doesn't have the latest COS version, `85-13310-1260-22`, `89-16108.403.46` as opposed to `89-16108-470-11` (`gcloud compute images list --project cos-cloud --no-standard-images`)
+Here are few statements (which will change in the future since updates for GKE or COS happen every week):
+- COS doesn't have latest `containerd` version, we see `1.4.3`, `1.4.4` or `1.46` as opposed to latest today `1.4.9` or `1.5.5`
+- GKE doesn't have the latest COS version, `85-13310-1308-1`, `89-16108.470.1` or `89-16108.470.11` as opposed to latest or lts `89-16108-534-2` (`gcloud compute images list --project cos-cloud --no-standard-images`)
 
-Recommendations:
-- Autoupgrade
-- Private GKE clusters to avoid Public IP on Nodes and avoid SSH.
-- Policy controller (OPA Gatekeeper)
-- Security bulletins alerts https://cloud.google.com/anthos/clusters/docs/security-bulletins
+Is it an issue, not at all because GKE integrates well tested and stable COS images and provide guidance with its [security bulletins](https://cloud.google.com/anthos/clusters/docs/security-bulletins) when necessary.
+
+Is it something to keep in mind, yes for sure. 
+
+When dealing with a manged Kubernetes service, in this case GKE, there is a [shared responsibilities model](https://cloud.google.com/blog/products/containers-kubernetes/exploring-container-security-the-shared-responsibility-model-in-gke-container-security-shared-responsibility-model-gke) to have in mind. And one of them is to make sure your GKE cluster is up-to-date, [node auto-upgrade](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades) to the rescue! Node auto-upgrade is upgrading your cluster to the new default version of channel of your GKE cluster. You may also want in some cases manually update your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster) to the latest version in that channel.
+
+In addition to by [default secured features enabled](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#secure_defaults), here is also couple of features you could leverage in order to mitigate let's say a known CVE on your GKE nodes:
+- [Private GKE clusters](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters)
+- [Policy controller (OPA Gatekeeper)]({{< ref "/posts/2021/03/policy-controller.md" >}})
+- [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}})
+- [Container Threat detection with SCC](https://cloud.google.com/security-command-center/docs/concepts-container-threat-detection-overview)
+- and many more!
 
 Complementary and further resources:
 - [`containerd` releases](https://github.com/containerd/containerd/releases)
@@ -103,6 +110,6 @@ Complementary and further resources:
 - [Container-Optimized OS Release Notes](https://cloud.google.com/container-optimized-os/docs/release-notes)
 - [COS LTS Refresh releases](https://cloud.google.com/container-optimized-os/docs/concepts/versioning#lts_refresh_releases)
 - [GKE Release notes](https://cloud.google.com/kubernetes-engine/docs/release-notes)
-- [GKE Security bulletins](https://cloud.google.com/anthos/clusters/docs/security-bulletins)
+- [Hardening your cluster's security](https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster)
 
 Hope you enjoyed that one, stay safe out there, cheers!
