@@ -17,3 +17,5 @@ https://youtu.be/Il8FlhR9jKM
 https://cloud.google.com/deploy
 
 https://cloud.google.com/deploy/docs/quickstart-basic
+
+https://github.com/bijukunjummen/hello-skaffold-gke

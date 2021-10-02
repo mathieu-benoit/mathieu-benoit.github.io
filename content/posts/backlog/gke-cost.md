@@ -15,3 +15,5 @@ https://www.gcppodcast.com/post/episode-252-gke-cost-optimization-with-kaslin-fi
 
 
 https://cloud.google.com/architecture/best-practices-for-running-cost-effective-kubernetes-applications-on-gke
+
+https://cloud.google.com/kubernetes-engine/docs/how-to/cost-optimization-metrics
