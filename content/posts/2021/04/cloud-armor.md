@@ -33,7 +33,7 @@ gcloud compute security-policies rules create 1000 \
 We could also leverage the [Adaptive Protection](https://cloud.google.com/armor/docs/adaptive-protection-use-cases) feature currently in Preview.
 > The most common use case for Adaptive Protection is detecting and responding to L7 DDoS attacks such as HTTP GET floods, HTTP POST floods, or other high frequency HTTP activities. L7 DDoS attacks often start relatively slow and grow in intensity over time. By the time humans or automated spike detection mechanisms detect an attack, it is likely to be high in intensity and already having a strong negative impact on the application.
 ```
-gcloud beta compute security-policies update $securityPolicyName \
+gcloud compute security-policies update $securityPolicyName \
     --enable-layer7-ddos-defense
 ```
 
