@@ -73,9 +73,10 @@ gcloud services enable anthos.googleapis.com
 gcloud beta container hub config-management enable
 
 # Add our cluster as a Hub membership
-gkeUri=$(gcloud container clusters describe $clusterName -z us-east4-a --format="value(selfLink)")
-gcloud beta container hub memberships register $clusterName \
-  --gke-uri=$gkeUri \
+clusterName=FIXME
+zone=FIXME
+gcloud container hub memberships register $clusterName \
+  --gke-cluster $zone/$clusterName \
   --enable-workload-identity
 ```
 
@@ -83,7 +84,6 @@ gcloud beta container hub memberships register $clusterName \
 
 Setup Config Sync to actually synchronised that repo in your GKE cluster:
 ```
-clusterName=FIXME
 syncRepo=FIXME
 branch=FIXME
 cat > configsync-config.yaml << EOF
