@@ -6,8 +6,8 @@ steps:
   id: docker-build
   entrypoint: 'bash'
   args:
-  - pipefail
-  - -c
+  - 'pipefail'
+  - '-c'
   - |
     sed -i "s,FROM alpine,FROM ${_CONTAINER_REGISTRY_NAME}/alpine,g;s,FROM nginxinc,FROM ${_CONTAINER_REGISTRY_NAME},g" ${_APP_NAME}/Dockerfile
     docker build -t ${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA ${_APP_NAME}/.
@@ -24,10 +24,10 @@ steps:
   args: ['run', '-d', '-p', '8080:8080', '--read-only', '--cap-drop=ALL', '--user=1000', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - id: gcloud scan
   name: gcr.io/cloud-builders/gcloud
-  entrypoint: /bin/bash
+  entrypoint: 'bash'
   args:
-  - pipefail
-  - -c
+  - 'pipefail'
+  - '-c'
   - |
     gcloud artifacts docker images scan '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA' --format='value(response.scan)' > scan_id.txt
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='table(vulnerability.effectiveSeverity, vulnerability.cvssScore, noteName, vulnerability.packageIssue[0].affectedPackage, vulnerability.packageIssue[0].affectedVersion.name, vulnerability.packageIssue[0].fixedVersion.name)'
