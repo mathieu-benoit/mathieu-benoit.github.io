@@ -6,6 +6,7 @@ steps:
   id: docker-build
   entrypoint: 'bash'
   args:
+  - '-eEuo'
   - 'pipefail'
   - '-c'
   - |
@@ -26,6 +27,7 @@ steps:
   name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
   args:
+  - '-eEuo'
   - 'pipefail'
   - '-c'
   - |
