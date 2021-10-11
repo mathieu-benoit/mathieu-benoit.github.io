@@ -61,10 +61,10 @@ gcloud projects add-iam-policy-binding $projectId \
 # https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers#installing_the_cloud_build_app
 
 gcloud beta builds triggers create github \
-    --name=myblog-master \
+    --name=myblog-main \
     --repo-name=myblog \
     --repo-owner=mathieu-benoit \
-    --branch-pattern="master" \
+    --branch-pattern="main" \
     --build-config=cloudbuild.yaml \
     --ignore-files="README.md,.github/**,gcloud/**" \
     --substitutions=_CONTAINER_REGISTRY_NAME=$containerRegistryName
