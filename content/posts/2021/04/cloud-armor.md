@@ -82,7 +82,7 @@ spec:
 
 From here, your Ingress is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress my-ingress`.
 
-## Cloud Armor in front of Istio and Anthos Service Mesh
+## Cloud Armor in front of Istio or Anthos Service Mesh
 
 Deploying external L7 load balancing outside of the mesh along with a mesh ingress layer offers significant advantages, especially for internet traffic. Even though Anthos Service Mesh (ASM) and Istio ingress gateways provide advanced routing and traffic management in the mesh, some functions are better served at the edge of the network. Taking advantage of internet-edge networking through Google Cloud's External HTTP(S) Load Balancing might provide significant performance, reliability, or security-related benefits over mesh-based ingress.
 
@@ -90,7 +90,7 @@ Deploying external L7 load balancing outside of the mesh along with a mesh ingre
 
 To accomplish this with ASM we need to adapt a little bit the setup we previously discussed.
 
-The `BackendConfig` needs to be adjusted by specifying custom health checks for the mesh ingress proxies. Anthos Service Mesh and Istio expose their [sidecar proxy health checks](https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio) on port 15021 at the /healthz/ready path. Custom health check parameters are required because the serving port (80) of mesh ingress proxies is different from their health check port (15021).
+The `BackendConfig` needs to be adjusted by specifying custom health checks for the mesh ingress proxies. Anthos Service Mesh and Istio expose their [sidecar proxy health checks](https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio) on port 15021 at the `/healthz/ready` path. Custom health check parameters are required because the serving ports (80 and 443) of mesh ingress proxies is different from their health check port (15021).
 ```
 apiVersion: cloud.google.com/v1
 kind: BackendConfig
@@ -105,59 +105,71 @@ spec:
     name: $securityPolicyName
 ```
 
-Then, we need to create an `IstioOperator` overlay file which will be used later when we will run the `install_asm` script:
+Then, we need to create an `IstioOperator` overlay file which will be used later when we will run the `asmcli` script:
 ```
 cat <<EOF > ingress-backendconfig-operator.yaml
 ---
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 spec:
+  profile: empty # Do not install CRDs or the control plane
   components:
     ingressGateways:
-      - name: istio-ingressgateway
-        enabled: true
-        k8s:
+    - name: asm-ingressgateway
+      namespace: asm-ingress
+      enabled: true
+      label:
+        # Set a unique label for the gateway. This is required to ensure Gateways
+        # can select this workload
+        asm: ingressgateway
+      k8s:
           service:
             type: ClusterIP
           serviceAnnotations:
             cloud.google.com/backend-config: '{"default": "ingress-backendconfig"}'
             cloud.google.com/neg: '{"ingress": true}'
+  values:
+    gateways:
+      istio-ingressgateway:
+        # Enable gateway injection
+        injectionTemplate: gateway
 EOF
 ```
 
-If you have already ran `install_asm` on your cluster, you need to delete the original `istio-ingressgateway` `LoadBalancer` Service:
+And now we could run the [`asmcli`](https://cloud.google.com/service-mesh/docs/unified-install/install) script:
 ```
-kubectl delete svc istio-ingressgateway -n istio-system
-```
-
-And now we could run the [`install_asm`](https://cloud.google.com/service-mesh/docs/scripted-install/gke-install) script:
-```
-./install_asm \
+./asmcli \
     --project_id ${PROJECT} \
     --cluster_name ${CLUSTER_NAME} \
     --cluster_location ${CLUSTER_LOCATION} \
-    --mode install \
     --enable_all \
     --custom_overlay ingress-backendconfig-operator.yaml
 ```
 
-Finally we could deploy the `Ingress` in the `istio-system` namespace which will create the GCLB, etc.
+Here, you could make sure that everything is well deployed by running those commands:
 ```
-cat <<EOF > istio-ingressgateway-ingress.yaml
+kubectl wait --for=condition=available --timeout=600s deployment --all -n istio-system
+kubectl wait --for=condition=available --timeout=600s deployment --all -n asm-system
+kubectl wait --for=condition=available --timeout=600s deployment --all -n asm-ingress
+```
+
+Finally we could deploy the `Ingress` in the `asm-ingress` namespace which will create the GCLB, etc.
+```
+cat <<EOF > asm-ingressgateway-ingress.yaml
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: istio-ingressgateway
-  namespace: istio-system
+  name: asm-ingressgateway
+  namespace: asm-ingress
 spec:
   backend:
-    serviceName: istio-ingressgateway
+    serviceName: asm-ingressgateway
     servicePort: 80
 EOF
-kubectl apply -f istio-ingressgateway-ingress.yaml
+kubectl apply -f asm-ingressgateway-ingress.yaml
 ```
 
-From here, your ASM's Ingress Gateway is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress istio-ingressgateway -n istio-system`.
+From here, your ASM's Ingress Gateway is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress asm-ingressgateway -n asm-ingress`.
 
 ## Cloud Logging on HTTP Load Balancer
 
