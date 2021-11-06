@@ -1,7 +1,7 @@
 ---
 title: container scanning
 date: 2021-09-16
-tags: [gcp, container, security]
+tags: [gcp, containers, security]
 description: let's see how to scan your containers with gcp
 aliases:
     - /container-scanning/
