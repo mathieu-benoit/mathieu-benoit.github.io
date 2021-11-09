@@ -103,7 +103,7 @@ Then here is the associated step you should include between your `docker build` 
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='value(vulnerability.effectiveSeverity)' | if grep -Fxq ${{ env.SEVERITY }}; then echo 'Failed vulnerability check' && exit 1; else exit 0; fi
 ```
 
-And that's it, you are now able to integrate your conainter images scanning within your CI pipeline.
+And that's it, you are now able to integrate your container images scanning within your CI pipeline.
 
 ## Further and complementary resources
 
