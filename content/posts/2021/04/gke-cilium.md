@@ -9,7 +9,7 @@ aliases:
 ---
 _As of May 10th, 2021, GKE Dataplane V2 and Kubernetes Network Policy logging are generally available starting with GKE version `1.20.6-gke.700` and `gcloud 340.0.0`._
 
-![Google, GKE, eBF and Cilium logo.](https://cilium.io/static/1a5e48f755419401103235a6a01de4fd/906b5/google_header.png)
+![Google, GKE, eBF and Cilium logo.](https://cilium.io/static/1a5e48f755419401103235a6a01de4fd/b04cd/ogimage.png)
 
 > Extended Berkeley Packet Filter (eBPF) is a new Linux networking paradigm that exposes programmable hooks to the network stack inside the Linux kernel. The ability to enrich the kernel with user-space information—without jumping back and forth between user and kernel spaces—enables context-aware operations on network packets at high speeds.
 
