@@ -20,20 +20,20 @@ Blogger was fine for me, great helper to write, publish and host my blog article
 For sure I lost on-purpose few features like comments and analytics/statistics on my blog articles... but to be honest I was not using them that much. So I made a choice here to not have yet equivalent to those features but that something I could implement in the future.
 
 So yes, I just wanted to make it Cloud Native by leveraging different concepts you could look at, directly in its public GitHub repository: [https://github.com/mathieu-benoit/myblog](https://github.com/mathieu-benoit/myblog):
-- Docker - see [`Dockerfile` file](https://github.com/mathieu-benoit/myblog/blob/main/Dockerfile): multi-stages to build the container and generate an unprivileged container 
-- Cloud Build - see [`cloudbuild.yaml` file](https://github.com/mathieu-benoit/myblog/blob/main/cloudbuild.yaml): build the container, run security scan on it before pushing it in artifact registry
-- GitHub Dependabot - see [`dependabot.yml` file](https://github.com/mathieu-benoit/myblog/blob/main/.github/dependabot.yml): keep up-to-date the hugo theme git submodule and the docker base images
+- Docker - see [`Dockerfile`](https://github.com/mathieu-benoit/myblog/blob/main/Dockerfile): multi-stages to build the container and generate an unprivileged container 
+- Cloud Build - see [`cloudbuild.yaml`](https://github.com/mathieu-benoit/myblog/blob/main/cloudbuild.yaml): build the container, run security scan on it before pushing it in artifact registry
+- GitHub Dependabot - see [`dependabot.yml`](https://github.com/mathieu-benoit/myblog/blob/main/.github/dependabot.yml): keep up-to-date the hugo theme git submodule and the docker base images
 
 That is for the Continuous Integration (CI) part, for the Continuous Deployment (CD) part I opted in for a GitOps approach, here is where you could find all the Kubernetes manifests needed to deploy this app. Couple of features are leveraged here too:
-- mTLS STRICT - see [`peerauthentication.yaml` file](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/peerauthentication.yaml)
-- `NetworkPolicies` - see [`networkpolicies.yaml` file](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/networkpolicies.yaml)
+- mTLS STRICT - see [`peerauthentication.yaml`](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/peerauthentication.yaml)
+- `NetworkPolicies` - see [`networkpolicies.yaml`](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/networkpolicies.yaml)
 - [`Pod Security Context`]({{< ref "/posts/2020/04/pod-security-context.md" >}})
-- `AuthorizationPolicies` - see [`authorizationpolicies.yaml` file](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/authorizationpolicies.yaml)
+- `AuthorizationPolicies` - see [`authorizationpolicies.yaml`](https://github.com/mathieu-benoit/my-kubernetes-deployments/blob/main/namespaces/myblog/myblog/authorizationpolicies.yaml)
 
 In front of this, an ASM/Istio's `IngressGateway` is in place, it has [its own Kubernetes manifests in its own namespace](https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress). Couple of features are leveraged here too:
 - mTLS STRICT
 - HTTPS with `ManagedCertificate`
-- Cloud Armor for DDOS and WAF protections
+- [Cloud Armor for DDOS and WAF protections]({{< ref "/posts/2021/04/cloud-armor.md" >}})
 
 
 I have been learning a lot with this, and still am, that's a continuous learning journey for sure, and that's the goal!
