@@ -156,20 +156,35 @@ kubectl wait --for=condition=available --timeout=600s deployment --all -n asm-in
 Finally we could deploy the `Ingress` in the `asm-ingress` namespace which will create the GCLB, etc.
 ```
 cat <<EOF > asm-ingressgateway-ingress.yaml
-apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: asm-ingressgateway
   namespace: asm-ingress
 spec:
-  backend:
-    serviceName: asm-ingressgateway
-    servicePort: 80
+  defaultBackend:
+    service:
+      name: asm-ingressgateway
+      port:
+        number: 80
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: asm-ingressgateway
+            port:
+              number: 80
 EOF
 kubectl apply -f asm-ingressgateway-ingress.yaml
 ```
 
 From here, your ASM's Ingress Gateway is now protected by Cloud Armor, you could test the associated public IP generated: `kubectl get ingress asm-ingressgateway -n asm-ingress`.
+
+If you are looking for more advanced scenario with this setup, here you are:
+- [From edge to mesh: Exposing service mesh applications through GKE Ingress](https://cloud.google.com/architecture/exposing-service-mesh-apps-through-gke-ingress)
+- [Secure your apps and your cluster with Anthos Service Mesh]({{< ref "/posts/2021/11/asm-security.md" >}})
 
 ## Cloud Logging on HTTP Load Balancer
 
