@@ -167,6 +167,6 @@ And voila, that's a wrap!
 
 Ultimately, here is the secure setup we have been describing with this blog article, the OnlineBoutique demo is now more secured. Hope you will be able to leverage this for your own apps/setup.
 
-![Secured OnlineBoutique with advanced ASM setup discussed throughout that blog article.](https://github.com/mathieu-benoit/my-images/raw/main/asm-security.png)
+![Secured OnlineBoutique with advanced ASM setup discussed throughout that blog article.](https://raw.githubusercontent.com/mathieu-benoit/my-images/main/asm-security.png)
 
 Hope you enjoyed that one, stay safe out there! ;)
