@@ -49,7 +49,7 @@ To actually inject the sidecar proxy, we need to force a deployment of your apps
 kubectl rollout restart deployments -n $namespace
 ```
 
-## Enable mTLS `STRICT` within that namespace
+## Enable mTLS STRICT for your apps
 
 Istio [`PeerAuthentication`](https://istio.io/latest/docs/reference/config/security/peer_authentication/) defines how traffic will be tunneled (or not) to the sidecar.
 
@@ -65,7 +65,7 @@ spec:
 EOF
 ```
 
-## Define `AuthorizationPolicies`
+## Define AuthorizationPolicies for your apps
 
 Istio [`AuthorizationPolicy`](https://istio.io/latest/docs/reference/config/security/authorization-policy/) enables access control on workloads in the mesh.
 
@@ -107,7 +107,7 @@ EOF
 
 You could see that we identify the sources with a specific `ServiceAccount` for each pod/app. You could find other `AuthorizationPolicy` and `ServiceAccount` definitions for each app of the OnlineBoutique [in there](https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/onlineboutique).
 
-## Leverage an HTTPS GCLB and Cloud Armor in front of your `IngressGateway`
+## Leverage an HTTPS GCLB and Cloud Armor in front of your IngressGateway
 
 To start let's create a Cloud Armor policy:
 ```
