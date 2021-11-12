@@ -129,7 +129,7 @@ ipAddress=$(gcloud compute addresses describe $ipName --global --format=json | j
 echo $ipAddress
 ```
 
-From here, you could bring your own DNS and set the IP address provisioned previously, or you could run the following commands to get a DNS from Cloud Endpoint (this is needed to provision the `ManagedCertificate` soon):
+From here, you could bring your own DNS and set the IP address provisioned previously, or as an example you could run the following commands to get a DNS from Cloud Endpoint:
 ```
 projectId=FIXME
 hostName=onlineboutique.endpoints.$projectId.cloud.goog
@@ -196,7 +196,7 @@ EOF
 
 After waiting for a couple of minutes, all the infrastructure will be provisioned and you should be able to reach your DNS (i.e. https://$hostName) successfully, on a secure manner ;)
 
-_Note: there is two other scenario you could leverage by exposing your `IngressGateway`, either via an [internal load balancer](https://cloud.google.com/service-mesh/docs/unified-install/options/enable-optional-features#enable_an_internal_load_balancer) or even via a [private service connect](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#ilb_psc), if you don't want to expose your apps publicly._
+_Note: there is two other scenario you could leverage by exposing your `IngressGateway`, either via an [internal load balancer](https://cloud.google.com/service-mesh/docs/unified-install/options/enable-optional-features#enable_an_internal_load_balancer) or even via a [private service connect](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#ilb_psc), if you don't want to publicly expose your apps via the `IngressGateway`._
 
 
 And voila, that's a wrap!
