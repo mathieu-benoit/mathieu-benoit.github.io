@@ -4,7 +4,7 @@ title: about
 
 {{< html >}}
 <figure class="center">
-  <img src="mathieu-benoit.jpg" alt="Mathieu Benoit" />
+  <img src="https://github.com/mathieu-benoit/my-images/raw/main/mathieu-benoit.jpg" alt="Mathieu Benoit" />
 </figure>
 {{< /html >}}
 
