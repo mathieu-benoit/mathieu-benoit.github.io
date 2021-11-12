@@ -148,7 +148,7 @@ EOF
 gcloud endpoints services deploy dns-spec.yaml
 ```
 
-Finally, we could now deploy our [Kubernetes manifest](https://gist.github.com/mathieu-benoit/19c020c9a1cbe19e0541316502358f91) containing all the object needed to deploy our ingress gateway (`Deployment`, `Service`, `Ingress`, `BackendConfig` and `ManagedCertificate`):
+With that, we could now deploy our [Kubernetes manifest](https://gist.github.com/mathieu-benoit/19c020c9a1cbe19e0541316502358f91) containing all the object needed to deploy our ingress gateway (`Deployment`, `Service`, `Ingress`, `BackendConfig` and `ManagedCertificate`):
 ```
 ingressNamespace=asm-ingress
 kubectl create ns $ingressNamespace
@@ -156,6 +156,42 @@ kubectl label namespace $ingressNamespace istio-injection- istio.io/rev=$asmRevi
 curl https://gist.githubusercontent.com/mathieu-benoit/19c020c9a1cbe19e0541316502358f91/raw/619478e78e6234718d86e990bcf402270386aef0/asm-ingress.yaml > asm-ingress.yaml
 sed -i "s,SECURITY_POLICY,${policyName},g;s,HOST_NAME,${hostName},g;s,IP_NAME,${ipName},g" asm-ingress.yaml
 kubectl apply -n $ingressNamespace -f asm-ingress.yaml
+```
+
+Finally, we need to apply a `Gateway` configuration to the `asm-ingressgateway` proxy to manage inbound traffic for the OnlineBoutique's `frontend` service:
+```
+cat <<EOF | kubectl apply -n $namespace -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: frontend
+spec:
+  selector:
+    asm: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - ${hostName}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: frontend
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - frontend
+  http:
+  - route:
+    - destination:
+        host: frontend
+        port:
+          number: 80
+EOF
 ```
 
 After waiting for a couple of minutes, all the infrastructure will be provisioned and you should be able to reach your DNS (i.e. https://$hostName) successfully, on a secure manner ;)
