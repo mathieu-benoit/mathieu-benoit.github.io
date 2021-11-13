@@ -1,4 +1,4 @@
-FROM alpine:3.14.2 as build
+FROM alpine:3.14.3 as build
 ARG HUGO_VERSION=0.89.2
 ENV HUGO_BINARY hugo_${HUGO_VERSION}_Linux-64bit.tar.gz
 RUN apk add --update wget ca-certificates && \
@@ -13,7 +13,7 @@ WORKDIR /site
 COPY . .
 RUN hugo -v -s /site -d /site/public
 
-FROM nginxinc/nginx-unprivileged:1.21.3-alpine as nginx-unprivileged-without-curl
+FROM nginxinc/nginx-unprivileged:1.21.4-alpine as nginx-unprivileged-without-curl
 USER root
 RUN apk del curl
 
