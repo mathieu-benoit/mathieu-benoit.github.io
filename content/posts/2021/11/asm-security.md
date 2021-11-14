@@ -38,7 +38,7 @@ In order to take advantage of all of ASM/Istio’s features, pods in the mesh mu
 
 ```
 namespace=onlineboutique
-asmRevision=asm-1112-17
+asmRevision=$(kubectl get deploy -n istio-system -l app=istiod -o jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}')
 kubectl label namespace $namespace \
     istio-injection- istio.io/rev=$asmRevision \
     --overwrite
