@@ -94,7 +94,7 @@ Is it an issue? Not at all! Because GKE integrates well tested and stable COS im
 
 Is it something to keep in mind? Yes for sure? 
 
-_Note: on 2021-11-19, GKE got the version v1.22.3-gke.700 with associated `containerd` version `1.5.4`, `COS 93` version [`cos-93-16623-39-6`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-6) and [COS Kernel] version `5.10.68`._ 
+_Note: on 2021-11-19, GKE got the version v1.22.3-gke.700 with associated `containerd` version `1.5.4`, `COS 93` version [`cos-93-16623-39-6`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-6) and `COS Kernel` version `5.10.68`._ 
 
 When dealing with a manged Kubernetes service, in this case GKE, there is a [shared responsibilities model](https://cloud.google.com/blog/products/containers-kubernetes/exploring-container-security-the-shared-responsibility-model-in-gke-container-security-shared-responsibility-model-gke) to have in mind. And one of them is to make sure your GKE cluster is up-to-date, [node auto-upgrade](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades) to the rescue! Node auto-upgrade is upgrading your cluster to the new default version of channel of your GKE cluster. You may also want in some cases to [manually update your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster) to the latest version in that channel.
 
