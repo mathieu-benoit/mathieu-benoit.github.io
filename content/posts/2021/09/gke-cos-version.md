@@ -92,7 +92,7 @@ Here are few statements (which will change in the future since updates for GKE o
 
 Is it an issue? Not at all! Because GKE integrates well tested and stable COS images and provide guidance with its [security bulletins](https://cloud.google.com/anthos/clusters/docs/security-bulletins) when necessary.
 
-Is it something to keep in mind? Yes for sure? 
+Is it something to keep in mind? Yes for sure! 
 
 _Note: on 2021-11-19, GKE got the version v1.22.3-gke.700 with associated `containerd` version `1.5.4`, `COS 93` version [`cos-93-16623-39-6`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-6) and `COS Kernel` version `5.10.68`._ 
 
