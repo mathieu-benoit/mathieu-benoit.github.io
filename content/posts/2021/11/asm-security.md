@@ -158,7 +158,7 @@ sed -i "s,SECURITY_POLICY,${policyName},g;s,HOST_NAME,${hostName},g;s,IP_NAME,${
 kubectl apply -n $ingressNamespace -f asm-ingress.yaml
 ```
 
-_Note: Gateways are generally owned by the platform admins or network admins team. Therefore, the `Gateway` resource is created in the `asm-ingress` namespace owned by the platform admin._
+_Note: Gateways are generally owned by the platform admins or network admins team. Therefore, the [shared `Gateway`](https://istio.io/latest/docs/setup/additional-setup/gateway/#shared-gateway) resource is created in the `asm-ingress` namespace owned by the platform admin._
 
 Finally, we need to apply a `VirtualService` configuration to the `asm-ingressgateway` proxy to manage inbound traffic for the OnlineBoutique's `frontend` service:
 ```
