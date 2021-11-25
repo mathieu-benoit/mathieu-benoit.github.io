@@ -83,22 +83,25 @@ spec:
       serviceAccountName: default
       automountServiceAccountToken: false
       securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
         runAsUser: 1000
       containers:
         - name: test2
           securityContext:
+            allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - all
-            runAsNonRoot: true
-            allowPrivilegeEscalation: false
+            privileged: false
             readOnlyRootFilesystem: true
           image: ubuntu
           command:
             - "sleep"
             - "604800"
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
               cpu: 100m
