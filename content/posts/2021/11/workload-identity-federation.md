@@ -2,7 +2,7 @@
 title: workload identity federation, no service account keys necessary anymore
 date: 2021-11-07
 tags: [gcp, security, containers]
-description: let's see how to improve your cloud security posture with workload identity federation, no service account keys necessary anymore - let's see taht in actions with GitHub actions.
+description: let's see how to improve your cloud security posture with workload identity federation, no service account keys necessary anymore - let's see that in actions with GitHub actions.
 draft: true
 aliases:
     - /wif/
