@@ -17,12 +17,12 @@ Let's see how we could easily leverage 2 tools/linters to add more security and 
 
 OPA is a CNCF project and is getting a great momentum especially with [OPA Gatekeeper for Kubernetes](https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/). I won't cover this part today, but that's something I'm keeping for another blog article in the future. Since [PSP](https://kubernetes.io/docs/concepts/policy/pod-security-policy/) is not leaving the `beta` status since a while, OPA Gatekeeper is definitely something to look at and invest time on.
 
-Today, what I would like to illustrate is checking that my containers are secured and compliant. For this I will use [`conftest`](go/cloud-gcppoc) to check my `Dockerfile`. Here below is an illustration of how to run `conftest` (as a container in my case, but you have [different options to install it](https://www.conftest.dev/install/)) by checking my OPA policies I defined in this file [`container-policies.rego`](https://raw.githubusercontent.com/mathieu-benoit/mygkecluster/master/policy/container-policies.rego):
+Today, what I would like to illustrate is checking that my containers are secured and compliant. For this I will use [`conftest`](https://www.conftest.dev/) to check my `Dockerfile`. Here below is an illustration of how to run `conftest` (as a container in my case, but you have [different options to install it](https://www.conftest.dev/install/)) by checking my OPA policies I defined in this file [`container-policies.rego`](https://gist.github.com/mathieu-benoit/6ee17cfa0172f75c1ee117667d82cc9a#file-container-policies-rego):
 
 ```
 # Get the container-policies.rego file locally
 mkdir policy
-curl https://raw.githubusercontent.com/mathieu-benoit/mygkecluster/master/policy/container-policies.rego -o ./policy/container-policies.rego
+curl https://gist.githubusercontent.com/mathieu-benoit/6ee17cfa0172f75c1ee117667d82cc9a/raw/937f7664a9e73285917f2b6047db51314d39fe79/container-policies.rego -o ./policy/container-policies.rego
 # Run conftest
 docker run --rm -v $(pwd):/project openpolicyagent/conftest test Dockerfile
 ```

@@ -71,9 +71,11 @@ Nothing special to do, here is the associated step you should include between yo
 ```
 - id: container scanning
   name: gcr.io/cloud-builders/gcloud
-  entrypoint: /bin/bash
+  entrypoint: 'bash'
   args:
-  - -c
+  - '-eEuo'
+  - 'pipefail'
+  - '-c'
   - |
     gcloud artifacts docker images scan '${_IMAGE_NAME}:$SHORT_SHA' --format='value(response.scan)' > scan_id.txt
     gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) --format='table(vulnerability.effectiveSeverity, vulnerability.cvssScore, noteName, vulnerability.packageIssue[0].affectedPackage, vulnerability.packageIssue[0].affectedVersion.name, vulnerability.packageIssue[0].fixedVersion.name)'
