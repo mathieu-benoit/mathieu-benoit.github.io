@@ -176,7 +176,7 @@ And voila, that's a wrap!
 ## Complementary and further resources
 
 - [OPA Gatekeeper policies library](https://github.com/open-policy-agent/gatekeeper-library)
-- [Constraint template library provided by Google](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-libraryhttps://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library)
+- [Constraint template library provided by Google](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library)
 - [The kpt Book](https://kpt.dev/book/)
 - [Creating policy-compliant Google Cloud resources](https://cloud.google.com/architecture/policy-compliant-resources)
 
