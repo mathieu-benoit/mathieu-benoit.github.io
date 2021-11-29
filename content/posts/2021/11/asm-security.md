@@ -194,4 +194,7 @@ Ultimately, here is the secure setup we have been describing with this blog arti
 
 ![Secured OnlineBoutique with advanced ASM setup discussed throughout that blog article.](https://raw.githubusercontent.com/mathieu-benoit/my-images/main/asm-security.png)
 
+Complementary and further resources:
+- [Exploring ASM in the Cloud Console (Topology, SLIs/SLOs, etc.)](https://cloud.google.com/service-mesh/docs/observability/explore-dashboard)
+
 Hope you enjoyed that one, stay safe out there! ;)
