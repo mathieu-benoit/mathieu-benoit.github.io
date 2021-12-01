@@ -6,18 +6,20 @@ description: let's see how you could protect and secure both your apps and your 
 aliases:
     - /asm-security/
 ---
-Even if I already covered how to [protect your service mesh with an HTTPS GCLB and Cloud Armor]({{< ref "/posts/2021/04/cloud-armor.md" >}}), I thought I will describe in more details what are your other options to protect your workloads on GKE thanks to Anthos Service Mesh (ASM).
+Even if I already covered how to [protect your service mesh with an HTTPS GCLB and Cloud Armor]({{< ref "/posts/2021/04/cloud-armor.md" >}}), I thought I will describe in more details what are your other options to protect your workloads on GKE thanks to Anthos Service Mesh (ASM) and Istio.
 
-Here are 5 easy steps to accomplish this:
+Here are 7 easy steps to accomplish this:
 1. Install ASM on your cluster
-2. Enable ASM for your apps
-3. Enable mTLS `STRICT` for your apps
-4. Define `AuthorizationPolicies` for your apps
-5. Leverage an HTTPS GCLB and Cloud Armor in front of your `IngressGateway`
+1. Enable ASM for your apps
+1. Enable mTLS `STRICT` for your apps
+1. Configure a `Sidecar` for your mesh
+1. Define `AuthorizationPolicies` for your apps
+1. Leverage an HTTPS GCLB and Cloud Armor in front of your `IngressGateway`
+1. Complementary considerations
 
 Let's see those in actions.
 
-## Install ASM on your cluster
+## Install ASM
 
 [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/overview) has a suite of features and tools that help you observe and manage secure, reliable services in a unified way.
 
@@ -32,7 +34,7 @@ asmcli install \
 
 _Note: Using `--option cni-gcp` is giving you more security because the [Istio CNI](https://istio.io/latest/docs/setup/additional-setup/cni/) plugin replaces the functionality provided by the `istio-init` container (which has elevated permissions)._
 
-## Enable ASM for your apps
+## Enable ASM
 
 In order to take advantage of all of ASM/Istio’s features, pods in the mesh must be running an ASM [sidecar proxy](https://istio.io/latest/docs/setup/additional-setup/sidecar-injection/).
 
@@ -49,7 +51,7 @@ To actually inject the sidecar proxy, we need to force a deployment of your apps
 kubectl rollout restart deployments -n $namespace
 ```
 
-## Enable mTLS STRICT for your apps
+## Enable mTLS STRICT
 
 Istio [`PeerAuthentication`](https://istio.io/latest/docs/reference/config/security/peer_authentication/) defines how traffic will be tunneled (or not) to the sidecar.
 
@@ -65,7 +67,25 @@ spec:
 EOF
 ```
 
-## Define AuthorizationPolicies for your apps
+## Configure a Sidecar
+
+Istio [`Sidecar`](https://istio.io/latest/docs/reference/config/networking/sidecar/) describes the configuration of the sidecar proxy that mediates inbound and outbound communication to the workload instance it is attached to. This feature is quite easy to configure and has two large benefits: Security and Performance. I explain this in more details [here]({{< ref "/posts/2021/12/istio-sidecar.md" >}}).
+
+```
+cat <<EOF | kubectl apply -n istio-system -f -
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: default
+spec:
+  egress:
+  - hosts:
+    - "./*"
+    - "istio-system/*"
+EOF
+```
+
+## Define AuthorizationPolicies
 
 Istio [`AuthorizationPolicy`](https://istio.io/latest/docs/reference/config/security/authorization-policy/) enables access control on workloads in the mesh.
 
@@ -183,10 +203,9 @@ EOF
 
 _Note: The `VirtualService` is created in the application namespace. Typically, the application owner decides and configures how and what traffic gets routed to the application so `VirtualService` is deployed by the app owner._
 
-After waiting for a couple of minutes, all the infrastructure will be provisioned and you should be able to reach your DNS (i.e. https://$hostName) successfully, on a secure manner ;)
+After waiting for a couple of minutes, all the infrastructure will be provisioned and you should be able to successfully reach your DNS (i.e. https://$hostName), on a secure manner ;)
 
 _Note: there is two other scenario you could leverage by exposing your `IngressGateway`, either via an [internal load balancer](https://cloud.google.com/service-mesh/docs/unified-install/options/enable-optional-features#enable_an_internal_load_balancer) or even via a [private service connect](https://cloud.google.com/kubernetes-engine/docs/how-to/internal-load-balancing#ilb_psc), if you don't want to publicly expose your apps via the `IngressGateway`._
-
 
 And voila, that's a wrap!
 
@@ -194,7 +213,10 @@ Ultimately, here is the secure setup we have been describing with this blog arti
 
 ![Secured OnlineBoutique with advanced ASM setup discussed throughout that blog article.](https://raw.githubusercontent.com/mathieu-benoit/my-images/main/asm-security.png)
 
-Complementary and further resources:
-- [Exploring ASM in the Cloud Console (Topology, SLIs/SLOs, etc.)](https://cloud.google.com/service-mesh/docs/observability/explore-dashboard)
+## Complementary considerations
+
+- Explore [ASM in the Cloud Console](https://cloud.google.com/service-mesh/docs/observability/explore-dashboard) (Topology, SLIs/SLOs, etc.)
+- Configure OPA Gatekeeper policies with [Policy Controller]({{< ref "/posts/2021/03/policy-controller.md" >}}) for more governance and security
+- Configure [Network Policies]({{< ref "/posts/2021/04/gke-cilium.md" >}}) for a strong defense in depth strategy
 
 Hope you enjoyed that one, stay safe out there! ;)
