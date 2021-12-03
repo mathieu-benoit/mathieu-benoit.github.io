@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.qwiklabs.com/quests/159
+
+https://cloud.google.com/blog/topics/developers-practitioners/using-google-cloud-service-account-impersonation-your-terraform-code
+
 https://medium.com/@jryancanty/hashicorp-vault-and-terraform-on-google-cloud-security-best-practices-3d94de86a3e9
 
 Example of a Private GKE cluster with Terraform:
