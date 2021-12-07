@@ -8,6 +8,8 @@ aliases:
     - /wif/
     - /workload-identity-federation/
 ---
+https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions
+
 https://github.blog/2021-11-23-secure-deployments-openid-connect-github-actions-generally-available/
 
 Keyless API authentication, better cloud security through workload identity federation, no service account keys necessary

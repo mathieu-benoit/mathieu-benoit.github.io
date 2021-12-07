@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://cloud.google.com/blog/products/devops-sre/terraform-gitops-with-google-cloud-build-and-storage
+
 https://www.qwiklabs.com/quests/159
 
 https://cloud.google.com/blog/topics/developers-practitioners/using-google-cloud-service-account-impersonation-your-terraform-code

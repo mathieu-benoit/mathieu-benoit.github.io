@@ -21,6 +21,7 @@ This video shows you concretely in action how the `Sidecar` resource could help 
 
 Based on that, you should at least have this `Sidecar` for your cluster, it will apply for all of your namespaces:
 ```
+cat <<EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1beta1
 kind: Sidecar
 metadata:
@@ -31,6 +32,7 @@ spec:
   - hosts:
     - "./*"
     - "istio-system/*"
+EOF
 ```
 You could then apply other more fine granular `Sidecar` resource per namespace if you need other configuration in there.
 
