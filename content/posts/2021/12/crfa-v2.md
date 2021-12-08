@@ -159,6 +159,7 @@ From here you could now leverage advanced ASM/Istio features for more security l
 Complementary and further resources:
 - [CRfA release notes](https://cloud.google.com/anthos/run/docs/release-notes)
 - [Additional setups with CRfA like internal ingress gateway, workload identity, etc.](https://cloud.google.com/anthos/run/docs/setup)
+- [Knative on Istio - KubeCon Europe 2019](https://static.sched.com/hosted_files/kccnceu19/5f/Knative-on-Istio.pdf)
 - [Performance tuning and best practices in a Knative based, large-scale serverless platform with Istio](https://events.istio.io/istiocon-2021/slides/b7p-PerformanceTuningKnative-GongZhang-YuZhuang.pdf)
 
 Hope you enjoyed that one, cheers! ;)
