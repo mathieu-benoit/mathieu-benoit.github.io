@@ -24,15 +24,29 @@ Let's see those in actions.
 [Anthos Service Mesh](https://cloud.google.com/service-mesh/docs/overview) has a suite of features and tools that help you observe and manage secure, reliable services in a unified way.
 
 ```
-asmcli install \
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
+chmod +x ~/asmcli
+~/asmcli install \
+cat <<EOF > ditroless-proxy.yaml
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  meshConfig:
+    defaultConfig:
+      image:
+        imageType: distroless
+EOF
+~/asmcli install \
     --project_id $projectId \
     --cluster_name $clusterName \
     --cluster_location $zone \
     --enable-all \
-    --option cni-gcp
+    --option cni-gcp \
+    --custom_overlay distroless-proxy.yaml
 ```
+Using a `--custom_overlay` to define `meshConfig.defaultConfig.image.imageType: distroless` is new [since ASM 1.12](https://cloud.google.com/service-mesh/docs/release-notes#December_09_2021). The distroless base image ensures that the proxy image contains the minimal number of packages required to run the proxy. This improves security posture by reducing the overall attack surface of the image and gets cleaner results with CVE scanners.
 
-_Note: Using `--option cni-gcp` is giving you more security because the [Istio CNI](https://istio.io/latest/docs/setup/additional-setup/cni/) plugin replaces the functionality provided by the `istio-init` container (which has elevated permissions)._
+Using `--option cni-gcp` is giving you more security because the [Istio CNI](https://istio.io/latest/docs/setup/additional-setup/cni/) plugin replaces the functionality provided by the `istio-init` container (which has elevated permissions).
 
 ## Enable ASM
 
