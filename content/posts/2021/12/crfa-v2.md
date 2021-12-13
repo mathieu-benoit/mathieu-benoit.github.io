@@ -145,6 +145,7 @@ namespace=helloworld
 kubectl create ns $namespace
 kubectl label namespace $namespace istio-injection- istio.io/rev=$asmRevision --overwrite
 gcloud run deploy helloworld \
+    --platform gke \
     --image gcr.io/knative-samples/helloworld-go \
     --cluster=$clusterName \
     --cluster-location=$zone \
