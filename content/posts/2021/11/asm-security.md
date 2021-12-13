@@ -28,6 +28,7 @@ curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
 chmod +x ~/asmcli
 ~/asmcli install \
 cat <<EOF > ditroless-proxy.yaml
+---
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 spec:

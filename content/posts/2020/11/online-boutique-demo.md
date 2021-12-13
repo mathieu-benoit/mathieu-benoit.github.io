@@ -5,6 +5,8 @@ tags: [gcp, containers, kubernetes, security, dotnet]
 description: let's see how to deploy the online boutique solution on gke, w/ or w/o workload identity
 aliases:
     - /online-boutique-demo/
+    - /online-boutique/
+    - /onlineboutique/
 ---
 ![Architecture diagram of the Microservices demo repository showing the 10 apps and their dependencies.](https://github.com/GoogleCloudPlatform/microservices-demo/raw/master/docs/img/architecture-diagram.png)
 
