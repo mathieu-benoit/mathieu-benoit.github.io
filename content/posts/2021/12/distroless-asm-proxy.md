@@ -2,8 +2,7 @@
 title: distroless asm proxy
 date: 2021-12-13
 tags: [gcp, security, kubernetes, service-mesh, containers]
-description: fixme
-draft: true
+description: let's see how to improve our security feature by leveraging the distroless asm proxy image
 aliases:
     - /distroless-asm-proxy/
     - /asm-proxy/
