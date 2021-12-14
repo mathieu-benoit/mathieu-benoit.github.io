@@ -6,7 +6,7 @@ description: let's see how the new crfa v2 is leveraging asm
 aliases:
     - /crfa-v2/
 ---
-On July 2021 I was blogging about Cloud Run for Anthos (CRfA), but today I will go through its new version, CRfA v2, and its new integration with Anthos Service Mesh (ASM).
+[On July 2021]({{< ref "/posts/2021/07/crfa.md" >}}) I was blogging about Cloud Run for Anthos (CRfA), but today I will go through its new version, CRfA v2, and its new integration with Anthos Service Mesh (ASM).
 
 That's the same experience based on Knative like illustrated during this recent session about CRfA during Google Cloud Next 2021:
 {{< youtube id="uNhgTQw8sUc" title="Using Cloud Run for Anthos for hybrid and multicloud architectures">}}
@@ -91,8 +91,10 @@ spec:
     targetPort: 15021
   - name: http2
     port: 80
+    targetPort: 8081
   - name: https
     port: 443
+    targetPort: 8443
   selector:
     ${ingressLabel}
   type: LoadBalancer

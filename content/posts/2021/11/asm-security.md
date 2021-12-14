@@ -26,7 +26,6 @@ Let's see those in actions.
 ```
 curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
 chmod +x ~/asmcli
-~/asmcli install \
 cat <<EOF > ditroless-proxy.yaml
 ---
 apiVersion: install.istio.io/v1alpha1
@@ -45,7 +44,7 @@ EOF
     --option cni-gcp \
     --custom_overlay distroless-proxy.yaml
 ```
-Using a `--custom_overlay` to define `meshConfig.defaultConfig.image.imageType: distroless` is new [since ASM 1.12](https://cloud.google.com/service-mesh/docs/release-notes#December_09_2021). The distroless base image ensures that the proxy image contains the minimal number of packages required to run the proxy. This improves security posture by reducing the overall attack surface of the image and gets cleaner results with CVE scanners.
+Using `--custom_overlay distroless-proxy.yaml` to define `meshConfig.defaultConfig.image.imageType: distroless` is new [since ASM 1.12]({{< ref "/posts/2021/12/distroless-asm-proxy.md" >}}). The distroless base image ensures that the proxy image contains the minimal number of packages required to run the proxy. This improves security posture by reducing the overall attack surface of the image.
 
 Using `--option cni-gcp` is giving you more security because the [Istio CNI](https://istio.io/latest/docs/setup/additional-setup/cni/) plugin replaces the functionality provided by the `istio-init` container (which has elevated permissions).
 
@@ -188,7 +187,7 @@ With that, we could now deploy our [Kubernetes manifest](https://gist.github.com
 ingressNamespace=asm-ingress
 kubectl create ns $ingressNamespace
 kubectl label namespace $ingressNamespace istio-injection- istio.io/rev=$asmRevision --overwrite
-curl https://gist.githubusercontent.com/mathieu-benoit/19c020c9a1cbe19e0541316502358f91/raw/865aa907cedafc861a91816c543ee26c034d58f8/asm-ingress.yaml > asm-ingress.yaml
+curl https://gist.githubusercontent.com/mathieu-benoit/19c020c9a1cbe19e0541316502358f91/raw/9481474a45b12b14c9b21403e0d472140b5cd448/asm-ingress.yaml > asm-ingress.yaml
 sed -i "s,SECURITY_POLICY,${policyName},g;s,HOST_NAME,${hostName},g;s,IP_NAME,${ipName},g" asm-ingress.yaml
 kubectl apply -n $ingressNamespace -f asm-ingress.yaml
 ```
