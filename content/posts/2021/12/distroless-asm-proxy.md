@@ -15,7 +15,7 @@ Here is in action how you could [leverage the distroless base image while instal
 ```
 curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
 chmod +x ~/asmcli
-cat <<EOF > ditroless-proxy.yaml
+cat <<EOF > distroless-proxy.yaml
 ---
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
@@ -37,9 +37,9 @@ Then when you will inject the istio-proxy sidecar, it will use the distroless im
 
 If we look a little bit closer to the container images, we could see that we save 82MB with the distroless image:
 ```
-REPOSITORY                       TAG                       IMAGE ID       CREATED        SIZE
-gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3-distroless   d24aa6379321   10 days ago    173MB
-gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3              7af54ec04d1c   10 days ago    255MB
+REPOSITORY                       TAG                       SIZE
+gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3-distroless   173MB
+gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3              255MB
 ```
 
 Furtermore, if we do a container scanning, we could see that the distroless image has only 9 vulnerabilities as opposed to 26 for the other one.
