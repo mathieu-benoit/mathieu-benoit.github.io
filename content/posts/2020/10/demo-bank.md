@@ -65,7 +65,7 @@ kubectl get service frontend | awk '{print $4}'
 In some cases you may need to only deploy container images coming from your own private container registry, for example if you have your GKE cluster leveraging [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}).
 
 ```
-publicContainerRegistry=gcr.io/bank-of-anthos
+publicContainerRegistry=gcr.io/bank-of-anthos-ci
 privateContainerRegistry=us-east4-docker.pkg.dev/$projectId/containers/bank-of-anthos
 services="accounts-db balancereader contacts frontend ledger-db ledgerwriter loadgenerator transactionhistory userservice"
 imageTag=$(curl -s https://api.github.com/repos/GoogleCloudPlatform/bank-of-anthos/releases | jq -r '[.[]] | .[0].tag_name')
