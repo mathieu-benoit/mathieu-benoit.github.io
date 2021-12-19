@@ -42,7 +42,7 @@ gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3-distroless   173MB
 gcr.io/gke-release/asm/proxyv2   1.12.0-asm.3              255MB
 ```
 
-Furtermore, if we do a container scanning, we could see that the distroless image has only 9 vulnerabilities as opposed to 26 for the other one.
+Furthermore, if we do a [container scanning]({{< ref "/posts/2021/09/container-scanning.md" >}}), we could see that the distroless image has only 9 vulnerabilities as opposed to 26 for non-distroless.
 
 Quite good news, isn't it!?
 
