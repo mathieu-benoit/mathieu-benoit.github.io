@@ -87,14 +87,14 @@ From there we could repeat the previous command lines in order to get the `conta
 | rapid | 1.21.4-gke.301 | 5.4.120 | [cos-89-16108.470.11](https://cloud.google.com/container-optimized-os/docs/release-notes/m89#cos-89-16108-470-11) | 1.4.4 |
 
 Here are few statements (which will change in the future since updates for GKE or COS happen every week):
-- COS doesn't have latest `containerd` version, we see `1.4.3`, `1.4.4` or `1.46` as opposed to latest today `1.4.9` or `1.5.5`
+- COS doesn't have latest `containerd` version, we see `1.4.3`, `1.4.4` or `1.4.6` as opposed to latest today `1.4.9` or `1.5.5`
 - GKE doesn't have the latest COS version, `85-13310-1308-1`, `89-16108.470.1` or `89-16108.470.11` as opposed to latest or lts `89-16108-534-2` (`gcloud compute images list --project cos-cloud --no-standard-images`)
 
 Is it an issue? Not at all! Because GKE integrates well tested and stable COS images and provide guidance with its [security bulletins](https://cloud.google.com/anthos/clusters/docs/security-bulletins) when necessary.
 
 Is it something to keep in mind? Yes for sure! 
 
-_Note: on 2021-11-19, GKE got the version v1.22.3-gke.700 with associated `containerd` version `1.5.4`, `COS 93` version [`cos-93-16623-39-6`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-6) and `COS Kernel` version `5.10.68`._ 
+_Note: on 2021-11-15, GKE got the version 1.22.3-gke.700 with associated `containerd` version `1.5.4`, `COS 93` version [`cos-93-16623-39-6`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-6) and `COS Kernel` version `5.10.68`. Later, on 2021-12-06, GKE got the version 1.22.3-gke.1500 with associated `COS 93` version [`cos-93-16623-39-13`](https://cloud.google.com/container-optimized-os/docs/release-notes/m93#cos-93-16623-39-13)._ 
 
 When dealing with a manged Kubernetes service, in this case GKE, there is a [shared responsibilities model](https://cloud.google.com/blog/products/containers-kubernetes/exploring-container-security-the-shared-responsibility-model-in-gke-container-security-shared-responsibility-model-gke) to have in mind. And one of them is to make sure your GKE cluster is up-to-date, [node auto-upgrade](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-upgrades) to the rescue! Node auto-upgrade is upgrading your cluster to the new default version of channel of your GKE cluster. You may also want in some cases to [manually update your cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster) to the latest version in that channel.
 
