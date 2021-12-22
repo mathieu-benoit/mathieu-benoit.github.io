@@ -30,11 +30,28 @@ metadata:
 spec:
   egress:
   - hosts:
-    - "./*"
     - "istio-system/*"
+    - "./*"
 EOF
 ```
-You could then apply other more fine granular `Sidecar` resource per namespace if you need other configuration in there.
+You could then apply other more fine granular `Sidecar` resources per namespace if you need other configuration in there. For example if you have an application with the label `app: app-1` who needs to talk to a service `svc-1` in the namespace `ns-1`, you will have this `Sidecar` resource:
+```
+cat <<EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: app-1-to-svc-2
+  namespace: ns-1
+spec:
+  workloadSelector:
+    labels:
+      app: app-1
+  egress:
+  - hosts:
+    - "istio-system/*"
+    - "./svc-2.ns-1.svc.cluster.local"
+EOF
+```
 
 If you run again the previous `istioctl pc c` command you will now see that the list of endpoints is very small.
 
@@ -44,4 +61,4 @@ You could find below additional resources to illustrate this:
 
 _Note: `Sidecar` is not supported yet by Istio `Gateway` resources, so this is not working with [my `asm-ingress` namespace](https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress)._
 
-Hope you enjoyed that one, stay safe and healthy out there!
+Hope you enjoyed that one, sail safe and healthy out there!
