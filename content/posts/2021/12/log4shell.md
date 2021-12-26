@@ -6,7 +6,7 @@ description: let's see what we could learn on a kubernetes point of view from th
 aliases:
     - /log4shell/
 ---
-Wow, IT security world is on fire. LinkedIn and Twitter feeds are almost just talking about that: The commonly used [Apache Log4j 2 library has been compromised](https://logging.apache.org/log4j/2.x/security.html). 4 CVEs have been reported to date: [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228), [CVE-2021-45046](https://nvd.nist.gov/vuln/detail/CVE-2021-45046), [CVE-2021-45105](https://nvd.nist.gov/vuln/detail/CVE-2021-45105) and [CVE-2021-4104](https://nvd.nist.gov/vuln/detail/CVE-2021-4104).
+Wow, the IT security world was on fire. LinkedIn and Twitter feeds were almost just talking about that: The commonly used [Apache Log4j 2 library has been compromised](https://logging.apache.org/log4j/2.x/security.html). 4 CVEs have been reported to date: [CVE-2021-44228](https://nvd.nist.gov/vuln/detail/CVE-2021-44228), [CVE-2021-45046](https://nvd.nist.gov/vuln/detail/CVE-2021-45046), [CVE-2021-45105](https://nvd.nist.gov/vuln/detail/CVE-2021-45105) and [CVE-2021-4104](https://nvd.nist.gov/vuln/detail/CVE-2021-4104).
 
 Google has been providing their findings of ongoing investigations for both [Google](https://security.googleblog.com/2021/12/apache-log4j-vulnerability.html) and [Google Cloud](https://cloud.google.com/log4j2-security-advisory) products and services:
 
