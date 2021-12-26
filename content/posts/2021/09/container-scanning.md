@@ -52,6 +52,8 @@ gcloud artifacts docker images list-vulnerabilities $(cat scan_id.txt) \
 
 And that's it, that's how simple it is to scan on-demand your container images.
 
+_Note: if you have Java applications you could also leverage this [Java containers scanning](https://cloud.google.com/container-analysis/docs/java-scanning) `gcloud artifacts docker images scan --additional-package-types=MAVEN` to get more informations about your dependencies, especially insightful with the events in December 2021 with the [log4j2's CVEs]({{< ref "/posts/2021/12/log4shell.md" >}})._ 
+
 ## Manual scanning in CI
 
 Based on what we just saw, let's see if there is anything else we should do to integrate this part either in Cloud Build pipelines or GitHub actions.

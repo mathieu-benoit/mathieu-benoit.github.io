@@ -34,7 +34,7 @@ spec:
     - "./*"
 EOF
 ```
-You could then apply other more fine granular `Sidecar` resources per namespace if you need other configuration in there. For example if you have an application with the label `app: app-1` who needs to talk to a service `svc-1` in the namespace `ns-1`, you will have this `Sidecar` resource:
+You could then apply other more fine-grained `Sidecar` resources per namespace if you need other configuration in there. For example if you have an application with the label `app: app-1` who needs to talk to a service `svc-1` in the namespace `ns-1`, you will have this `Sidecar` resource:
 ```
 cat <<EOF | kubectl apply -f -
 apiVersion: networking.istio.io/v1beta1
