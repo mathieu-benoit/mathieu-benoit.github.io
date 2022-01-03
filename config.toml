@@ -4,6 +4,7 @@ theme = "hello-friend"
 paginate = 5
 enableEmoji = true
 enableRobotsTXT = true
+googleAnalytics = 'G-J8536XT21V'
 
 [params]
   contentTypeName = "posts"
