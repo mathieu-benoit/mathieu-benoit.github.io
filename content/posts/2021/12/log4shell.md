@@ -55,7 +55,7 @@ If you [scan a Java container](https://cloud.google.com/container-analysis/docs/
 CRITICAL            9.3         projects/goog-vulnz/notes/CVE-2021-44228    org.apache.logging.log4j:log4j-api    2.13.3        2.15.0
 CRITICAL            5.1         projects/goog-vulnz/notes/CVE-2021-45046    org.apache.logging.log4j:log4j-api    2.13.3        2.16.0
 HIGH                4.3         projects/goog-vulnz/notes/CVE-2021-45105    org.apache.logging.log4j:log4j-api    2.13.3        2.17.0
-                                projects/goog-vulnz/notes/CVE-2021-44832    org.apache.logging.log4j:log4j-api                  2.17.1
+MEDIUM              6.0         projects/goog-vulnz/notes/CVE-2021-44832    org.apache.logging.log4j:log4j-api    2.13.3        2.17.1
 ```
 
 In addition to that, you could use [Binary Authorization]({{< ref "/posts/2020/11/binauthz.md" >}}) by leveraging the [vulnerability-based attestations feature](https://cloud.google.com/binary-authorization/docs/creating-attestations-kritis) too.
