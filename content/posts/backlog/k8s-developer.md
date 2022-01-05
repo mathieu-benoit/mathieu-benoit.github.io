@@ -9,6 +9,8 @@ aliases:
     - /kubernetes-developer/
     - /k8s-developer/
 ---
+https://odedia.org/kubernetes-needs-a-developer-platform
+
 What's a Kubernetes developer? What does they cover? What's their job? What do they do?
 
 Let's be more specific, does a Kubernetes developer role even exist?
@@ -21,13 +23,13 @@ Let's be more specific, one person, unicorn, superwoman or superman being an exp
 
 My journey with Kubernetes started in 2017. At that time, I worked at Microsoft, I learned about both Docker and Kubernetes. I approached this with my application developer eyes. It was hard. I felt that Docker was amazing as a universal application packager. Awesome, pure best practice for DevOps. But for Kubernertes, I was like, why everyone is talking about this? Is it really a thing? Why this open source project started by Google, is now the defacto containers orchestrator adopted by the planet and even making competitors like RedHat, Suse, VMware, Microsoft, Amazon, Apple, Google, etc. working together?! I mean, there is something going on for sure there.
 
-I studied hard, I worked hard and I got mentors who were able to answers my questions when I got them. And the community out there, just awesome, everyone wiht the same goal, and the same mindset to share while learning and improve the platform.
+I studied hard, I worked hard and I got mentors who were able to answers my questions as soon as I had ones. And the community out there, just awesome, everyone with the same goal, and the same mindset to share while learning and improve the platform.
 
 That's where I found out 2 things:
-- Kubernetes is more an infrastructure play where Security, Networking, Infrastructure concepts are important.
-- Kubernetes itself is not an end goal, it's a plateforme where tools on top of it or in addition to it will simplify how application developers
+- Kubernetes is more an infrastructure play where Security, Networking, Infrastructure concepts are very important.
+- Kubernetes itself is not an end goal, it's a plateform where tools on top of it or in addition to it will simplify how application developers will be able to ship code in production
 
-That was key here for me.
+That was key for me to understand this.
 
 FIXME - experiences with 3 customers (developers) I just touched the containerisation and CI/CD parts. It took some times to have them digesting those new concepts and paradigms. But we failed, because we didn't touch other areas around Kubernetes such as the monitoring, security, infrastucture, networking and governance parts. It took s
 
@@ -39,11 +41,11 @@ FIXME - SRE
 
 And that's where I came with this presentation https://github.com/mathieu-benoit/sail-sharp describing the different personas involved with Kubernetes as a platform.
 
-FIXME - I recently worked with a mature Startup who had such personas in place. They are serious about automation, security without compromise and in the meantime making sure the developers are shipping code often with quality, without doing Kubernetes themselves.
+I recently worked with customers who had such personas in place. They are serious about automation, security without compromise and in the meantime making sure the developers are shipping code often with quality, without doing Kubernetes themselves.
 
 ## Apps developers
 
-Should be focus on shipping code and features to add value to the end users. The could build web app, mobile app, apis, machine learning models, etc. They could develop with C#, Java, Golang, Python, Rust, etc. Whatever, they shouldn't deal with Kubernetes manifests! But they are encouraged to leverage Docker on their local workstation. They commit code in Git repositories.
+Should be focus on shipping code and features to add value to the end users. They could build web app, mobile app, apis, machine learning models, etc. They could develop with C#, Java, Golang, Python, Rust, etc. Whatever, they shouldn't deal with Kubernetes manifests! But they are encouraged to leverage Docker on their local workstation. They commit code in Git repositories.
 
 What?! Is it kind of a silo and an anti-pattern to DevOps? Nop. The point here is you are an expert in Android, Javascript, Python notebook, etc. to ship code in Production, that's it. Again you shouldn't do Kubernetes, there is too much to cover there, just focus on what you are recognized for as expert and actually paid for.
 
