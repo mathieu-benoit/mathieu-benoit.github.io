@@ -126,6 +126,7 @@ Notes:
 - `Helm` and `Kustomize` are not yet supported by Config Sync.
 
 Complementary and further resources:
+- [Top GitOps Tactics to Build Secure Cloud-Native Infrastructure](https://www.cncf.io/blog/2022/01/07/top-gitops-tactics-to-build-secure-cloud-native-infrastructure/)
 - [Managing Kubernetes with Config Sync](https://youtu.be/_MrHbQKbPDY)
 - [Config Management downloads](https://cloud.google.com/anthos-config-management/docs/downloads)
 - [Config Sync errors reference](https://cloud.google.com/anthos-config-management/docs/reference/errors)
