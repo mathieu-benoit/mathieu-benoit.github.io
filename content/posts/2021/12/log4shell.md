@@ -120,6 +120,7 @@ Looking for a concrete implementation with the 3 of them together with GKE? Here
 
 - [Container Security: Building trust in your software supply chain](https://cloudonair.withgoogle.com/events/container-security)
 - [Zero-Day Exploit Targeting Popular Java Library Log4j by GovCERT.ch](https://www.govcert.ch/blog/zero-day-exploit-targeting-popular-java-library-log4j/)
+- [The Nightmare Before Christmas: Looking Back at Log4j Vulnerabilities](https://blog.aquasec.com/log4j-vulnerabilities-overview)
 - [CVE-2021-44228 aka Log4Shell Vulnerability Explained by Aqua](https://blog.aquasec.com/cve-2021-44228-log4shell-vulnerability-explained)
 - [Log4Shell in a nutshell (for non-developers & non-Java developers) by Snyk](https://snyk.io/blog/log4shell-in-a-nutshell/)
 - [Log4Shell remediation cheat sheet by Snyk](https://snyk.io/blog/log4shell-remediation-cheat-sheet/)
