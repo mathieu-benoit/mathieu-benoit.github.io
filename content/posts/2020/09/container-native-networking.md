@@ -78,7 +78,7 @@ This feature is in _beta_ as we speak, but seems really promising! Like describe
 
 # Service Mesh
 
-When talking about networking with containers and Kubernetes, we can't avoid the Service Mesh area. If you are not familiar with Service Mesh or you are wondering why you do (or don't) need a Service Mesh for your own context, I highly encourage you to watch this session [Building Globally Scalable Services with Istio and ASM](https://cloud.withgoogle.com/next/sf/sessions?session=APP210#application-modernization) [[Youtube](https://youtu.be/clu7t0LVhcw)] which is explaining really well what a Service Mesh is.
+When talking about networking with containers and Kubernetes, we can't avoid the Service Mesh area. If you are not familiar with Service Mesh or you are wondering why you do (or don't) need a Service Mesh for your own context, I highly encourage you to watch this session [Building Globally Scalable Services with Istio and ASM](https://youtu.be/clu7t0LVhcw)] which is explaining really well what a Service Mesh is.
 
 ## Istio
 
