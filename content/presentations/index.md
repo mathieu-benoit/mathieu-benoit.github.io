@@ -2,19 +2,23 @@
 title: presentations
 ---
 
-Here is the list of the 35 public presentations and workshop I delivered.
+Here is the list of the 37 public presentations and workshop I delivered.
+
+## 2022 (1)
+
+- 2022-01 - [Secure your apps and your clusters with Anthos Service Mesh](https://github.com/mathieu-benoit/presentations/raw/main/2022-01-Secure-your-apps-and-your-clusters-with-Anthos-Service-Mesh.pdf)
 
 ## 2021 (5)
 
 - 2021-09 - [Kubernetes and beyond on Google Cloud Platform - Google for Startups Accelerator Program](https://github.com/mathieu-benoit/presentations/raw/main/2021-09-Kubernetesandbeyond-StartupAcceleratorProgram.pdf)
 - 2021-05 - [Kubernetes and beyond on Google Cloud Platform - Google for Startups Accelerator Program](https://github.com/mathieu-benoit/presentations/raw/main/2021-05-Kubernetesandbeyond-StartupAcceleratorProgram.pdf)
-- 2021-02-10 - [Multi-cloud, Multi-cluster, where are we and what's ahead - Azure Meetup](https://github.com/mathieu-benoit/presentations/raw/main/2021-03-Multicloud-Multicluster.pdf)
+- 2021-02 - [Multi-cloud, Multi-cluster, where are we and what's ahead - Azure Meetup](https://github.com/mathieu-benoit/presentations/raw/main/2021-03-Multicloud-Multicluster.pdf)
   - [Link to the event](https://www.meetup.com/AzureQC/events/275844214/)
   - [Link to the recording [fr]](https://youtu.be/sf8QRPK9yVg)
-- 2021-02-10 - [Sail Sharp, .NET & Kubernetes - .NET QC Meetup](https://github.com/mathieu-benoit/sail-sharp)
+- 2021-02 - [Sail Sharp, .NET & Kubernetes - .NET QC Meetup](https://github.com/mathieu-benoit/sail-sharp)
   - [Link to the event](https://www.meetup.com/DotNet-Quebec/events/275866695/)
   - [Link to the recording [fr]](https://youtu.be/FqwjSZqpJs8)
-- 2021-01-28 - [Cloud Run - GDG Cloud Quebec city [fr]](https://github.com/mathieu-benoit/presentations/raw/main/2021-01-28-Cloud%20Run-GDG-QC.pdf)
+- 2021-01 - [Cloud Run - GDG Cloud Quebec city [fr]](https://github.com/mathieu-benoit/presentations/raw/main/2021-01-28-Cloud%20Run-GDG-QC.pdf)
   - [Link to the event](https://gdg.community.dev/e/m9pykp/)
   - [Link to the recording [fr]](https://youtu.be/zEMk8esFYcw)
 
