@@ -128,7 +128,7 @@ kubectl get service frontend-external | awk '{print $4}'
 ## Replace the in-cluster redis database by Google Cloud Memorystore
 
 Important notes:
-- You can connect to a Memorystore (redis) instance from GKE clusters that are in the same region and use the same network as your instance.
+- You can connect to a Memorystore (redis) instance only from GKE clusters that are in the same region and use the same network as your instance.
 - You cannot connect to a Memorystore (redis) instance from a GKE cluster without VPC-native/IP aliasing enabled. For this you should create a GKE cluster with this option `--enable-ip-alias`.
 
 ```
