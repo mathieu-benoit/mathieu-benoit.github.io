@@ -61,4 +61,6 @@ You could find below additional resources to illustrate this:
 
 _Note: `Sidecar` is not supported yet by Istio `Gateway` resources, so this is not working with [my `asm-ingress` namespace](https://github.com/mathieu-benoit/my-kubernetes-deployments/tree/main/namespaces/asm-ingress)._
 
+In addition to this, since Istio 1.10, you could use discovery selectors to configure namespaces for your Istio service mesh, to see how they intersect with Sidecar resources, [checkout that resource here](https://istio.io/latest/blog/2021/discovery-selectors/).
+
 Hope you enjoyed that one, sail safe and healthy out there!
