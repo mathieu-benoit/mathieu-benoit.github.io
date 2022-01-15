@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /config-connector/
 ---
+https://cloud.google.com/sdk/gcloud/reference/alpha/resource-config/bulk-export --> krm
+
 Sign here! Creating a policy contract with Configuration as Data
 https://cloud.google.com/blog/products/containers-kubernetes/how-configuration-as-data-impacts-policy
 
