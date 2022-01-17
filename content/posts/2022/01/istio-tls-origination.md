@@ -12,7 +12,7 @@ Very inspiring. Without any change in the code of your apps you could configure 
 
 > [TLS origination](https://istio.io/latest/docs/tasks/traffic-management/egress/egress-tls-origination/#tls-origination-for-egress-traffic) occurs when an Istio proxy (sidecar or egress gateway) is configured to accept unencrypted internal HTTP connections, encrypt the requests, and then forward them to HTTPS servers that are secured using simple or mutual TLS. This is the opposite of TLS termination where an ingress proxy accepts incoming TLS connections, decrypts the TLS, and passes unencrypted requests on to internal mesh services.
 
-From this, my idea was about to secure the Memorystore (redis) access from the [OnlineBoutique's `cartservice`](https://github.com/GoogleCloudPlatform/microservices-demo/blob/main/docs/memorystore.md). Again, without any code change, the `istio-proxy` of that `cartservice` would transparently upgrade the connection to TLS.
+From this, my idea was about to secure the Memorystore (redis) access and again, without any code change, the `istio-proxy` of the application would transparently upgrade the connection to TLS.
 
 > [Memorystore for Redis supports encrypting all Redis traffic](https://cloud.google.com/memorystore/docs/redis/in-transit-encryption) using the Transport Layer Security (TLS) protocol. When in-transit encryption is enabled Redis clients communicate exclusively across a secure port connection. Redis clients that are not configured for TLS will be blocked. If you choose to enable in-transit encryption you are responsible for ensuring that your Redis client is capable of using the TLS protocol.
 
@@ -26,7 +26,7 @@ Let's create a Memorystore (redis) instance allowing only in-transit encryption:
 ```
 GKE_REGION=us-east4
 GKE_ZONE=us-east4-a
-REDIS_NAME=cart-tls
+REDIS_NAME=redis-tls
 gcloud redis instances create $REDIS_NAME --size=1 --region=$GKE_REGION --zone=$GKE_ZONE --redis-version=redis_6_x --transit-encryption-mode=SERVER_AUTHENTICATION
 REDIS_IP=$(gcloud redis instances describe $REDIS_NAME --region=$GKE_REGION --format='get(host)')
 REDIS_PORT=$(gcloud redis instances describe $REDIS_NAME --region=$GKE_REGION --format='get(port)')
