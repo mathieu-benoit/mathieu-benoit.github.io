@@ -8,6 +8,8 @@ aliases:
     - /wif/
     - /workload-identity-federation/
 ---
+https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation
+
 https://cloud.google.com/blog/products/identity-security/enabling-keyless-authentication-from-github-actions
 
 https://github.blog/2021-11-23-secure-deployments-openid-connect-github-actions-generally-available/
