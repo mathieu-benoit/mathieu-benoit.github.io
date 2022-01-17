@@ -69,13 +69,13 @@ spec:
   hosts:
   - ${INTERNAL_HOST}
   addresses:
-  - $REDIS_IP/32
+  - ${REDIS_IP}/32
   endpoints:
-  - address: $REDIS_IP
+  - address: ${REDIS_IP}
   location: MESH_EXTERNAL
   resolution: STATIC
   ports:
-  - number: $REDIS_PORT
+  - number: ${REDIS_PORT}
     name: tcp-redis
     protocol: TCP
 EOF
@@ -93,11 +93,6 @@ spec:
       mode: SIMPLE
       caCertificates: /etc/certs/redis-cert.pem
 EOF
-```
-
-We could verify that we could see this endpoint now configured like this: `redis.memorystore-redis - 6378 - outbound - EDS - external-redis.redis-tls` by running this command:
-```
-istioctl proxy-config clusters $(kubectl -n $NAMESPACE get pod -l app=redis-client -o jsonpath={.items..metadata.name}) -n $NAMESPACE
 ```
 
 Now, let's actually deploy a client which will be able to mount the `redis-cert` secret via its `istio-proxy` sidecar:
@@ -145,6 +140,11 @@ spec:
     - "istio-system/*"
     - "./${INTERNAL_HOST}"
 EOF
+```
+
+We could verify that we could see this endpoint now configured like this: `redis.memorystore-redis - 6378 - outbound - EDS - external-redis.redis-tls` by running this command:
+```
+istioctl proxy-config clusters $(kubectl -n $NAMESPACE get pod -l app=redis-client -o jsonpath={.items..metadata.name}) -n $NAMESPACE
 ```
 
 Let's now connect to this `redis` client in order to test our setup:
