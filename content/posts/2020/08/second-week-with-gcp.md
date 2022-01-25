@@ -88,6 +88,8 @@ _Note: There is also the concept of [Alpha clusters](https://cloud.google.com/ku
 
 `nodeConfig.diskSizeGb: 100`, choosing the proper size of your OS disk could be important, especially if you are facing application performance throttling. [The section](https://cloud.google.com/compute/docs/disks/performance#performance_factors) will guide you through the factors that affect performance between the OS disk and the Node type that you should be aware of.
 
+_Note: you could learn more about performance optimization based on the choices you could make regarding to the node's disk setup, [by reading this great article from PayPal](https://medium.com/paypal-tech/scaling-kubernetes-to-over-4k-nodes-and-200k-pods-29988fad6ed)._
+
 `nodeConfig.imageType: COS`. Here are the [different Node image types you could use](https://cloud.google.com/kubernetes-engine/docs/how-to/node-images). On my end, I would like to go with `containerd` for a security standpoint, you could read more about the [differences between the `Docker/Moby` versus `containerd` approach](https://cloud.google.com/kubernetes-engine/docs/concepts/using-containerd) to see what fits best for your own context. I could actually upgrade my existing cluster with the new `COS_CONTAINERD` image type: `gcloud container clusters upgrade --image-type COS_CONTAINERD`.
 
 `management.autoRepair: true`, [Nodes auto-repair](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair) is enabled by default with version 1.17+, which is important to guarantee your nodes are healthy.
