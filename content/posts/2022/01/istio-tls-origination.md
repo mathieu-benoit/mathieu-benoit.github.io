@@ -117,7 +117,7 @@ spec:
         sidecar.istio.io/userVolume: '[{"name":"redis-cert", "secret":{"secretName":"redis-cert"}}]'
     spec:
       containers:
-        - image: us-east4-docker.pkg.dev/mygke-200/containers/redis
+        - image: redis
           name: redis-client
           command: [ "/bin/bash", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
