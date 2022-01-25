@@ -149,7 +149,7 @@ istioctl proxy-config clusters $(kubectl -n $NAMESPACE get pod -l app=redis-clie
 
 Let's now connect to this `redis` client in order to test our setup:
 ```
-kubectl exec -ti deploy/redis-client -c redis-client -n $NAMESPACE -- bash -c "redis-cli -h $redisIp -p $redisPort"
+kubectl exec -ti deploy/redis-client -c redis-client -n $NAMESPACE -- bash -c "redis-cli -h $REDIS_IP -p $REDIS_PORT"
 ```
 From within that shell, you could type `ping` and you should receive `pong`.
 
