@@ -44,7 +44,7 @@ saId="my-service-account@${projectId}.iam.gserviceaccount.com"
 gcloud services enable iamcredentials.googleapis.com
 
 # Create a Workload Identity Pool
-poolName=mypool
+poolName=wi-pool
 gcloud iam workload-identity-pools create $poolName \
   --location global \
   --display-name $poolName
@@ -57,7 +57,7 @@ gcloud iam workload-identity-pools providers create-oidc $poolName \
   --location global \
   --workload-identity-pool $poolName \
   --display-name $poolName \
-  --attribute-mapping "google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.aud=assertion.aud" \
+  --attribute-mapping "google.subject=assertion.repository,attribute.actor=assertion.actor,attribute.aud=assertion.aud" \
   --issuer-uri "https://token.actions.githubusercontent.com"
 
 # Allow authentications from the Workload Identity Provider to impersonate the Service Account created above

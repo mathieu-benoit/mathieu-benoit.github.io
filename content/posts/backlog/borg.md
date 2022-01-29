@@ -9,3 +9,5 @@ aliases:
 ---
 
 https://opensource.googleblog.com/2022/01/Introducing%20Ephemeral%20Containers.html
+
+https://www.usenix.org/publications/loginonline/prodspec-and-annealing-intent-based-actuation-google-production

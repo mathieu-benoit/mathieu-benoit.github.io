@@ -10,3 +10,5 @@ aliases:
 https://cloud.google.com/secret-manager/docs/using-other-products#google-kubernetes-engine
 
 https://cloud.google.com/kubernetes-engine/docs/how-to/persistent-volumes/gce-pd-csi-driver
+
+https://mehighlow.medium.com/hardened-aks-secrets-82351c43eac4
