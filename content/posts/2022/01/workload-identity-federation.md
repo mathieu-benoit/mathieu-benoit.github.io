@@ -7,7 +7,7 @@ aliases:
     - /wif/
     - /workload-identity-federation/
 ---
-Last November 2021, GitHub announced the GA support of [OpenID Connect (OIDC) with GitHub actions](https://github.blog/2021-11-23-secure-deployments-openid-connect-github-actions-generally-available/) for secure deployments to cloud, which uses short-lived tokens that are automatically rotated for each deployment. There is different providers supported lik Azure, AWS, GCP, etc. amazing! More security in CI/CD pipelines with GitHub actions!
+Last November 2021, GitHub announced the GA support of [OpenID Connect (OIDC) with GitHub actions](https://github.blog/2021-11-23-secure-deployments-openid-connect-github-actions-generally-available/) for secure deployments to cloud, which uses short-lived tokens that are automatically rotated for each deployment. There are different providers supported like Azure, AWS, GCP, etc. Amazing! More security in CI/CD pipelines with GitHub actions!
 
 > Seamless authentication between Cloud Providers and GitHub without the need for storing any long-lived cloud secrets in GitHub
 
@@ -122,6 +122,5 @@ That's a wrap, no excuses anymore to use the not recommended approach with the S
 Complementary and further resources:
 - [What is Workload Identity Federation?](https://youtu.be/4vajaXzHN08)
 - [Best practices for using workload identity federation](https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation)
-- []()
 
 Hope you enjoyed that one, stay safe out there! ;)
