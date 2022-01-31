@@ -7,7 +7,7 @@ draft: true
 aliases:
     - /fixme/
 ---
-
+https://medium.com/@askmeegs/one-year-in-devrel-21b516fdaa05
 https://medium.com/google-cloud/developer-programs-engineer-say-what-b12829729693
 https://www.devocate.com/finding-success-with-your-first-devrel-hire/
 https://cdoyle.me/posts/2022/01/devrel-in-2022-my-focus
@@ -23,3 +23,4 @@ https://developerrelations.com/developer-experience/approaching-developer-educat
 https://www.slideshare.net/LaurenHaywardSchaefe/seo-for-devrel-101
 https://www.youtube.com/watch?v=i2BYvDk3Vsk
 https://posthog.com/blog/seed-grow-scale-devrel
+https://github.com/readme/guides/angie-jones-demystifying-developer-advocacy
