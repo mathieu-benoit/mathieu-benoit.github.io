@@ -6,7 +6,7 @@ description: let's see how to deploy the demo bank (aka bank of anthos) solution
 aliases:
     - /demo-bank/
 ---
-![Architecture diagram of the Demo Bank demo repository showing the 8 microservices and their dependencies.](https://github.com/GoogleCloudPlatform/bank-of-anthos/raw/master/docs/architecture.png)
+![Architecture diagram of the Demo Bank demo repository showing the 8 microservices and their dependencies.](https://github.com/GoogleCloudPlatform/bank-of-anthos/raw/main/docs/architecture.png)
 
 Today we'll deploy the [`Demo Bank` source code](https://github.com/GoogleCloudPlatform/bank-of-anthos/) on a GKE cluster. This source code was leveraged during one of the keynotes of [Google Next OnAir 2020, App Modernization week]({{< ref "/posts/2020/08/app-modernization-google-next-2020.md" >}}): [Hands-on Keynote: Building trust for speedy innovation](https://youtu.be/7QR1z35h_yc).
 
@@ -14,15 +14,15 @@ Today we'll deploy the [`Demo Bank` source code](https://github.com/GoogleCloudP
 
 | Service | Language | Description |
 | ------- | -------- | ----------- |
-| [frontend](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/frontend) | Python | Exposes an HTTP server to serve the website. Contains login page, signup page, and home page |
-| [ledger-writer](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/ledgerwriter) | Java | Accepts and validates incoming transactions before writing them to the ledger |
-| [balance-reader](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/balancereader) | Java | Provides efficient readable cache of user balances, as read from `ledger-db` |
-| [transaction-history](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/transactionhistory) | Java | Provides efficient readable cache of past transactions, as read from `ledger-db` |
-| [ledger-db](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/ledger-db) | PostgreSQL | Ledger of all transactions. Option to pre-populate with transactions for demo users |
-| [user-service](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/userservice) | Python | Manages user accounts and authentication. Signs JWTs used for authentication by other services |
-| [contacts](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/contacts) | Python | Stores list of other accounts associated with a user. Used for drop down in "Send Payment" and "Deposit" forms |
-| [accounts-db](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/accounts-db) | PostgreSQL | Database for user accounts and associated data. Option to pre-populate with demo users |
-| [loadgenerator](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/master/src/loadgenerator) | Python/Locust | Continuously sends requests imitating users to the frontend. Periodically creates new accounts and simulates transactions between them |
+| [frontend](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/frontend) | Python | Exposes an HTTP server to serve the website. Contains login page, signup page, and home page |
+| [ledger-writer](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/ledgerwriter) | Java | Accepts and validates incoming transactions before writing them to the ledger |
+| [balance-reader](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/balancereader) | Java | Provides efficient readable cache of user balances, as read from `ledger-db` |
+| [transaction-history](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/transactionhistory) | Java | Provides efficient readable cache of past transactions, as read from `ledger-db` |
+| [ledger-db](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/ledger-db) | PostgreSQL | Ledger of all transactions. Option to pre-populate with transactions for demo users |
+| [user-service](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/userservice) | Python | Manages user accounts and authentication. Signs JWTs used for authentication by other services |
+| [contacts](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/contacts) | Python | Stores list of other accounts associated with a user. Used for drop down in "Send Payment" and "Deposit" forms |
+| [accounts-db](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/accounts-db) | PostgreSQL | Database for user accounts and associated data. Option to pre-populate with demo users |
+| [loadgenerator](https://github.com/GoogleCloudPlatform/bank-of-anthos/tree/main/src/loadgenerator) | Python/Locust | Continuously sends requests imitating users to the frontend. Periodically creates new accounts and simulates transactions between them |
 
 ```
 git clone https://github.com/GoogleCloudPlatform/bank-of-anthos.git
