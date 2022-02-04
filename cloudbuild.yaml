@@ -42,7 +42,7 @@ steps:
   args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'goodwithtech/dockle:latest', '--exit-code', '1', '--exit-level', 'fatal', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   id: trivy
-  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', '--severity', '${_SEVERITY}', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
+  args: ['run', '-v', '/var/run/docker.sock:/var/run/docker.sock', '--rm', 'aquasec/trivy', 'image', '--severity', '${_SEVERITY}', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
 - name: gcr.io/cloud-builders/docker
   id: docker run
   args: ['run', '-d', '-p', '8080:8080', '--read-only', '--cap-drop=ALL', '--user=1000', '${_CONTAINER_REGISTRY_NAME}/${_APP_NAME}:$SHORT_SHA']
