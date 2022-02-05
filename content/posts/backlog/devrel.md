@@ -24,3 +24,4 @@ https://www.slideshare.net/LaurenHaywardSchaefe/seo-for-devrel-101
 https://www.youtube.com/watch?v=i2BYvDk3Vsk
 https://posthog.com/blog/seed-grow-scale-devrel
 https://github.com/readme/guides/angie-jones-demystifying-developer-advocacy
+https://www.devrel-ladders.com/
