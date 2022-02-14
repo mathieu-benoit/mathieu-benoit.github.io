@@ -1,5 +1,5 @@
 ---
-title: introduction to config controller in action
+title: in action introduction to config controller
 date: 2022-02-14
 tags: [gcp, kubernetes, security]
 description: let's see with config controller how we could build a secure platform by deploying gcp resources via kubernetes manifests
@@ -30,9 +30,13 @@ Here is what we are going to accomplish:
 - [Create GCP resources in Tenant project]({{< ref "#create-gcp-resources-in-tenant-project" >}})
 - [Further considerations]({{< ref "#further-considerations" >}})
 
+Here is what we are going to illustrate throughout this blog article:
+
+![Config Controller flow with Config Connector and Policy Controller.](https://raw.githubusercontent.com/mathieu-benoit/my-images/main/config-controller-intro-flow.png)
+
 ## Set up Config Controller
 
-> As a Platform Admin, I want to create a Config Controller instance to provide a centralized place as a Kubernetes Server API endpoint in order to provision any GCP resources for my entire company.
+> As Platform Admin, I want to create a Config Controller instance to provide a centralized place as a Kubernetes Server API endpoint in order to provision any GCP resources for my entire company.
 
 Enable the required API:
 ```
@@ -63,7 +67,7 @@ gcloud anthos config controller describe $CONFIG_CONTROLLER_NAME \
 
 ## Set up Policies
 
-> As a Platform Admin, I want to set up policies in order to control what's deployed and have in place common best practices and compliances accross my company.
+> As Platform Admin, I want to set up policies in order to control what's deployed and have in place common best practices and compliances accross my company.
 
 You could [create your own `ConstraintTemplate`](https://cloud.google.com/anthos-config-management/docs/how-to/write-a-constraint-template), but you could also reuse the `ConstraintTemplates` already installed by default for you (see the output of `kubectl get constrainttemplates`).
 
@@ -107,7 +111,7 @@ EOF
 
 ## Set up Tenant project
 
-> As a Platform Admin, I want to set up a dedicated namespace and GCP project to onboard a specific project for a specific team.
+> As Platform Admin, I want to set up a dedicated namespace and GCP project to onboard a specific project for a specific team.
 
 By default, you could deploy any GCP resources in the GCP project where your Config Controller is deployed. For doing so, you need to grant the Config Controller's service account (`kubectl get ConfigConnectorContext -n config-control -o jsonpath='{.items[0].spec.googleServiceAccount}'`) the proper GCP roles and deploy your Kubernetes manifests in the `config-control` namespace.
 
@@ -207,7 +211,7 @@ EOF
 
 ## Create GCP resources in Tenant project
 
-Before actually provisioned a GCP Storage Bucket, we need to grant the `storage.admin` role to the Tenant project's service account via an [`IAMPolicyMember`](https://cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampolicymember) resource deployed in the `config-control` namespace (where this service account is):
+Before actually provisioning a GCP Storage Bucket, we need to grant the `storage.admin` role to the Tenant project's service account via an [`IAMPolicyMember`](https://cloud.google.com/config-connector/docs/reference/resource-docs/iam/iampolicymember) resource deployed in the `config-control` namespace (where this service account is):
 ```
 cat << EOF | kubectl apply -f -
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
@@ -224,6 +228,8 @@ spec:
     external: projects/${TENANT_PROJECT_ID}
 EOF
 ```
+
+> As Tenant project Admin, I want to deploy GCP resources in my Tenant project.
 
 Now let's provision the GCP Storage Bucket in the Tenant project's namespace via a [`StorageBucket`](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket) resource:
 ```
