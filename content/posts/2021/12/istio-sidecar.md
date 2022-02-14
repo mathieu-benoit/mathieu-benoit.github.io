@@ -56,6 +56,7 @@ EOF
 If you run again the previous `istioctl pc c` command you will now see that the list of endpoints is very small.
 
 You could find below additional resources to illustrate this:
+- [Istio at Scale: Sidecar](https://karlstoney.com/2020/10/03/istio-at-scale-sidecar/)
 - [Watch Out for This Istio Proxy Sidecar Memory Pitfall](https://medium.com/geekculture/watch-out-for-this-istio-proxy-sidecar-memory-pitfall-8dbd99ea7e9d)
 - [Reducing Istio proxy resource consumption with outbound traffic restrictions](https://banzaicloud.com/blog/istio-sidecar/)
 
