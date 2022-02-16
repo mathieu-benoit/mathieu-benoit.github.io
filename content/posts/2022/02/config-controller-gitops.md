@@ -3,7 +3,6 @@ title: gitops with config controller
 date: 2022-02-15
 tags: [gcp, kubernetes, security]
 description: let's see with config controller how we could set up gitops to actually deploy kubernetes manifests
-draft: true
 aliases:
     - /config-controller-gitops/
 ---
