@@ -1,10 +1,9 @@
 ---
-title: in action introduction to config controller
+title: config controller in action
 date: 2022-02-14
 tags: [gcp, kubernetes, security]
-description: let's see with config controller how we could build a secure platform by deploying gcp resources via kubernetes manifests
+description: let's see with config controller how we could build a secure platform allowing to deploy gcp resources via kubernetes manifests
 aliases:
-    - /config-controller-intro/
     - /config-controller/
 ---
 [In August 2021](https://cloud.google.com/blog/products/containers-kubernetes/anthos-config-management-config-controller-available-on-gke), Anthos Config Management (ACM) got a new feature called Config Controller, a hosted service to provision and orchestrate Google Cloud resources.
@@ -20,7 +19,7 @@ Config Controller is the bundle of the 3 following components:
 
 Now, let's see this in action!
 
-_Note: for now, we will just illustrate Config Connector and Policy Controller, not yet Config Sync, but an update is coming shortly to illustrate this GitOps part._
+_Note: for now, we will just illustrate Config Connector and Policy Controller, not yet Config Sync, but if you read until the end, you will find that pointer to the blog article covering this GitOps story as part 2 of this one._
 
 Here is what we are going to accomplish:
 - [Set up Config Controller]({{< ref "#set-up-config-controller" >}})
@@ -49,10 +48,10 @@ gcloud services enable krmapihosting.googleapis.com \
 Create a Config Controller instance:
 ```
 CONFIG_CONTROLLER_NAME=FIXME
-LOCATION=us-east1 # or us-central1 are supported for now
+CONFIG_CONTROLLER_LOCATION=us-east1 # or us-central1 are supported for now
 LOCAL_IP_ADDRESS=$(curl ifconfig.co) # Change this if needed to properly get your local IP address
 gcloud anthos config controller create $CONFIG_CONTROLLER_NAME \
-    --location=$LOCATION \
+    --location=$CONFIG_CONTROLLER_LOCATION \
     --man-block $LOCAL_IP_ADDRESS/32
 ```
 _Note: by default the Master Authorized Network (`--man-block`) is configured with `0.0.0.0/0`, we just limited the access to the Kubernetes API Server to our local IP address to add more security._
@@ -60,9 +59,9 @@ _Note: by default the Master Authorized Network (`--man-block`) is configured wi
 From here, it will take 15+ min to provision the Config Controller instance. Once provisioned you could check its status:
 ```
 gcloud anthos config controller list \
-    --location=$LOCATION
+    --location=$CONFIG_CONTROLLER_LOCATION
 gcloud anthos config controller describe $CONFIG_CONTROLLER_NAME \
-    --location=$LOCATION
+    --location=$CONFIG_CONTROLLER_LOCATION
 ```
 
 ## Set up Policies
@@ -199,6 +198,15 @@ EOF
 The Tenant project namespace needs its own `ConfigConnectorContext` resource in order to invoke its dedicated GCP service account:
 ```
 cat << EOF | kubectl apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${TENANT_PROJECT_ID}
+  labels:
+    owner: ${TENANT_PROJECT_ID}
+  name: ${TENANT_PROJECT_ID}
+---
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnectorContext
 metadata:
@@ -229,7 +237,7 @@ spec:
 EOF
 ```
 
-> As Tenant project Admin, I want to deploy GCP resources in my Tenant project.
+> As Tenant project Ops, I want to deploy GCP resources in my Tenant project.
 
 Now let's provision the GCP Storage Bucket in the Tenant project's namespace via a [`StorageBucket`](https://cloud.google.com/config-connector/docs/reference/resource-docs/storage/storagebucket) resource:
 ```
@@ -256,5 +264,7 @@ Congrats! You made it! You have set up a platform with Config Controller to secu
 - [Config Connector resources](https://cloud.google.com/config-connector/docs/reference/overview)
 - [Policy Controller constraint template library](https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library)
 - [KRM Blueprints](https://cloud.google.com/anthos-config-management/docs/concepts/blueprints)
+
+So, that was part 1, are you ready for part 2 to see how to set up a GitOps approach with all of that thanks to Config Controller? If yes, [check this out]({{< ref "/posts/2022/02/config-controller-gitops.md" >}})!
 
 Hope you enjoyed that one, happy sailing! ;)
