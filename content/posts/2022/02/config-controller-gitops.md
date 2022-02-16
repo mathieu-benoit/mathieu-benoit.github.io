@@ -2,11 +2,11 @@
 title: gitops with config controller
 date: 2022-02-15
 tags: [gcp, kubernetes, security]
-description: let's see with config controller how we could set up gitops to actually deploy kubernetes manifests
+description: let's see with config controller how we could set up a gitops approach to actually deploy kubernetes manifests
 aliases:
     - /config-controller-gitops/
 ---
-So, with the previous article about [Introduction to Config Controller in action]({{< ref "/posts/2022/02/config-controller-intro.md" >}}), you could ask these questions:
+So, with the previous article about [Config Controller in action]({{< ref "/posts/2022/02/config-controller-intro.md" >}}), you could ask these questions:
 - _Ok, but that's a lot of `kubectl apply` commands... how to simplify this if I don't have access to the Config Controller endpoint for security and networking reasons?_
 - _I thought Config Controller includes Config Sync too in order to deploy Kubernetes manifests in a GitOps way?_
 
@@ -88,20 +88,20 @@ And that's it, we just set up the GitHub repository where the Platform Admin wil
 
 ## Set up the Tenant project Git repo
 
-> As a Platform Admin, I want to set up a dedicated Git repo for a Tenant project.
+> As a Platform Admin, I want to set up a dedicated Git repository for a Tenant project.
 
-https://cloud.google.com/anthos-config-management/docs/how-to/namespace-repositories --> "Control namespace repositories in the root repository"
+Let's actually see GitOps in action here, we will create the required files for this section, and then we will commit them into the Plateform Git repository to eventually trigger Config Controller's Config Sync.
 
-Let's actually see GitOps in action here, we will create the required field for this section, and then we will commit them into the paltform Git repo to eventually trigger Config Controller's Config Sync.
-
-Clone the plateform repo locally:
+Clone the plateform repository locally:
 ```
 cd ~
 git clone $PLATEFORM_REPO_URL
 cd configcontroller-platform-repo/config-sync/projects/${TENANT_PROJECT_ID}/
 ```
 
-Create the `RepoSync` resource to link the Tenant project Git repo to its dedicated Tenant project:
+_Note: we are leveraging the ["Control namespace repositories in the root repository"](https://cloud.google.com/anthos-config-management/docs/how-to/namespace-repositories) method here._
+
+Create the `RepoSync` resource in the Tenant project namespace, to link the Tenant project Git repository to its dedicated Tenant project/namespace:
 ```
 TENANT_REPO_URL=https://github.com/mathieu-benoit/configcontroller-tenant-repo
 cat <<EOF > repo-sync-${TENANT_PROJECT_ID}.yaml
@@ -121,6 +121,7 @@ spec:
 EOF
 ```
 
+We also need to declare the associated `RoleBinding` in the Tenant project namespace:
 ```
 cat <<EOF > repo-sync-role-binding-${TENANT_PROJECT_ID}.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -138,27 +139,28 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 EOF
 ```
-_Note: `ClusterRole` definition and options could be seen [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)._
+_Note: For the `ClusterRole`'s name field, the options could be seen [here](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles)._
 
-Finally let's commit these two files:
+Finally, let's commit these two files:
 ```
 git add .
 git commit -m 'Setting up reposync resource for ${TENANT_PROJECT_ID}.'
 git push
 ```
 
-From here we could double-check that the both Git repositories are successfully synchronized:
+From here we could double-check that both Git repositories are successfully synchronized:
 ```
 nomos status --contexts $(kubectl config current-context)
 gcloud alpha anthos config sync repo list --targets config-controller
 ```
 
-And that's it, that's a wrap! The Tenant project Ops hasn't done anything here (and that's the goal), it was all about the Platform admin to properly set up the environment for them. Tenant project Ops can now start do commits in their own Git repo to provision GCP resources. As an example, you could have a look into this sample Tenant project repo I set up: https://github.com/mathieu-benoit/configcontroller-tenant-repo/tree/main/config-sync. So now the Tenant project team has the right setup to actually provision any GCP resources via Kubernetes manifests by placing them into this Git repo. With that, they will follow security and governance in place and provided by the Platform admin. Sweet!
+And that's it, that's a wrap! The Tenant project Ops hasn't done anything here (and that's the goal), it was all about the Platform admin to properly set up the environment for them. Tenant project Ops can now start do commits in their own Git repository to provision GCP resources. As an example, you could have a look at this sample Tenant project repository I set up: https://github.com/mathieu-benoit/configcontroller-tenant-repo/tree/main/config-sync. So now the Tenant project team has the right setup to actually provision any GCP resources via Kubernetes manifests by placing them into this Git repository. With that, they will follow security and governance in place provided by the Platform admin. Sweet!
 
 ## Complementary and further resources
 
-- [Add policies guardrails during Continuous Integration (CI) pipelines]({{< ref "/posts/2021/11/policy-controller-ci.md" >}}) - you could find specific examples of this in both GitHub repositories: [Platform]() and [Tenant project]().
-- [Monitor RootSync and RepoSync objects](https://cloud.google.com/anthos-config-management/docs/how-to/monitor-rootsync-reposync)
+- [Add policies guardrails during Continuous Integration (CI) pipelines]({{< ref "/posts/2021/11/policy-controller-ci.md" >}}) - you could find a [specific example of this in the Platform repository](https://github.com/mathieu-benoit/configcontroller-platform-repo/blob/main/.github/workflows/ci.yml).
+- [`RootSync` and `RepoSync` fields](https://cloud.google.com/anthos-config-management/docs/reference/rootsync-reposync-fields)
+- [Monitor `RootSync` and `RepoSync` objects](https://cloud.google.com/anthos-config-management/docs/how-to/monitor-rootsync-reposync)
 - [Config Sync and Kustomize & Helm](https://cloud.google.com/anthos-config-management/docs/how-to/use-repo-kustomize-helm)
 
 Hope you enjoyed that one, cheers!

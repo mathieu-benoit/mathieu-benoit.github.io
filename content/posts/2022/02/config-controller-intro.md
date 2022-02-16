@@ -10,7 +10,7 @@ aliases:
 
 > Config Controller offers an API endpoint that can provision, actuate, and orchestrate Google Cloud resources the same way it manages Kubernetes resources. You don’t have to install or manage the components—or be an expert in Kubernetes resource management or GitOps—because Google Cloud will manage them for you.
 
-Config Controller is the bundle of the 3 following components:
+Config Controller is a bundle of the 3 following components:
 - [Config Sync](https://cloud.google.com/anthos-config-management/docs/config-sync-overview) - to create what you need from a single source of truth
 - [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller) - to enforce the security and compliance of your resource configurations
 - [Config Connector](https://cloud.google.com/config-connector/docs/overview) - to create GCP resources by using the [Kubernetes Resource Model (KRM)](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture/resource-management.md)
@@ -19,7 +19,7 @@ Config Controller is the bundle of the 3 following components:
 
 Now, let's see this in action!
 
-_Note: for now, we will just illustrate Config Connector and Policy Controller, not yet Config Sync, but if you read until the end, you will find that pointer to the blog article covering this GitOps story as part 2 of this one._
+_Note: for now, we will just illustrate Config Connector and Policy Controller, not yet Config Sync, but if you read until the end, you will find that pointer to my other blog article covering this GitOps story as a part 2 of this one._
 
 Here is what we are going to accomplish:
 - [Set up Config Controller]({{< ref "#set-up-config-controller" >}})
