@@ -5,6 +5,7 @@ tags: [gcp, kubernetes, security]
 description: let's see with config controller how we could build a secure platform allowing to deploy gcp resources via kubernetes manifests
 aliases:
     - /config-controller/
+    - /config-controller-intro/
 ---
 [In August 2021](https://cloud.google.com/blog/products/containers-kubernetes/anthos-config-management-config-controller-available-on-gke), Anthos Config Management (ACM) got a new feature called Config Controller, a hosted service to provision and orchestrate Google Cloud resources.
 
