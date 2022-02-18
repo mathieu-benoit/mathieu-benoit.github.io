@@ -59,7 +59,7 @@ kubectl wait --for condition=established crd rootsyncs.configsync.gke.io
 
 Finally, we create a `RootSync` configuration to link a dedicated Git repo cluster-wide:
 ```
-PLATEFORM_REPO_URL=https://github.com/mathieu-benoit/configcontroller-platform-repo #FIXME wity your own
+PLATFORM_REPO_URL=https://github.com/mathieu-benoit/configcontroller-platform-repo #FIXME wity your own
 cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
 kind: RootSync
@@ -69,7 +69,7 @@ metadata:
 spec:
   sourceFormat: unstructured
   git:
-    repo: ${PLATEFORM_REPO_URL}
+    repo: ${PLATFORM_REPO_URL}
     revision: HEAD
     branch: main
     dir: "config-sync"
@@ -90,12 +90,12 @@ And that's it, we just set up the GitHub repository where the Platform Admin wil
 
 > As a Platform Admin, I want to set up a dedicated Git repository for a Tenant project.
 
-Let's actually see GitOps in action here, we will create the required files for this section, and then we will commit them into the Plateform Git repository to eventually trigger Config Controller's Config Sync.
+Let's actually see GitOps in action here, we will create the required files for this section, and then we will commit them into the Platform Git repository to eventually trigger Config Controller's Config Sync.
 
-Clone the plateform repository locally:
+Clone the platform repository locally:
 ```
 cd ~
-git clone $PLATEFORM_REPO_URL
+git clone $PLATFORM_REPO_URL
 cd configcontroller-platform-repo/config-sync/projects/${TENANT_PROJECT_ID}/
 ```
 
