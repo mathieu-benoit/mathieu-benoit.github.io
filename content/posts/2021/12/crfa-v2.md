@@ -6,7 +6,7 @@ description: let's see how the new crfa v2 is leveraging asm
 aliases:
     - /crfa-v2/
 ---
-_Update on March 2022, CRfAv2 got Knative service version 1.1.2 and ASM MCP can be installed via the Fleet API._
+_Update on March 2022, [CRfAv2 got Knative service version 1.1.2](https://cloud.google.com/anthos/run/docs/release-notes#February_23_2022) and [ASM MCP can be installed via the Fleet API](https://cloud.google.com/service-mesh/docs/managed/auto-control-plane-with-fleet)._
 
 [On July 2021]({{< ref "/posts/2021/07/crfa.md" >}}) I was blogging about Cloud Run for Anthos (CRfA), but today I will go through its new version, CRfA v2, and its new integration with Anthos Service Mesh (ASM).
 
@@ -60,10 +60,10 @@ gcloud services enable \
 gcloud container hub mesh enable
 gcloud alpha container hub mesh update \
     --control-plane automatic \
-    --membership clusterName
+    --membership $clusterName
 ```
 
-After a few minutes, verify that the control plane status is `ACTIVE`:
+After a few minutes, verify that the control plane `state` is `ACTIVE` and `code` is `REVISION_READY`:
 ```
 gcloud alpha container hub mesh describe
 ```
