@@ -25,7 +25,7 @@ Let's use a given project:
 ```
 projectId=FIXME
 gcloud config set project $projectId
-projectNumber=$(gcloud projects describe $projectId --format='get(projectNumber))
+projectNumber=$(gcloud projects describe $projectId --format='get(projectNumber)')
 ```
 
 Create a GKE cluster:
@@ -35,11 +35,7 @@ clusterName=FIXME
 gcloud services enable container.googleapis.com
 gcloud container clusters create $clusterName \
     --zone=$zone \
-    --machine-type n2d-standard-4 \
-    --release-channel rapid \
     --workload-pool=$projectId.svc.id.goog \
-    --enable-ip-alias \
-    --addons HttpLoadBalancing \
     --labels mesh_id=proj-$projectNumber
 ```
 
@@ -67,13 +63,14 @@ After a few minutes, verify that the control plane `state` is `ACTIVE` and `code
 ```
 gcloud alpha container hub mesh describe
 ```
+Take note of the revision label in the `description:` field, `asm-managed` in the provided output. That's the [ASM release channel](https://cloud.google.com/service-mesh/docs/managed/select-a-release-channel) your GKE cluster is in.
 
 Deploy a public [Ingress Gateway](https://cloud.google.com/service-mesh/docs/gateways):
 ```
 ingressNamespace=asm-ingress
 ingressName=asm-ingressgateway
 ingressLabel='asm: ingressgateway'
-asmRevision=asm-managed-rapid
+asmRevision=asm-managed
 cat <<EOF | kubectl apply -n $ingressNamespace -f -
 apiVersion: v1
 kind: Namespace
