@@ -6,6 +6,8 @@ description: let's see how the new crfa v2 is leveraging asm
 aliases:
     - /crfa-v2/
 ---
+_Update on March 2022, CRfAv2 got Knative service version 1.1.2 and ASM MCP can be installed via the Fleet API._
+
 [On July 2021]({{< ref "/posts/2021/07/crfa.md" >}}) I was blogging about Cloud Run for Anthos (CRfA), but today I will go through its new version, CRfA v2, and its new integration with Anthos Service Mesh (ASM).
 
 That's the same experience based on Knative like illustrated during this recent session about CRfA during Google Cloud Next 2021:
@@ -23,6 +25,7 @@ Let's use a given project:
 ```
 projectId=FIXME
 gcloud config set project $projectId
+projectNumber=$(gcloud projects describe $projectId --format='get(projectNumber))
 ```
 
 Create a GKE cluster:
@@ -33,32 +36,36 @@ gcloud services enable container.googleapis.com
 gcloud container clusters create $clusterName \
     --zone=$zone \
     --machine-type n2d-standard-4 \
+    --release-channel rapid \
     --workload-pool=$projectId.svc.id.goog \
-    --enable-ip-alias
+    --enable-ip-alias \
+    --addons HttpLoadBalancing \
+    --labels mesh_id=proj-$projectNumber
 ```
 
 Register the GKE cluster as an Anthos Fleet:
 ```
-gcloud services enable anthos.googleapis.com
 gcloud services enable \
     anthos.googleapis.com \
-    gkeconnect.googleapis.com \
     gkehub.googleapis.com
 gcloud container hub memberships register $clusterName \
     --gke-cluster $zone/$clusterName \
     --enable-workload-identity
 ```
 
-[Install ASM](https://cloud.google.com/service-mesh/docs/unified-install/install) in this GKE cluster:
+[Install ASM MCP](https://cloud.google.com/service-mesh/docs/managed/auto-control-plane-with-fleet) for this GKE cluster:
 ```
-curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > ~/asmcli
-chmod +x ~/asmcli
-~/asmcli install \
-  --project_id $projectId \
-  --cluster_name $clusterName \
-  --cluster_location $zone \
-  --option cni-gcp \
-  --enable-all
+gcloud services enable \
+    mesh.googleapis.com
+gcloud container hub mesh enable
+gcloud alpha container hub mesh update \
+    --control-plane automatic \
+    --membership clusterName
+```
+
+After a few minutes, verify that the control plane status is `ACTIVE`:
+```
+gcloud alpha container hub mesh describe
 ```
 
 Deploy a public [Ingress Gateway](https://cloud.google.com/service-mesh/docs/gateways):
@@ -66,9 +73,7 @@ Deploy a public [Ingress Gateway](https://cloud.google.com/service-mesh/docs/gat
 ingressNamespace=asm-ingress
 ingressName=asm-ingressgateway
 ingressLabel='asm: ingressgateway'
-asmRevision=$(kubectl get deploy -n istio-system \
-    -l app=istiod \
-    -o jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}')
+asmRevision=asm-managed-rapid
 cat <<EOF | kubectl apply -n $ingressNamespace -f -
 apiVersion: v1
 kind: Namespace
