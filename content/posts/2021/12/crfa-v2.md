@@ -90,16 +90,9 @@ metadata:
     ${ingressLabel}
 spec:
   ports:
-  - name: status-port
-    port: 15021
-    protocol: TCP
-    targetPort: 15021
-  - name: http2
+  - name: http
     port: 80
-    targetPort: 8081
-  - name: https
-    port: 443
-    targetPort: 8443
+    targetPort: 80
   selector:
     ${ingressLabel}
   type: LoadBalancer
