@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.decibel.vc/content/engaging-a-large-developer-community-learnings-from-docker-and-strapi
+https://theworst.dev/developer-advocates-guide-to-metrics-and-reporting
+https://medium.com/@aens1066/the-anatomy-of-a-product-2e18c321582d
 https://medium.com/@askmeegs/one-year-in-devrel-21b516fdaa05
 https://medium.com/google-cloud/developer-programs-engineer-say-what-b12829729693
 https://www.devocate.com/finding-success-with-your-first-devrel-hire/
@@ -25,3 +28,4 @@ https://www.youtube.com/watch?v=i2BYvDk3Vsk
 https://posthog.com/blog/seed-grow-scale-devrel
 https://github.com/readme/guides/angie-jones-demystifying-developer-advocacy
 https://www.devrel-ladders.com/
+https://medium.com/@brooke.wayne/478b82185baa

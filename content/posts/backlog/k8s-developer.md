@@ -9,6 +9,7 @@ aliases:
     - /kubernetes-developer/
     - /k8s-developer/
 ---
+https://www.cncf.io/blog/2022/03/03/an-emerging-job-kubernetes-engineer/
 https://odedia.org/kubernetes-needs-a-developer-platform
 
 What's a Kubernetes developer? What does they cover? What's their job? What do they do?
