@@ -2,10 +2,20 @@
 title: presentations
 ---
 
-Here is the list of the 37 public presentations and workshop I delivered.
+Here is the list of the 40 public presentations and workshop I delivered.
 
-## 2022 (1)
+## 2022 (4)
 
+- 2022-04 - [IstioCon 2022 - Manage and Secure Distributed Services with Anthos Service Mesh - Workshop](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-04-IstioCon-2022-Anthos-Service-Mesh-Workshop.pdf)
+  - [Link to the demo](https://github.com/GoogleCloudPlatform/anthos-service-mesh-samples/tree/main/demos/asm-mcp-multi-clusters)
+- 2022-04 - [IstioCon 2022 - Gatekeeper + Istio, FTW](https://events.istio.io/istiocon-2022/sessions/gatekeeper-istio/)
+  - [Link to the recording](https://youtu.be/F047B7cs1U0)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-04-IstioCon-2022-Istio-and-Gatekeeper.pdf)
+  - [Link to the demo](https://github.com/mathieu-benoit/istio-gatekeeper-demos)
+- 2022-03 - [GitOps in action! Deploy your apps and infrastructure thanks to Git and Kubernetes](https://gdg.community.dev/e/m4hwj6/)
+  - [Link to the recording [fr]](https://youtu.be/oioY843kEEU)
+  - [Link to the demo](https://acm-workshop.alwaysupalwayson.com/)
 - 2022-01 - [Secure your apps and your clusters with Anthos Service Mesh](https://github.com/mathieu-benoit/presentations/raw/main/2022-01-Secure-your-apps-and-your-clusters-with-Anthos-Service-Mesh.pdf)
 
 ## 2021 (5)
