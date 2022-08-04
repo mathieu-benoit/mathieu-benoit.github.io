@@ -9,7 +9,7 @@ googleAnalytics = 'G-J8536XT21V'
 [params]
   contentTypeName = "posts"
   defaultTheme = "dark"
-  showMenuItems = 2
+  showMenuItems = 3
   showReadingTime = false
   description = "Mathieu Benoit's blog"
 
