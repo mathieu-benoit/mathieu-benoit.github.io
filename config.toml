@@ -27,6 +27,11 @@ googleAnalytics = 'G-J8536XT21V'
 
     [languages.en.menu]
       [[languages.en.menu.main]]
+        identifier = "presentations"
+        name = "presentations"
+        url = "/presentations/"
+        weight = "30"
+      [[languages.en.menu.main]]
         identifier = "about"
         name = "about"
         url = "/about/"
