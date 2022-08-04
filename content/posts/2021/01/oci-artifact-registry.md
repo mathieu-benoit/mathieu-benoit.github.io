@@ -6,51 +6,52 @@ description: let's see how we could host our own helm charts (and more generical
 aliases:
     - /oci-artifact-registry/
 ---
+_Updated on August 2nd, 2022 with the official support of OCI format for Helm since 3.8.0, not experimental anymore._
+
 [Google Artifact Registry](https://cloud.google.com/blog/products/devops-sre/artifact-registry-is-ga) is great to securely store and manage container images but we could do more with [its supported formats](https://cloud.google.com/artifact-registry/docs/supported-formats). One of the use case could be to store your own Helm charts that you could reuse and share privately in your company, accross different projects, etc.
 
 Let's see in actions how we could [store our own Helm chart in Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/helm)!
 ```
+# Info of your existing Artifact Registry
 region=us-east4
 project=FIXME
-repository=helm
-chart=hello-world
+
+# Create a repository dedicated to your helm charts in Artifact Registry
+repository=charts
 
 # If you don't have your own Helm chart yet, you could create it like this:
+chart=hello-world
 helm create $chart
 cd $chart
-export HELM_EXPERIMENTAL_OCI=1
 
-# Save it in the local registry cache:
-helm chart save . $region-docker.pkg.dev/$project/$repository/$chart:v1
-helm chart list
+# Package the Helm chart (which will create the file $chart-0.1.0.tgz file):
+helm package .
 
-# Login to Google Artifact Registry with your user account:
-gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://$region-docker.pkg.dev
-# Alternatively if you are using a service account, you could use the access token file like this:
-cat key.json | helm registry login -u _json_key -password-stdin $region-docker.pkg.dev
-# If using a base64 encoded key, use _json_key_base64 instead of _json_key.
+# For authentication, we'll use Artifact Registry credentials configured for Docker
+# Other options are documented here: https://cloud.google.com/artifact-registry/docs/helm/authentication
 
-# Push the chart there:
-helm chart push $region-docker.pkg.dev/$project/$repository/$chart:v1
+# Push the chart in Artifact Registry:
+helm push $(ls $chart-*) oci://$region-docker.pkg.dev/$project/$repository
 
 # Verify the chart is there:
 gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/$chart
-gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/$chart:v1
+gcloud artifacts files list --project $project --location $region --repository $repository
 
 # Pull the chart back:
-helm chart remove $region-docker.pkg.dev/$project/$repository/$chart:v1
-helm chart pull $region-docker.pkg.dev/$project/$repository/$chart:v1
-helm chart export mycontainerregistry.azurecr.io/helm/hello-world:v1 \
-  --destination ./install
+mkdir tmp
+helm pull oci://$region-docker.pkg.dev/$project/$repository/$chart \
+    -d tmp
+# You could add the --untar parameter too    
+ls tmp
 
-# From there you could deploy this chart via `helm upgrade|install`...
+# Not part of this article, but from here you could also deploy this chart in your Kubernetes clusters via `helm upgrade|install`...
 ```
 
 Wonderful! Isn't it!? But that's not all...
 
-Now let's push any file as an [Open Container Initiative (OCI)](https://opencontainers.org/) Artifact. For this we need a generic client able to push an OCI format compliant file to the registry, here comes [OCI Registry As Storage (ORAS)](https://github.com/deislabs/oras).
+Now let's push any file as an [Open Container Initiative (OCI)](https://opencontainers.org/) Artifact. For this we need a generic client able to push an OCI format compliant file to the registry, here comes [OCI Registry As Storage (ORAS)](https://oras.land/).
 
-Let's see it in actions by pushing a simple `.txt` file (I'm using `oras` CLI via its public container image but you could find more options to install it [here](https://github.com/deislabs/oras#cli-installation)):
+Let's see it in actions by pushing a simple `.txt` file (you need to install the `oras` CLI, you could find the options to install it [here](https://oras.land/cli/)):
 ```
 repository=files
 
@@ -58,7 +59,7 @@ repository=files
 echo "Here is an artifact!" > artifact.txt
 
 # And push it in Google Artifact Registry:
-docker run -i --rm -v $(pwd):/workspace orasbot/oras push \
+oras push \
     $region-docker.pkg.dev/$project/$repository/sample-txt:v1 \
     ./artifact.txt \
     -u oauth2accesstoken \
@@ -70,7 +71,7 @@ gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$reposit
 
 # Pull the file back:
 rm artifact.txt
-docker run -i --rm -v $(pwd):/workspace orasbot/oras pull \
+oras pull \
     $region-docker.pkg.dev/$project/$repository/sample-txt:v1 \
     -u oauth2accesstoken \
     -p $(gcloud auth print-access-token)
@@ -85,7 +86,7 @@ repository=regos
 curl https://raw.githubusercontent.com/mathieu-benoit/mygkecluster/master/policy/container-policies.rego -o ./container-policies.rego
 
 # And push it in Google Artifact Registry:
-docker run -i --rm -v $(pwd):/workspace orasbot/oras push \
+oras push \
     $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
     ./container-policies.rego \
     -u oauth2accesstoken \
@@ -97,18 +98,14 @@ gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$reposit
 
 # Pull the file back:
 rm container-policies.rego
-docker run -i --rm -v $(pwd):/workspace orasbot/oras pull \
+oras pull \
     $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
     -u oauth2accesstoken \
     -p $(gcloud auth print-access-token)
 cat container-policies.rego
 ```
 
-And that's it! That's how easily you could securely store and share your OPA's rego files accross your company, teams and projects! ;)
-
-Notes:
-- There is still an opened question about the future of the `ORAS` project and [how is it really maintained](https://github.com/deislabs/oras/issues/207)
-- [OCI support with `Helm` is still in experimental mode](https://helm.sh/docs/topics/registries/#enabling-oci-support)
+And that's it! That's how easily you could securely store and share your OPA's rego files (or any files) accross your company, teams and projects! ;)
 
 Complementary and further resources:
 - [Managing your containers with Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/docker)
