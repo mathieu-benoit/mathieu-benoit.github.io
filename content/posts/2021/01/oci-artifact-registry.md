@@ -78,28 +78,36 @@ gcloud artifacts repositories create $repository \
     --repository-format docker
 
 # Let's have a file
-echo "Here is an artifact!" > artifact.txt
+echo "Here is a file!" > first-file.txt
 
 # For authentication, we'll use Artifact Registry credentials configured for Docker
 gcloud auth configure-docker $region-docker.pkg.dev
 
-# And push it in Artifact Registry:
+# Push the file in Artifact Registry:
 oras push \
-    $region-docker.pkg.dev/$project/$repository/sample-txt:v1 \
-    artifact.txt
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v1 \
+    first-file.txt
 
 # Verify the chart is there:
-gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/sample-txt
+gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/my-artifact
 gcloud artifacts files list \
     --project $project \
     --location $region \
     --repository $repository
 
 # Pull the file back:
-rm artifact.txt
+rm first-file.txt
 oras pull \
-    $region-docker.pkg.dev/$project/$repository/sample-txt:v1
-cat artifact.txt 
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v1
+cat first-file.txt
+
+# Let's add more files in this artifact
+echo "Here is a second file!" > second-file.txt
+mkdir subfolder
+echo "Here is a third file!" > subfolder/third-file.txt
+oras push \
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v2 \
+    first-file.txt second-file.txt subfolder/
 ```
 
 And that's it! That's how easily you could securely store and share any files in an OCI format across your company, teams and projects! ;)
