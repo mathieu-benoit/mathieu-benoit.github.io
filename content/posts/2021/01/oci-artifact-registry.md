@@ -39,6 +39,7 @@ cd $chart
 helm package .
 
 # For authentication, we'll use Artifact Registry credentials configured for Docker
+gcloud auth configure-docker $region-docker.pkg.dev
 # Other options are documented here: https://cloud.google.com/artifact-registry/docs/helm/authentication
 
 # Push the chart in Artifact Registry:
@@ -69,6 +70,7 @@ Now let's push any file as an [Open Container Initiative (OCI)](https://opencont
 
 Let's see it in actions by pushing a simple `.txt` file (you need to install the `oras` CLI, you could find the options to install it [here](https://oras.land/cli/)):
 ```
+# Create a dedicated repository
 repository=files
 gcloud artifacts repositories create $repository \
     --project $project \
@@ -77,6 +79,9 @@ gcloud artifacts repositories create $repository \
 
 # Let's have a file
 echo "Here is an artifact!" > artifact.txt
+
+# For authentication, we'll use Artifact Registry credentials configured for Docker
+gcloud auth configure-docker $region-docker.pkg.dev
 
 # And push it in Artifact Registry:
 oras push \
