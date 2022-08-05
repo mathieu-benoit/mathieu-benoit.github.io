@@ -1,14 +1,21 @@
 ---
-title: host helm charts in google artifact registry
+title: host helm charts and oci artifacts in google artifact registry
 date: 2021-01-14
 tags: [containers, helm]
 description: let's see how we could host our own helm charts (and more generically, any oci artifacts) in google artifact registry
 aliases:
     - /oci-artifact-registry/
+    - /oci-artifacts/
 ---
 _Updated on August 2nd, 2022 with the official support of OCI format for Helm since 3.8.0, not experimental anymore._
 
-[Google Artifact Registry](https://cloud.google.com/blog/products/devops-sre/artifact-registry-is-ga) is great to securely store and manage container images but we could do more with [its supported formats](https://cloud.google.com/artifact-registry/docs/supported-formats). One of the use case could be to store your own Helm charts that you could reuse and share privately in your company, accross different projects, etc.
+[Google Artifact Registry](https://cloud.google.com/blog/products/devops-sre/artifact-registry-is-ga) is great to securely store and manage container images but we could do more with [its supported formats](https://cloud.google.com/artifact-registry/docs/supported-formats). One of the use case could be to store your own Helm charts, or more generically any OCI artifacts, that you could reuse and share privately in your company, accross different projects, etc.
+
+In this blog article we'll see 2 options to store and interact with your OCI artifacts and Artifact Registry:
+- [Helm CLI]({{< ref "#helm-cli" >}})
+- [Oras CLI]({{< ref "#oras-cli" >}})
+
+## Helm CLI
 
 Let's see in actions how we could [store our own Helm chart in Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/helm)!
 ```
@@ -18,6 +25,10 @@ project=FIXME
 
 # Create a repository dedicated to your helm charts in Artifact Registry
 repository=charts
+gcloud artifacts repositories create $repository \
+    --project $project \
+    --location $region \
+    --repository-format docker
 
 # If you don't have your own Helm chart yet, you could create it like this:
 chart=hello-world
@@ -35,7 +46,10 @@ helm push $(ls $chart-*) oci://$region-docker.pkg.dev/$project/$repository
 
 # Verify the chart is there:
 gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/$chart
-gcloud artifacts files list --project $project --location $region --repository $repository
+gcloud artifacts files list \
+    --project $project \
+    --location $region \
+    --repository $repository
 
 # Pull the chart back:
 mkdir tmp
@@ -49,63 +63,41 @@ ls tmp
 
 Wonderful! Isn't it!? But that's not all...
 
+## Oras CLI
+
 Now let's push any file as an [Open Container Initiative (OCI)](https://opencontainers.org/) Artifact. For this we need a generic client able to push an OCI format compliant file to the registry, here comes [OCI Registry As Storage (ORAS)](https://oras.land/).
 
 Let's see it in actions by pushing a simple `.txt` file (you need to install the `oras` CLI, you could find the options to install it [here](https://oras.land/cli/)):
 ```
 repository=files
+gcloud artifacts repositories create $repository \
+    --project $project \
+    --location $region \
+    --repository-format docker
 
 # Let's have a file
 echo "Here is an artifact!" > artifact.txt
 
-# And push it in Google Artifact Registry:
+# And push it in Artifact Registry:
 oras push \
     $region-docker.pkg.dev/$project/$repository/sample-txt:v1 \
-    ./artifact.txt \
-    -u oauth2accesstoken \
-    -p $(gcloud auth print-access-token)
+    artifact.txt
 
 # Verify the chart is there:
 gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/sample-txt
-gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/sample-txt:v1
+gcloud artifacts files list \
+    --project $project \
+    --location $region \
+    --repository $repository
 
 # Pull the file back:
 rm artifact.txt
 oras pull \
-    $region-docker.pkg.dev/$project/$repository/sample-txt:v1 \
-    -u oauth2accesstoken \
-    -p $(gcloud auth print-access-token)
+    $region-docker.pkg.dev/$project/$repository/sample-txt:v1
 cat artifact.txt 
 ```
 
-You could ask _why are we doing this?_ Good question, one of the use case in the cloud native ecosystem could be to store and share your [`OPA`]({{< ref "/posts/2021/01/container-linter.md" >}})'s rego files:
-```
-repository=regos
-
-# Let's have a rego file:
-curl https://raw.githubusercontent.com/mathieu-benoit/mygkecluster/master/policy/container-policies.rego -o ./container-policies.rego
-
-# And push it in Google Artifact Registry:
-oras push \
-    $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
-    ./container-policies.rego \
-    -u oauth2accesstoken \
-    -p $(gcloud auth print-access-token)
-
-# Verify the chart is there:
-gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/container-policies
-gcloud artifacts docker images describe $region-docker.pkg.dev/$project/$repository/container-policies:v1
-
-# Pull the file back:
-rm container-policies.rego
-oras pull \
-    $region-docker.pkg.dev/$project/$repository/container-policies:v1 \
-    -u oauth2accesstoken \
-    -p $(gcloud auth print-access-token)
-cat container-policies.rego
-```
-
-And that's it! That's how easily you could securely store and share your OPA's rego files (or any files) accross your company, teams and projects! ;)
+And that's it! That's how easily you could securely store and share any files in an OCI format across your company, teams and projects! ;)
 
 Complementary and further resources:
 - [Managing your containers with Google Artifact Registry](https://cloud.google.com/artifact-registry/docs/docker)
