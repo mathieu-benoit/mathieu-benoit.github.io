@@ -1,7 +1,7 @@
 ---
 title: gitops on gke with config sync
 date: 2021-01-20
-tags: [containers, security, gcp, kubernetes]
+tags: [containers, security, gcp, kubernetes, gitops]
 description: let's see gitops in actions with gke's config sync
 aliases:
     - /config-sync/
