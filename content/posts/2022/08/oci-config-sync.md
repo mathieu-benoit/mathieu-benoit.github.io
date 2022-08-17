@@ -13,7 +13,7 @@ One principle of [GitOps](https://opengitops.dev/) is to have the desired state 
 
 Let's see in action how [Config Sync can deploy OCI artifacts stored in Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/publish-config-registry).
 
-Create a GKE cluster registered in a Fleet:
+Create a GKE cluster registered in a Fleet to enable Config Management:
 ```
 project=FIXME
 region=us-east4
@@ -61,7 +61,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 Login to Artifact Registry (later we will push OCI artifacts in there):
 ```
-FIXME
+gcloud auth configure-docker $region-docker.pkg.dev
 ```
 
 ## Deploy a simple Kubernetes resource as OCI image
@@ -119,15 +119,15 @@ gcloud alpha anthos config sync repo describe --managed-resources all
 kubectl get ns
 ```
 
-And voila! That's how easy it is to deploy an OCI artifacts in a GitOps way with Config Sync.
+And voila! That's how easy it is to deploy an OCI artifact in a GitOps way with Config Sync.
 
-There are 3 main advantages of doing GitOps with OCI artifacts instead of Git:
+There are 3 main advantages of doing GitOps with OCI artifacts instead of Git repository:
 - You could have fine granular access control on the registry with your Google Cloud IAM (users, service accounts, etc.)
 - You could share more easily packages/artifacts of your Kubernetes manifests, even in a dynamic and generic way with Helm as an example
 - You could have a better seperation of concerns between your CI and your CD. With your CI pipelines you still need Git repositories, have security and governance checks before pushing the artifacts in the registries.
 
 Complementary and further resources:
-- [Host Helm charts and OCI artifacts in Google Artifact Registry]({{< ref "/posts/2021/01/oci-artifact-registry.md" >}})
+- [Host Helm charts and OCI artifacts in Artifact Registry]({{< ref "/posts/2021/01/oci-artifact-registry.md" >}})
 - [Add GitOps without throwing out your CI tools](https://www.cncf.io/blog/2022/08/10/add-gitops-without-throwing-out-your-ci-tools/)
 - [OCI artifacts support from FluxCD](https://fluxcd.io/docs/cheatsheets/oci-artifacts/)
 
