@@ -84,13 +84,13 @@ tar -cf test-namespace.tar test-namespace.yaml
 Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
-    $region-docker.pkg.dev/$project/$containerRegistryName/my-artifact:v1 \
+    $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 \
     test-namespace.tar
 ```
 Alternatively, push that artifact in Artifact Registry with [`crane`](https://github.com/google/go-containerregistry/tree/main/cmd/crane):
 ```
 crane append -f <(tar -f - -c test-namespace.tar) \
-    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-artifact:v1 
+    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 
 ```
 
 Set up Config Sync to deploy this artifact from Artifact Registry:
@@ -102,7 +102,7 @@ spec:
     enabled: true
     sourceFormat: unstructured
     sourceType: oci
-    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-artifact:v1
+    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-namespace-artifact:v1
     secretType: gcpserviceaccount
     policyDir: .
     gcpServiceAccountEmail: ${gsaId}
@@ -116,10 +116,74 @@ Check the status of the deployment:
 ```
 nomos status --contexts=$(kubectl config current-context)
 gcloud alpha anthos config sync repo describe --managed-resources all
-kubectl get ns
+kubectl get ns test
 ```
 
-And voila! That's how easy it is to deploy an OCI artifact in a GitOps way with Config Sync.
+And voila! That's how easy it is to deploy any Kubernetes manifests as an OCI artifact in a GitOps way with Config Sync.
+
+## Deploy an Helm chart as OCI image
+
+Create a simple Helm chart:
+```
+helm create test-chart
+```
+
+In order to deploy an Helm chart with Config Sync, we need to leverage Kustomize:
+```
+cat <<EOF > kustomization.yaml
+namespace: test-chart
+helmGlobals:
+  chartHome: .
+helmCharts:
+- name: test-chart
+  releaseName: test-chart
+EOF
+```
+
+Create an archive of those files:
+```
+tar -cf test-chart.tar kustomization.yaml test-chart/
+```
+
+Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
+```
+oras push \
+    $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1 \
+    test-chart.tar
+```
+Alternatively, push that artifact in Artifact Registry with [`crane`](https://github.com/google/go-containerregistry/tree/main/cmd/crane):
+```
+crane append -f <(tar -f - -c test-chart.tar) \
+    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1
+```
+
+Set up Config Sync to deploy this artifact from Artifact Registry:
+```
+cat <<EOF > acm-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+    sourceFormat: unstructured
+    sourceType: oci
+    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-helm-chart-artifact:v1
+    secretType: gcpserviceaccount
+    policyDir: .
+    gcpServiceAccountEmail: ${gsaId}
+EOF
+gcloud beta container fleet config-management apply \
+    --membership $clusterName \
+    --config acm-config.yaml
+```
+
+Check the status of the deployment:
+```
+nomos status --contexts=$(kubectl config current-context)
+gcloud alpha anthos config sync repo describe --managed-resources all
+kubectl get all -n test-chart 
+```
+
+And voila! That's how easy it is to deploy an Helm chart as an OCI artifact in a GitOps way with Config Sync.
 
 There are 3 main advantages of doing GitOps with OCI artifacts instead of Git repository:
 - You could have fine granular access control on the registry with your Google Cloud IAM (users, service accounts, etc.)
@@ -128,6 +192,7 @@ There are 3 main advantages of doing GitOps with OCI artifacts instead of Git re
 
 Complementary and further resources:
 - [Host Helm charts and OCI artifacts in Artifact Registry]({{< ref "/posts/2021/01/oci-artifact-registry.md" >}})
+- [Config Sync OCI demo](https://youtu.be/PZSNn080W6g)
 - [Add GitOps without throwing out your CI tools](https://www.cncf.io/blog/2022/08/10/add-gitops-without-throwing-out-your-ci-tools/)
 - [OCI artifacts support from FluxCD](https://fluxcd.io/docs/cheatsheets/oci-artifacts/)
 
