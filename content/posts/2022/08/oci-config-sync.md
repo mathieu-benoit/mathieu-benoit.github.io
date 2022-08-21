@@ -11,6 +11,8 @@ One principle of [GitOps](https://opengitops.dev/) is to have the desired state 
 
 > The [Open Container Initiative (OCI)](https://opencontainers.org/) is an open governance structure for the express purpose of creating open industry standards around container formats and runtimes.
 
+![Git versus OCI flow with Config Sync.](https://github.com/mathieu-benoit/my-images/raw/main/git-and-oci-flow-with-config-sync.png)
+
 Let's see in action how [Config Sync can deploy OCI artifacts stored in Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/publish-config-registry).
 
 Create a GKE cluster registered in a Fleet to enable Config Management:
@@ -128,7 +130,7 @@ Create a simple Helm chart:
 helm create test-chart
 ```
 
-In order to deploy an Helm chart with Config Sync, we need to leverage Kustomize:
+In order to deploy an [Helm chart with Config Sync](https://cloud.google.com/anthos-config-management/docs/how-to/use-repo-kustomize-helm), we need to leverage Kustomize:
 ```
 cat <<EOF > kustomization.yaml
 namespace: test-chart
@@ -188,7 +190,7 @@ And voila! That's how easy it is to deploy an Helm chart as an OCI artifact in a
 There are 3 main advantages of doing GitOps with OCI artifacts instead of Git repository:
 - You could have fine granular access control on the registry with your Google Cloud IAM (users, service accounts, etc.)
 - You could share more easily packages/artifacts of your Kubernetes manifests, even in a dynamic and generic way with Helm as an example
-- You could have a better seperation of concerns between your CI and your CD. With your CI pipelines you still need Git repositories, have security and governance checks before pushing the artifacts in the registries.
+- You could have a better separation of concerns between your CI and your CD. With your CI pipelines you still need Git repositories, have security and governance checks before pushing the artifacts in the registries.
 
 Complementary and further resources:
 - [Host Helm charts and OCI artifacts in Artifact Registry]({{< ref "/posts/2021/01/oci-artifact-registry.md" >}})
