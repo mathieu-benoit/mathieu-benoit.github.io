@@ -187,10 +187,11 @@ kubectl get all -n test-chart
 
 And voila! That's how easy it is to deploy an Helm chart as an OCI artifact in a GitOps way with Config Sync.
 
-There are 3 main advantages of doing GitOps with OCI artifacts instead of Git repository:
+There are 4 main advantages of doing GitOps with OCI artifacts instead of Git repository:
 - You could have fine granular access control on the registry with your Google Cloud IAM (users, service accounts, etc.)
 - You could share more easily packages/artifacts of your Kubernetes manifests, even in a dynamic and generic way with Helm as an example
 - You could have a better separation of concerns between your CI and your CD. With your CI pipelines you still need Git repositories, have security and governance checks before pushing the artifacts in the registries.
+- You could save resources consumption (CPU, memory) by Config Sync as you will scale with a multi repositories setup for example. Config Sync will specifically pull the OCI artifact instead of dealing with Git (`git clone`, etc.) which could have performance issues.
 
 Complementary and further resources:
 - [Host Helm charts and OCI artifacts in Artifact Registry]({{< ref "/posts/2021/01/oci-artifact-registry.md" >}})
