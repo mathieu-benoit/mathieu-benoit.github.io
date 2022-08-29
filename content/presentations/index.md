@@ -2,11 +2,12 @@
 title: presentations
 ---
 
-Here is the list of the 40 public presentations and workshop I delivered.
+Here is the list of the 40 public presentations and workshops I have built and delivered.
 
 ## 2022 (4)
 
 - 2022-04 - [Manage and Secure Distributed Services with Anthos Service Mesh Workshop - IstioCon 2022](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/)
+  - [Link to the recording](https://youtu.be/--mPdAxovfE?list=PL7wB27eZmdffL2cyYauEuxcOTyGtSv4gy)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-04-IstioCon-2022-Anthos-Service-Mesh-Workshop.pdf)
   - [Link to the demo](https://github.com/GoogleCloudPlatform/anthos-service-mesh-samples/tree/main/demos/asm-mcp-multi-clusters)
   - Co-presented with [Christine Kim](https://www.linkedin.com/in/christine-soh-kim/), [Mike Coleman](https://www.linkedin.com/in/mikegcoleman/) and [Nim Jayawardena](https://www.linkedin.com/in/nimesha-nim-jayawardena-3b4a1396/)
