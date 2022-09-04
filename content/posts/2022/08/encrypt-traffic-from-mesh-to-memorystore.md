@@ -280,6 +280,7 @@ gcloud redis instances delete ${REDIS_NAME}
 
 ## What's next
 
-- Watch this [Anthos Service Mesh value over Istio OSS episode on YouTube](https://youtu.be/C1y_Ix3ws68).
+- Watch this [ASM value over Istio OSS](https://youtu.be/C1y_Ix3ws68) episode on YouTube.
 - Learn more about [ASM security best practices](https://cloud.google.com/service-mesh/docs/security/anthos-service-mesh-security-best-practices).
+- Watch this [Architecting zero trust networks with GKE and ASM](https://youtu.be/D_TBDp9tK9w) episode on YouTube
 - Learn more about [Strengthen your app's security with ASM and Anthos Config Management](https://cloud.google.com/service-mesh/docs/strengthen-app-security).
