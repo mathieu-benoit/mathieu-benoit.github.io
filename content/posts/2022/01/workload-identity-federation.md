@@ -47,7 +47,7 @@ gcloud iam workload-identity-pools providers create-oidc $poolName \
   --location global \
   --workload-identity-pool $poolName \
   --display-name $poolName \
-  --attribute-mapping "google.subject=assertion.${attributeMappingScope},attribute.actor=assertion.actor,attribute.aud=assertion.aud" \
+  --attribute-mapping "google.subject=assertion.${attributeMappingScope},attribute.actor=assertion.actor,attribute.aud=assertion.aud,attribute.repository=assertion.repository" \
   --issuer-uri "https://token.actions.githubusercontent.com"
 providerId=$(gcloud iam workload-identity-pools providers describe $poolName \
   --location global \
@@ -70,13 +70,13 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout
       - id: gcp-auth
-        uses: google-github-actions/auth@v0.5.0
+        uses: google-github-actions/auth
         with:
           workload_identity_provider: '${providerId}'
           service_account: '${saId}'
-      - uses: google-github-actions/setup-gcloud@v0.4.0
+      - uses: google-github-actions/setup-gcloud
 ```
 
 That's pretty much it, any next steps could interact with GCP depending on the roles you will assign to the associated Service Account created earlier.
@@ -90,26 +90,23 @@ jobs:
       contents: 'read'
       id-token: 'write'
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout
       - id: gcp-auth
-        uses: google-github-actions/auth@v0.5.0
+        uses: google-github-actions/auth
         with:
           workload_identity_provider: '${providerId}'
           service_account: '${saId}'
           token_format: 'access_token'
       - name: sign-in to artifact registry
         run: |
-          echo "${{ steps.gcp-auth.outputs.access_token }}" | docker login -u oauth2accesstoken --password-stdin ${location}-docker.pkg.dev
+          gcloud auth configure-docker ${location}-docker.pkg.dev --quiet
       - name: build and push container
         run: |
           docker build ...
           docker push ...
 ```
-In this scenario, you will need to grant the Service Account with 2 roles:
+In this scenario, you will need to grant the Service Account with 1 role:
 ```
-gcloud projects add-iam-policy-binding $projectId \
-  --member "serviceAccount:$saId" \
-  --role "roles/iam.serviceAccountTokenCreator"
 gcloud artifacts repositories add-iam-policy-binding $artifactRegistryName \
     --project $projectId \
     --location $location \
