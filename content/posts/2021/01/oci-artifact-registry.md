@@ -33,17 +33,16 @@ gcloud artifacts repositories create $repository \
 # If you don't have your own Helm chart yet, you could create it like this:
 chart=hello-world
 helm create $chart
-cd $chart
 
-# Package the Helm chart (which will create the file $chart-0.1.0.tgz file):
-helm package .
+# Package the Helm chart:
+helm package $chart --version 0.1.0
 
 # For authentication, we'll use Artifact Registry credentials configured for Docker
 gcloud auth configure-docker $region-docker.pkg.dev
 # Other options are documented here: https://cloud.google.com/artifact-registry/docs/helm/authentication
 
 # Push the chart in Artifact Registry:
-helm push $(ls $chart-*) oci://$region-docker.pkg.dev/$project/$repository
+helm push $chart-0.1.0.tgz oci://$region-docker.pkg.dev/$project/$repository
 
 # Verify the chart is there:
 gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/$chart
