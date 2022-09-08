@@ -6,6 +6,8 @@ description: let's see how to use anthos service mesh to seamlessly encrypt traf
 aliases:
     - /encrypt-traffic-from-mesh-to-memorystore/
 ---
+_Update on Sep 8th, 2022: this blog article is also now on [Medium](https://medium.com/@mabenoit/seamlessly-encrypt-traffic-from-any-apps-in-your-mesh-to-memorystore-redis-64b71969318d)._
+
 _Note: this blog article is an end-to-end recipe implementing the [Istio TLS origination to secure Memorystore (redis) access]({{< ref "/posts/2022/01/istio-tls-origination.md" >}}) blog article I wrote a few months ago._
 
 Anthos Service Mesh (ASM), a managed Istio implementation, can [improve your security posture](https://cloud.google.com/service-mesh/docs/security/anthos-service-mesh-security-best-practices) for your Kubernetes clusters and your apps. Istio aims to bring [as much value to users out of the box](https://istio.io/latest/blog/2021/zero-config-istio/) without any configuration at all. ASM, on top of that, simplifies all the management of both the control plane and the data plane and the integration with monitoring and logging. Without any compromise, your apps in your Mesh will benefit from advanced features like traffic encryption, logging, tracing, etc. without updating the code of your apps.
