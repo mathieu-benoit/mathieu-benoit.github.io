@@ -21,67 +21,69 @@ kubectl create deployment myblog --image=$imageNameInRegistry --port=8080
 kubectl expose deployment myblog --port=8080 --target-port=8080
 ```
 
-## Setup Cloud Build
+## Configure GitHub action
 
 ```
-projectName=myblog
-randomSuffix=$(shuf -i 100-999 -n 1)
-projectId=$projectName-$randomSuffix
-folderId=FIXME
-
-gcloud projects create $projectId \
-    --folder $folderId \
-    --name $projectName
-projectNumber="$(gcloud projects describe $projectId --format='get(projectNumber)')"
-
+projectId=FIXME
 gcloud config set project $projectId
 
-gcloud beta billing accounts list
-billingAccountId=FIXME
-gcloud beta billing projects link $projectId \
-    --billing-account $billingAccountId
+# Create the Service Account
+saName=container-images-builder
+gcloud iam service-accounts create $saName
+saId="${saName}@${projectId}.iam.gserviceaccount.com"
 
-gcloud services enable cloudbuild.googleapis.com
-cloudBuildSa=$projectNumber@cloudbuild.gserviceaccount.com
+# Enable the IAM Credentials API
+gcloud services enable iamcredentials.googleapis.com
 
-# Configuration to be able to push images to ArtifactRegistry in another project
-gcloud artifacts repositories add-iam-policy-binding $containerRegistryRepository \
-    --project=$containerRegistryProjectId \
-    --location=$containerRegistryLocation \
-    --member=serviceAccount:$cloudBuildSa \
-    --role=roles/artifactregistry.writer
+# Create a Workload Identity Pool
+poolName=container-images-builder-wi-pool
+gcloud iam workload-identity-pools create $poolName \
+  --location global \
+  --display-name $poolName
+poolId=$(gcloud iam workload-identity-pools describe $poolName \
+  --location global \
+  --format='get(name)')
 
-# On-demand scanning
+# Create a Workload Identity Provider with GitHub actions in that pool:
+attributeMappingScope=repository
+gcloud iam workload-identity-pools providers create-oidc $poolName \
+  --location global \
+  --workload-identity-pool $poolName \
+  --display-name $poolName \
+  --attribute-mapping "google.subject=assertion.${attributeMappingScope},attribute.actor=assertion.actor,attribute.aud=assertion.aud,attribute.repository=assertion.repository" \
+  --issuer-uri "https://token.actions.githubusercontent.com"
+providerId=$(gcloud iam workload-identity-pools providers describe $poolName \
+  --location global \
+  --workload-identity-pool $poolName \
+  --format='get(name)')
+
+# Allow authentications from the Workload Identity Provider to impersonate the Service Account created above
+gitHubRepoName="mathieu-benoit/myblog"
+gcloud iam service-accounts add-iam-policy-binding $saId \
+  --role "roles/iam.workloadIdentityUser" \
+  --member "principalSet://iam.googleapis.com/${poolId}/attribute.${attributeMappingScope}/${gitHubRepoName}"
+
+# Allow the GSA to write container images in Artifact Registry
+artifactRegistryName=containers # FIXME
+location=us-east4 # FIXME
+gcloud artifacts repositories add-iam-policy-binding $artifactRegistryName \
+    --location $location \
+    --member "serviceAccount:$saId" \
+    --role roles/artifactregistry.writer
+
+# Allow the GSA to scan container images on-demand
 gcloud services enable ondemandscanning.googleapis.com
 gcloud projects add-iam-policy-binding $projectId \
-    --member=serviceAccount:$cloudBuildSa \
+    --member=serviceAccount:$saId \
     --role=roles/ondemandscanning.admin
 
-# Manually install the Cloud Build app on GitHub:
-# https://cloud.google.com/cloud-build/docs/automating-builds/create-github-app-triggers#installing_the_cloud_build_app
-
-gcloud beta builds triggers create github \
-    --name=myblog-main \
-    --repo-name=myblog \
-    --repo-owner=mathieu-benoit \
-    --branch-pattern="main" \
-    --build-config=cloudbuild.yaml \
-    --ignore-files="README.md,.github/**,gcloud/**" \
-    --substitutions=_CONTAINER_REGISTRY_NAME=$containerRegistryName
-
-# We need to create a static external IP address to be able to generate a managed certificates later
-gcloud config set project $gkeProjectId
-staticIpName=myblog
-gcloud compute addresses create $staticIpName \
-    --global
-staticIpAddress=$(gcloud compute addresses describe $staticIpName \
-    --global \
-    --format "value(address)")
-
-# We also need to define an SSL policy
-gcloud compute ssl-policies create myblog \
-    --profile COMPATIBLE  \
-    --min-tls-version 1.0
+# Setup GitHub actions variables
+gh auth login --web
+gh secret set CONTAINER_REGISTRY_PROJECT_ID -b"${projectId}"
+gh secret set CONTAINER_REGISTRY_NAME -b"${artifactRegistryName}"
+gh secret set CONTAINER_REGISTRY_HOST_NAME -b"${artifactRegistryLocation}-docker.pkg.dev"
+gh secret set CONTAINER_IMAGE_BUILDER_SERVICE_ACCOUNT_ID -b"${saId}"
+gh secret set WORKLOAD_IDENTITY_POOL_PROVIDER -b"${providerId}"
 ```
 
 ## Setup Cloud Monitoring
