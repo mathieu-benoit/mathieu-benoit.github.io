@@ -44,6 +44,19 @@ gcloud container fleet memberships register $clusterName \
 gcloud beta container fleet config-management enable
 ```
 
+Install Config Sync in this GKE cluster:
+```
+cat <<EOF > acm-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+EOF
+gcloud beta container fleet config-management apply \
+    --membership $clusterName \
+    --config acm-config.yaml
+```
+
 Create an Artifact Registry repository:
 ```
 gcloud services enable artifactregistry.googleapis.com
@@ -63,10 +76,6 @@ gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
     --location $region \
     --member "serviceAccount:$gsaId" \
     --role roles/artifactregistry.reader
-gcloud iam service-accounts add-iam-policy-binding \
-   --role roles/iam.workloadIdentityUser \
-   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler]" \
-   $gsaId
 ```
 
 Login to Artifact Registry (later we will push OCI artifacts in there):
@@ -91,7 +100,7 @@ Create an archive of that file:
 tar -cf test-namespace.tar test-namespace.yaml
 ```
 
-Push that artifact in Artifact Registry with [`oras`](https://oras.land/) _(there is an [issue with `oras` 0.14.0](https://github.com/oras-project/oras/issues/532), please use `oras` 0.13.0 instead)_:
+Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
     $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 \
@@ -103,29 +112,41 @@ crane append -f <(tar -f - -c test-namespace.tar) \
     -t $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 
 ```
 
+Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
+```
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-test-namespace]" \
+   $gsaId
+```
+
 Set up Config Sync to deploy this artifact from Artifact Registry:
 ```
-cat <<EOF > acm-config.yaml
-applySpecVersion: 1
+cat << EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: root-sync-test-namespace
+  namespace: config-management-system
 spec:
-  configSync:
-    enabled: true
-    sourceFormat: unstructured
-    sourceType: oci
-    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-namespace-artifact:v1
-    secretType: gcpserviceaccount
-    policyDir: .
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-namespace-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
     gcpServiceAccountEmail: ${gsaId}
 EOF
-gcloud beta container fleet config-management apply \
-    --membership $clusterName \
-    --config acm-config.yaml
 ```
 
 Check the status of the deployment:
 ```
 nomos status --contexts=$(kubectl config current-context)
 gcloud alpha anthos config sync repo describe --managed-resources all
+```
+
+Verify that the `Namespace` `test` is actually deployed:
+```
 kubectl get ns test
 ```
 
@@ -155,7 +176,7 @@ Create an archive of those files:
 tar -cf test-chart.tar kustomization.yaml test-chart/
 ```
 
-Push that artifact in Artifact Registry with [`oras`](https://oras.land/) _(there is an [issue with `oras` 0.14.0](https://github.com/oras-project/oras/issues/532), please use `oras` 0.13.0 instead)_:
+Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
     $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1 \
@@ -167,30 +188,42 @@ crane append -f <(tar -f - -c test-chart.tar) \
     -t $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1
 ```
 
+Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
+```
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-test-chart]" \
+   $gsaId
+```
+
 Set up Config Sync to deploy this artifact from Artifact Registry:
 ```
-cat <<EOF > acm-config.yaml
-applySpecVersion: 1
+cat << EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: root-sync-test-chart
+  namespace: config-management-system
 spec:
-  configSync:
-    enabled: true
-    sourceFormat: unstructured
-    sourceType: oci
-    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-helm-chart-artifact:v1
-    secretType: gcpserviceaccount
-    policyDir: .
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-helm-chart-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
     gcpServiceAccountEmail: ${gsaId}
 EOF
-gcloud beta container fleet config-management apply \
-    --membership $clusterName \
-    --config acm-config.yaml
 ```
 
 Check the status of the deployment:
 ```
 nomos status --contexts=$(kubectl config current-context)
 gcloud alpha anthos config sync repo describe --managed-resources all
-kubectl get all -n test-chart
+```
+
+Verify that the `Namespace` `test-chart` is actually deployed:
+```
+kubectl get ns test-chart
 ```
 
 And voila! That's how easy it is to deploy an Helm chart as an OCI artifact in a GitOps way with Config Sync.
@@ -272,7 +305,7 @@ Create an archive of those two files:
 tar -cf test-policies.tar k8srequiredlabels-template.yaml namespaces-required-labels.yaml
 ```
 
-Push that artifact in Artifact Registry with [`oras`](https://oras.land/) _(there is an [issue with `oras` 0.14.0](https://github.com/oras-project/oras/issues/532), please use `oras` 0.13.0 instead)_:
+Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
     $region-docker.pkg.dev/$project/$containerRegistryName/my-policies-artifact:v1 \
@@ -284,25 +317,31 @@ crane append -f <(tar -f - -c test-policies) \
     -t $region-docker.pkg.dev/$project/$containerRegistryName/my-policies-artifact:v1 
 ```
 
+Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
+```
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-constraints]" \
+   $gsaId
+```
+
 Set up Config Sync to deploy this artifact from Artifact Registry:
 ```
-cat <<EOF > acm-config.yaml
-applySpecVersion: 1
+cat << EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: root-sync-constraints
+  namespace: config-management-system
 spec:
-  configSync:
-    enabled: true
-    sourceFormat: unstructured
-    sourceType: oci
-    syncRepo: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-policies-artifact:v1
-    secretType: gcpserviceaccount
-    policyDir: .
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-policies-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
     gcpServiceAccountEmail: ${gsaId}
-  policyController:
-    enabled: true
 EOF
-gcloud beta container fleet config-management apply \
-    --membership $clusterName \
-    --config acm-config.yaml
 ```
 _Note that we added the `policyController.enabled: true` in order to have Policy Controller (Gatekeeper) installed in the GKE cluster._
 
@@ -310,6 +349,10 @@ Check the status of the deployment:
 ```
 nomos status --contexts=$(kubectl config current-context)
 gcloud alpha anthos config sync repo describe --managed-resources all
+```
+
+Verify that the `Constraints` are actually deployed:
+```
 kubectl get constraints -o yaml
 ```
 
@@ -319,7 +362,7 @@ And voila! That's how easy it is to deploy your Gatekeeper Policies as an OCI ar
 
 ## Conclusion
 
-We were able to deploy 3 different type of OCI artifacts via Config Sync:
+We were able to deploy 3 different types of OCI artifacts via Config Sync:
 - Kubernetes manifests
 - Helm charts with Kustomize
 - Gatekeeper policies
