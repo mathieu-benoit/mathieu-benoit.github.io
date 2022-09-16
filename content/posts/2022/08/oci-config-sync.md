@@ -114,9 +114,10 @@ crane append -f <(tar -f - -c test-namespace.tar) \
 
 Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
 ```
+ROOT_SYNC_NAME=root-sync-test-namespace
 gcloud iam service-accounts add-iam-policy-binding \
    --role roles/iam.workloadIdentityUser \
-   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-test-namespace]" \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]" \
    $gsaId
 ```
 
@@ -126,7 +127,7 @@ cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
 kind: RootSync
 metadata:
-  name: root-sync-test-namespace
+  name: ${ROOT_SYNC_NAME}
   namespace: config-management-system
 spec:
   sourceFormat: unstructured
@@ -139,10 +140,10 @@ spec:
 EOF
 ```
 
-Check the status of the deployment:
+Check the sync status:
 ```
-nomos status --contexts=$(kubectl config current-context)
-gcloud alpha anthos config sync repo describe --managed-resources all
+nomos status \
+    --contexts=$(kubectl config current-context)
 ```
 
 Verify that the `Namespace` `test` is actually deployed:
@@ -190,9 +191,10 @@ crane append -f <(tar -f - -c test-chart.tar) \
 
 Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
 ```
+ROOT_SYNC_NAME=root-sync-test-chart
 gcloud iam service-accounts add-iam-policy-binding \
    --role roles/iam.workloadIdentityUser \
-   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-test-chart]" \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]" \
    $gsaId
 ```
 
@@ -202,7 +204,7 @@ cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
 kind: RootSync
 metadata:
-  name: root-sync-test-chart
+  name: ${ROOT_SYNC_NAME}
   namespace: config-management-system
 spec:
   sourceFormat: unstructured
@@ -215,10 +217,10 @@ spec:
 EOF
 ```
 
-Check the status of the deployment:
+Check the sync status:
 ```
-nomos status --contexts=$(kubectl config current-context)
-gcloud alpha anthos config sync repo describe --managed-resources all
+nomos status \
+    --contexts=$(kubectl config current-context)
 ```
 
 Verify that the `Namespace` `test-chart` is actually deployed:
@@ -319,9 +321,10 @@ crane append -f <(tar -f - -c test-policies) \
 
 Allow Config Sync to synchronize resources for a specific `RootSync` we will configure to synchronize this artifact: 
 ```
+ROOT_SYNC_NAME=root-sync-constraints
 gcloud iam service-accounts add-iam-policy-binding \
    --role roles/iam.workloadIdentityUser \
-   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-root-sync-constraints]" \
+   --member "serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]" \
    $gsaId
 ```
 
@@ -331,7 +334,7 @@ cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
 kind: RootSync
 metadata:
-  name: root-sync-constraints
+  name: ${ROOT_SYNC_NAME}
   namespace: config-management-system
 spec:
   sourceFormat: unstructured
@@ -345,10 +348,10 @@ EOF
 ```
 _Note that we added the `policyController.enabled: true` in order to have Policy Controller (Gatekeeper) installed in the GKE cluster._
 
-Check the status of the deployment:
+Check the sync status:
 ```
-nomos status --contexts=$(kubectl config current-context)
-gcloud alpha anthos config sync repo describe --managed-resources all
+nomos status \
+    --contexts=$(kubectl config current-context)
 ```
 
 Verify that the `Constraints` are actually deployed:
