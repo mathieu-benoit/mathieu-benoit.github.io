@@ -1,5 +1,5 @@
 ---
-title: ci/gitops with helm and github, with github container registry
+title: ci/gitops with helm, github actions, github container registry and config sync
 date: 2022-09-16
 tags: [gcp, helm, containers, kubernetes, gitops]
 description: let's see how to do the ci/gitops workflow with helm charts, github actions, github container registry and config sync
@@ -8,7 +8,7 @@ aliases:
 ---
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
-In this article, we will show how you can package and push your public and private Helm charts to GitHub Container Registry with GitHub actions.
+In this article, we will show how you can package and push an Helm chart to GitHub Container Registry with GitHub actions, and then how you can deploy both a public and a private Helm chart with Config Sync.
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/helm-github-registry-config-sync.png)
 
@@ -16,8 +16,8 @@ In this article, we will show how you can package and push your public and priva
 
 *   Package and push your Helm chart in GitHub Container Registry with GitHub actions
 *   Create your GKE cluster and enable Config Sync
-*   Sync a public Helm chart from GitHub Container Registry
-*   Sync a private Helm chart from GitHub Container Registry
+*   Sync a public Helm chart from GitHub Container Registry with Config Sync
+*   Sync a private Helm chart from GitHub Container Registry with Config Sync
 
 ## Costs
 
@@ -65,11 +65,20 @@ Let's capture the GitHub owner value that you will reuse later in this tutorial:
 GITHUB_REPO_OWNER=$(gh repo view --json owner --jq .owner)
 ```
 
-## Package and push your Helm chart in GitHub Container Registry
+## Package and push an Helm chart in GitHub Container Registry
 
-Define a GitHub actions pipepline to package and push your Helm chart in GitHub Container Registry:
+Create the Helm chart:
 ```
-cd $REPO_NAME
+helm create $REPO_NAME
+```
+
+Commit this Helm chart template in the GitHub repository:
+```
+git add . && git commit -m "Create Helm chart template" && git push origin main
+```
+
+Define a GitHub actions pipepline to package and push the Helm chart in GitHub Container Registry:
+```
 mkdir .github/workflows
 echo '
 name: ci
@@ -91,19 +100,22 @@ jobs:
       - uses: actions/checkout@v3
       - name: helm lint
         run: |
-          helm lint $CHART_NAME/
+          helm lint .
       - name: helm login
         run: |
           echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u $ --password-stdin
       - name: helm package
         run: |
-          helm package $CHART_NAME --version $IMAGE_TAG
+          helm package . --version $IMAGE_TAG
       - name: helm push
         if: ${{ github.event_name == 'push' }}
         run: |
           helm push $CHART_NAME-$IMAGE_TAG.tgz oci://ghcr.io/${{ github.repository_owner }}
 ' > .github/workflows/ci-helm.yaml
 ```
+This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `helm registry login`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
+
+You can see that we use the [automatic token authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) by using the `secrets.GITHUB_TOKEN` environment variable with the `helm registry login` command. In addition to that, in order to be able to push the Helm chart in GitHub Container Registry we need to have the `permissions.packages: write`.
 
 Commit this GitHub actions pipeline in the GitHub repository:
 ```
@@ -117,7 +129,7 @@ gh run list
 
 See that your Helm chart has been uploaded in the packages of your GitHub repository:
 ```
-echo -e 'https://github.com/${GITHUB_REPO_OWNER}?tab=packages&repo_name=${REPO_NAME}'
+echo -e "https://github.com/${GITHUB_REPO_OWNER}?tab=packages&repo_name=${REPO_NAME}"
 ```
 _Note: you can see that this artifact is public, that's because we created a public GitHub repository earlier for the purpose of this tutorial._
 
@@ -154,10 +166,11 @@ gcloud beta container fleet config-management apply \
     --config acm-config.yaml
 ```
 
-Now that we have our setup ready, let's sync 
+Now that we have our setup ready, let's sync the Helm chart previously packaged and pushed to GitHub Container Registry.
 
 ## Sync a public Helm chart from GitHub Container Registry
 
+Deploy the `RootSync` in order to sync the public Helm chart:
 ```
 ROOT_SYNC_NAME=root-sync-helm
 ROOT_SYNC_NAMESPACE=config-management-system
@@ -195,6 +208,8 @@ kubectl get all \
 And voilà! You just deployed a **public Helm chart** hosted in GitHub Registry with Config Sync.
 
 ## Sync a private Helm chart from GitHub Container Registry
+
+Because we created a public GitHub repository, the Helm chart we pushed in GitHub Container Registry is public. You can change this default visibility from public to private by following the instructions [here](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#configuring-visibility-of-container-images-for-your-personal-account).
 
 [Create a new Personal Access Token (PAT) in GitHub](https://github.com/settings/tokens/new) with the `read:packages` OAuth scope to follow the "just enough and least-privilege" principles.
 
@@ -244,6 +259,10 @@ kubectl get all \
 ```
 
 And voilà! You just deployed a **private Helm chart** hosted in GitHub Registry with Config Sync.
+
+## Conclusion
+
+In this article, you were able to package and push an Helm chart in GitHub Container Registry with GitHub Actions. At the end, you have seen how you can sync a private Helm chart with the `spec.helm.auth: token` setup on the `RootSync`. This demonstrates that Config Sync supports any private OCI registries where you have your Helm chart: JFrog Artifactory, etc.
 
 ## Cleaning up
 
