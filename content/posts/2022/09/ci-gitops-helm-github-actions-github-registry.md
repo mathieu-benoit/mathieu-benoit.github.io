@@ -11,7 +11,7 @@ _Update on Sep 17th, 2022: this blog article is also now on [Medium](https://med
 
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
-In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy both a public and a private Helm chart with Config Sync.
+In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy both an Helm chart with Config Sync.
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-github-registry.png)
 
@@ -19,8 +19,7 @@ In this article, we will show how you can package and push an Helm chart to **Gi
 
 *   Package and push your Helm chart in GitHub Container Registry with GitHub actions (using PAT token)
 *   Create your GKE cluster and enable Config Sync
-*   Sync a public Helm chart from GitHub Container Registry with Config Sync
-*   Sync a private Helm chart from GitHub Container Registry with Config Sync
+*   Sync an Helm chart from GitHub Container Registry with Config Sync
 
 ## Costs
 
@@ -135,7 +134,6 @@ See that your Helm chart has been uploaded in the packages of your GitHub reposi
 ```
 echo -e "https://github.com/${GITHUB_REPO_OWNER}?tab=packages&repo_name=${REPO_NAME}"
 ```
-_Note: you can see that this artifact is public, that's because we created a public GitHub repository earlier for the purpose of this tutorial._
 
 Now that we have built and store our Helm chart, let's provision the GKE cluster with Config Sync ready to eventually deploy this Helm chart.
 
@@ -172,46 +170,7 @@ gcloud beta container fleet config-management apply \
 
 Now that we have our setup ready, let's sync the Helm chart previously packaged and pushed to GitHub Container Registry.
 
-## Sync a public Helm chart from GitHub Container Registry
-
-Deploy the `RootSync` in order to sync the public Helm chart:
-```
-ROOT_SYNC_NAME=root-sync-helm
-ROOT_SYNC_NAMESPACE=config-management-system
-cat << EOF | kubectl apply -f -
-apiVersion: configsync.gke.io/v1beta1
-kind: RootSync
-metadata:
-  name: ${ROOT_SYNC_NAME}
-  namespace: ${ROOT_SYNC_NAMESPACE}
-spec:
-  sourceFormat: unstructured
-  sourceType: helm
-  helm:
-    repo: oci://ghcr.io/${GITHUB_REPO_OWNER}
-    chart: my-chart
-    version: 0.1.0
-    releaseName: my-chart
-    namespace: default
-    auth: none
-EOF
-```
-
-Check the status of the sync with the [nomos](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command) tool:
-```
-nomos status \
-    --contexts=$(kubectl config current-context)
-```
-
-Verify that the Helm chart is synced:
-```
-kubectl get all \
-    -n default
-```
-
-And voilà! You just deployed a **public Helm chart** hosted in GitHub Registry with Config Sync.
-
-## Sync a private Helm chart from GitHub Container Registry
+## Sync an Helm chart from GitHub Container Registry
 
 Because we created a public GitHub repository, the Helm chart we pushed in GitHub Container Registry is public. You can change this default visibility from public to private by following the instructions [here](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#configuring-visibility-of-container-images-for-your-personal-account).
 
@@ -248,7 +207,7 @@ spec:
       name: ghcr
 EOF
 ```
-_Note that we added the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart._
+_Note that we added the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use `spec.helm.auth: none` instead._
 
 Check the status of the sync with the [nomos](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command) tool:
 ```
