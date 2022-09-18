@@ -2,19 +2,22 @@
 title: ci/gitops with helm, github actions, github container registry and config sync
 date: 2022-09-16
 tags: [gcp, helm, containers, kubernetes, gitops]
-description: let's see how to do the ci/gitops workflow with helm charts, github actions, github container registry and config sync
+description: let's see how to do the ci/gitops workflow with helm charts, github actions (using pat token), github container registry and config sync
 aliases:
     - /helm-github-registry-config-sync/
+    - /ci-gitops-helm-github-actions-github-registry/
 ---
+_Update on Sep 17th, 2022: this blog article is also now on [Medium](https://medium.com/@mabenoit/836913e74e79)._
+
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
-In this article, we will show how you can package and push an Helm chart to GitHub Container Registry with GitHub actions, and then how you can deploy both a public and a private Helm chart with Config Sync.
+In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy both a public and a private Helm chart with Config Sync.
 
-![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/helm-github-registry-config-sync.png)
+![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-github-registry.png)
 
 ## Objectives
 
-*   Package and push your Helm chart in GitHub Container Registry with GitHub actions
+*   Package and push your Helm chart in GitHub Container Registry with GitHub actions (using PAT token)
 *   Create your GKE cluster and enable Config Sync
 *   Sync a public Helm chart from GitHub Container Registry with Config Sync
 *   Sync a private Helm chart from GitHub Container Registry with Config Sync
@@ -74,6 +77,7 @@ helm create $REPO_NAME
 
 Commit this Helm chart template in the GitHub repository:
 ```
+cd $REPO_NAME
 git add . && git commit -m "Create Helm chart template" && git push origin main
 ```
 
