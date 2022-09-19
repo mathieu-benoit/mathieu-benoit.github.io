@@ -11,14 +11,14 @@ _Update on Sep 17th, 2022: this blog article is also now on [Medium](https://med
 
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
-In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy both an Helm chart with Config Sync.
+In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy an Helm chart with Config Sync.
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-github-registry.png)
 
 ## Objectives
 
-*   Package and push your Helm chart in GitHub Container Registry with GitHub actions (using PAT token)
-*   Create your GKE cluster and enable Config Sync
+*   Package and push an Helm chart in GitHub Container Registry with GitHub actions (using PAT token)
+*   Create a GKE cluster and enable Config Sync
 *   Sync an Helm chart from GitHub Container Registry with Config Sync
 
 ## Costs
@@ -43,6 +43,15 @@ This guide also assumes that you have a [GitHub account](https://github.com/).
 
 ## Set up your environment
 
+Here are the tools you will need:
+- [`gcloud`](https://cloud.google.com/sdk/docs/install)
+- [`git`](https://git-scm.com/downloads)
+- [`nomos`](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command)
+- [`helm`](https://helm.sh/docs/intro/install/)
+- [`gh`](https://cli.github.com/)
+
+_Note: You can use the Google Cloud Shell which has all these tools already installed._
+
 Initialize the common variables used throughout this tutorial:
 ```
 PROJECT_ID=FIXME-WITH-YOUR-PROJECT-ID
@@ -54,37 +63,38 @@ To avoid repeating the `--project` in the commands throughout this tutorial, let
 gcloud config set project ${PROJECT_ID}
 ```
 
-Use the [`gh`](https://cli.github.com/) tool to create this GitHub repository:
+Create a dedicated GitHub repository with a default `main` branch:
 ```
-REPO_NAME=helm-chart-packager-repo
+REPO_NAME=my-chart
+cd ~/
 gh auth login
-gh repo create ${REPO_NAME} --clone
+git config --global init.defaultBranch main
+gh repo create ${REPO_NAME} --private --clone
 ```
-_Note: we are creating a public GitHub repository, for the purpose of this demo. In most cases you will have a private repository, simply use the `--private` parameter with the command above._
 
 Let's capture the GitHub owner value that you will reuse later in this tutorial:
 ```
-GITHUB_REPO_OWNER=$(gh repo view --json owner --jq .owner)
+GITHUB_REPO_OWNER=$(gh repo view ${REPO_NAME} --json owner --jq .owner.login)
 ```
 
 ## Package and push an Helm chart in GitHub Container Registry
 
 Create the Helm chart:
 ```
-helm create $REPO_NAME
+helm create ~/${REPO_NAME}
 ```
 
 Commit this Helm chart template in the GitHub repository:
 ```
-cd $REPO_NAME
+cd ~/${REPO_NAME}
 git add . && git commit -m "Create Helm chart template" && git push origin main
 ```
 
-Define a GitHub actions pipepline to package and push the Helm chart in GitHub Container Registry:
+Define a GitHub actions pipeline to package and push the Helm chart in GitHub Container Registry:
 ```
-mkdir .github/workflows
-echo '
-name: ci
+mkdir .github && mkdir .github/workflows
+cat <<'EOF' > .github/workflows/ci-helm.yaml
+name: ci-helm
 permissions:
   packages: write
   contents: read
@@ -114,7 +124,7 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         run: |
           helm push $CHART_NAME-$IMAGE_TAG.tgz oci://ghcr.io/${{ github.repository_owner }}
-' > .github/workflows/ci-helm.yaml
+EOF
 ```
 This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `helm registry login`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
 
@@ -130,26 +140,26 @@ Wait until the associated run is successfully completed:
 gh run list
 ```
 
-See that your Helm chart has been uploaded in the packages of your GitHub repository:
+See that your Helm chart successfully uploaded by clicking on:
 ```
 echo -e "https://github.com/${GITHUB_REPO_OWNER}?tab=packages&repo_name=${REPO_NAME}"
 ```
 
 Now that we have built and store our Helm chart, let's provision the GKE cluster with Config Sync ready to eventually deploy this Helm chart.
 
-## Create your GKE cluster and enable Config Sync
+## Create a GKE cluster and enable Config Sync
 
 Create a GKE cluster registered in a [Fleet](https://cloud.google.com/anthos/fleet-management/docs/fleet-concepts) to enable Config Management:
 ```
 gcloud services enable container.googleapis.com
 CLUSTER_NAME=cluster-helm-test
-gcloud container clusters create $CLUSTER_NAME \
-    --workload-pool=$PROJECT.svc.id.goog \
-    --zone $ZONE
+gcloud container clusters create ${CLUSTER_NAME} \
+    --workload-pool=${PROJECT_ID}.svc.id.goog \
+    --zone ${ZONE}
 
 gcloud services enable gkehub.googleapis.com
-gcloud container fleet memberships register $CLUSTER_NAME \
-    --gke-cluster $ZONE/$CLUSTER_NAME \
+gcloud container fleet memberships register ${CLUSTER_NAME} \
+    --gke-cluster ${ZONE}/${CLUSTER_NAME} \
     --enable-workload-identity
 
 gcloud beta container fleet config-management enable
@@ -164,11 +174,9 @@ spec:
     enabled: true
 EOF
 gcloud beta container fleet config-management apply \
-    --membership $CLUSTER_NAME \
+    --membership ${CLUSTER_NAME} \
     --config acm-config.yaml
 ```
-
-Now that we have our setup ready, let's sync the Helm chart previously packaged and pushed to GitHub Container Registry.
 
 ## Sync an Helm chart from GitHub Container Registry
 
@@ -180,7 +188,7 @@ Create the associated `Secret` with the GitHub's PAT in the `RootSync`'s `Namesp
 ```
 GITHUB_PAT=FIXME
 kubectl create secret generic ghcr \
-    --namespace=${ROOT_SYNC_NAMESPACE} \
+    --namespace=config-management-system \
     --from-literal=username=config-sync \
     --from-literal=password=${GITHUB_PAT}
 ```
@@ -191,8 +199,8 @@ cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
 kind: RootSync
 metadata:
-  name: ${ROOT_SYNC_NAME}
-  namespace: ${ROOT_SYNC_NAMESPACE}
+  name: root-sync-helm
+  namespace: config-management-system
 spec:
   sourceFormat: unstructured
   sourceType: helm
@@ -208,12 +216,6 @@ spec:
 EOF
 ```
 _Note that we added the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use `spec.helm.auth: none` instead._
-
-Check the status of the sync with the [nomos](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command) tool:
-```
-nomos status \
-    --contexts=$(kubectl config current-context)
-```
 
 Verify that the Helm chart is synced:
 ```
@@ -233,14 +235,14 @@ To avoid incurring charges to your Google Cloud account, you can delete the reso
 
 Unregister the GKE cluster from the [Fleet](https://cloud.google.com/anthos/fleet-management/docs/fleet-concepts):
 ```
-gcloud container fleet memberships unregister ${CLUSTER} \
+gcloud container fleet memberships unregister ${CLUSTER_NAME} \
     --project=${PROJECT_ID} \
-    --gke-cluster=${ZONE}/${CLUSTER}
+    --gke-cluster=${ZONE}/${CLUSTER_NAME}
 ```
 
 Delete the GKE cluster:
 ```
-gcloud container clusters delete ${CLUSTER} \
+gcloud container clusters delete ${CLUSTER_NAME} \
     --zone ${ZONE}
 ```
 
