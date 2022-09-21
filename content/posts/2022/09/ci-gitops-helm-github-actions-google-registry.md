@@ -8,19 +8,22 @@ aliases:
 ---
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
-[In the previous article]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-github-registry.md" >}}), we saw how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy an Helm chart with Config Sync.
+You can learn more about this announcement here: [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
 
-In this article, we will show how you can package and push an Helm chart to **Google Artifact Registry with GitHub actions (using Workload Identity Federation)**, and then how you can deploy an Helm chart with Config Sync.
+[In another article]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-github-registry.md" >}}), we saw how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy an Helm chart with Config Sync.
+
+In this article, we will show how you can package and push an Helm chart to **Google Artifact Registry with GitHub actions (using Workload Identity Federation)**, and then how you can deploy an Helm chart with Config Sync (using Workload Identity).
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-google-registry.png)
 
 ## Objectives
 
-*   Set up Workload Identity Federation with a dedicated Google Service Account
+*   Set up Workload Identity Federation with a dedicated Google Service Account (Artifact Registry writer)
 *   Create a Google Artifact Registry repository
 *   Package and push an Helm chart in Google Artifact Registry with GitHub actions (using Workload Identity Federation)
 *   Create a GKE cluster and enable Config Sync
-*   Sync an Helm chart from Google Artifact Registry with Config Sync
+*   Set up Workload Identity with a dedicated Google Service Account (Artifact Registry reader)
+*   Sync an Helm chart from Google Artifact Registry with Config Sync (using Workload Identity)
 
 ## Costs
 
@@ -41,7 +44,7 @@ This guide assumes that you have owner IAM permissions for your Google Cloud pro
 
 1.  [Verify that billing is enabled](https://cloud.google.com/billing/docs/how-to/modify-project) for your project.
 
-This guide also assumes that you have a [GitHub account](https://github.com/) and a GitHub repository ready to use (you can [create a new dedicated GitHub repository](https://github.com/new) for this tutorial).
+This guide also assumes that you have a [GitHub account](https://github.com/).
 
 ## Set up your environment
 
@@ -207,9 +210,9 @@ jobs:
           helm push $CHART_NAME-$IMAGE_TAG.tgz oci://${{ secrets.ARTIFACT_REGISTRY_HOST_NAME }}/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACT_REGISTRY_REPOSITORY }}
 EOF
 ```
-This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `helm registry login`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
+This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `gcloud auth configure-docker`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
 
-You can see that we use the [automatic token authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) by using the `secrets.GITHUB_TOKEN` environment variable with the `helm registry login` command. In addition to that, in order to be able to push the Helm chart in GitHub Container Registry we need to have the `permissions.packages: write`.
+You can see that we use the [`google-github-actions/auth`](https://github.com/google-github-actions/auth) action to establish authentication to Google Cloud using Workload Identity Federation. To make this action working we need to have `permissions.id-token: write`. Then `gcloud auth configure-docker` allows to authenticate against the Artifact Registry, `helm registry login` is not necessary in this case, the next `helm` commands will reuse this authentication mecanism.
 
 Commit this GitHub actions pipeline in the GitHub repository:
 ```
@@ -302,7 +305,7 @@ spec:
     gcpServiceAccountEmail: ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 EOF
 ```
-_Note that we added the `spec.helm.auth: gcpserviceaccount` and `spec.helm.gcpServiceAccountEmail: ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com` values to be able to access and sync the private Helm chart._
+_Note that we set the `spec.helm.auth: gcpserviceaccount` and `spec.helm.gcpServiceAccountEmail: ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com` values to be able to access and sync the private Helm chart._
 
 Check the status of the sync:
 ```
@@ -320,7 +323,7 @@ And voilà! You just deployed a **private Helm chart** hosted in Google Artifact
 
 ## Conclusion
 
-In this article, you were able to package and push an Helm chart in Google Artifact Registry with GitHub Actions using Workload Identity Federation. At the end, you saw how you can sync a private Helm chart with the `spec.helm.auth: gcpserviceaccount` setup on the `RootSync`. This demonstrates that Config Sync supports a key-less approach to connect to Google Artifact Registry.
+In this article, you were able to package and push an Helm chart in Google Artifact Registry with GitHub Actions using Workload Identity Federation. At the end, you saw how you can sync a private Helm chart with the `spec.helm.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity. This demonstrates that both GitHub Actions and Config Sync support an highly secured (key-less) approach to connect to Google Artifact Registry.
 
 ## Cleaning up
 

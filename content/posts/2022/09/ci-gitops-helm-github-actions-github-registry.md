@@ -11,6 +11,10 @@ _Update on Sep 17th, 2022: this blog article is also now on [Medium](https://med
 
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
+You can learn more about this announcement here: [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
+
+[In another article]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-google-registry.md" >}}), we saw how you can package and push an Helm chart to **Google Artifact Registry with GitHub actions (using Workload Identity Federation)**, and then how you can deploy an Helm chart with Config Sync (using Workload Identity).
+
 In this article, we will show how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy an Helm chart with Config Sync.
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-github-registry.png)
@@ -128,7 +132,7 @@ EOF
 ```
 This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `helm registry login`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
 
-You can see that we use the [automatic token authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) by using the `secrets.GITHUB_TOKEN` environment variable with the `helm registry login` command. In addition to that, in order to be able to push the Helm chart in GitHub Container Registry we need to have the `permissions.packages: write`.
+You can see that we use the [automatic token authentication](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) by using the `secrets.GITHUB_TOKEN` environment variable with the `helm registry login` command. In addition to that, in order to be able to push the Helm chart in GitHub Container Registry we need to have `permissions.packages: write`.
 
 Commit this GitHub actions pipeline in the GitHub repository:
 ```
@@ -215,7 +219,7 @@ spec:
       name: ghcr
 EOF
 ```
-_Note that we added the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use `spec.helm.auth: none` instead._
+_Note that we set the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use `spec.helm.auth: none` instead._
 
 Check the status of the sync:
 ```
