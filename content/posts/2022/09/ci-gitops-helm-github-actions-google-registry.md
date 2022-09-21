@@ -6,6 +6,8 @@ description: let's see how to do the ci/gitops workflow with helm charts, github
 aliases:
     - /ci-gitops-helm-github-actions-google-registry/
 ---
+_Update on Sep 20th, 2022: this blog article is also now published in [Google Cloud Community Medium](https://medium.com/@mabenoit/b48604191fda)._
+
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 
 You can learn more about this announcement here: [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
