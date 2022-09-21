@@ -46,9 +46,9 @@ This guide also assumes that you have a [GitHub account](https://github.com/).
 Here are the tools you will need:
 - [`gcloud`](https://cloud.google.com/sdk/docs/install)
 - [`git`](https://git-scm.com/downloads)
-- [`nomos`](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command)
-- [`helm`](https://helm.sh/docs/intro/install/)
 - [`gh`](https://cli.github.com/)
+- [`nomos`](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command)
+- [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
 _Note: You can use the Google Cloud Shell which has all these tools already installed._
 
@@ -93,8 +93,8 @@ git add . && git commit -m "Create Helm chart template" && git push origin main
 Define a GitHub actions pipeline to package and push the Helm chart in GitHub Container Registry:
 ```
 mkdir .github && mkdir .github/workflows
-cat <<'EOF' > .github/workflows/ci-helm.yaml
-name: ci-helm
+cat <<'EOF' > .github/workflows/ci-helm-ghcr.yaml
+name: ci-helm-ghcr
 permissions:
   packages: write
   contents: read
@@ -217,6 +217,12 @@ EOF
 ```
 _Note that we added the `spec.helm.auth: token` and `spec.helm.secretRef.name: ghcr` values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use `spec.helm.auth: none` instead._
 
+Check the status of the sync:
+```
+nomos status \
+    --contexts=$(kubectl config current-context)
+```
+
 Verify that the Helm chart is synced:
 ```
 kubectl get all \
@@ -248,5 +254,7 @@ gcloud container clusters delete ${CLUSTER_NAME} \
 
 ## What's next
 
+- [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync)
 - [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry)
 - [Sync OCI artifacts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-oci-artifacts-from-artifact-registry)
+- [CI/GitOps with Helm, GitHub Actions, Google Artifact Registry and Config Sync]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-google-registry.md" >}})
