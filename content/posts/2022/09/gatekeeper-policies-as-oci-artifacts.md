@@ -3,7 +3,6 @@ title: deploying gatekeeper policies as oci artifacts, the gitops way
 date: 2022-09-22
 tags: [gcp, containers, kubernetes, gitops]
 description: let's see how to deploy gatekeeper policies as oci artifacts, thanks to oras, google artifact registry and config sync
-draft: true
 aliases:
     - /gatekeeper-policies-as-oci-artifacts/
 ---
@@ -15,7 +14,7 @@ Here is what you will accomplish throughout this blog:
 - Set up an Artifact Registry repository
 - Package and push a Gatekeeper policy as OCI artifact to Artifact Registry
 - Set up a GKE cluster with Config Sync and Policy Controller
-- Deploy this Gatekeeper policy as OCI artifact with Config Sync
+- Deploy a Gatekeeper policy as OCI artifact with Config Sync
 
 _To illustrate this during this blog, we will leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller), but the same approach could be done if you install Gatekeeper by yourself. Policy Controller is based on the open source OPA Gatekeeper._
 
@@ -28,8 +27,6 @@ Here are the tools you will need:
 - [`oras`](https://oras.land/cli/)
 - [`nomos`](https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command)
 - [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
-
-_Note: If you are using the Google Cloud Shell, it has all these tools already installed._
 
 Initialize the common variables used throughout this blog:
 ```
@@ -58,17 +55,83 @@ gcloud artifacts repositories create ${ARTIFACT_REGISTRY_REPO_NAME} \
 
 We will create a simple Gatekeeper policy composed by one `Constraint` and one `ConstraintTemplate`. You can easily replicate this scenario with your own list of policies.
 
-Create a simple Kubernetes `Namespace` resource definition:
+Define a `ConstraintTemplate` which could ensure that resources have a specific `label`:
 ```
-cat <<EOF> test-namespace.yaml
-apiVersion: v1
-kind: Namespace
+cat <<EOF> my-constrainttemplate.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
 metadata:
-  name: test
+  annotations:
+    description: Requires resources to contain specified labels.
+  name: k8srequiredlabels
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLabels
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            labels:
+              description: A list of labels the object must specify.
+              items:
+                properties:
+                  key:
+                    description: The required label.
+                    type: string
+                type: object
+              type: array
+            message:
+              type: string
+          type: object
+  targets:
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
+      package k8srequiredlabels
+      violation[{"msg": msg, "details": {"missing_labels": missing}}] {
+        provided := {label | input.review.object.metadata.labels[label]}
+        required := {label | label := input.parameters.labels[_].key}
+        missing := required - provided
+        count(missing) > 0
+        msg := sprintf("You must provide labels: %v", [missing])
+      }
 EOF
 ```
 
-Archive these files:
+Define an associated `Constraint` for the `Namespaces` which should have a `owner` label:
+```
+cat <<EOF> my-constraint.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: namespace-with-owner-label
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - ""
+      kinds:
+      - Namespace
+    excludedNamespaces:
+    - config-management-monitoring
+    - config-management-system
+    - default
+    - gatekeeper-system
+    - gke-connect
+    - istio-system
+    - kube-node-lease
+    - kube-public
+    - kube-system
+    - resource-group-system
+  parameters:
+    labels:
+    - key: owner
+EOF
+```
+
+Do an archive of these files:
 ```
 tar -cf my-policies.tar my-constraint.yaml my-constrainttemplate.yaml
 ```
@@ -125,7 +188,7 @@ gcloud beta container fleet config-management apply \
 ```
 _Note: in this scenario, we are not installing the [default library of constraint templates](https://cloud.google.com/anthos-config-management/docs/latest/reference/constraint-template-library)._
 
-## Deploy this Gatekeeper policy as OCI artifact with Config Sync
+## Deploy a Gatekeeper policy as OCI artifact with Config Sync
 
 Create a dedicated Google Cloud Service Account with the fine granular access (`roles/artifactregistry.reader`) to that Artifact Registry repository:
 ```
@@ -173,16 +236,26 @@ nomos status \
     --contexts=$(kubectl config current-context)
 ```
 
-Verify that the `Namespace` `test` is actually deployed:
+Verify that the `Constraint` and `ConstraintTemplate` are actually deployed:
 ```
-kubectl get ns test
+kubectl get constraints
+kubectl get constrainttemplates
 ```
 
 And voila! That's how easy it is to deploy any Kubernetes manifests as an OCI artifact in a GitOps way with Config Sync.
 
+You could even try to create a `Namespace` without any label and see what will happen :)
+```
+kubectl create ns test
+```
+Output:
+```
+Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" denied the request: [namespace-with-owner-label] you must provide labels: {"owner"}
+```
+
 ## Conclusion
 
-In this article, you were able to package and push an OCI artifact in Google Artifact Registry thanks to `oras` with GitHub Actions using Workload Identity Federation. At the end, you saw how you can sync a private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity. This demonstrates that both GitHub Actions and Config Sync support an highly secured (key-less) approach to connect to Google Artifact Registry.
+In this article, you were able to package Gatekeeper policies as an OCI artifact and push it to Google Artifact Registry thanks to `oras`. At the end, you saw how you can sync this private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity to access Google Artifact Registry.
 
 ## What's next
 
