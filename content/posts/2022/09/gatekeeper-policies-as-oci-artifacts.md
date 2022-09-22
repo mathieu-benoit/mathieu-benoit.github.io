@@ -55,46 +55,50 @@ gcloud artifacts repositories create ${ARTIFACT_REGISTRY_REPO_NAME} \
 
 We will create a simple Gatekeeper policy composed by one `Constraint` and one `ConstraintTemplate`. You can easily replicate this scenario with your own list of policies.
 
-Define a `ConstraintTemplate` which could ensure that resources have a specific `label`:
+Define a `ConstraintTemplate` which could ensure that container images begin with a string from the specified list:
 ```
 cat <<EOF> my-constrainttemplate.yaml
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
   annotations:
-    description: Requires resources to contain specified labels.
-  name: k8srequiredlabels
+    description: Requires container images to begin with a string from the specified list.
+  name: k8sallowedrepos
 spec:
   crd:
     spec:
       names:
-        kind: K8sRequiredLabels
+        kind: K8sAllowedRepos
       validation:
         openAPIV3Schema:
           type: object
           properties:
-            labels:
-              description: A list of labels the object must specify.
-              items:
-                properties:
-                  key:
-                    description: The required label.
-                    type: string
-                type: object
+            repos:
+              description: The list of prefixes a container image is allowed to have.
               type: array
-            message:
-              type: string
-          type: object
+              items:
+                type: string
   targets:
   - target: admission.k8s.gatekeeper.sh
     rego: |
-      package k8srequiredlabels
-      violation[{"msg": msg, "details": {"missing_labels": missing}}] {
-        provided := {label | input.review.object.metadata.labels[label]}
-        required := {label | label := input.parameters.labels[_].key}
-        missing := required - provided
-        count(missing) > 0
-        msg := sprintf("You must provide labels: %v", [missing])
+      package k8sallowedrepos
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.containers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf("container <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+      }
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.initContainers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf("initContainer <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
+      }
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.ephemeralContainers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf("ephemeralContainer <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.repos])
       }
 EOF
 ```
@@ -103,9 +107,9 @@ Define an associated `Constraint` for the `Namespaces` which should have a `owne
 ```
 cat <<EOF> my-constraint.yaml
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sRequiredLabels
+kind: K8sAllowedRepos
 metadata:
-  name: namespace-with-owner-label
+  name: pod-allowed-container-registries
 spec:
   enforcementAction: deny
   match:
@@ -113,21 +117,13 @@ spec:
     - apiGroups:
       - ""
       kinds:
-      - Namespace
-    excludedNamespaces:
-    - config-management-monitoring
-    - config-management-system
-    - default
-    - gatekeeper-system
-    - gke-connect
-    - istio-system
-    - kube-node-lease
-    - kube-public
-    - kube-system
-    - resource-group-system
+      - Pod
   parameters:
-    labels:
-    - key: owner
+    repos:
+    - gcr.io/config-management-release
+    - gcr.io/gke-release
+    - gke.gcr.io
+    - k8s.gcr.io
 EOF
 ```
 
