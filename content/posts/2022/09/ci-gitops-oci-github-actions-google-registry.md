@@ -1,31 +1,25 @@
 ---
-title: ci/gitops with helm, github actions, google artifact registry and config sync
-date: 2022-09-20
-tags: [gcp, helm, containers, kubernetes, gitops]
-description: let's see how to do the ci/gitops workflow with helm charts, github actions (using workload identity federation), google artifact registry and config sync (using workload identity)
+title: ci/gitops with oci artifact, github actions, google artifact registry and config sync
+date: 2022-09-21
+tags: [gcp, containers, kubernetes, gitops]
+description: let's see how to do the ci/gitops workflow with oci artifacts, github actions (using workload identity federation), google artifact registry and config sync (using workload identity)
 aliases:
-    - /ci-gitops-helm-github-actions-google-registry/
+    - /ci-gitops-oci-github-actions-google-registry/
 ---
-_Update on Sep 20th, 2022: this blog article is also now published in [Google Cloud Community Medium](https://medium.com/@mabenoit/b48604191fda)._
+Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), you can now [deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
 
-Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
+In this article, we will show how you can package and push an OCI artifact to **Google Artifact Registry with GitHub actions (using Workload Identity Federation) and `oras`**, and then how you can deploy this OCI artifact with Config Sync (using Workload Identity).
 
-You can learn more about this announcement here: [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
-
-[In another article]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-github-registry.md" >}}), we saw how you can package and push an Helm chart to **GitHub Container Registry with GitHub actions (using PAT token)**, and then how you can deploy an Helm chart with Config Sync.
-
-In this article, we will show how you can package and push an Helm chart to **Google Artifact Registry with GitHub actions (using Workload Identity Federation)**, and then how you can deploy an Helm chart with Config Sync (using Workload Identity).
-
-![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-google-registry.png)
+![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-oci-github-actions-google-registry.png)
 
 ## Objectives
 
 *   Set up Workload Identity Federation with a dedicated Google Service Account (Artifact Registry writer)
 *   Create a Google Artifact Registry repository
-*   Package and push an Helm chart in Google Artifact Registry with GitHub actions (using Workload Identity Federation)
+*   Package and push an OCI artifact in Google Artifact Registry with GitHub actions (using Workload Identity Federation) and `oras`
 *   Create a GKE cluster and enable Config Sync
 *   Set up Workload Identity with a dedicated Google Service Account (Artifact Registry reader)
-*   Sync an Helm chart from Google Artifact Registry with Config Sync (using Workload Identity)
+*   Sync an OCI artifact from Google Artifact Registry with Config Sync (using Workload Identity)
 
 ## Costs
 
@@ -73,7 +67,7 @@ gcloud config set project ${PROJECT_ID}
 
 Use the [`gh`](https://cli.github.com/) tool to create this GitHub repository:
 ```
-REPO_NAME=my-chart
+REPO_NAME=my-oci-artifact
 cd ~/
 gh auth login
 git config --global init.defaultBranch main
@@ -89,15 +83,15 @@ GITHUB_REPO_OWNER=$(gh repo view ${REPO_NAME} --json owner --jq .owner.login)
 
 [Workload Identity Federation](https://cloud.google.com/iam/docs/workload-identity-federation) lets you access resources directly, using a short-lived access token, and eliminates the maintenance and security burden associated with service account keys.
 
-Create a dedicated Google Service Account which will push the Helm chart in Artifact Registry later:
+Create a dedicated Google Service Account which will push the OCI artifact in Artifact Registry later:
 ```
-PACKAGER_GSA_NAME=helm-charts-packager
+PACKAGER_GSA_NAME=oci-artifacts-packager
 gcloud iam service-accounts create ${PACKAGER_GSA_NAME}
 ```
 
 Create a Workload Identity Pool:
 ```
-WI_POOL_NAME=helm-charts-packager-wi-pool
+WI_POOL_NAME=oci-artifacts-packager-wi-pool
 gcloud iam workload-identity-pools create ${WI_POOL_NAME} \
     --location global \
     --display-name ${WI_POOL_NAME}
@@ -132,7 +126,7 @@ gcloud iam service-accounts add-iam-policy-binding ${PACKAGER_GSA_NAME}@${PROJEC
 Create a Google Artifact Registry repository:
 ```
 gcloud services enable artifactregistry.googleapis.com
-ARTIFACT_REGISTRY_REPOSITORY=helm-charts
+ARTIFACT_REGISTRY_REPOSITORY=oci-artifacts
 gcloud artifacts repositories create ${ARTIFACT_REGISTRY_REPOSITORY} \
     --location ${REGION} \
     --repository-format docker
@@ -146,17 +140,22 @@ gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPOSIT
     --role roles/artifactregistry.writer
 ```
 
-## Package and push an Helm chart in Google Artifact Registry
+## Package and push an OCI artifact in Google Artifact Registry
 
-Create the Helm chart:
+Create the `Namespace` resource:
 ```
-helm create ~/${REPO_NAME}
+cat <<EOF> test-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+EOF
 ```
 
-Commit this Helm chart template in the GitHub repository:
+Commit this `Namespace` resource in the GitHub repository:
 ```
 cd ~/${REPO_NAME}
-git add . && git commit -m "Create Helm chart template" && git push origin main
+git add . && git commit -m "Create Namespace resource" && git push origin main
 ```
 
 Set the environment variables as secrets for the GitHub actions pipeline:
@@ -168,11 +167,11 @@ gh secret set PACKAGER_GSA_ID -b"${PACKAGER_GSA_NAME}@${PROJECT_ID}.iam.gservice
 gh secret set WI_POOL_PROVIDER_ID -b"${WI_POOL_PROVIDER_ID}"
 ```
 
-Define a GitHub actions pipeline to package and push the Helm chart in Google Artifact Registry:
+Define a GitHub actions pipeline to package and push the OCI artifact in Google Artifact Registry using `oras`:
 ```
 mkdir .github && mkdir .github/workflows
-cat <<'EOF' > .github/workflows/ci-helm-gar.yaml
-name: ci-helm-gar
+cat <<'EOF' > .github/workflows/ci-oci-gar.yaml
+name: ci-oci-gar
 permissions:
   contents: read
   id-token: write
@@ -182,16 +181,13 @@ on:
       - main
   pull_request:
 env:
-  CHART_NAME: my-chart
+  PACKAGE_NAME: my-oci-artifact
   IMAGE_TAG: 0.1.0
 jobs:
   job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: helm lint
-        run: |
-          helm lint .
       - uses: google-github-actions/auth@v0
         with:
           workload_identity_provider: '${{ secrets.WI_POOL_PROVIDER_ID }}'
@@ -203,18 +199,20 @@ jobs:
       - name: login to artifact registry
         run: |
           gcloud auth configure-docker ${{ secrets.ARTIFACT_REGISTRY_HOST_NAME }} --quiet
-      - name: helm package
+      - name: package
         run: |
-          helm package . --version $IMAGE_TAG
-      - name: helm push
+          tar -cf $PACKAGE_NAME.tar $(ls *.yaml)
+      - name: oras push
         if: ${{ github.event_name == 'push' }}
         run: |
-          helm push $CHART_NAME-$IMAGE_TAG.tgz oci://${{ secrets.ARTIFACT_REGISTRY_HOST_NAME }}/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACT_REGISTRY_REPOSITORY }}
+          oras push oci://${{ secrets.ARTIFACT_REGISTRY_HOST_NAME }}/${{ secrets.PROJECT_ID }}/${{ secrets.ARTIFACT_REGISTRY_REPOSITORY }}/$PACKAGE_NAME:$IMAGE_TAG $PACKAGE_NAME.tar
 EOF
 ```
-This GitHub Actions pipeline allows to execute a series of commands: `helm lint`, `gcloud auth configure-docker`, `helm package` and eventually, if it's a `push` in `main` branch, `helm push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
+This GitHub Actions pipeline allows to execute a series of commands: `gcloud auth configure-docker`, `tar` and eventually, if it's a `push` in `main` branch, `oras push` will be executed. Also, this pipeline is triggered as soon as there is a `push` in `main` branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.
 
-You can see that we use the [`google-github-actions/auth`](https://github.com/google-github-actions/auth) action to establish authentication to Google Cloud using Workload Identity Federation. To make this action working we need to have `permissions.id-token: write`. Then `gcloud auth configure-docker` allows to authenticate against the Artifact Registry, `helm registry login` is not necessary in this case, the next `helm` commands will reuse this authentication mechanism.
+You can see that we use the [`google-github-actions/auth`](https://github.com/google-github-actions/auth) action to establish authentication to Google Cloud using Workload Identity Federation. To make this action working we need to have `permissions.id-token: write`. Then `gcloud auth configure-docker` allows to authenticate against the Artifact Registry, the next `oras push` command will reuse this authentication mechanism.
+
+That's also great to see that `oras` is installed by default on the GitHub actions runners (`ubuntu-latest` used here).
 
 Commit this GitHub actions pipeline in the GitHub repository:
 ```
@@ -226,19 +224,19 @@ Wait until the associated run is successfully completed:
 gh run list
 ```
 
-See that your Helm chart has been uploaded in the Google Artifact Registry repository:
+See that your OCI artifact has been uploaded in the Google Artifact Registry repository:
 ```
 gcloud artifacts docker images list ${REGION}-docker.pkg.dev/${PROJECT_ID}/$ARTIFACT_REGISTRY_REPOSITORY/${REPO_NAME}
 ```
 
-Now that we have built and store our Helm chart, let's provision the GKE cluster with Config Sync ready to eventually deploy this Helm chart.
+Now that we have built and store our OCI artifact, let's provision the GKE cluster with Config Sync ready to eventually deploy this OCI artifact.
 
 ## Create your GKE cluster and enable Config Sync
 
 Create a GKE cluster registered in a [Fleet](https://cloud.google.com/anthos/fleet-management/docs/fleet-concepts) to enable Config Management:
 ```
 gcloud services enable container.googleapis.com
-CLUSTER_NAME=cluster-helm-test
+CLUSTER_NAME=cluster-oci-test
 gcloud container clusters create ${CLUSTER_NAME} \
     --workload-pool=${PROJECT_ID}.svc.id.goog \
     --zone ${ZONE}
@@ -264,29 +262,29 @@ gcloud beta container fleet config-management apply \
     --config acm-config.yaml
 ```
 
-## Sync an Helm chart from Google Artifact Registry
+## Sync an OCI artifact from Google Artifact Registry
 
 Create a dedicated Google Cloud Service Account with the fine granular access to that Artifact Registry repository with the `roles/artifactregistry.reader` role:
 ```
-HELM_CHARTS_READER_GSA_NAME=helm-charts-reader
-gcloud iam service-accounts create ${HELM_CHARTS_READER_GSA_NAME} \
-    --display-name ${HELM_CHARTS_READER_GSA_NAME}
+ARTIFACTS_READER_GSA_NAME=oci-artifacts-reader
+gcloud iam service-accounts create ${ARTIFACTS_READER_GSA_NAME} \
+    --display-name ${ARTIFACTS_READER_GSA_NAME}
 gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPOSITORY} \
     --location ${REGION} \
-    --member "serviceAccount:${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+    --member "serviceAccount:${ARTIFACTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role roles/artifactregistry.reader
 ```
 
 Allow Config Sync to synchronize resources for a specific `RootSync` via Workload Identity:
 ```
-ROOT_SYNC_NAME=root-sync-helm
+ROOT_SYNC_NAME=root-sync-oci
 gcloud iam service-accounts add-iam-policy-binding \
     --role roles/iam.workloadIdentityUser \
     --member "serviceAccount:${PROJECT_ID}.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]" \
-    ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+    ${ARTIFACTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 ```
 
-Deploy the `RootSync` in order to sync the private Helm chart:
+Deploy the `RootSync` in order to sync the private OCI artifact:
 ```
 cat << EOF | kubectl apply -f -
 apiVersion: configsync.gke.io/v1beta1
@@ -296,18 +294,15 @@ metadata:
   namespace: config-management-system
 spec:
   sourceFormat: unstructured
-  sourceType: helm
-  helm:
-    repo: oci://${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPOSITORY}
-    chart: my-chart
-    version: 0.1.0
-    releaseName: my-chart
-    namespace: default
+  sourceType: oci
+  oci:
+    image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPOSITORY}/my-oci-artifact:0.1.0
+    dir: .
     auth: gcpserviceaccount
-    gcpServiceAccountEmail: ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+    gcpServiceAccountEmail: ${ARTIFACTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 EOF
 ```
-_Note that we set the `spec.helm.auth: gcpserviceaccount` and `spec.helm.gcpServiceAccountEmail: ${HELM_CHARTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com` values to be able to access and sync the private Helm chart._
+_Note that we set the `spec.oci.auth: gcpserviceaccount` and `spec.oci.gcpServiceAccountEmail: ${ARTIFACTS_READER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com` values to be able to access and sync the private OCI artifact._
 
 Check the status of the sync:
 ```
@@ -315,17 +310,16 @@ nomos status \
     --contexts=$(kubectl config current-context)
 ```
 
-Verify that the Helm chart is synced:
+Verify that the `Namespace` is synced:
 ```
-kubectl get all \
-    -n default
+kubectl get ns test
 ```
 
-And voilà! You just deployed a **private Helm chart** hosted in Google Artifact Registry with Config Sync.
+And voilà! You just deployed a **private OCI artifact** hosted in Google Artifact Registry with Config Sync.
 
 ## Conclusion
 
-In this article, you were able to package and push an Helm chart in Google Artifact Registry with GitHub Actions using Workload Identity Federation. At the end, you saw how you can sync a private Helm chart with the `spec.helm.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity. This demonstrates that both GitHub Actions and Config Sync support an highly secured (key-less) approach to connect to Google Artifact Registry.
+In this article, you were able to package and push an OCI artifact in Google Artifact Registry thanks to `oras` with GitHub Actions using Workload Identity Federation. At the end, you saw how you can sync a private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity. This demonstrates that both GitHub Actions and Config Sync support an highly secured (key-less) approach to connect to Google Artifact Registry.
 
 ## Cleaning up
 
@@ -356,3 +350,4 @@ gcloud artifacts repositories delete ${ARTIFACT_REGISTRY_REPOSITORY} \
 - [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry)
 - [Sync OCI artifacts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-oci-artifacts-from-artifact-registry)
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-github-registry.md" >}})
+- [CI/GitOps with Helm, GitHub Actions, Google Artifact Registry and Config Sync]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-google-registry.md" >}})
