@@ -8,7 +8,7 @@ aliases:
 ---
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), you can now [deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
 
-In this blog, let's see in action how to deploy [Open Policy Agent (OPA) Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) policies as OCI artifacts, thanks to `oras`, Google Artifact Registry and Config Sync.
+In this blog, let's see in action how to deploy [Open Policy Agent (OPA) Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) policies as OCI artifacts, thanks to [`oras`](https://oras.land/), Google Artifact Registry and Config Sync.
 
 Here is what you will accomplish throughout this blog:
 - Set up an Artifact Registry repository
@@ -16,7 +16,7 @@ Here is what you will accomplish throughout this blog:
 - Set up a GKE cluster with Config Sync and Policy Controller
 - Deploy a Gatekeeper policy as OCI artifact with Config Sync
 
-_To illustrate this during this blog, we will leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller), but the same approach could be done if you install Gatekeeper by yourself. Policy Controller is based on the open source OPA Gatekeeper._
+_To illustrate this during this blog, we will leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller), but the same approach could be done if you [install Gatekeeper by yourself](https://open-policy-agent.github.io/gatekeeper/website/docs/install). Policy Controller is based on the open source OPA Gatekeeper._
 
 ![Workflow overview.](https://github.com/mathieu-benoit/my-images/raw/main/gatekeeper-policies-as-oci-artifacts.png)
 
@@ -141,7 +141,7 @@ Login to Artifact Registry:
 gcloud auth configure-docker ${REGION}-docker.pkg.dev
 ```
 
-Push that artifact in Artifact Registry with `oras`:
+Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
     ${REGION}-docker.pkg.dev/$project/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
@@ -153,7 +153,7 @@ See that your OCI artifact has been uploaded in the Google Artifact Registry rep
 gcloud artifacts docker images list ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}/${REPO_NAME}
 ```
 
-## Set up a GKE cluster with Artifact Registry, Config Sync and Policy Controller
+## Set up a GKE cluster with Config Sync and Policy Controller
 
 Create a GKE cluster registered in a Fleet to enable Config Management:
 ```
@@ -186,7 +186,7 @@ gcloud beta container fleet config-management apply \
     --membership ${CLUSTER_NAME} \
     --config acm-config.yaml
 ```
-_Note: in this scenario, we are not installing the [default library of constraint templates](https://cloud.google.com/anthos-config-management/docs/latest/reference/constraint-template-library)._
+_Note: in this scenario, we are not installing the [default library of constraint templates](https://cloud.google.com/anthos-config-management/docs/latest/reference/constraint-template-library) because we want to deploy our own `ConstraintTemplate`._
 
 ## Deploy a Gatekeeper policy as OCI artifact with Config Sync
 
@@ -242,7 +242,7 @@ kubectl get constraints
 kubectl get constrainttemplates
 ```
 
-And voila! That's how easy it is to deploy any Kubernetes manifests as an OCI artifact in a GitOps way with Config Sync.
+And voila! That's how easy it is to deploy a Gatekeeper policy as an OCI artifact in a GitOps way with Config Sync.
 
 You could even try to create a `Namespace` without any label and see what will happen :)
 ```
@@ -255,7 +255,9 @@ Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" deni
 
 ## Conclusion
 
-In this article, you were able to package Gatekeeper policies as an OCI artifact and push it to Google Artifact Registry thanks to `oras`. At the end, you saw how you can sync this private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the `RootSync` using Workload Identity to access Google Artifact Registry.
+In this article, you were able to package a Gatekeeper policy (`Constraint` and `ConstraintTemplate`) as an OCI artifact and push it to Google Artifact Registry thanks to [`oras`](https://oras.land/). At the end, you saw how you can sync this private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the Config Sync's `RootSync` setup using Workload Identity to access Google Artifact Registry.
+
+The continuous reconciliation of GitOps will reconcile between the desired state, now stored in an OCI registry, with the actual state, running in Kubernetes. Your Gatekeeper policies as OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries. This continuous reconciliation from OCI registries, not interacting with Git, has a lot of benefits in terms of scalability, performance and security as you will be able to configure very fine grained access to your OCI artifacts, across your fleet of clusters.
 
 ## What's next
 
@@ -264,3 +266,5 @@ In this article, you were able to package Gatekeeper policies as an OCI artifact
 - [Sync OCI artifacts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-oci-artifacts-from-artifact-registry)
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-github-registry.md" >}})
 - [CI/GitOps with Helm, GitHub Actions, Google Artifact Registry and Config Sync]({{< ref "/posts/2022/09/ci-gitops-helm-github-actions-google-registry.md" >}})
+
+Hope you enjoyed that one, happy sailing! ;)
