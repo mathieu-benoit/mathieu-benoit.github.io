@@ -144,6 +144,7 @@ gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPOSIT
 
 Create the `Namespace` resource:
 ```
+cd ~/${REPO_NAME}
 cat <<EOF> test-namespace.yaml
 apiVersion: v1
 kind: Namespace
@@ -154,7 +155,6 @@ EOF
 
 Commit this `Namespace` resource in the GitHub repository:
 ```
-cd ~/${REPO_NAME}
 git add . && git commit -m "Create Namespace resource" && git push origin main
 ```
 
