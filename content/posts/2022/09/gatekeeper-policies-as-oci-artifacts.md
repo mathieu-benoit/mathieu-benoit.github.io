@@ -103,7 +103,7 @@ spec:
 EOF
 ```
 
-Define an associated `Constraint` for the `Namespaces` which should have a `owner` label:
+Define an associated `Constraint` for the `Pods` which need to have their container image coming from allowed registries:
 ```
 cat <<EOF> my-constraint.yaml
 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -240,13 +240,13 @@ kubectl get constrainttemplates
 
 And voila! That's how easy it is to deploy a Gatekeeper policy as an OCI artifact in a GitOps way with Config Sync.
 
-You could even try to create a `Namespace` without any label and see what will happen :)
+You could even try to create a `Deployment` with a public image coming from an external registry not allow-listed:
 ```
-kubectl create ns test
+kubectl create deployment test --image=nginx --port=8080
 ```
-Output:
+Output similar to:
 ```
-Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" denied the request: [namespace-with-owner-label] you must provide labels: {"owner"}
+Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" denied the request: [pod-allowed-container-registries] container test has an invalid image repo nginx, allowed repos are...
 ```
 
 ## Conclusion
