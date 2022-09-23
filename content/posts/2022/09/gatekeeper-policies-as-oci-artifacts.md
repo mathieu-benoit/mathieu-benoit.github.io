@@ -126,10 +126,10 @@ spec:
     - gcr.io/config-management-release/
     - gcr.io/gkeconnect/
     - gke.gcr.io/
-    - ${REGION}-docker.pkg.dev/PROJECT_ID/
+    - ${REGION}-docker.pkg.dev/${PROJECT_ID}/
 EOF
 ```
-_Note: We are allowing system container images with the 3 first `repos`. For the last one, that's an example assuming you host your own container images in this `${REGION}-docker.pkg.dev/PROJECT_ID/` Arfifact registry. You can be more granular by adding the name of the Artifact Registry repository containing your container images at the end of this path._
+_Note: We are allowing system container images with the 3 first `repos`. For the last one, that's an example assuming you host your own container images in this `${REGION}-docker.pkg.dev/${PROJECT_ID}/` Arfifact registry. You can be more granular by adding the name of the Artifact Registry repository containing your container images at the end of this path._
 
 Do an archive of these files:
 ```
@@ -144,7 +144,7 @@ gcloud auth configure-docker ${REGION}-docker.pkg.dev
 Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
-    ${REGION}-docker.pkg.dev/PROJECT_ID/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
+    ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
     my-policies.tar
 ```
 
@@ -193,7 +193,7 @@ _Note: in this scenario, we are not installing the [default library of constrain
 Create a dedicated Google Cloud Service Account with the fine granular access (`roles/artifactregistry.reader`) to that Artifact Registry repository:
 ```
 ARTIFACT_PULLER_GSA_NAME=configsync-oci-sa
-ARTIFACT_PULLER_GSA_ID=${ARTIFACT_PULLER_GSA_NAME}@PROJECT_ID.iam.gserviceaccount.com
+ARTIFACT_PULLER_GSA_ID=${ARTIFACT_PULLER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
 gcloud iam service-accounts create ${ARTIFACT_PULLER_GSA_NAME} \
   --display-name=${ARTIFACT_PULLER_GSA_NAME}
 gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPO_NAME} \
