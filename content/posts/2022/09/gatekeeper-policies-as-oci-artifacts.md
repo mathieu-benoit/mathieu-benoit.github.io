@@ -6,15 +6,18 @@ description: let's see how to deploy gatekeeper policies as oci artifacts, thank
 aliases:
     - /gatekeeper-policies-as-oci-artifacts/
 ---
+_Update on Sep 23rd, 2022: this blog article is now published in [Google Cloud Community Medium](https://medium.com/google-cloud/e1233429ae2)._
+
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), you can now [deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
 
 In this blog, let's see in action how to deploy [Open Policy Agent (OPA) Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) policies as OCI artifacts, thanks to [`oras`](https://oras.land/), Google Artifact Registry and Config Sync.
 
 Here is what you will accomplish throughout this blog:
 - Set up an Artifact Registry repository
-- Package and push a Gatekeeper policy as OCI artifact to Artifact Registry
+- Package and push a Gatekeeper policy (`K8sAllowedRepos`) as OCI artifact to Artifact Registry
 - Set up a GKE cluster with Config Sync and Policy Controller
 - Deploy a Gatekeeper policy as OCI artifact with Config Sync
+- Find an opportunity to create a second Gatekeeper policy (`RSyncAllowedRepos`) while wrapping up this blog ;)
 
 _To illustrate this during this blog, we will leverage [Policy Controller](https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller), but the same approach could be done if you [install Gatekeeper by yourself](https://open-policy-agent.github.io/gatekeeper/website/docs/install). Policy Controller is based on the open source OPA Gatekeeper._
 
@@ -120,12 +123,13 @@ spec:
       - Pod
   parameters:
     repos:
-    - gcr.io/config-management-release
-    - gcr.io/gke-release
-    - gke.gcr.io
-    - k8s.gcr.io
+    - gcr.io/config-management-release/
+    - gcr.io/gkeconnect/
+    - gke.gcr.io/
+    - ${REGION}-docker.pkg.dev/PROJECT_ID/
 EOF
 ```
+_Note: We are allowing system container images with the 3 first `repos`. For the last one, that's an example assuming you host your own container images in this `${REGION}-docker.pkg.dev/PROJECT_ID/` Arfifact registry. You can be more granular by adding the name of the Artifact Registry repository containing your container images at the end of this path._
 
 Do an archive of these files:
 ```
@@ -140,13 +144,13 @@ gcloud auth configure-docker ${REGION}-docker.pkg.dev
 Push that artifact in Artifact Registry with [`oras`](https://oras.land/):
 ```
 oras push \
-    ${REGION}-docker.pkg.dev/$project/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
+    ${REGION}-docker.pkg.dev/PROJECT_ID/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
     my-policies.tar
 ```
 
 See that your OCI artifact has been uploaded in the Google Artifact Registry repository:
 ```
-gcloud artifacts docker images list ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}/${REPO_NAME}
+gcloud artifacts docker images list ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}
 ```
 
 ## Set up a GKE cluster with Config Sync and Policy Controller
@@ -189,7 +193,7 @@ _Note: in this scenario, we are not installing the [default library of constrain
 Create a dedicated Google Cloud Service Account with the fine granular access (`roles/artifactregistry.reader`) to that Artifact Registry repository:
 ```
 ARTIFACT_PULLER_GSA_NAME=configsync-oci-sa
-ARTIFACT_PULLER_GSA_ID=${ARTIFACT_PULLER_GSA_NAME}@$project.iam.gserviceaccount.com
+ARTIFACT_PULLER_GSA_ID=${ARTIFACT_PULLER_GSA_NAME}@PROJECT_ID.iam.gserviceaccount.com
 gcloud iam service-accounts create ${ARTIFACT_PULLER_GSA_NAME} \
   --display-name=${ARTIFACT_PULLER_GSA_NAME}
 gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPO_NAME} \

@@ -7,7 +7,7 @@ aliases:
     - /helm-github-registry-config-sync/
     - /ci-gitops-helm-github-actions-github-registry/
 ---
-_Update on Sep 17th, 2022: this blog article is also now published in [Google Cloud Community Medium](https://medium.com/@mabenoit/836913e74e79)._
+_Update on Sep 17th, 2022: this blog article is now published in [Google Cloud Community Medium](https://medium.com/google-cloud/836913e74e79)._
 
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), Config Sync supports syncing Helm charts from private OCI registries. To learn more, see [Sync Helm charts from Artifact Registry](https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry).
 

@@ -6,7 +6,7 @@ description: let's see how to use anthos service mesh to seamlessly encrypt traf
 aliases:
     - /encrypt-traffic-from-mesh-to-memorystore/
 ---
-_Update on Sep 8th, 2022: this blog article is also now on [Medium](https://medium.com/@mabenoit/64b71969318d)._
+_Update on Sep 8th, 2022: this blog article is now on [Medium](https://medium.com/google-cloud/64b71969318d)._
 
 _Note: this blog article is an end-to-end recipe implementing the [Istio TLS origination to secure Memorystore (redis) access]({{< ref "/posts/2022/01/istio-tls-origination.md" >}}) blog article I wrote a few months ago._
 
