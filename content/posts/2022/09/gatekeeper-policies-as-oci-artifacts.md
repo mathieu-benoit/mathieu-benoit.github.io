@@ -257,20 +257,20 @@ The continuous reconciliation of GitOps will reconcile between the desired state
 
 ## Ready for another Gatekeeper policy?
 
-Actually, let's leverage Gatekeeper one last time here, based on what we just concluded:
+Actually, let's create a Gatekeeper policy one more time here, based on what we just concluded:
 
-> OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries.
+> _OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries._
 
 So let's create a Gatekeeper policy for this too, where we could could make sure that any OCI artifacts pulled by Config Sync are just coming from our own private Artifact Registry repository.
 
-Define a `ConstraintTemplate` which could ensure that container images begin with a string from the specified list:
+Define a `ConstraintTemplate` which could ensure that OCI images begin with a string from the specified list:
 ```
 cat <<EOF> rsyncallowedrepos.yaml
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
   annotations:
-    description: Requires container images to begin with a string from the specified list.
+    description: Requires OCI images to begin with a string from the specified list.
   name: rsyncallowedrepos
 spec:
   crd:
@@ -282,7 +282,7 @@ spec:
           type: object
           properties:
             repos:
-              description: The list of prefixes an artifact image is allowed to have.
+              description: The list of prefixes an OCI image is allowed to have.
               type: array
               items:
                 type: string
@@ -299,7 +299,7 @@ spec:
 EOF
 ```
 
-Define an associated `Constraint` for the `RootSyncs` and `RepoSyncs` which need to have their artifact image coming from allowed registries:
+Define an associated `Constraint` for both [`RootSyncs` and `RepoSyncs`](https://cloud.google.com/anthos-config-management/docs/reference/rootsync-reposync-fields) which need to have their OCI image coming from allowed registries:
 ```
 cat <<EOF> rsync-allowed-artifact-registries.yaml
 apiVersion: constraints.gatekeeper.sh/v1beta1
@@ -321,7 +321,7 @@ spec:
 EOF
 ```
 
-We won't deploy them nor test them, but you got the point here, we just added more governance and security. Really cool, isn't it?!
+We won't deploy nor test these resources, but you got the point here, we just added more governance and security. Really cool, isn't it?!
 
 ## What's next
 
