@@ -57,7 +57,7 @@ We will create a simple Gatekeeper policy composed by one `Constraint` and one `
 
 Define a `ConstraintTemplate` which could ensure that container images begin with a string from the specified list:
 ```
-cat <<EOF> my-constrainttemplate.yaml
+cat <<EOF> k8sallowedrepos.yaml
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
@@ -105,7 +105,7 @@ EOF
 
 Define an associated `Constraint` for the `Pods` which need to have their container image coming from allowed registries:
 ```
-cat <<EOF> my-constraint.yaml
+cat <<EOF> pod-allowed-container-registries.yaml
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sAllowedRepos
 metadata:
@@ -129,7 +129,7 @@ EOF
 
 Do an archive of these files:
 ```
-tar -cf my-policies.tar my-constraint.yaml my-constrainttemplate.yaml
+tar -cf my-policies.tar pod-allowed-container-registries.yaml k8sallowedrepos.yaml
 ```
 
 Login to Artifact Registry:
@@ -254,6 +254,74 @@ Error from server (Forbidden): admission webhook "validation.gatekeeper.sh" deni
 In this article, you were able to package a Gatekeeper policy (`Constraint` and `ConstraintTemplate`) as an OCI artifact and push it to Google Artifact Registry thanks to [`oras`](https://oras.land/). At the end, you saw how you can sync this private OCI artifact with the `spec.oci.auth: gcpserviceaccount` setup on the Config Sync's `RootSync` setup using Workload Identity to access Google Artifact Registry.
 
 The continuous reconciliation of GitOps will reconcile between the desired state, now stored in an OCI registry, with the actual state, running in Kubernetes. Your Gatekeeper policies as OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries. This continuous reconciliation from OCI registries, not interacting with Git, has a lot of benefits in terms of scalability, performance and security as you will be able to configure very fine grained access to your OCI artifacts, across your fleet of clusters.
+
+## Ready for another Gatekeeper policy?
+
+Actually, let's leverage Gatekeeper one last time here, based on what we just concluded:
+
+> OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries.
+
+So let's create a Gatekeeper policy for this too, where we could could make sure that any OCI artifacts pulled by Config Sync are just coming from our own private Artifact Registry repository.
+
+Define a `ConstraintTemplate` which could ensure that container images begin with a string from the specified list:
+```
+cat <<EOF> rsyncallowedrepos.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  annotations:
+    description: Requires container images to begin with a string from the specified list.
+  name: rsyncallowedrepos
+spec:
+  crd:
+    spec:
+      names:
+        kind: RSyncAllowedRepos
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            repos:
+              description: The list of prefixes an artifact image is allowed to have.
+              type: array
+              items:
+                type: string
+  targets:
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
+      package rsyncallowedrepos
+      violation[{"msg": msg}] {
+        image := input.review.object.spec.oci.image
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(image, repo)]
+        not any(satisfied)
+        msg := sprintf("<%v> named <%v> has an invalid image repo <%v>, allowed repos are %v", [input.review.kind.kind, input.review.object.metadata.name, image, input.parameters.repos])
+      }
+EOF
+```
+
+Define an associated `Constraint` for the `RootSyncs` and `RepoSyncs` which need to have their artifact image coming from allowed registries:
+```
+cat <<EOF> rsync-allowed-artifact-registries.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: RSyncAllowedRepos
+metadata:
+  name: rsync-allowed-artifact-registries
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - configsync.gke.io
+      kinds:
+      - RootSync
+      - RepoSync
+  parameters:
+    repos:
+    - ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}
+EOF
+```
+
+We won't deploy them nor test them, but you got the point here, we just added more governance and security. Really cool, isn't it?!
 
 ## What's next
 
