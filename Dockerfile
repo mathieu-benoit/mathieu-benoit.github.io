@@ -15,7 +15,7 @@ RUN hugo -v -s /site -d /site/public
 
 FROM nginxinc/nginx-unprivileged:1.23.1-alpine as nginx-unprivileged-without-curl
 USER root
-RUN apk del curl
+RUN apk del curl wget
 
 FROM nginx-unprivileged-without-curl
 USER 1000
