@@ -265,7 +265,7 @@ Actually, let's create a Gatekeeper policy one more time here, based on what we 
 
 > _OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries._
 
-So let's create a Gatekeeper policy for this too, where we could could make sure that any OCI artifacts pulled by Config Sync are just coming from our own private Artifact Registry repository.
+So let's create a Gatekeeper policy for this too, where we could make sure that any OCI artifacts pulled by Config Sync are just coming from our own private Artifact Registry repository.
 
 Define a `ConstraintTemplate` which could ensure that OCI images begin with a string from the specified list:
 ```
@@ -325,7 +325,7 @@ spec:
 EOF
 ```
 
-We won't deploy nor test these resources, but you got the point here, we just added more governance and security. Really cool, isn't it?!
+We won't deploy nor test these resources, but you got the point here, we just added more governance and security. We are now able to control where both, the container images and the Kubernetes manifests as OCI images are coming from. Really cool, isn't it?!
 
 ## What's next
 

@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.slideshare.net/LaurenHaywardSchaefe/level-up-your-technical-career-by-writing
 https://www.decibel.vc/content/engaging-a-large-developer-community-learnings-from-docker-and-strapi
 https://theworst.dev/developer-advocates-guide-to-metrics-and-reporting
 https://medium.com/@aens1066/the-anatomy-of-a-product-2e18c321582d
