@@ -1,19 +1,21 @@
 ---
-title: use google cloud spanner with the onlineboutique sample apps
+title: use google cloud spanner with the online boutique sample
 date: 2022-10-18
 tags: [gcp, kubernetes]
-description: let's see how to use google cloud spanner with the onlineboutique sample apps.
+description: let's see how to use google cloud spanner with the online boutique sample.
 aliases:
     - /onlineboutique-with-spanner/
 ---
-By default the `cartservice` of the Online Boutique sample apps stores its data in an in-cluster Redis database. 
+_Update on Oct 18th, 2022: this blog article is now on [Medium](https://medium.com/google-cloud/f7248e077339)._
+
+By default the `cartservice` of the Online Boutique sample stores its data in an in-cluster Redis database. 
 Using a fully managed database service outside your GKE cluster such as [Memorystore (Redis)](https://cloud.google.com/spanner) could bring more resiliency and more security.
 
-Since the recent [v0.4.0 version](https://github.com/GoogleCloudPlatform/microservices-demo/releases/tag/v0.4.0), the Online Boutique sample apps can now store its data in [Google Cloud Spanner](https://cloud.google.com/spanner). 
+Since the recent [v0.4.0 version](https://github.com/GoogleCloudPlatform/microservices-demo/releases/tag/v0.4.0), the Online Boutique sample can now store its data in [Google Cloud Spanner](https://cloud.google.com/spanner). 
 
 > Cloud Spanner is a fully managed relational database with unlimited scale, strong consistency, and up to 99.999% availability.
 
-In this article, let's see how you can connect the Online Boutique sample apps to Google Cloud Spanner.
+In this article, let's see how you can connect the Online Boutique sample to Google Cloud Spanner.
 
 ![Architecture overview.](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-spanner.png)
 
@@ -22,7 +24,7 @@ In this article, let's see how you can connect the Online Boutique sample apps t
 *   Create a Google Kubernetes Engine (GKE) cluster with Workload Identity
 *   Provision a Spanner database with a [free Spanner instance](https://cloud.google.com/blog/products/spanner/try-cloud-spanner-databases)
 *   Grant the `cartservice`'s service account access to the Spanner database with a least privilege role assignment
-*   Deploy the Online Boutique sample apps connected to the Spanner database with Kustomize
+*   Deploy the Online Boutique sample connected to the Spanner database with Kustomize
 
 ## Costs
 
