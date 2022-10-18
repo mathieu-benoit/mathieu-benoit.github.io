@@ -48,7 +48,7 @@ Initialize the common variables used throughout this tutorial:
 ```bash
 PROJECT_ID=FIXME-WITH-YOUR-PROJECT-ID
 REGION=us-east5
-ZONE=us-east5
+ZONE=us-east5-a
 ```
 
 To avoid repeating the `--project` in the commands throughout this tutorial, let's set the current project:
@@ -79,23 +79,27 @@ gcloud container clusters create ${CLUSTER} \
 
 ## Provision a Spanner database
 
-Provision the Memorystore (redis) instance allowing only in-transit encryption:
+Provision the Spanner instance:
 ```bash
 SPANNER_REGION_CONFIG=regional-${REGION}
 SPANNER_INSTANCE_NAME=onlineboutique
-SPANNER_DATABASE_NAME=carts
 
 gcloud spanner instances create ${SPANNER_INSTANCE_NAME} \
     --description="online boutique shopping cart" \
     --instance-type free-instance \
     --config ${SPANNER_REGION_CONFIG}
+```
+_Notes: with the latest version of gcloud we are able to provision a [free Spanner instance](https://cloud.google.com/blog/products/spanner/try-cloud-spanner-databases)._
+
+Provision the Spanner database:
+```bash
+SPANNER_DATABASE_NAME=carts
 
 gcloud spanner databases create ${SPANNER_DATABASE_NAME} \
     --instance ${SPANNER_INSTANCE_NAME} \
     --database-dialect GOOGLE_STANDARD_SQL \
     --ddl "CREATE TABLE CartItems (userId STRING(1024), productId STRING(1024), quantity INT64) PRIMARY KEY (userId, productId); CREATE INDEX CartItemsByUserId ON CartItems(userId);"
 ```
-_Notes: with the latest version of gcloud we are able to provision a [free Spanner instance](https://cloud.google.com/blog/products/spanner/try-cloud-spanner-databases)._
 
 ## Grant the `cartservice`'s service account access to the Spanner database
 
