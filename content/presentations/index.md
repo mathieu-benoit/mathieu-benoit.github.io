@@ -6,7 +6,7 @@ Here is the list of the 42 public presentations and workshops I have built and d
 
 ## 2022 (6)
 
-- 2022-10 - [Build and deploy Cloud Native (OCI) artifacts, the GitOps way - GitOpsCon 2022] (https://sched.co/1AR9T)
+- 2022-10 - [Build and deploy Cloud Native (OCI) artifacts, the GitOps way - GitOpsCon 2022](https://sched.co/1AR9T)
   - Co-built with [Nan Yu](https://www.linkedin.com/in/nan-yu-57650618/)
 - 2022-10 - [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh (10 min)](https://sched.co/1AR95)
   - Co-built and co-delivered with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/)
