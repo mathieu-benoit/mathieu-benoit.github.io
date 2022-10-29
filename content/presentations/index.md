@@ -2,10 +2,14 @@
 title: presentations
 ---
 
-Here is the list of the 40 public presentations and workshops I have built and delivered.
+Here is the list of the 42 public presentations and workshops I have built and delivered.
 
-## 2022 (4)
+## 2022 (6)
 
+- 2022-10 - [Build and deploy Cloud Native (OCI) artifacts, the GitOps way - GitOpsCon 2022] (https://sched.co/1AR9T)
+  - Co-built with [Nan Yu](https://www.linkedin.com/in/nan-yu-57650618/)
+- 2022-10 - [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh (10 min)](https://sched.co/1AR95)
+  - Co-built and co-delivered with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/)
 - 2022-04 - [Manage and Secure Distributed Services with Anthos Service Mesh Workshop - IstioCon 2022](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/)
   - [Link to the recording](https://youtu.be/--mPdAxovfE?list=PL7wB27eZmdffL2cyYauEuxcOTyGtSv4gy)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-04-IstioCon-2022-Anthos-Service-Mesh-Workshop.pdf)
