@@ -19,7 +19,7 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
     chmod +x /bin/grpc_health_probe
 ```
 
-In the Kubernetes manifests for your `Deployments`, here is the updates for example for the `adservice` for both the `readinessProbe` and the `livenessProbe`:
+In the Kubernetes manifests for your `Deployments`, here is the associated updates for both the `readinessProbe` and the `livenessProbe`:
 ```diff
 +           grpc:
 +             port: 9555
@@ -72,6 +72,12 @@ Optionally, you can render the Kubernetes manifests:
 kustomize build .
 ```
 
+In the Kubernetes manifests for the `Deployments`, here is the associated update for both the container `image`:
+```diff
+-         image: gcr.io/google-samples/microservices-demo/paymentservice:v0.4.1
++         image: gcr.io/google-samples/microservices-demo/paymentservice:v0.4.1-native-grpc-probes
+```
+
 Deploy this Kustomize overlay:
 ```bash
 kubectl apply -k .
@@ -81,6 +87,6 @@ If you wait a little bit, when all the `Pods` are running, you should have your 
 
 That's how easy we were able to leverage the new [native gRPC health probes with Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/).
 
-The Online Boutique sample apps are not supporting by default this native gRPC health probes, that's why we need to use Kustomize to use the [associated Kustomize overlay](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/kustomize/components/native-grpc-health-check).
+The Online Boutique sample apps are not yet supporting by default this native gRPC health probes, because Kubernetes 1.24+ is not widely used. That's why we need to use the [optional associated Kustomize overlay](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/kustomize/components/native-grpc-health-check).
 
 Hope you enjoyed that one, happy sailing, cheers!
