@@ -72,10 +72,10 @@ Optionally, you can render the Kubernetes manifests:
 kustomize build .
 ```
 
-In the Kubernetes manifests for the `Deployments`, here is the associated update for both the container `image`:
+In the Kubernetes manifests for the `Deployments`, here is the associated update for the container `image`:
 ```diff
--         image: gcr.io/google-samples/microservices-demo/paymentservice:v0.4.1
-+         image: gcr.io/google-samples/microservices-demo/paymentservice:v0.4.1-native-grpc-probes
+-         image: gcr.io/google-samples/microservices-demo/*service:v0.4.1
++         image: gcr.io/google-samples/microservices-demo/*service:v0.4.1-native-grpc-probes
 ```
 
 Deploy this Kustomize overlay:
