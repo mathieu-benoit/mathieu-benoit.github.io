@@ -8,11 +8,11 @@ aliases:
 ---
 gRPC health probes are natively supported in beta [since Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/). Before that we needed to add the [`grpc_health_probe` binary in each `Dockerfile`](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke).
 
-Since the recent version v0.4.0, the Online Boutique sample provide an option to have its applications supporting this feature. This allows to leverage the native Kubernetes feature as a well as decreasing the size of the container images by 4MB (virtual) and 11MB (on disk) as well as reducing the maintenance and surface of attack that this `grpc_health_probe` binary was added.
+Since the [recent v0.4.1 version](https://github.com/GoogleCloudPlatform/microservices-demo/releases/tag/v0.4.1), the [Online Boutique sample](https://github.com/GoogleCloudPlatform/microservices-demo) provide an option to have its applications supporting this feature. This allows to leverage the native Kubernetes feature, decrease the size of the container images by 4MB (virtual) and 11MB (on disk) as well as reduce the maintenance and surface of attack that this `grpc_health_probe` binary was adding.
 
 ## What's the differences?
 
-In your `Dockerfile`, you don't need to [add the `grpc_health_probe` binary like we needed to previously](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke):
+In your `Dockerfile`, you don't need anymore to [add the `grpc_health_probe` binary (like we needed to previously)](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke):
 ```dockerfile
 RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
@@ -45,7 +45,7 @@ From there, let's deploy the Online Boutique sample with the gRPC health probes 
 
 Get the remote Kustomize components:
 ```bash
-mkdir container-images-tag
+mkdir native-grpc-health-check
 curl -L https://raw.githubusercontent.com/GoogleCloudPlatform/microservices-demo/main/kustomize/components/native-grpc-health-check/kustomization.yaml > native-grpc-health-check/kustomization.yaml
 ```
 
@@ -67,15 +67,20 @@ components:
 EOF
 ```
 
-And deploy it:
+Optionally, you can render the Kubernetes manifests:
+```bash
+kustomize build .
+```
+
+Deploy this Kustomize overlay:
 ```bash
 kubectl apply -k .
 ```
 
 If you wait a little bit, when all the `Pods` are running, you should have your Online Boutique website working successfully.
 
-That's how easy we were able the new [native gRPC health probes with Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/).
+That's how easy we were able to leverage the new [native gRPC health probes with Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/).
 
 The Online Boutique sample apps are not supporting by default this native gRPC health probes, that's why we need to use Kustomize to use the [associated Kustomize overlay](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/kustomize/components/native-grpc-health-check).
 
-Happy sailing, cheers!
+Hope you enjoyed that one, happy sailing, cheers!
