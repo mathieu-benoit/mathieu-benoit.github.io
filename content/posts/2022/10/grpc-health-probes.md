@@ -8,9 +8,9 @@ aliases:
 ---
 gRPC health probes are natively supported in beta [since Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/). Before that we needed to add the [`grpc_health_probe` binary in each `Dockerfile`](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke).
 
-Since the [recent v0.4.1 version](https://github.com/GoogleCloudPlatform/microservices-demo/releases/tag/v0.4.1), the [Online Boutique sample](https://github.com/GoogleCloudPlatform/microservices-demo) provide an option to have its applications supporting this feature. This allows to leverage the native Kubernetes feature, decrease the size of the container images by 4MB (virtual) and 11MB (on disk) as well as reduce the maintenance and surface of attack that this `grpc_health_probe` binary was adding.
+Since the [recent v0.4.1 version](https://github.com/GoogleCloudPlatform/microservices-demo/releases/tag/v0.4.1), the [Online Boutique sample](https://github.com/GoogleCloudPlatform/microservices-demo) provides an option to have its applications supporting this feature. This allows to leverage the native Kubernetes feature, decrease the size of the container images by 4MB (virtual) and 11MB (on disk) as well as reduce the maintenance and surface of attack that this `grpc_health_probe` binary was adding.
 
-## What's the differences?
+## What are the differences with before?
 
 In your `Dockerfile`, you don't need anymore to [add the `grpc_health_probe` binary (like we needed to previously)](https://cloud.google.com/blog/topics/developers-practitioners/health-checking-your-grpc-servers-gke):
 ```dockerfile
@@ -39,7 +39,7 @@ gcloud container clusters create tests \
     --num-nodes=4 \
     --release-channel=rapid
 ```
-_Note: the default version of [GKE in rapid channel has now been 1.24 for a while](https://cloud.google.com/kubernetes-engine/docs/release-notes-rapid)._
+_Note: as of now, the default version of [GKE in rapid channel is 1.24](https://cloud.google.com/kubernetes-engine/docs/release-notes-rapid)._
 
 From there, let's deploy the Online Boutique sample with the gRPC health probes experimental variation.
 
@@ -85,8 +85,8 @@ kubectl apply -k .
 
 If you wait a little bit, when all the `Pods` are running, you should have your Online Boutique website working successfully.
 
-That's how easy we were able to leverage the new [native gRPC health probes with Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/).
+That's how easy we were able to leverage the new [native gRPC health probes with Kubernetes 1.24+](https://kubernetes.io/blog/2022/05/13/grpc-probes-now-in-beta/) with the Online Boutique sample.
 
-The Online Boutique sample apps are not yet supporting by default this native gRPC health probes, because Kubernetes 1.24+ is not widely used. That's why we need to use the [optional associated Kustomize overlay](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/kustomize/components/native-grpc-health-check).
+The Online Boutique sample apps are not yet supporting by default this native gRPC health probes, because Kubernetes 1.24+ is not widely nor commonly used yet. That's why we need to use the [optional associated Kustomize overlay](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/kustomize/components/native-grpc-health-check).
 
 Hope you enjoyed that one, happy sailing, cheers!
