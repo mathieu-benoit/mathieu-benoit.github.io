@@ -7,6 +7,9 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://twitter.com/garysheng/status/1595394016593514496
+https://www.ahoyconnect.com/blog/what-is-devrel-a-beginners-guide
+https://dev.to/stripe/how-we-use-friction-logs-to-improve-products-at-stripe-i6p
 https://www.slideshare.net/LaurenHaywardSchaefe/level-up-your-technical-career-by-writing
 https://www.decibel.vc/content/engaging-a-large-developer-community-learnings-from-docker-and-strapi
 https://theworst.dev/developer-advocates-guide-to-metrics-and-reporting
