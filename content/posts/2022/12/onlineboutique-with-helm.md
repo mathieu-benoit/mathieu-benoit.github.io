@@ -336,8 +336,91 @@ spec:
 EOF
 ```
 
-By navigating to the **Kubernetes Engine > Config & Policy > Config** page in your Google Cloud Console, you can see all the 73 resources synced from the Online Boutique Helm chart by Config Sync:
-![Online Boutique synced by Config Sync](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-configsync.png)
+By running the following command, you can see all the 73 resources synced from the Online Boutique Helm chart by Config Sync:
+```bash
+nomos status --contexts $(kubectl config current-context)
+```
+
+Output similar to:
+```Plaintext
+<root>:root-sync-helm   oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique:latest   
+  SYNCED                  onlineboutique:                                                           
+  Managed resources:
+     NAMESPACE        NAME                                                          STATUS    SOURCEHASH
+     onlineboutique   authorizationpolicy.security.istio.io/adservice               Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/cartservice             Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/checkoutservice         Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/currencyservice         Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/deny-all                Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/emailservice            Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/frontend                Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/paymentservice          Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/productcatalogservice   Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/recommendationservice   Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/redis-cart              Current   onlineb
+     onlineboutique   authorizationpolicy.security.istio.io/shippingservice         Current   onlineb
+     onlineboutique   deployment.apps/adservice                                     Current   onlineb
+     onlineboutique   deployment.apps/cartservice                                   Current   onlineb
+     onlineboutique   deployment.apps/checkoutservice                               Current   onlineb
+     onlineboutique   deployment.apps/currencyservice                               Current   onlineb
+     onlineboutique   deployment.apps/emailservice                                  Current   onlineb
+     onlineboutique   deployment.apps/frontend                                      Current   onlineb
+     onlineboutique   deployment.apps/loadgenerator                                 Current   onlineb
+     onlineboutique   deployment.apps/paymentservice                                Current   onlineb
+     onlineboutique   deployment.apps/productcatalogservice                         Current   onlineb
+     onlineboutique   deployment.apps/recommendationservice                         Current   onlineb
+     onlineboutique   deployment.apps/redis-cart                                    Current   onlineb
+     onlineboutique   deployment.apps/shippingservice                               Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/adservice                     Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/cartservice                   Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/checkoutservice               Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/currencyservice               Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/deny-all                      Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/emailservice                  Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/frontend                      Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/loadgenerator                 Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/paymentservice                Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/productcatalogservice         Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/recommendationservice         Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/redis-cart                    Current   onlineb
+     onlineboutique   networkpolicy.networking.k8s.io/shippingservice               Current   onlineb
+     onlineboutique   service/adservice                                             Current   onlineb
+     onlineboutique   service/cartservice                                           Current   onlineb
+     onlineboutique   service/checkoutservice                                       Current   onlineb
+     onlineboutique   service/currencyservice                                       Current   onlineb
+     onlineboutique   service/emailservice                                          Current   onlineb
+     onlineboutique   service/frontend                                              Current   onlineb
+     onlineboutique   service/paymentservice                                        Current   onlineb
+     onlineboutique   service/productcatalogservice                                 Current   onlineb
+     onlineboutique   service/recommendationservice                                 Current   onlineb
+     onlineboutique   service/redis-cart                                            Current   onlineb
+     onlineboutique   service/shippingservice                                       Current   onlineb
+     onlineboutique   serviceaccount/adservice                                      Current   onlineb
+     onlineboutique   serviceaccount/cartservice                                    Current   onlineb
+     onlineboutique   serviceaccount/checkoutservice                                Current   onlineb
+     onlineboutique   serviceaccount/currencyservice                                Current   onlineb
+     onlineboutique   serviceaccount/emailservice                                   Current   onlineb
+     onlineboutique   serviceaccount/frontend                                       Current   onlineb
+     onlineboutique   serviceaccount/loadgenerator                                  Current   onlineb
+     onlineboutique   serviceaccount/paymentservice                                 Current   onlineb
+     onlineboutique   serviceaccount/productcatalogservice                          Current   onlineb
+     onlineboutique   serviceaccount/recommendationservice                          Current   onlineb
+     onlineboutique   serviceaccount/redis-cart                                     Current   onlineb
+     onlineboutique   serviceaccount/shippingservice                                Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/adservice                         Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/cartservice                       Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/checkoutservice                   Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/currencyservice                   Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/emailservice                      Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/frontend                          Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/loadgenerator                     Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/paymentservice                    Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/productcatalogservice             Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/recommendationservice             Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/redis-cart                        Current   onlineb
+     onlineboutique   sidecar.networking.istio.io/shippingservice                   Current   onlineb
+     onlineboutique   virtualservice.networking.istio.io/frontend                   Current   onlineb
+```
 
 ## Conclusion
 
