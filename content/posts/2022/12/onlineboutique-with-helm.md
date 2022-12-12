@@ -6,6 +6,8 @@ description: let's see how we could deploy advanced scenarios of the online bout
 aliases:
     - /onlineboutique-with-helm/
 ---
+_Update on Dec 12th, 2022: this blog article is now on [Medium](https://medium.com/google-cloud/246119e46d53)._
+
 Since the version 0.4.2, Online Boutique has its own Helm chart, in the [GitHub repository](https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/helm-chart) or in the public Artifact Registry repository: `us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique`.
 
 The intent is to simplify the way the Online Boutique users deploy it, especially when they want to deploy it in more advanced scenarios: with `NetworkPolicies`, with the Cymbal branding, without the `frontend` app exposed publicly, with `ServiceAccounts`, etc.
