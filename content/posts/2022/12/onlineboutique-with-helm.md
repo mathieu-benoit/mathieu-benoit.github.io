@@ -92,7 +92,7 @@ gcloud container fleet memberships register ${CLUSTER} \
     --enable-workload-identity
 ```
 
-Then, by navigating to the *Anthos > Security* page in your Google Cloud Console, you can see that *Kubernetes network policy* is enabled in the Online Boutique namespace:
+Then, by navigating to the **Anthos > Security** page in your Google Cloud Console, you can see that **Kubernetes network policy** is enabled in the Online Boutique namespace:
 ![Online Boutique's Network Policies on Anthos Security page](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-networkpolicies.png)
 
 ## Deploy Online Boutique in a Service Mesh
@@ -131,7 +131,7 @@ If you wait a little bit, when the `Pods` are deployed, you can access the Onlin
 echo -n "http://" && kubectl get svc frontend-external -n ${ONLINEBOUTIQUE_NAMESPACE} -o json | jq -r '.status.loadBalancer.ingress[0].ip'
 ```
 
-Then, by navigating to the *Anthos > Service Mesh* page in your Google Cloud Console, you can see the associated *Topology*:
+Then, by navigating to the **Anthos > Service Mesh** page in your Google Cloud Console, you can see the associated **Topology**:
 ![Online Boutique on the ASM Topology page](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-asm-topology.png)
 
 Congrats! You just deployed Online Boutique in your Service Mesh via its Helm chart!
@@ -209,7 +209,7 @@ You can verify that you can still access the Online Boutique website by clicking
 echo -n "http://" && kubectl get svc frontend-external -n ${ONLINEBOUTIQUE_NAMESPACE} -o json | jq -r '.status.loadBalancer.ingress[0].ip'
 ```
 
-By navigating to the *Anthos > Security* page in your Google Cloud Console, you can see that *Service access control* is enabled in the Online Boutique namespace:
+By navigating to the **Anthos > Security** page in your Google Cloud Console, you can see that **Service access control** is enabled in the Online Boutique namespace:
 ![Online Boutique's AuthorizationPolicies on Anthos Security page](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-authorizationpolicies.png)
 
 ## Deploy Online Boutique behind an Istio's ingress gateway
@@ -250,10 +250,10 @@ If you wait a little bit, when the `Pods` are deployed, you can access the Onlin
 echo -n "http://" && kubectl get svc asm-ingressgateway -n ${INGRESS_NAMESPACE} -o json | jq -r '.status.loadBalancer.ingress[0].ip'
 ```
 
-By navigating to the *Anthos > Service Mesh* page in your Google Cloud Console, you can see the associated *Topology* now containing the Ingress Gateway:
+By navigating to the **Anthos > Service Mesh** page in your Google Cloud Console, you can see the associated **Topology** now containing the Ingress Gateway:
 ![Online Boutique on ASM Topology page with Ingress Gateway](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-asm-topology-ingressgateway.png)
 
-By navigating to the *Anthos > Security* page in your Google Cloud Console, you can see that *Service access control* is enabled in the Ingress Gateway namespace too:
+By navigating to the **Anthos > Security** page in your Google Cloud Console, you can see that **Service access control** is enabled in the Ingress Gateway namespace too:
 ![Online Boutique AuthorizationPolicies with Ingress Gateway](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-authorizationpolicies-ingressgateway.png)
 
 One last thing, not related to Online Boutique per say, but here is a quick win to add more security within your Service Mesh, by adding `STRICT` mTLS for the communication between your apps in the Servie Mesh:
@@ -270,7 +270,7 @@ spec:
 EOF
 ```
 
-By navigating to the *Anthos > Security* page in your Google Cloud Console, you can see that *mTLS status* is enabled in your Service Mesh:
+By navigating to the **Anthos > Security** page in your Google Cloud Console, you can see that **mTLS status** is enabled in your Service Mesh:
 ![Online Boutique with STRICT mTLS](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-strict-mtls.png)
 
 ## Deploy Online Boutique via Config Sync, in a GitOps way
@@ -336,14 +336,16 @@ spec:
 EOF
 ```
 
-By navigating to the *Kubernetes Engine > Config & Policy > Config* page in your Google Cloud Console, you can see all the 73 resources synced from the Online Boutique Helm chart by Config Sync:
+By navigating to the **Kubernetes Engine > Config & Policy > Config** page in your Google Cloud Console, you can see all the 73 resources synced from the Online Boutique Helm chart by Config Sync:
 ![Online Boutique synced by Config Sync](https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-configsync.png)
 
 ## Conclusion
 
-- Helm chart
-- Advanced scenarios with ASM/ACM
-- Security posture improved with `NetworkPolicies`, `AuthorizationPolicies` and STRICT mTLS
+The Online Boutique's Helm chart allows to deploy either the default basic setup as well as more advanced, complex and secure setup with Service Mesh and Config Sync (GitOps).
+
+We just saw how you can deploy Online Boutique with its fine granular `NetworkPolicies`, `Sidecars`, `ServiceAccounts` and `AuthorizationPolicies`. We also saw how you can expose the Online Boutique's `frontend` app via an Istio Ingress Gateway.
+
+You can take inspiration of this to improve your own Security Posture with your own workloads.
 
 ## More examples
 
