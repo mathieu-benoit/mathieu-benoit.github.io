@@ -40,6 +40,7 @@ jobs:
           gcloud auth configure-docker ${{ secrets.CONTAINER_REGISTRY_HOST_NAME }} --quiet
       - name: manage base images
         run: |
+          cd app
           # Grab the build base image in our private registry
           baseImage=$(cat Dockerfile | grep 'FROM alpine')
           baseImage=($baseImage)
@@ -58,6 +59,7 @@ jobs:
           sed -i "s,FROM alpine,FROM ${IMAGE_BASE_NAME}/alpine,g;s,FROM nginxinc,FROM ${IMAGE_BASE_NAME},g" Dockerfile
       - name: build container
         run: |
+          cd app
           docker build --tag ${IMAGE_NAME} .
           imageSize=$(printf %.2f "$(($(docker image inspect ${IMAGE_NAME} --format='{{.Size}}') * 10**2 / $(printf '%5.0f\n' 1e6)))e-2")
           echo "IMAGE_SIZE=$imageSize"
