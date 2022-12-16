@@ -1,7 +1,7 @@
 ---
 title: online boutique's helm chart, illustrate advanced scenarios with service mesh and gitops
 date: 2022-12-11
-tags: [gcp, kubernetes, helm]
+tags: [gcp, kubernetes, helm, service-mesh, security]
 description: let's see how we could deploy advanced scenarios of the online boutique sample via its helm chart with service mesh and gitops, in order to improve its security posture
 aliases:
     - /onlineboutique-with-helm/
