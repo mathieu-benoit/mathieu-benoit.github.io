@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.linkedin.com/posts/sara-waszynska_why-devrel-is-hard-as-a-devrel-professional-activity-7009502668863778817-W_Lp
 https://www.devrelstrategist.com/
 https://twitter.com/garysheng/status/1595394016593514496
 https://www.ahoyconnect.com/blog/what-is-devrel-a-beginners-guide
