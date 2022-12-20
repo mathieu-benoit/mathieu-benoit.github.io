@@ -98,7 +98,7 @@ REDIS_PORT=$(gcloud redis instances describe ${REDIS_NAME} \
     --format 'get(port)')
 ```
 
-## Deploy Online Boutique connected to the Spanner database
+## Deploy Online Boutique connected to the Memorystore (Redis) instance
 
 Deploy the Online Boutique sample apps without the default in-cluster Redis database, and now pointing to the Memorystore (Redis) instance:
 ```bash
