@@ -84,6 +84,7 @@ gcloud projects add-iam-policy-binding $projectId \
     --role=roles/ondemandscanning.admin
 
 # Setup GitHub actions variables
+cd ~/myblog
 gh auth login --web
 gh secret set CONTAINER_REGISTRY_PROJECT_ID -b"${projectId}"
 gh secret set CONTAINER_REGISTRY_NAME -b"${artifactRegistryContainersRepository}"
