@@ -2,15 +2,21 @@
 title: presentations
 ---
 
-Here is the list of the 42 public presentations and workshops I have built and delivered.
+Here is the list of the 43 public presentations and workshops I have built and delivered.
 
-## 2022 (6)
+## 2022 (7)
 
+- 2022-11 - [Back from KubeCon NA 2022 + Build and deploy Cloud Native (OCI) artifacts, the GitOps way Lightning talk](https://community.cncf.io/events/details/cncf-quebec-presents-meetup-de-novembre-recapitulatif-de-kubecon-na-et-lightning-talk/)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-11-16-Canada-QuebecCNCFMeetup.pdf)
+  - [Link to the demo](http://github.com/mathieu-benoit/ci-with-helm)
 - 2022-10 - [Build and deploy Cloud Native (OCI) artifacts, the GitOps way - GitOpsCon 2022](https://sched.co/1AR9T)
   - [Link to the recording](https://youtu.be/1LDQ1-sA8sM?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-10-25-GitOpsCon-NA-BuildAndDeployOCIArtifactsTheGitOpsWay)
+  - [Link to the demo](http://github.com/mathieu-benoit/ci-with-helm)
   - Co-built with [Nan Yu](https://www.linkedin.com/in/nan-yu-57650618/)
 - 2022-10 - [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh - GitOpsCon 2022](https://sched.co/1AR95)
   - [Link to the recording](https://youtu.be/EvHUb2Mn7pg?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2022-10-25-GitOpsCon-NA-TheSuccessfulRecipeToSecureYourFleetOfClusters.pdf)
   - Co-built and co-delivered with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/)
 - 2022-04 - [Manage and Secure Distributed Services with Anthos Service Mesh Workshop - IstioCon 2022](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/)
   - [Link to the recording](https://youtu.be/--mPdAxovfE?list=PL7wB27eZmdffL2cyYauEuxcOTyGtSv4gy)
