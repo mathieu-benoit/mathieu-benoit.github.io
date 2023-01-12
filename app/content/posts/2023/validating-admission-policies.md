@@ -20,10 +20,15 @@ If you want to learn more about this feature and where it's coming from, I encou
 
 {{< youtube id="gJWMvsC7Mzo" title="Webhook Fatigue? You're Not Alone: Introducing the CEL Expression Language Features Solving This Problem">}}
 
-In this blog article, let's in actions how we could leverage this new Validating Admission Policies features. Based on my knowledge with Gatekeeper policies, I will also try to add some comments about what could be the missing features based on my own experience.
+In this blog article, let's see in actions how we could leverage this new Validating Admission Policies feature. Based on my knowledge with Gatekeeper policies, I will also try to add some comments about what could be the missing features based on my own experience.
 
 Here is what will be accomplished throughout this blog article:
-- 
+- [Create a GKE cluster with the Validating Admission Policies alpha feature](#create-a-gke-cluster-with-the-validating-admission-policies-alpha-feature)
+- [Create a simple policy with max of 3 replicas for any `Deployments`](#create-a-simple-policy-with-max-of-3-replicas-for-any-deployment)
+- [Pass parameters to a policy](#pass-parameters-to-a-policy)
+- [Exclude namespaces from a policy](#exclude-namespaces-from-a-policy)
+- [Limitations, gaps and thoughts](#limitations-gaps-and-thoughts)
+- [Conclusion](#conclusion)
 
 _Note: while testing this feature by leveraging its associated [blog](https://kubernetes.io/blog/2022/12/20/validating-admission-policies-alpha/) and [doc](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/), it was also the opportunity for me to open my first PRs in the `kubernetes/website` repo to fix some frictions I faced: https://github.com/kubernetes/website/pull/38893 and https://github.com/kubernetes/website/pull/38908._
 
@@ -52,7 +57,7 @@ kubectl create ns sample-app
 kubectl create deployment sample-app --image=nginx --replicas 5 -n sample-app
 ```
 
-## Create a simple policy with max of 3 replicas for any Deployment
+## Create a simple policy with max of 3 replicas for any `Deployments`
 
 Let's do it, let's deploy our first policy!
 
@@ -93,7 +98,7 @@ We can see that our policy is enforced, great!
 error: failed to create deployment: deployments.apps "nginx" is forbidden: ValidatingAdmissionPolicy 'max-replicas-deployments' with binding 'max-replicas-deployments' denied request: failed expression: object.spec.replicas <= 3
 ```
 
-So that's for new admission requests, but what about our existing app we previously deployed? Interestingly, there is nothing telling me that my existing resources are not compliant, I'm a bit disappointed here, I used to do `kubectl get constraints` and see the violations raised by Gatekeeper. I think that's a miss here, let's see if in the future it will be supported.
+So that's for new admission requests, but what about our existing app we previously deployed? Interestingly, there is nothing telling me that my existing resources are not compliant, I'm a bit disappointed here, I used to do `kubectl get constraints` and see the violations raised by Gatekeeper. I think that's a miss here, let's see if in the future it will be supported. Nonetheless, `kubectl rollout restart deployments sample-app -n sample-app` or `kubectl scale deployment sample-app --replicas 6 -n sample-app` for example will fail, like expected.
 
 ## Pass parameters to a policy
 
@@ -161,7 +166,7 @@ error: failed to create deployment: deployments.apps "nginx" is forbidden: Valid
 
 One of the features used with Gatekeeper policies is the ability to `excludedNamespaces` with a `Constraint`. Very helpful to avoid breaking clusters with policies on system namespaces.
 
-Here, we will use a `namespaceSelector` on our `ValidatingAdmissionPolicyBinding` to exclude system namespaces as well as our own `test` namespace:
+Here, we will use a `namespaceSelector` on our `ValidatingAdmissionPolicyBinding` to exclude system namespaces as well as our own `allow-listed` namespace:
 ```bash
 cat << EOF | kubectl apply -f -
 apiVersion: admissionregistration.k8s.io/v1alpha1
@@ -182,18 +187,25 @@ spec:
         - kube-node-lease
         - kube-public
         - kube-system
-        - test
+        - allow-listed
 EOF
 ```
 _Note: in order to have this `namespaceSelector` expression working, we are assuming that we are in a Kubernetes cluster version 1.22+ which [automatically adds the `kubernetes.io/metadata.name` label](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/#automatic-labelling) on any `Namespaces`. Very convenient for our use case to exclude namespaces from a policy_
 
-kubectl create deployment nginx --image=nginx --replicas 5
-error: failed to create deployment: deployments.apps "nginx" is forbidden: ValidatingAdmissionPolicy 'max-replicas-deployments' with binding 'max-replicas-deployments' denied request: failed expression: object.spec.replicas <= int(params.data.maxReplicas)
-
-On the other hand, we should be able to deploy it in the allow-listed namespace `test`:
+Now, let's try to deploy an app with 5 replicas in the default namespace:
 ```bash
-kubectl create ns test
-kubectl create deployment nginx --image=nginx --replicas 5 -n test
+kubectl create deployment nginx --image=nginx --replicas 5
+```
+
+We can see that our policy is still enforced, great!
+```plaintext
+error: failed to create deployment: deployments.apps "nginx" is forbidden: ValidatingAdmissionPolicy 'max-replicas-deployments' with binding 'max-replicas-deployments' denied request: failed expression: object.spec.replicas <= int(params.data.maxReplicas)
+```
+
+On the other hand, we should be able to deploy it in the `allow-listed` namespace:
+```bash
+kubectl create ns allow-listed
+kubectl create deployment nginx --image=nginx --replicas 5 -n allow-listed
 ```
 
 Sweet!
@@ -212,7 +224,7 @@ It's just for admission, not for evaluating existing resources already in a clus
 
 ### Client-side validation
 
-Not able to evaluate the resources against policies outside of a cluster, like we can do with the gator cli.
+Not able to evaluate the resources against policies outside of a cluster, like we can do with the `gator` cli.
 
 ### Inline parameters
 
@@ -220,7 +232,7 @@ Inline parameters in `ValidatingAdmissionPolicyBinding` would be way more easier
 
 ### Variables's values in message
 
-Evaluate values in validation.message like "object.spec.replicas should be less than {int(params.data.maxReplicas)}"
+Evaluate values in `validation.message` like `"object.spec.replicas should be less than {int(params.data.maxReplicas)}"`
 
 ### Cluster-wide exempted namespaces
 
@@ -254,6 +266,6 @@ I think this image below taken from [Joe Betz's session at KubeCon NA 2022](http
 
 ![ValidatingAdmissionPolicies versus Webhooks](https://github.com/mathieu-benoit/my-images/raw/main/validatingadmissionpolicies-versus-webhooks.png)
 
-I'm really looking forward to seeing the next iterations on this feature as it will reach `beta` and then `stable` states in the future. I'm also curious to learn more about when to use it and maybe still using Gatekeeper if I need more advanced scenarios like illustrated in the previous "Limitations and gaps" section. Finally, I'm curious also to learn more about how Gatekeeper, [Kyverno](https://github.com/kyverno/kyverno/issues/5441), Styra, etc. will position their projects and products based on this feature upstream in Kubernetes.
+I'm really looking forward to seeing the next iterations on this feature as it will reach `beta` and then `stable` states in the future. I'm also curious to learn more about when to use it and maybe still using Gatekeeper if I need more advanced scenarios like illustrated in the previous [Limitations, gaps and thoughts section](#limitations-gaps-and-thoughts). Finally, I'm curious also to learn more about how Gatekeeper, [Kyverno](https://github.com/kyverno/kyverno/issues/5441), Styra, etc. will position their projects and products based on this feature upstream in Kubernetes.
 
 Happy sailing, cheers!
