@@ -24,7 +24,7 @@ In this blog article, let's see in actions how we could leverage this new Valida
 
 Here is what will be accomplished throughout this blog article:
 - [Create a GKE cluster with the Validating Admission Policies alpha feature](#create-a-gke-cluster-with-the-validating-admission-policies-alpha-feature)
-- [Create a simple policy with max of 3 replicas for any `Deployments`](#create-a-simple-policy-with-max-of-3-replicas-for-any-deployment)
+- [Create a simple policy with max of 3 replicas for any `Deployments`](##create-a-simple-policy-with-max-of-3-replicas-for-any-deployments)
 - [Pass parameters to a policy](#pass-parameters-to-a-policy)
 - [Exclude namespaces from a policy](#exclude-namespaces-from-a-policy)
 - [Limitations, gaps and thoughts](#limitations-gaps-and-thoughts)
@@ -34,7 +34,9 @@ _Note: while testing this feature by leveraging its associated [blog](https://ku
 
 ## Create a GKE cluster with the Validating Admission Policies alpha feature
 
-GKE just got the [version 1.26 available](https://cloud.google.com/kubernetes-engine/docs/release-notes-rapid#January_05_2023), let's provision a [cluster in `alpha` mode (not for production)](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-an-alpha-cluster):
+GKE just got the [version 1.26 available](https://cloud.google.com/kubernetes-engine/docs/release-notes-rapid#January_05_2023), we could check the versions available by running this command `gcloud container get-server-config --zone us-central1-c`.
+
+Let's provision a [cluster in `alpha` mode (not for production)](https://cloud.google.com/kubernetes-engine/docs/how-to/creating-an-alpha-cluster) with the version 1.26:
 ```bash
 gcloud container clusters create cel-admission-control-cluster \
     --enable-kubernetes-alpha \
@@ -61,7 +63,7 @@ kubectl create deployment sample-app --image=nginx --replicas 5 -n sample-app
 
 Let's do it, let's deploy our first policy!
 
-This policy is composed by one `ValidatingAdmissionPolicy` defining the validation (CEL expression) and the 
+This policy is composed by one `ValidatingAdmissionPolicy` defining the validation with the CEL expression and one `ValidatingAdmissionPolicyBinding` binding the policy to the appropriate resources in the cluster:
 ```bash
 cat << EOF | kubectl apply -f -
 apiVersion: admissionregistration.k8s.io/v1alpha1
@@ -260,7 +262,7 @@ Policies on `Pods` are important but could be tricky with the workload resources
 
 We were able to create our own policy, pass a parameter to it and exclude some namespaces. Finally, some limitations and gaps with Gatekeeper policies were discussed.
 
-This feature in alpha since Kubernetes 1.26 is really promising, very easy to leverage and already powerful. I really like the fact that it's also out of the box in Kubernetes and that it's a very light footprint in my cluster as opposed to have others CRDs/containers in my cluster like we have with Gatekeeper or Kiverno.
+This feature in alpha since Kubernetes 1.26 is really promising, very easy to leverage and already powerful. I really like the fact that it's also out of the box in Kubernetes and that it's a very light footprint in my cluster as opposed to have others CRDs/containers in my cluster like we have with Gatekeeper or Kyverno.
 
 I think this image below taken from [Joe Betz's session at KubeCon NA 2022](https://sched.co/182Q6) is a good summary about the positioning of this feature versus the advanced scenarios covered by webhooks:
 
