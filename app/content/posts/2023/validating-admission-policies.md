@@ -25,8 +25,8 @@ In this blog article, let's see in actions how we could leverage this new Valida
 Here is what will be accomplished throughout this blog article:
 - [Create a GKE cluster with the Validating Admission Policies alpha feature](#create-a-gke-cluster-with-the-validating-admission-policies-alpha-feature)
 - [Create a simple policy with max of 3 replicas for any `Deployments`](##create-a-simple-policy-with-max-of-3-replicas-for-any-deployments)
-- [Pass parameters to a policy](#pass-parameters-to-a-policy)
-- [Exclude namespaces from a policy](#exclude-namespaces-from-a-policy)
+- [Pass parameters to the policy](#pass-parameters-to-the-policy)
+- [Exclude namespaces from the policy](#exclude-namespaces-from-the-policy)
 - [Limitations, gaps and thoughts](#limitations-gaps-and-thoughts)
 - [Conclusion](#conclusion)
 
@@ -56,7 +56,10 @@ validatingadmissionpolicybindings                admissionregistration.k8s.io/v1
 Before jumping in creating and testing the policies, let's deploy a sample app in our cluster that we could leverage later in this blog:
 ```bash
 kubectl create ns sample-app
-kubectl create deployment sample-app --image=nginx --replicas 5 -n sample-app
+kubectl create deployment sample-app \
+    --image=nginx \
+    --replicas 5 \
+    -n sample-app
 ```
 
 ## Create a simple policy with max of 3 replicas for any `Deployments`
@@ -102,7 +105,7 @@ error: failed to create deployment: deployments.apps "nginx" is forbidden: Valid
 
 So that's for new admission requests, but what about our existing app we previously deployed? Interestingly, there is nothing telling me that my existing resources are not compliant, I'm a bit disappointed here, I used to do `kubectl get constraints` and see the violations raised by Gatekeeper. I think that's a miss here, let's see if in the future it will be supported. Nonetheless, `kubectl rollout restart deployments sample-app -n sample-app` or `kubectl scale deployment sample-app --replicas 6 -n sample-app` for example will fail, like expected.
 
-## Pass parameters to a policy
+## Pass parameters to the policy
 
 With the policy we just created we hard-coded the number of replicas we allow, but what if you want to have this more customizable? Here comes a really interesting feature where you can pass parameters!
 
@@ -164,7 +167,7 @@ We can see that our policy is still enforced with a new message, great!
 error: failed to create deployment: deployments.apps "nginx" is forbidden: ValidatingAdmissionPolicy 'max-replicas-deployments' with binding 'max-replicas-deployments' denied request: failed expression: object.spec.replicas <= int(params.data.maxReplicas)
 ```
 
-## Exclude namespaces from a policy
+## Exclude namespaces from the policy
 
 One of the features used with Gatekeeper policies is the ability to `excludedNamespaces` with a `Constraint`. Very helpful to avoid breaking clusters with policies on system namespaces.
 
@@ -196,7 +199,9 @@ _Note: in order to have this `namespaceSelector` expression working, we are assu
 
 Now, let's try to deploy an app with 5 replicas in the default namespace:
 ```bash
-kubectl create deployment nginx --image=nginx --replicas 5
+kubectl create deployment nginx \
+    --image=nginx \
+    --replicas 5
 ```
 
 We can see that our policy is still enforced, great!
@@ -207,7 +212,10 @@ error: failed to create deployment: deployments.apps "nginx" is forbidden: Valid
 On the other hand, we should be able to deploy it in the `allow-listed` namespace:
 ```bash
 kubectl create ns allow-listed
-kubectl create deployment nginx --image=nginx --replicas 5 -n allow-listed
+kubectl create deployment nginx \
+    --image=nginx \
+    --replicas 5 \
+    -n allow-listed
 ```
 
 Sweet!
