@@ -29,7 +29,7 @@ spec:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
-                - all
+                - ALL
             privileged: false
             readOnlyRootFilesystem: true
           image: {{ .Values.container.image.repository }}/{{ .Values.name }}:{{ .Values.container.image.tag | default .Chart.AppVersion }}
