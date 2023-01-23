@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /fixme/
 ---
+https://www.hashicorp.com/blog/how-to-become-a-developer-advocate-part-2-building-empathy
 http://blogs.newardassociates.com/blog/2023/where-devrel-fits.html
 https://www.hashicorp.com/blog/how-to-become-a-developer-advocate-part-1-public-speaking
 https://www.linkedin.com/pulse/steph-wongs-2022-career-lessons-wrapped-stephanie-wong/
