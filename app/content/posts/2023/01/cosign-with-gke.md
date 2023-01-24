@@ -6,6 +6,8 @@ description: let's see how we could sign our own private container images with s
 aliases:
     - /cosign-with-gke/
 ---
+_Update on Jan 24th, 2023: this blog article is now on [Medium](https://medium.com/google-cloud/7bd5b12672ea)._
+
 At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe1xpTn), [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplication about how to set up and leverage such technologies.
 
 > Don't trust registries.
@@ -16,7 +18,7 @@ At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe
 
 When I came back from KubeCon NA 2022, I added at the top of my TODO list to _"play and learn more about [Sigstore's `cosign` in Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations)"_. So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and that you will learn something!
 
-_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs` and `sigstore/policy-controller` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63 and https://github.com/sigstore/policy-controller/pull/520._
+_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs`, `sigstore/policy-controller`, and `sigstore/community` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63, https://github.com/sigstore/policy-controller/pull/520, and https://github.com/sigstore/community/issues/220._
 
 This blog article consists on two main sections:
 - [Sign a container image with Cloud KMS and Sigstore's `cosign`](#sign-a-container-image-with-cloud-kms-and-cosign)
@@ -224,9 +226,9 @@ That's it, congrats! We just enforced our GKE cluster to only allow our private 
 
 ## Resources
 
-- [SigstoreCon NA 2022](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl)
+- [Sigstore: Using Transparent Digital Signatures to Help Secure the Software SupplyChain- Bob Callaway](https://youtu.be/_HL_I5k_oP4)
 - [Sigstore's `policy-controller`](https://docs.sigstore.dev/policy-controller/overview/)
 - [Sigstore Or: How We Learned to Stop Trusting Registries and Love Signatures - Wojciech Kocjan & Tyson Kamp, InfluxData](https://youtu.be/mduvP92bhPs?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl)
 - [How to verify container images with Kyverno using KMS, Cosign, and Workload Identity](https://blog.sigstore.dev/how-to-verify-container-images-with-kyverno-using-kms-cosign-and-workload-identity-1e07d2b85061)
 
-Hope you enjoyed that one! Happy sailing, stay safe out there!
+Hope you enjoyed that one! Happy signing, happy sailing!
