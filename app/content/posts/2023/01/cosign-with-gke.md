@@ -183,7 +183,7 @@ metadata:
   name: private-signed-images-cip
 spec:
   images:
-  - glob: ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/*
+  - glob: "**"
   authorities:
   - key:
         kms: gcpkms://projects/${PROJECT_ID}/locations/${REGION}/keyRings/${KEY_RING}/cryptoKeys/${KEY_NAME}/cryptoKeyVersions/1
@@ -205,8 +205,8 @@ kubectl create deployment nginx \
 ```
 Output similar to:
 ```plaintext
-error: failed to create deployment: admission webhook "policy.sigstore.dev" denied the request: validation failed: no matching policies: spec.template.spec.containers[0].image
-index.docker.io/library/nginx@sha256:b8f2383a95879e1ae064940d9a200f67a6c79e710ed82ac42263397367e7cc4e
+error: failed to create deployment: admission webhook "policy.sigstore.dev" denied the request: validation failed: failed policy: private-signed-images-cip: spec.template.spec.containers[0].image
+index.docker.io/library/nginx@sha256:b8f2383a95879e1ae064940d9a200f67a6c79e710ed82ac42263397367e7cc4e signature key validation failed for authority authority-0 for index.docker.io/library/nginx@sha256:b8f2383a95879e1ae064940d9a200f67a6c79e710ed82ac42263397367e7cc4e: no matching signatures:
 ```
 
 Test with our signed container image and see that it's allowed:
