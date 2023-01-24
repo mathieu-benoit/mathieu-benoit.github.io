@@ -6,6 +6,8 @@ description: let's see how to use google cloud memorystore (redis) with the onli
 aliases:
     - /onlineboutique-with-memorystore/
 ---
+_Update on Dec 20th, 2022: this blog article is now on [Medium](https://medium.com/google-cloud/82f7879a900d)._
+
 By default the `cartservice` of the Online Boutique sample stores its data in an in-cluster Redis database. 
 Using a fully managed database service outside your GKE cluster such as [Memorystore (Redis)](https://cloud.google.com/memorystore) could bring more resiliency, scalability and more security.
 

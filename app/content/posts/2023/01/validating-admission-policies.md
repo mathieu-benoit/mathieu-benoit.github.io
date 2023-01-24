@@ -6,6 +6,8 @@ description: let's see how to use the new validating admission policies feature 
 aliases:
     - /validating-admission-policies/
 ---
+_Update on Jan 23rd, 2023: this blog article is now on [Medium](https://medium.com/google-cloud/ed1321bcf739)._
+
 Kubernetes 1.26 just introduced an alpha feature: [Validating Admission Policies](https://kubernetes.io/blog/2022/12/20/validating-admission-policies-alpha/).
 
 > Validating admission policies use the [Common Expression Language (CEL)](https://github.com/google/cel-spec) to offer a declarative, in-process alternative to validating admission webhooks.
