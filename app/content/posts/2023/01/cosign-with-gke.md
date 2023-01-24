@@ -14,11 +14,13 @@ With KubeCon, [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVni
 
 > Nearly every site runs HTTPS and is, by definition, more secure. This is the model that Sigstore wants to follow.
 
-When I came back from KubeCon NA 2022, I added at the top of my TODO list to play and learn more about [Sigstore and cosign on Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations). So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and will learn something!
+When I came back from KubeCon NA 2022, I added at the top of my TODO list to play and learn more about [Sigstore's `cosign` in Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations). So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and will learn something!
 
 This blog article consists on two main sections:
 - [Sign a container image with Cloud KMS and Sigstore's `cosign`](#sign-a-container-image-with-cloud-kms-and-cosign)
 - [Enforce that only signed container images are allowed in a GKE cluster with Sigstore's `policy-controller`](#enforce-that-only-signed-container-images-are-allowed-in-a-gke-cluster-with-sigstores-policy-controller)
+
+_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs` and `sigstore/policy-controller` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63 and https://github.com/sigstore/policy-controller/pull/520._
 
 Define the common bash variables used throughout this blog article:
 ```bash
@@ -76,7 +78,7 @@ SHA=$(docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/nginx 
 ```
 _Note: we are grabbing the `SHA` of this remote container image in order to sign this container image later._
 
-Install [`cosign`](https://docs.sigstore.dev/cosign/installation/) locally:
+Install Sistore's [`cosign`](https://docs.sigstore.dev/cosign/installation/) locally:
 ```bash
 COSIGN_VERSION=$(curl -s https://api.github.com/repos/sigstore/cosign/releases/latest | jq -r .tag_name)
 curl -LO https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
@@ -104,6 +106,22 @@ Listing items under project mabenoit-gatekeeper-oci, location us-east4, reposito
 TAG                                                                          IMAGE                                                             DIGEST
 latest                                                                       us-east4-docker.pkg.dev/mabenoit-gatekeeper-oci/containers/nginx  sha256:4c1c50d0ffc614f90b93b07d778028dc765548e823f676fb027f61d281ac380d
 sha256-4c1c50d0ffc614f90b93b07d778028dc765548e823f676fb027f61d281ac380d.sig  us-east4-docker.pkg.dev/mabenoit-gatekeeper-oci/containers/nginx  sha256:f02d7fef0df5c264e34b995a4861590bbdd7001631f6e5f23250f34202359a56
+```
+_Note: there is an [ongoing discussion](https://github.com/sigstore/cosign/issues/1397) to support the [reference types from the OCI spec](https://oras.land/cli/6_reference_types/) in order to just have the container image where the signature could be attached on._
+
+```bash
+cosign verify \
+    --key gcpkms://projects/${PROJECT_ID}/locations/${REGION}/keyRings/${KEY_RING}/cryptoKeys/${KEY_NAME} \
+    ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/nginx@${SHA}
+```
+Output similar to:
+```plaintext
+Verification for us-east4-docker.pkg.dev/mabenoit-gatekeeper-oci/containers/nginx@sha256:4c1c50d0ffc614f90b93b07d778028dc765548e823f676fb027f61d281ac380d --
+The following checks were performed on each of these signatures:
+  - The cosign claims were validated
+  - The signatures were verified against the specified public key
+
+[{"critical":{"identity":{"docker-reference":"us-east4-docker.pkg.dev/mabenoit-gatekeeper-oci/containers/nginx"},"image":{"docker-manifest-digest":"sha256:4c1c50d0ffc614f90b93b07d778028dc765548e823f676fb027f61d281ac380d"},"type":"cosign container image signature"},"optional":null}]
 ```
 
 ## Enforce that only signed container images are allowed in a GKE cluster with Sigstore's `policy-controller`
@@ -145,7 +163,7 @@ gcloud container clusters create ${CLUSTER_NAME} \
 ```
 _Note: we explicitly add the `https://www.googleapis.com/auth/cloudkms` scope needed by Sistore's `policy-controller`. [`https://www.googleapis.com/auth/cloud-platform`](https://cloud.google.com/kubernetes-engine/docs/how-to/access-scopes) instead is fine too._
 
-Install the [Sigstore's `policy-controller` Helm chart](https://github.com/sigstore/helm-charts/tree/main/charts/policy-controller):
+Install the [Sigstore's `policy-controller` Helm chart](https://github.com/sigstore/helm-charts/tree/main/charts/policy-controller) in this GKE cluster:
 ```bash
 helm repo add sigstore https://sigstore.github.io/helm-charts
 helm repo update
@@ -202,5 +220,6 @@ That's it, congrats! We just enforced our GKE cluster to only allow our private 
 - [SigstoreCon NA 2022](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl)
 - [Sigstore's `policy-controller`](https://docs.sigstore.dev/policy-controller/overview/)
 - [Sigstore Or: How We Learned to Stop Trusting Registries and Love Signatures - Wojciech Kocjan & Tyson Kamp, InfluxData](https://youtu.be/mduvP92bhPs?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl)
+- [How to verify container images with Kyverno using KMS, Cosign, and Workload Identity](https://blog.sigstore.dev/how-to-verify-container-images-with-kyverno-using-kms-cosign-and-workload-identity-1e07d2b85061)
 
 Hope you enjoyed that one! Happy sailing, stay safe out there!
