@@ -190,15 +190,18 @@ spec:
 EOF
 ```
 
-Enfore this policy for the `default` namespace:
+Enfore this policy for the `test` namespace:
 ```bash
-kubectl label namespace default policy.sigstore.dev/include=true
+kubectl create namespace test
+kubectl label namespace test policy.sigstore.dev/include=true
 ```
 _Note: you need to apply this label on the namespaces you want this policy to be enforced in._
 
 Test with an unsigned container image and see that it's blocked:
 ```bash
-kubectl create deployment nginx --image=nginx
+kubectl create deployment nginx \
+    --image=nginx \
+    -n test
 ```
 Output similar to:
 ```plaintext
@@ -208,7 +211,9 @@ index.docker.io/library/nginx@sha256:b8f2383a95879e1ae064940d9a200f67a6c79e710ed
 
 Test with our signed container image and see that it's allowed:
 ```bash
-kubectl create deployment nginx --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/nginx@${SHA}
+kubectl create deployment nginx \
+    --image=${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/nginx@${SHA} \
+    -n test
 ```
 Output similar to:
 ```plaintext
