@@ -22,6 +22,8 @@ This blog article consists on two main sections:
 - [Sign a container image with Cloud KMS and Sigstore's `cosign`](#sign-a-container-image-with-cloud-kms-and-cosign)
 - [Enforce that only signed container images are allowed in a GKE cluster with Sigstore's `policy-controller`](#enforce-that-only-signed-container-images-are-allowed-in-a-gke-cluster-with-sigstores-policy-controller)
 
+![cosign with GKE and KMS flow](https://github.com/mathieu-benoit/my-images/raw/main/cosign-with-gke.png)
+
 Define the common bash variables used throughout this blog article:
 ```bash
 PROJECT_ID=FIXME-WITH-YOUR-EXISTING-PROJECT-ID
