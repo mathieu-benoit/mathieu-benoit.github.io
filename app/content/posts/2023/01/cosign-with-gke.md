@@ -1,12 +1,12 @@
 ---
-title: cosign with gke and kms
+title: sigstore's cosign and policy-controller with gke and kms
 date: 2023-01-23
 tags: [gcp, kubernetes, security, containers]
-description: let's see how we could sign our own private container images and then how to only allow them to be deployed in our gke cluster
+description: let's see how we could sign our own private container images with sigstore's cosign and then how to only allow them to be deployed in our gke cluster thanks to sigstore's policy-controller
 aliases:
     - /cosign-with-gke/
 ---
-With KubeCon, [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplication about how to set up and leverage such technologies.
+At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe1xpTn), [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplication about how to set up and leverage such technologies.
 
 > Don't trust registries.
 
@@ -14,13 +14,13 @@ With KubeCon, [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVni
 
 > Nearly every site runs HTTPS and is, by definition, more secure. This is the model that Sigstore wants to follow.
 
-When I came back from KubeCon NA 2022, I added at the top of my TODO list to play and learn more about [Sigstore's `cosign` in Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations). So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and will learn something!
+When I came back from KubeCon NA 2022, I added at the top of my TODO list to _"play and learn more about [Sigstore's `cosign` in Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations)"_. So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and that you will learn something!
+
+_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs` and `sigstore/policy-controller` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63 and https://github.com/sigstore/policy-controller/pull/520._
 
 This blog article consists on two main sections:
 - [Sign a container image with Cloud KMS and Sigstore's `cosign`](#sign-a-container-image-with-cloud-kms-and-cosign)
 - [Enforce that only signed container images are allowed in a GKE cluster with Sigstore's `policy-controller`](#enforce-that-only-signed-container-images-are-allowed-in-a-gke-cluster-with-sigstores-policy-controller)
-
-_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs` and `sigstore/policy-controller` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63 and https://github.com/sigstore/policy-controller/pull/520._
 
 Define the common bash variables used throughout this blog article:
 ```bash
