@@ -8,7 +8,7 @@ aliases:
 ---
 _Update on Jan 24th, 2023: this blog article is now on [Medium](https://medium.com/google-cloud/7bd5b12672ea)._
 
-At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe1xpTn), [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplication about how to set up and leverage such technologies.
+At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe1xpTn), [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplification about how to set up and leverage such technologies.
 
 > Don't trust registries.
 
@@ -18,10 +18,10 @@ At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe
 
 When I came back from KubeCon NA 2022, I added at the top of my TODO list to _"play and learn more about [Sigstore's `cosign` in Kubernetes clusters](https://docs.sigstore.dev/cosign/overview/#kubernetes-integrations)"_. So here I am, like usual, sharing my step by step guide about how to accomplish this while sharing my thoughts and learnings. Hope you'll like it and that you will learn something!
 
-_Note: while testing this feature, it was also the opportunity for me to open my first PRs in the `sigstore/docs`, `sigstore/policy-controller`, and `sigstore/community` repos to fix some frictions I faced: https://github.com/sigstore/docs/pull/63, https://github.com/sigstore/policy-controller/pull/520, and https://github.com/sigstore/community/issues/220._
+_Note: while learning and testing, it was also the opportunity for me to open my first PRs in the `sigstore/docs` ([#63](https://github.com/sigstore/docs/pull/63)), `sigstore/policy-controller` ([520](https://github.com/sigstore/policy-controller/pull/520)), and `sigstore/community` ([#220](https://github.com/sigstore/community/issues/220)) repos to fix some frictions I faced._
 
-This blog article consists on two main sections:
-- [Sign a container image with Cloud KMS and Sigstore's `cosign`](#sign-a-container-image-with-cloud-kms-and-cosign)
+This blog article will walk you through two main concepts:
+- [Sign a container image with Sigstore's `cosign` and Cloud KMS](#sign-a-container-image-with-cloud-kms-and-cosign)
 - [Enforce that only signed container images are allowed in a GKE cluster with Sigstore's `policy-controller`](#enforce-that-only-signed-container-images-are-allowed-in-a-gke-cluster-with-sigstores-policy-controller)
 
 ![cosign with GKE and KMS flow](https://github.com/mathieu-benoit/my-images/raw/main/cosign-with-gke.png)
@@ -82,7 +82,7 @@ SHA=$(docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${REGISTRY_NAME}/nginx 
 ```
 _Note: we are grabbing the `SHA` of this remote container image in order to sign this container image later._
 
-Install Sistore's [`cosign`](https://docs.sigstore.dev/cosign/installation/) locally:
+Install Sigstore's [`cosign`](https://docs.sigstore.dev/cosign/installation/) locally:
 ```bash
 COSIGN_VERSION=$(curl -s https://api.github.com/repos/sigstore/cosign/releases/latest | jq -r .tag_name)
 curl -LO https://github.com/sigstore/cosign/releases/download/${COSIGN_VERSION}/cosign-linux-amd64
