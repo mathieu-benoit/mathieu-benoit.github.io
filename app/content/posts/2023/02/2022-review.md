@@ -74,13 +74,13 @@ I wrote 15 posts in [**my personal blog**](https://alwaysupalwayson.com), the 3 
 - [Deploying Gatekeeper policies as OCI artifacts, the GitOps way](https://alwaysupalwayson.com/posts/2022/09/gatekeeper-policies-as-oci-artifacts/) 
 - [Lessons learned from the Log4Shell CVEs](https://alwaysupalwayson.com/posts/2021/12/log4shell/) 
 
-I started writing [**posts on Medium**](https://medium.com/@mabenoit) in order to share more broadly my content. I wrote 10 posts there since September. The 3 most popular posts are: 
+I started writing [**posts on Medium**](https://medium.com/@mabenoit) in order to share more broadly my content. I wrote 8 posts there since September. The 3 most popular posts are: 
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://medium.com/p/836913e74e79) 
 - [Use Helm to simplify the deployment of Online Boutique, with a Service Mesh, GitOps, and more!](https://medium.com/p/246119e46d53) 
 - [Seamlessly encrypt traffic from any apps in your Service Mesh to Memorystore (Redis)](https://medium.com/p/64b71969318d) 
 _Note: The [Sigstore’s cosign and policy-controller with GKE, Artifact Registry and KMS](https://medium.com/p/7bd5b12672ea) post just made it in the top 5 in less than 2 weeks, very popular topic! Watch out for it!_ 
 
-I wrote 13 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitqc/) in order to share more broadly my content. The 3 most popular posts are: 
+I wrote 10 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitqc/) in order to share more broadly my content. The 3 most popular posts are: 
 - [2022 in review](https://www.linkedin.com/posts/mathieubenoitqc_googlecloud-kubernetes-canada-activity-6884693753190252544-3rau) 
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://www.linkedin.com/posts/mathieubenoitqc_cigitops-with-helm-github-actions-github-activity-6977611558189154304-qP_8) 
 - [Use Cloud Spanner with Online Boutique](https://www.linkedin.com/posts/mathieubenoitqc_use-google-cloud-spanner-with-the-online-activity-6988665215517097984-NEQo) 
