@@ -1,0 +1,235 @@
+<!doctype html><html lang=en><head><title>gitops with oci artifacts and config sync ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="One principle of GitOps is to have the desired state declarations as Versioned and Immutable. Git repositories are playing a great role with that. But what if you don&amp;rsquo;t need a Git repository anymore to deploy your Kubernetes manifests via GitOps!? What if you can deploy any OCI artifacts stored in any OCI registries via GitOps?
+The Open Container Initiative (OCI) is an open governance structure for the express purpose of creating open industry standards around container formats and runtimes."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2022/08/oci-config-sync/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="gitops with oci artifacts and config sync"><meta name=twitter:description content="let's see how to do gitops with oci artifacts, artifact registry and config sync"><meta property="og:title" content="gitops with oci artifacts and config sync"><meta property="og:description" content="let's see how to do gitops with oci artifacts, artifact registry and config sync"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2022/08/oci-config-sync/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-08-17T00:00:00+00:00"><meta property="article:modified_time" content="2022-08-17T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>gitops with oci artifacts and config sync</h1><div class=post-meta><span class=post-date>2022-08-17</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;
+<a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/gitops/>#gitops</a>&nbsp;</span><div class=post-content><p>One principle of <a href=https://opengitops.dev/>GitOps</a> is to have the desired state declarations as <strong>Versioned and Immutable</strong>. Git repositories are playing a great role with that. But what if you don&rsquo;t need a Git repository anymore to deploy your Kubernetes manifests via GitOps!? What if you can deploy any OCI artifacts stored in any OCI registries via GitOps?</p><blockquote><p>The <a href=https://opencontainers.org/>Open Container Initiative (OCI)</a> is an open governance structure for the express purpose of creating open industry standards around container formats and runtimes.</p></blockquote><p>Let&rsquo;s see in action how <a href=https://cloud.google.com/anthos-config-management/docs/how-to/publish-config-registry>Config Sync can deploy OCI artifacts stored in Artifact Registry</a>, here is what you will accomplish throughout this blog article:</p><ul><li>Set up a GKE cluster with Artifact Registry and Config Sync</li><li>Deploy a simple Kubernetes resource as OCI image</li><li>Deploy an Helm chart as OCI image via Kustomize</li><li>Deploy Gatekeeper Policies as OCI image</li></ul><p><img src=https://github.com/mathieu-benoit/my-images/raw/main/git-and-oci-flow-with-config-sync.png alt="Git versus OCI flow with Config Sync."></p><h2 id=set-up-a-gke-cluster-with-artifact-registry-and-config-sync>Set up a GKE cluster with Artifact Registry and Config Sync
+<a href=#set-up-a-gke-cluster-with-artifact-registry-and-config-sync class=h-anchor aria-hidden=true>#</a></h2><p>Create a GKE cluster registered in a Fleet to enable Config Management:</p><pre tabindex=0><code>project=FIXME
+region=us-east4
+zone=us-east4-a
+gcloud config set project $project
+
+gcloud services enable container.googleapis.com
+clusterName=FIXME
+gcloud container clusters create $clusterName \
+    --workload-pool=$project.svc.id.goog \
+    --zone $zone
+
+gcloud services enable \
+    anthos.googleapis.com \
+    gkehub.googleapis.com
+gcloud container fleet memberships register $clusterName \
+    --gke-cluster $zone/$clusterName \
+    --enable-workload-identity
+
+gcloud beta container fleet config-management enable
+</code></pre><p>Install Config Sync in this GKE cluster:</p><pre tabindex=0><code>cat &lt;&lt;EOF &gt; acm-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+EOF
+gcloud beta container fleet config-management apply \
+    --membership $clusterName \
+    --config acm-config.yaml
+</code></pre><p>Create an Artifact Registry repository:</p><pre tabindex=0><code>gcloud services enable artifactregistry.googleapis.com
+containerRegistryName=oci-artifacts
+gcloud artifacts repositories create $containerRegistryName \
+    --location $region \
+    --repository-format docker
+</code></pre><p>Create a dedicated Google Cloud Service Account with the fine granular access to that Artifact Registry repository:</p><pre tabindex=0><code>gsaName=configsync-oci-sa
+gsaId=$gsaName@$project.iam.gserviceaccount.com
+gcloud iam service-accounts create $gsaName \
+  --display-name=$gsaName
+gcloud artifacts repositories add-iam-policy-binding $containerRegistryName \
+    --location $region \
+    --member &#34;serviceAccount:$gsaId&#34; \
+    --role roles/artifactregistry.reader
+</code></pre><p>Login to Artifact Registry (later we will push OCI artifacts in there):</p><pre tabindex=0><code>gcloud auth configure-docker $region-docker.pkg.dev
+</code></pre><h2 id=deploy-a-simple-kubernetes-resource-as-oci-image>Deploy a simple Kubernetes resource as OCI image
+<a href=#deploy-a-simple-kubernetes-resource-as-oci-image class=h-anchor aria-hidden=true>#</a></h2><p>Create a simple Kubernetes <code>Namespace</code> resource definition:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; test-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test
+EOF
+</code></pre><p>Create an archive of that file:</p><pre tabindex=0><code>tar -cf test-namespace.tar test-namespace.yaml
+</code></pre><p>Push that artifact in Artifact Registry with <a href=https://oras.land/><code>oras</code></a>:</p><pre tabindex=0><code>oras push \
+    $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 \
+    test-namespace.tar
+</code></pre><p>Alternatively, push that artifact in Artifact Registry with <a href=https://github.com/google/go-containerregistry/tree/main/cmd/crane><code>crane</code></a>:</p><pre tabindex=0><code>crane append -f &lt;(tar -f - -c test-namespace.tar) \
+    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-namespace-artifact:v1 
+</code></pre><p>Allow Config Sync to synchronize resources for a specific <code>RootSync</code> we will configure to synchronize this artifact:</p><pre tabindex=0><code>ROOT_SYNC_NAME=root-sync-test-namespace
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member &#34;serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]&#34; \
+   $gsaId
+</code></pre><p>Set up Config Sync to deploy this artifact from Artifact Registry:</p><pre tabindex=0><code>cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: ${ROOT_SYNC_NAME}
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-namespace-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
+    gcpServiceAccountEmail: ${gsaId}
+EOF
+</code></pre><p>Check the sync status:</p><pre tabindex=0><code>nomos status \
+    --contexts=$(kubectl config current-context)
+</code></pre><p>Verify that the <code>Namespace</code> <code>test</code> is actually deployed:</p><pre tabindex=0><code>kubectl get ns test
+</code></pre><p>And voila! That&rsquo;s how easy it is to deploy any Kubernetes manifests as an OCI artifact in a GitOps way with Config Sync.</p><h2 id=deploy-an-helm-chart-as-oci-image-via-kustomize>Deploy an Helm chart as OCI image via Kustomize
+<a href=#deploy-an-helm-chart-as-oci-image-via-kustomize class=h-anchor aria-hidden=true>#</a></h2><p>Create a simple Helm chart:</p><pre tabindex=0><code>helm create test-chart
+</code></pre><p>In order to deploy an <a href=https://cloud.google.com/anthos-config-management/docs/how-to/use-repo-kustomize-helm>Helm chart with Config Sync</a>, we need to leverage Kustomize:</p><pre tabindex=0><code>cat &lt;&lt;EOF &gt; kustomization.yaml
+namespace: test-chart
+helmGlobals:
+  chartHome: .
+helmCharts:
+- name: test-chart
+  releaseName: test-chart
+EOF
+</code></pre><p>Create an archive of those files:</p><pre tabindex=0><code>tar -cf test-chart.tar kustomization.yaml test-chart/
+</code></pre><p>Push that artifact in Artifact Registry with <a href=https://oras.land/><code>oras</code></a>:</p><pre tabindex=0><code>oras push \
+    $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1 \
+    test-chart.tar
+</code></pre><p>Alternatively, push that artifact in Artifact Registry with <a href=https://github.com/google/go-containerregistry/tree/main/cmd/crane><code>crane</code></a>:</p><pre tabindex=0><code>crane append -f &lt;(tar -f - -c test-chart.tar) \
+    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-helm-chart-artifact:v1
+</code></pre><p>Allow Config Sync to synchronize resources for a specific <code>RootSync</code> we will configure to synchronize this artifact:</p><pre tabindex=0><code>ROOT_SYNC_NAME=root-sync-test-chart
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member &#34;serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]&#34; \
+   $gsaId
+</code></pre><p>Set up Config Sync to deploy this artifact from Artifact Registry:</p><pre tabindex=0><code>cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: ${ROOT_SYNC_NAME}
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-helm-chart-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
+    gcpServiceAccountEmail: ${gsaId}
+EOF
+</code></pre><p>Check the sync status:</p><pre tabindex=0><code>nomos status \
+    --contexts=$(kubectl config current-context)
+</code></pre><p>Verify that the <code>Namespace</code> <code>test-chart</code> is actually deployed:</p><pre tabindex=0><code>kubectl get ns test-chart
+</code></pre><p>And voila! That&rsquo;s how easy it is to deploy an Helm chart as an OCI artifact in a GitOps way with Config Sync.</p><h2 id=deploy-gatekeeper-policies-as-oci-image>Deploy Gatekeeper Policies as OCI image
+<a href=#deploy-gatekeeper-policies-as-oci-image class=h-anchor aria-hidden=true>#</a></h2><p>Create Gatekeeper <code>ContstraintTemplate</code> and <code>Constraint</code> resources:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; k8srequiredlabels-template.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  annotations:
+    description: Requires resources to contain specified labels.
+  name: k8srequiredlabels
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLabels
+      validation:
+        openAPIV3Schema:
+          properties:
+            labels:
+              description: A list of labels the object must specify.
+              items:
+                properties:
+                  key:
+                    description: The required label.
+                    type: string
+                type: object
+              type: array
+            message:
+              type: string
+          type: object
+  targets:
+  - rego: |
+      package k8srequiredlabels
+      violation[{&#34;msg&#34;: msg, &#34;details&#34;: {&#34;missing_labels&#34;: missing}}] {
+        provided := {label | input.review.object.metadata.labels[label]}
+        required := {label | label := input.parameters.labels[_].key}
+        missing := required - provided
+        count(missing) &gt; 0
+        msg := sprintf(&#34;You must provide labels: %v&#34;, [missing])
+      }
+    target: admission.k8s.gatekeeper.sh
+EOF
+cat &lt;&lt;EOF&gt; namespaces-required-labels.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: namespaces-required-labels
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - &#34;&#34;
+      kinds:
+      - Namespace
+    excludedNamespaces:
+    - config-management-monitoring
+    - config-management-system
+    - default
+    - gatekeeper-system
+    - gke-connect
+    - kube-node-lease
+    - kube-public
+    - kube-system
+    - resource-group-system
+  parameters:
+    labels:
+    - key: name
+EOF
+</code></pre><p>Create an archive of those two files:</p><pre tabindex=0><code>tar -cf test-policies.tar k8srequiredlabels-template.yaml namespaces-required-labels.yaml
+</code></pre><p>Push that artifact in Artifact Registry with <a href=https://oras.land/><code>oras</code></a>:</p><pre tabindex=0><code>oras push \
+    $region-docker.pkg.dev/$project/$containerRegistryName/my-policies-artifact:v1 \
+    test-policies.tar
+</code></pre><p>Alternatively, push that artifact in Artifact Registry with <a href=https://github.com/google/go-containerregistry/tree/main/cmd/crane><code>crane</code></a>:</p><pre tabindex=0><code>crane append -f &lt;(tar -f - -c test-policies) \
+    -t $region-docker.pkg.dev/$project/$containerRegistryName/my-policies-artifact:v1 
+</code></pre><p>Allow Config Sync to synchronize resources for a specific <code>RootSync</code> we will configure to synchronize this artifact:</p><pre tabindex=0><code>ROOT_SYNC_NAME=root-sync-constraints
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member &#34;serviceAccount:$project.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]&#34; \
+   $gsaId
+</code></pre><p>Set up Config Sync to deploy this artifact from Artifact Registry:</p><pre tabindex=0><code>cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: ${ROOT_SYNC_NAME}
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${region}-docker.pkg.dev/${project}/${containerRegistryName}/my-policies-artifact:v1
+    dir: .
+    auth: gcpserviceaccount
+    gcpServiceAccountEmail: ${gsaId}
+EOF
+</code></pre><p><em>Note that we added the <code>policyController.enabled: true</code> in order to have Policy Controller (Gatekeeper) installed in the GKE cluster.</em></p><p>Check the sync status:</p><pre tabindex=0><code>nomos status \
+    --contexts=$(kubectl config current-context)
+</code></pre><p>Verify that the <code>Constraints</code> are actually deployed:</p><pre tabindex=0><code>kubectl get constraints -o yaml
+</code></pre><p>If you try to create a <code>Namespace</code> without any <code>label</code> (example: <code>kubectl create ns test-policies</code>), you will get an error confirming that the <code>Constraint</code> and <code>ConstraintTemplate</code> has been successfully deployed.</p><p>And voila! That&rsquo;s how easy it is to deploy your Gatekeeper Policies as an OCI artifact in a GitOps way with Config Sync.</p><h2 id=conclusion>Conclusion
+<a href=#conclusion class=h-anchor aria-hidden=true>#</a></h2><p>We were able to deploy 3 different types of OCI artifacts via Config Sync:</p><ul><li>Kubernetes manifests</li><li>Helm charts with Kustomize</li><li>Gatekeeper policies</li></ul><p>There are 4 main advantages of doing GitOps with OCI artifacts instead of Git repository:</p><ul><li>You could have fine granular access control on the registry with your Google Cloud IAM (users, service accounts, etc.)</li><li>You could share more easily packages/artifacts of your Kubernetes manifests, even in a dynamic and generic way with Helm as an example</li><li>You could have a better separation of concerns between your CI and your CD. With your CI pipelines you still need Git repositories, have security and governance checks before pushing the artifacts in the registries.</li><li>You could save resources consumption (CPU, memory) by Config Sync as you will scale with a multi repositories setup for example. Config Sync will specifically pull the OCI artifact instead of dealing with Git (<code>git clone</code>, etc.) which could have performance issues.</li></ul><h2 id=complementary-and-further-resources>Complementary and further resources
+<a href=#complementary-and-further-resources class=h-anchor aria-hidden=true>#</a></h2><ul><li><a href=/posts/2021/01/oci-artifact-registry/>Host Helm charts and OCI artifacts in Artifact Registry</a></li><li><a href=https://youtu.be/PZSNn080W6g>Config Sync OCI demo</a></li><li><a href=https://www.cncf.io/blog/2022/08/10/add-gitops-without-throwing-out-your-ci-tools/>Add GitOps without throwing out your CI tools</a></li><li><a href=https://fluxcd.io/docs/cheatsheets/oci-artifacts/>OCI artifacts support from FluxCD</a></li><li><a href=https://fluxcd.io/blog/2022/08/manage-kyverno-policies-as-ocirepositories/>Managing Kyverno Policies as OCI Artifacts with FluxCD</a></li></ul><p>Hope you enjoyed that one, cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2022/08/encrypt-traffic-from-mesh-to-memorystore/><span class=button__icon>←</span>
+<span class=button__text>seamlessly encrypt traffic from any apps in your mesh to memorystore (redis)</span></a></span>
+<span class="button next"><a href=/posts/2022/02/config-controller-gitops/><span class=button__text>gitops with config controller</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

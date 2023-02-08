@@ -1,0 +1,175 @@
+<!doctype html><html lang=en><head><title>mix both internal and external load balancers to expose your crfa services ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Important disclaimer: what you will see with this blog article is not officially supported by GCP. The intent here is to show you the concepts of CRfA as well as show you an advanced scenario that you may want to leverage on your own to satisfy your needs. Typically, the official guidance is to have two different CRfA clusters in order to have one with EXTERNAL endpoints (public load balancer) and the other one with PRIVATE endpoints (internal load balancer)."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2021/07/crfa/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="mix both internal and external load balancers to expose your crfa services"><meta name=twitter:description content="let's see how to setup both external and internal load balancers to expose your services in the same crfa cluster"><meta property="og:title" content="mix both internal and external load balancers to expose your crfa services"><meta property="og:description" content="let's see how to setup both external and internal load balancers to expose your services in the same crfa cluster"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2021/07/crfa/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-07-25T00:00:00+00:00"><meta property="article:modified_time" content="2021-07-25T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>mix both internal and external load balancers to expose your crfa services</h1><div class=post-meta><span class=post-date>2021-07-25</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;</span><div class=post-content><p><em>Important disclaimer: what you will see with this blog article is not officially supported by GCP. The intent here is to show you the concepts of CRfA as well as show you an advanced scenario that you may want to leverage on your own to satisfy your needs. Typically, the official guidance is to have two different CRfA clusters in order to have one with <code>EXTERNAL</code> endpoints (public load balancer) and the other one with <code>PRIVATE</code> endpoints (internal load balancer).</em></p><p><a href=https://cloud.google.com/anthos/run>Cloud Run for Anthos (CRfA)</a> is here to simplify the experience of developers and operators. <a href=https://knative.dev/>Knative</a> on top of Kubernetes is how it accomplishes this.</p><p>Create a CRfA cluster is very easy, it&rsquo;s just an option when you create your GKE cluster:</p><pre tabindex=0><code>clusterName=crfa
+zone=us-east4-a
+projectId=mycrfa
+gcloud container clusters create $clusterName \
+    --project $projectId \
+    --zone=$zone \
+    --addons=HttpLoadBalancing,CloudRun \
+    --enable-stackdriver-kubernetes
+</code></pre><p>When provisioned, CRfA will have its own Istio flavor and will provision by default a public load balancer and IP address on top of its ingress gateway.</p><p><em>Note: If you want to <a href=https://cloud.google.com/anthos/run/docs/setup#setting_up_a_private_internal_network>restrict the access of this ingress gateway</a> and all your CRfA services you could leverage this parameter at cluster creation <code>--cloud-run-config=load-balancer-type=INTERNAL</code> to set its load balancer as internal with a private IP address.</em></p><p>And from there, you could deploy two kind of service:</p><ul><li>Internal - <code>gcloud run deploy --ingress internal</code>. These services will only be accessible from within the cluster, not from outside.</li><li>External - <code>gcloud run deploy --ingress all</code>. These services will be accessible based on the <code>--cloud-run-config=load-balancer-type=</code> value we dicussed earlier at the cluster creation. So these services will be accessible either publicly or privately in the same cluster&rsquo;s network.</li></ul><p>For example in our case, let&rsquo;s deploy two sample service illustrating both scenario:</p><pre tabindex=0><code>gcloud run deploy internal \
+    --image gcr.io/knative-samples/helloworld-go \
+    --cluster=$clusterName \
+    --cluster-location=$zone \
+    --platform gke \
+    --project $projectId \
+    --set-env-vars TARGET=internal \
+    --ingress internal
+gcloud run deploy external \
+    --image gcr.io/knative-samples/helloworld-go \
+    --cluster=$clusterName \
+    --cluster-location=$zone \
+    --platform gke \
+    --project $projectId \
+    --set-env-vars TARGET=external \
+    --ingress all
+</code></pre><p>From there the <code>internal</code> service will only be accessible from within the cluster like explained above. In order to get the <code>external</code> service publicly reachable we need to <a href=https://cloud.google.com/anthos/run/docs/default-domain>configure a domain</a>. In our case we will leverage a temporary DNS with <code>nip.io</code>:</p><pre tabindex=0><code>publicIp=$(kubectl get svc istio-ingress -n gke-system -o jsonpath=&#34;{.status.loadBalancer.ingress[*].ip}&#34;)
+cat &lt;&lt;EOF &gt; patch.json
+{&#34;data&#34;: {&#34;example.com&#34;: null, &#34;$publicIp.nip.io&#34;: &#34;&#34;}}
+EOF
+kubectl patch configmap config-domain --namespace knative-serving --patch \
+  --type=json -p=&#34;$(cat patch.json)&#34;
+</code></pre><p>Then we are now able to ping the <code>external</code> service:</p><pre tabindex=0><code>curl http://external.default.$publicIp.nip.io
+</code></pre><p>Now what we would like to do is also expose services via an internal load balancer even if the CRfA cluster we provisioned exposes by default the services via a public load balancer. What we need to do is simply create this new <code>Service</code> as internal load balancer to expose all the services managed with CRfA:</p><pre tabindex=0><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-lb
+  namespace: gke-system
+  annotations:
+    cloud.google.com/load-balancer-type: &#34;Internal&#34;
+spec:
+  type: LoadBalancer
+  selector:
+    istio: ingress-gke-system
+  ports:
+  - name: http2
+    port: 80
+    targetPort: 8081
+EOF
+</code></pre><p>Once deployed we could successfuly reach any <code>internal</code> services from a machine under the same VPC than the CRfA cluster:</p><pre tabindex=0><code>ilbIp=$(kubectl get svc internal-lb -n gke-system -o jsonpath=&#34;{.status.loadBalancer.ingress[*].ip}&#34;)
+curl $ilbIp -H &#34;Host: internal.default.svc.cluster.local&#34;
+</code></pre><p>In addition to that, we could also configure a custom domain on those internal services. Here is the manifest that you could build and deploy to accomplish this:</p><pre tabindex=0><code>export CUSTOM_DOMAIN=custom-domain.example.com
+cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ${CUSTOM_DOMAIN}
+  namespace: default
+spec:
+  # This is the gateway shared in knative service mesh.
+  gateways:
+  - knative-serving/knative-local-gateway
+  # Set host to the domain name that you own.
+  hosts:
+  - ${CUSTOM_DOMAIN}
+  http:
+  - headers:
+      request:
+        add:
+          K-Original-Host: ${CUSTOM_DOMAIN}
+    rewrite:
+      authority: internal.default.svc.cluster.local
+    route:
+    - destination:
+        host: knative-local-gateway.gke-system.svc.cluster.local
+        port:
+          number: 80
+      weight: 100
+EOF
+</code></pre><p>With that, we could successfully reach this specific <code>internal</code> service from a machine under the same VPC than the CRfA cluster:</p><pre tabindex=0><code>curl $ilbIp -H &#34;Host:${CUSTOM_DOMAIN}&#34;
+</code></pre><p>To complete this setup, you may want to expose those internal endpoints via HTTPS, for this you could adapt and execute the commands below:</p><pre tabindex=0><code># We will use self-signed certificate as an experiment.
+openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj &#39;/O=example Inc./CN=example.com&#39; -keyout example.com.key -out example.com.crt
+openssl req -out ${CUSTOM_DOMAIN}.csr -newkey rsa:2048 -nodes -keyout ${CUSTOM_DOMAIN}.key -subj &#34;/CN=${CUSTOM_DOMAIN}/O=httpbin organization&#34;
+openssl x509 -req -days 365 -CA example.com.crt -CAkey example.com.key -set_serial 0 -in ${CUSTOM_DOMAIN}.csr -out ${CUSTOM_DOMAIN}.crt
+
+kubectl create -n gke-system secret tls custom-domain-credential --key=${CUSTOM_DOMAIN}.key --cert=${CUSTOM_DOMAIN}.crt
+
+# Configure LB service to support HTTPS
+cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-lb
+  namespace: gke-system
+  annotations:
+    cloud.google.com/load-balancer-type: &#34;Internal&#34;
+spec:
+  type: LoadBalancer
+  selector:
+    istio: ingress-gke-system
+  ports:
+  - name: http2
+    port: 80
+    targetPort: 8081
+  - name: https
+    port: 443
+    targetPort: 443
+EOF
+
+# Create a gateway to support HTTPS
+cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: internal-lb-gateway
+  namespace: knative-serving
+spec:
+  selector:
+    istio: ingress-gke-system
+  servers:
+  - hosts:
+    - ${CUSTOM_DOMAIN}
+    port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: custom-domain-credential # must be the same as secret
+EOF
+
+# Ajust VS to bind to internal-lb-gateway
+cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ${CUSTOM_DOMAIN}
+  namespace: default
+spec:
+  # This is the gateway shared in knative service mesh.
+  gateways:
+  - knative-serving/internal-lb-gateway
+  # Set host to the domain name that you own.
+  hosts:
+  - ${CUSTOM_DOMAIN}
+  http:
+  - headers:
+      request:
+        add:
+          K-Original-Host: ${CUSTOM_DOMAIN}
+    rewrite:
+      authority: internal.default.svc.cluster.local
+    route:
+    - destination:
+        host: knative-local-gateway.gke-system.svc.cluster.local
+        port:
+          number: 80
+      weight: 100
+EOF
+</code></pre><p>Now, we could successfully reach this specific <code>internal</code> service over https from a machine under the same VPC than the CRfA cluster:</p><pre tabindex=0><code>curl https://${CUSTOM_DOMAIN} --resolve &#39;${CUSTOM_DOMAIN}:443:${ilbIp}&#39; -k
+</code></pre><p>That&rsquo;s it, we demonstrated how to combine and leverage both public load balancer and internal load balancer with the same CRfA cluster (as opposed to two clusters to accomplish this).</p><p>Hope you enjoyed that one, cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2021/09/container-scanning/><span class=button__icon>←</span>
+<span class=button__text>container scanning</span></a></span>
+<span class="button next"><a href=/posts/2021/04/cloud-armor/><span class=button__text>cloud armor to protect your apps deployed on gke</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

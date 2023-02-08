@@ -1,0 +1,133 @@
+<!doctype html><html lang=en><head><title>ci/gitops with helm, github actions, github container registry and config sync ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Update on Sep 17th, 2022: this blog article is now published in Google Cloud Community Medium.
+Since Anthos Config Management 1.13.0, Config Sync supports syncing Helm charts from private OCI registries. To learn more, see Sync Helm charts from Artifact Registry.
+You can learn more about this announcement here: Deploy OCI artifacts and Helm charts the GitOps way with Config Sync.
+In another article, we saw how you can package and push an Helm chart to Google Artifact Registry with GitHub actions (using Workload Identity Federation), and then how you can deploy an Helm chart with Config Sync (using Workload Identity)."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2022/09/ci-gitops-helm-github-actions-github-registry/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="ci/gitops with helm, github actions, github container registry and config sync"><meta name=twitter:description content="let's see how to do the ci/gitops workflow with helm charts, github actions (using pat token), github container registry and config sync"><meta property="og:title" content="ci/gitops with helm, github actions, github container registry and config sync"><meta property="og:description" content="let's see how to do the ci/gitops workflow with helm charts, github actions (using pat token), github container registry and config sync"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2022/09/ci-gitops-helm-github-actions-github-registry/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-09-16T00:00:00+00:00"><meta property="article:modified_time" content="2022-09-16T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>ci/gitops with helm, github actions, github container registry and config sync</h1><div class=post-meta><span class=post-date>2022-09-16</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;
+<a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/gitops/>#gitops</a>&nbsp;</span><div class=post-content><p><em>Update on Sep 17th, 2022: this blog article is now published in <a href=https://medium.com/google-cloud/836913e74e79>Google Cloud Community Medium</a>.</em></p><p>Since <a href=https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022>Anthos Config Management 1.13.0</a>, Config Sync supports syncing Helm charts from private OCI registries. To learn more, see <a href=https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry>Sync Helm charts from Artifact Registry</a>.</p><p>You can learn more about this announcement here: <a href=https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync>Deploy OCI artifacts and Helm charts the GitOps way with Config Sync</a>.</p><p><a href=/posts/2022/09/ci-gitops-helm-github-actions-google-registry/>In another article</a>, we saw how you can package and push an Helm chart to <strong>Google Artifact Registry with GitHub actions (using Workload Identity Federation)</strong>, and then how you can deploy an Helm chart with Config Sync (using Workload Identity).</p><p>In this article, we will show how you can package and push an Helm chart to <strong>GitHub Container Registry with GitHub actions (using PAT token)</strong>, and then how you can deploy an Helm chart with Config Sync.</p><p><img src=https://github.com/mathieu-benoit/my-images/raw/main/ci-gitops-helm-github-actions-github-registry.png alt="Workflow overview."></p><h2 id=objectives>Objectives
+<a href=#objectives class=h-anchor aria-hidden=true>#</a></h2><ul><li>Package and push an Helm chart in GitHub Container Registry with GitHub actions (using PAT token)</li><li>Create a GKE cluster and enable Config Sync</li><li>Sync an Helm chart from GitHub Container Registry with Config Sync</li></ul><h2 id=costs>Costs
+<a href=#costs class=h-anchor aria-hidden=true>#</a></h2><p>This tutorial uses billable components of Google Cloud, including the following:</p><ul><li><a href=https://cloud.google.com/kubernetes-engine/pricing>Kubernetes Engine</a></li></ul><p><em>Note: In this case, Config Sync is free, see more details <a href=https://cloud.google.com/anthos-config-management/docs/pricing>here</a>.</em></p><p>Use the <a href=https://cloud.google.com/products/calculator>pricing calculator</a> to generate a cost estimate based on your projected usage.</p><h2 id=before-you-begin>Before you begin
+<a href=#before-you-begin class=h-anchor aria-hidden=true>#</a></h2><p>This guide assumes that you have owner IAM permissions for your Google Cloud project. In production, you do not require owner permission.</p><ol><li><p><a href=https://console.cloud.google.com/projectselector2>Select or create a Google Cloud project</a>.</p></li><li><p><a href=https://cloud.google.com/billing/docs/how-to/modify-project>Verify that billing is enabled</a> for your project.</p></li></ol><p>This guide also assumes that you have a <a href=https://github.com/>GitHub account</a>.</p><h2 id=set-up-your-environment>Set up your environment
+<a href=#set-up-your-environment class=h-anchor aria-hidden=true>#</a></h2><p>Here are the tools you will need:</p><ul><li><a href=https://cloud.google.com/sdk/docs/install><code>gcloud</code></a></li><li><a href=https://git-scm.com/downloads><code>git</code></a></li><li><a href=https://cli.github.com/><code>gh</code></a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command><code>nomos</code></a></li><li><a href=https://kubernetes.io/docs/tasks/tools/#kubectl><code>kubectl</code></a></li></ul><p><em>Note: You can use the Google Cloud Shell which has all these tools already installed.</em></p><p>Initialize the common variables used throughout this tutorial:</p><pre tabindex=0><code>PROJECT_ID=FIXME-WITH-YOUR-PROJECT-ID
+ZONE=us-east4-a
+</code></pre><p>To avoid repeating the <code>--project</code> in the commands throughout this tutorial, let&rsquo;s set the current project:</p><pre tabindex=0><code>gcloud config set project ${PROJECT_ID}
+</code></pre><p>Create a dedicated GitHub repository with a default <code>main</code> branch:</p><pre tabindex=0><code>REPO_NAME=my-chart
+cd ~/
+gh auth login
+git config --global init.defaultBranch main
+gh repo create ${REPO_NAME} --private --clone
+</code></pre><p>Let&rsquo;s capture the GitHub owner value that you will reuse later in this tutorial:</p><pre tabindex=0><code>GITHUB_REPO_OWNER=$(gh repo view ${REPO_NAME} --json owner --jq .owner.login)
+</code></pre><h2 id=package-and-push-an-helm-chart-in-github-container-registry>Package and push an Helm chart in GitHub Container Registry
+<a href=#package-and-push-an-helm-chart-in-github-container-registry class=h-anchor aria-hidden=true>#</a></h2><p>Create the Helm chart:</p><pre tabindex=0><code>helm create ~/${REPO_NAME}
+</code></pre><p>Commit this Helm chart template in the GitHub repository:</p><pre tabindex=0><code>cd ~/${REPO_NAME}
+git add . &amp;&amp; git commit -m &#34;Create Helm chart template&#34; &amp;&amp; git push origin main
+</code></pre><p>Define a GitHub actions pipeline to package and push the Helm chart in GitHub Container Registry:</p><pre tabindex=0><code>mkdir .github &amp;&amp; mkdir .github/workflows
+cat &lt;&lt;&#39;EOF&#39; &gt; .github/workflows/ci-helm-ghcr.yaml
+name: ci-helm-ghcr
+permissions:
+  packages: write
+  contents: read
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+env:
+  CHART_NAME: my-chart
+  IMAGE_TAG: 0.1.0
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: helm lint
+        run: |
+          helm lint .
+      - name: helm login
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | helm registry login ghcr.io -u $ --password-stdin
+      - name: helm package
+        run: |
+          helm package . --version $IMAGE_TAG
+      - name: helm push
+        if: ${{ github.event_name == &#39;push&#39; }}
+        run: |
+          helm push $CHART_NAME-$IMAGE_TAG.tgz oci://ghcr.io/${{ github.repository_owner }}
+EOF
+</code></pre><p>This GitHub Actions pipeline allows to execute a series of commands: <code>helm lint</code>, <code>helm registry login</code>, <code>helm package</code> and eventually, if it&rsquo;s a <code>push</code> in <code>main</code> branch, <code>helm push</code> will be executed. Also, this pipeline is triggered as soon as there is a <code>push</code> in <code>main</code> branch as well as for any pull requests. You can adapt this flow and these conditions for your own needs.</p><p>You can see that we use the <a href=https://docs.github.com/en/actions/security-guides/automatic-token-authentication>automatic token authentication</a> by using the <code>secrets.GITHUB_TOKEN</code> environment variable with the <code>helm registry login</code> command. In addition to that, in order to be able to push the Helm chart in GitHub Container Registry we need to have <code>permissions.packages: write</code>.</p><p>Commit this GitHub actions pipeline in the GitHub repository:</p><pre tabindex=0><code>git add . &amp;&amp; git commit -m &#34;Create GitHub actions pipeline&#34; &amp;&amp; git push origin main
+</code></pre><p>Wait until the associated run is successfully completed:</p><pre tabindex=0><code>gh run list
+</code></pre><p>See that your Helm chart successfully uploaded by clicking on:</p><pre tabindex=0><code>echo -e &#34;https://github.com/${GITHUB_REPO_OWNER}?tab=packages&amp;repo_name=${REPO_NAME}&#34;
+</code></pre><p>Now that we have built and store our Helm chart, let&rsquo;s provision the GKE cluster with Config Sync ready to eventually deploy this Helm chart.</p><h2 id=create-a-gke-cluster-and-enable-config-sync>Create a GKE cluster and enable Config Sync
+<a href=#create-a-gke-cluster-and-enable-config-sync class=h-anchor aria-hidden=true>#</a></h2><p>Create a GKE cluster registered in a <a href=https://cloud.google.com/anthos/fleet-management/docs/fleet-concepts>Fleet</a> to enable Config Management:</p><pre tabindex=0><code>gcloud services enable container.googleapis.com
+CLUSTER_NAME=cluster-helm-test
+gcloud container clusters create ${CLUSTER_NAME} \
+    --workload-pool=${PROJECT_ID}.svc.id.goog \
+    --zone ${ZONE}
+
+gcloud services enable gkehub.googleapis.com
+gcloud container fleet memberships register ${CLUSTER_NAME} \
+    --gke-cluster ${ZONE}/${CLUSTER_NAME} \
+    --enable-workload-identity
+
+gcloud beta container fleet config-management enable
+</code></pre><p>Install Config Sync in this GKE cluster:</p><pre tabindex=0><code>cat &lt;&lt;EOF &gt; acm-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+EOF
+gcloud beta container fleet config-management apply \
+    --membership ${CLUSTER_NAME} \
+    --config acm-config.yaml
+</code></pre><h2 id=sync-an-helm-chart-from-github-container-registry>Sync an Helm chart from GitHub Container Registry
+<a href=#sync-an-helm-chart-from-github-container-registry class=h-anchor aria-hidden=true>#</a></h2><p>Because we created a public GitHub repository, the Helm chart we pushed in GitHub Container Registry is public. You can change this default visibility from public to private by following the instructions <a href=https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#configuring-visibility-of-container-images-for-your-personal-account>here</a>.</p><p><a href=https://github.com/settings/tokens/new>Create a new Personal Access Token (PAT) in GitHub</a> with the <code>read:packages</code> OAuth scope to follow the &ldquo;just enough and least-privilege&rdquo; principles.</p><p>Create the associated <code>Secret</code> with the GitHub&rsquo;s PAT in the <code>RootSync</code>&rsquo;s <code>Namespace</code>:</p><pre tabindex=0><code>GITHUB_PAT=FIXME
+kubectl create secret generic ghcr \
+    --namespace=config-management-system \
+    --from-literal=username=config-sync \
+    --from-literal=password=${GITHUB_PAT}
+</code></pre><p>Deploy the <code>RootSync</code> in order to sync the private Helm chart:</p><pre tabindex=0><code>cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: root-sync-helm
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  sourceType: helm
+  helm:
+    repo: oci://ghcr.io/${GITHUB_REPO_OWNER}
+    chart: my-chart
+    version: 0.1.0
+    releaseName: my-chart
+    namespace: default
+    auth: token
+    secretRef:
+      name: ghcr
+EOF
+</code></pre><p><em>Note that we set the <code>spec.helm.auth: token</code> and <code>spec.helm.secretRef.name: ghcr</code> values to be able to access and sync the private Helm chart. If you have a public Helm chart to sync, you can use <code>spec.helm.auth: none</code> instead.</em></p><p>Check the status of the sync:</p><pre tabindex=0><code>nomos status \
+    --contexts=$(kubectl config current-context)
+</code></pre><p>Verify that the Helm chart is synced:</p><pre tabindex=0><code>kubectl get all \
+    -n default
+</code></pre><p>And voilà! You just deployed a <strong>private Helm chart</strong> hosted in GitHub Registry with Config Sync.</p><h2 id=conclusion>Conclusion
+<a href=#conclusion class=h-anchor aria-hidden=true>#</a></h2><p>In this article, you were able to package and push an Helm chart in GitHub Container Registry with GitHub Actions. At the end, you have seen how you can sync a private Helm chart with the <code>spec.helm.auth: token</code> setup on the <code>RootSync</code>. This demonstrates that Config Sync supports any private OCI registries where you have your Helm chart: JFrog Artifactory, etc.</p><h2 id=cleaning-up>Cleaning up
+<a href=#cleaning-up class=h-anchor aria-hidden=true>#</a></h2><p>To avoid incurring charges to your Google Cloud account, you can delete the resources used in this tutorial.</p><p>Unregister the GKE cluster from the <a href=https://cloud.google.com/anthos/fleet-management/docs/fleet-concepts>Fleet</a>:</p><pre tabindex=0><code>gcloud container fleet memberships unregister ${CLUSTER_NAME} \
+    --project=${PROJECT_ID} \
+    --gke-cluster=${ZONE}/${CLUSTER_NAME}
+</code></pre><p>Delete the GKE cluster:</p><pre tabindex=0><code>gcloud container clusters delete ${CLUSTER_NAME} \
+    --zone ${ZONE}
+</code></pre><h2 id=whats-next>What&rsquo;s next
+<a href=#whats-next class=h-anchor aria-hidden=true>#</a></h2><ul><li><a href=https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync>Deploy OCI artifacts and Helm charts the GitOps way with Config Sync</a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry>Sync Helm charts from Artifact Registry</a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/how-to/sync-oci-artifacts-from-artifact-registry>Sync OCI artifacts from Artifact Registry</a></li><li><a href=/posts/2022/09/ci-gitops-helm-github-actions-google-registry/>CI/GitOps with Helm, GitHub Actions, Google Artifact Registry and Config Sync</a></li></ul></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2022/09/ci-gitops-helm-github-actions-google-registry/><span class=button__icon>←</span>
+<span class=button__text>ci/gitops with helm, github actions, google artifact registry and config sync</span></a></span>
+<span class="button next"><a href=/posts/2022/08/encrypt-traffic-from-mesh-to-memorystore/><span class=button__text>seamlessly encrypt traffic from any apps in your mesh to memorystore (redis)</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

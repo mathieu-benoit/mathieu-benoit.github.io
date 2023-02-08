@@ -1,0 +1,289 @@
+<!doctype html><html lang=en><head><title>online boutique's helm chart, illustrate advanced scenarios with service mesh and gitops ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Update on Dec 12th, 2022: this blog article is now on Medium.
+Since the version 0.4.2, Online Boutique has its own Helm chart, in the GitHub repository or in the public Artifact Registry repository: us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique.
+The intent is to simplify the way the Online Boutique users deploy it, especially when they want to deploy it in more advanced scenarios: with NetworkPolicies, with the Cymbal branding, without the frontend app exposed publicly, with ServiceAccounts, etc."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2022/12/onlineboutique-with-helm/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="online boutique's helm chart, illustrate advanced scenarios with service mesh and gitops"><meta name=twitter:description content="let's see how we could deploy advanced scenarios of the online boutique sample via its helm chart with service mesh and gitops, in order to improve its security posture"><meta property="og:title" content="online boutique's helm chart, illustrate advanced scenarios with service mesh and gitops"><meta property="og:description" content="let's see how we could deploy advanced scenarios of the online boutique sample via its helm chart with service mesh and gitops, in order to improve its security posture"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2022/12/onlineboutique-with-helm/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-12-11T00:00:00+00:00"><meta property="article:modified_time" content="2022-12-11T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>online boutique&rsquo;s helm chart, illustrate advanced scenarios with service mesh and gitops</h1><div class=post-meta><span class=post-date>2022-12-11</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;
+<a href=/tags/service-mesh/>#service-mesh</a>&nbsp;
+<a href=/tags/security/>#security</a>&nbsp;</span><div class=post-content><p><em>Update on Dec 12th, 2022: this blog article is now on <a href=https://medium.com/google-cloud/246119e46d53>Medium</a>.</em></p><p>Since the version 0.4.2, Online Boutique has its own Helm chart, in the <a href=https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/helm-chart>GitHub repository</a> or in the public Artifact Registry repository: <code>us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique</code>.</p><p>The intent is to simplify the way the Online Boutique users deploy it, especially when they want to deploy it in more advanced scenarios: with <code>NetworkPolicies</code>, with the Cymbal branding, without the <code>frontend</code> app exposed publicly, with <code>ServiceAccounts</code>, etc.</p><p>Let&rsquo;s see this in action throughout this blog article, from the default setup to more complex scenarios where we want a secure Online Boutique deployed in a Service Mesh. Finally, we will see how you can deploy this Helm chart via Config Sync, in a GitOps way.</p><h2 id=deploy-the-default-online-boutique>Deploy the default Online Boutique
+<a href=#deploy-the-default-online-boutique class=h-anchor aria-hidden=true>#</a></h2><p>Create a GKE cluster:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>PROJECT_ID<span style=color:#f92672>=</span>FIXME-WITH-YOUR-PROJECT-ID
+</span></span><span style=display:flex><span>CLUSTER<span style=color:#f92672>=</span>onlineboutique-with-helm
+</span></span><span style=display:flex><span>ZONE<span style=color:#f92672>=</span>northamerica-northeast1-a
+</span></span><span style=display:flex><span>PROJECT_NUMBER<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>gcloud projects describe $PROJECT_ID --format<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;get(projectNumber)&#39;</span><span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>gcloud services enable container.googleapis.com
+</span></span><span style=display:flex><span>gcloud container clusters create <span style=color:#e6db74>${</span>CLUSTER<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --zone <span style=color:#e6db74>${</span>ZONE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --machine-type<span style=color:#f92672>=</span>e2-standard-4 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --workload-pool <span style=color:#e6db74>${</span>PROJECT_ID<span style=color:#e6db74>}</span>.svc.id.goog <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --enable-dataplane-v2 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --labels mesh_id<span style=color:#f92672>=</span>proj-$PROJECT_NUMBER
+</span></span></code></pre></div><p>Deploy the Online Boutique via its Helm chart:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#f92672>=</span>onlineboutique
+</span></span><span style=display:flex><span>helm upgrade onlineboutique oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --create-namespace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>If you wait a little bit, when the <code>Pods</code> are deployed, you can access the Online Boutique website by clicking on this URL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;http://&#34;</span> <span style=color:#f92672>&amp;&amp;</span> kubectl get svc frontend-external -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> -o json | jq -r <span style=color:#e6db74>&#39;.status.loadBalancer.ingress[0].ip&#39;</span>
+</span></span></code></pre></div><p>Congrats! You just deployed the default setup of Online Boutique via its Helm chart!</p><h2 id=secure-online-boutique-with-networkpolicies>Secure Online Boutique with <code>NetworkPolicies</code>
+<a href=#secure-online-boutique-with-networkpolicies class=h-anchor aria-hidden=true>#</a></h2><p>Let&rsquo;s now add more security with this default Online Boutique setup, by adding predefined fine granular <code>NetworkPolicies</code>, one per app:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>helm upgrade onlineboutique oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --create-namespace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set networkPolicies.create<span style=color:#f92672>=</span>true
+</span></span></code></pre></div><p>If you run the following command you could see the <code>NetworkPolicies</code> deployed:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl get networkpolicies -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Output similar to:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>NAME                    POD-SELECTOR                AGE
+</span></span><span style=display:flex><span>adservice               app=adservice               4m42s
+</span></span><span style=display:flex><span>cartservice             app=cartservice             4m42s
+</span></span><span style=display:flex><span>checkoutservice         app=checkoutservice         4m42s
+</span></span><span style=display:flex><span>currencyservice         app=currencyservice         4m42s
+</span></span><span style=display:flex><span>deny-all                &lt;none&gt;                      4m42s
+</span></span><span style=display:flex><span>emailservice            app=emailservice            4m42s
+</span></span><span style=display:flex><span>frontend                app=frontend                4m42s
+</span></span><span style=display:flex><span>loadgenerator           app=loadgenerator           4m42s
+</span></span><span style=display:flex><span>paymentservice          app=paymentservice          4m42s
+</span></span><span style=display:flex><span>productcatalogservice   app=productcatalogservice   4m42s
+</span></span><span style=display:flex><span>recommendationservice   app=recommendationservice   4m42s
+</span></span><span style=display:flex><span>redis-cart              app=redis-cart              4m42s
+</span></span><span style=display:flex><span>shippingservice         app=shippingservice         4m42s
+</span></span></code></pre></div><p>You can verify that you can still access the Online Boutique website by clicking on this URL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;http://&#34;</span> <span style=color:#f92672>&amp;&amp;</span> kubectl get svc frontend-external -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> -o json | jq -r <span style=color:#e6db74>&#39;.status.loadBalancer.ingress[0].ip&#39;</span>
+</span></span></code></pre></div><p>By registering your GKE clsuter in a fleet, you can even see in the Google Cloud Console that your Security posture just got improved:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gcloud services enable gkehub.googleapis.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>gcloud container fleet memberships register <span style=color:#e6db74>${</span>CLUSTER<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --gke-cluster <span style=color:#e6db74>${</span>ZONE<span style=color:#e6db74>}</span>/<span style=color:#e6db74>${</span>CLUSTER<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --enable-workload-identity
+</span></span></code></pre></div><p>Then, by navigating to the <strong>Anthos > Security</strong> page in your Google Cloud Console, you can see that <strong>Kubernetes network policy</strong> is enabled in the Online Boutique namespace:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-networkpolicies.png alt="Online Boutique&amp;rsquo;s Network Policies on Anthos Security page"></p><h2 id=deploy-online-boutique-in-a-service-mesh>Deploy Online Boutique in a Service Mesh
+<a href=#deploy-online-boutique-in-a-service-mesh class=h-anchor aria-hidden=true>#</a></h2><p>Let&rsquo;s now deploy Online Boutique in an Anthos Service Mesh enabled on your GKE cluster.</p><p>First, let&rsquo;s enable Anthos Service Mesh on the GKE cluster:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gcloud services enable mesh.googleapis.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>gcloud container fleet mesh enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>gcloud container fleet mesh update <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --management automatic <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --memberships <span style=color:#e6db74>${</span>CLUSTER<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Wait for the managed Anthos Service Mesh to be successfully enabled on your GKE cluster (<code>code: REVISION_READY</code> and <code>state: ACTIVE</code>):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gcloud container fleet mesh describe
+</span></span></code></pre></div><p>In order to have Online Boutique in this Service Mesh, we need to label its <code>Namespace</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl label namespace <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> istio-injection<span style=color:#f92672>=</span>enabled
+</span></span></code></pre></div><p>Let&rsquo;s force the injection of the Istio&rsquo;s sidecar proxies on the Online Boutique&rsquo;s <code>Deployments</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl rollout restart deployments <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>If you wait a little bit, when the <code>Pods</code> are deployed, you can access the Online Boutique website by clicking on this URL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;http://&#34;</span> <span style=color:#f92672>&amp;&amp;</span> kubectl get svc frontend-external -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> -o json | jq -r <span style=color:#e6db74>&#39;.status.loadBalancer.ingress[0].ip&#39;</span>
+</span></span></code></pre></div><p>Then, by navigating to the <strong>Anthos > Service Mesh</strong> page in your Google Cloud Console, you can see the associated <strong>Topology</strong>:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-asm-topology.png alt="Online Boutique on the ASM Topology page"></p><p>Congrats! You just deployed Online Boutique in your Service Mesh via its Helm chart!</p><p>To follow an Istio&rsquo;s best practice we could even deploy fine granular <code>Sidecars</code>, one per app, in order to optimize the resource utilization per app&rsquo;s sidecar proxy:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>helm upgrade onlineboutique oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --create-namespace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set networkPolicies.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set sidecars.create<span style=color:#f92672>=</span>true
+</span></span></code></pre></div><p>If you run the following command you could see the <code>Sidecars</code> deployed:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl get sidecars -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Output similar to:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>NAME                    AGE
+</span></span><span style=display:flex><span>adservice               36h
+</span></span><span style=display:flex><span>cartservice             36h
+</span></span><span style=display:flex><span>checkoutservice         36h
+</span></span><span style=display:flex><span>currencyservice         36h
+</span></span><span style=display:flex><span>emailservice            36h
+</span></span><span style=display:flex><span>frontend                36h
+</span></span><span style=display:flex><span>loadgenerator           36h
+</span></span><span style=display:flex><span>paymentservice          36h
+</span></span><span style=display:flex><span>productcatalogservice   36h
+</span></span><span style=display:flex><span>recommendationservice   36h
+</span></span><span style=display:flex><span>redis-cart              36h
+</span></span><span style=display:flex><span>shippingservice         36h
+</span></span></code></pre></div><h2 id=secure-online-boutique-with-authorizationpolicies>Secure Online Boutique with <code>AuthorizationPolicies</code>
+<a href=#secure-online-boutique-with-authorizationpolicies class=h-anchor aria-hidden=true>#</a></h2><p>Let&rsquo;s now add more security to Online Boutique in the Service Mesh setup, by adding predefined fine granular <code>AuthorizationPolicies</code>, one per app:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>helm upgrade onlineboutique oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --create-namespace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set networkPolicies.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set sidecars.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set serviceAccounts.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set authorizationPolicies.create<span style=color:#f92672>=</span>true
+</span></span></code></pre></div><p>If you run the following command you could see the <code>AuthorizationPolicies</code> deployed:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl get authorizationpolicies -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Output similar to:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-plain data-lang=plain><span style=display:flex><span>NAME                    AGE
+</span></span><span style=display:flex><span>adservice               22m
+</span></span><span style=display:flex><span>cartservice             22m
+</span></span><span style=display:flex><span>checkoutservice         22m
+</span></span><span style=display:flex><span>currencyservice         22m
+</span></span><span style=display:flex><span>deny-all                12m
+</span></span><span style=display:flex><span>emailservice            22m
+</span></span><span style=display:flex><span>frontend                22m
+</span></span><span style=display:flex><span>paymentservice          22m
+</span></span><span style=display:flex><span>productcatalogservice   22m
+</span></span><span style=display:flex><span>recommendationservice   22m
+</span></span><span style=display:flex><span>redis-cart              22m
+</span></span><span style=display:flex><span>shippingservice         22m
+</span></span></code></pre></div><p><em>Note: in order to define these fine granular <code>AuthorizationPolicies</code> we needed to create one <code>ServiceAccount</code> per app too, instead of using the <code>default</code> <code>ServiceAccount</code> for all the apps.</em></p><p>You can verify that you can still access the Online Boutique website by clicking on this URL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;http://&#34;</span> <span style=color:#f92672>&amp;&amp;</span> kubectl get svc frontend-external -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> -o json | jq -r <span style=color:#e6db74>&#39;.status.loadBalancer.ingress[0].ip&#39;</span>
+</span></span></code></pre></div><p>By navigating to the <strong>Anthos > Security</strong> page in your Google Cloud Console, you can see that <strong>Service access control</strong> is enabled in the Online Boutique namespace:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-authorizationpolicies.png alt="Online Boutique&amp;rsquo;s AuthorizationPolicies on Anthos Security page"></p><h2 id=deploy-online-boutique-behind-an-istios-ingress-gateway>Deploy Online Boutique behind an Istio&rsquo;s ingress gateway
+<a href=#deploy-online-boutique-behind-an-istios-ingress-gateway class=h-anchor aria-hidden=true>#</a></h2><p>To follow Istio&rsquo;s best practice, let&rsquo;s protect our Online Boutique&rsquo;s apps behind and Istio&rsquo;s Ingress Gateway.</p><p>Let&rsquo;s deploy an Istio&rsquo;s Ingress Gateway:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>INGRESS_NAMESPACE<span style=color:#f92672>=</span>asm-ingress
+</span></span><span style=display:flex><span>kubectl create namespace <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span>kubectl label namespace <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span> istio-injection<span style=color:#f92672>=</span>enabled
+</span></span><span style=display:flex><span>kubectl label namespace <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span> name<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span>kubectl apply -f https://github.com/GoogleCloudPlatform/anthos-service-mesh-samples/raw/main/docs/ingress-gateway-asm-manifests/base/deployment-service.yaml -n <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span>kubectl apply -f https://github.com/GoogleCloudPlatform/anthos-service-mesh-samples/raw/main/docs/ingress-gateway-asm-manifests/base/gateway.yaml -n <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span><span style=display:flex><span>kubectl apply -f https://github.com/GoogleCloudPlatform/anthos-service-mesh-samples/raw/main/docs/ingress-gateway-asm-manifests/with-authorization-policies/authorizationpolicy.yaml -n <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span>
+</span></span></code></pre></div><p>Now, let&rsquo;s update the Online Boutique deployment in order to have the <code>frontend</code> app behind the Ingress Gateway:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>helm upgrade onlineboutique oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --create-namespace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    -n <span style=color:#e6db74>${</span>ONLINEBOUTIQUE_NAMESPACE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set networkPolicies.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set sidecars.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set serviceAccounts.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set authorizationPolicies.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.externalService<span style=color:#f92672>=</span>false <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.virtualService.create<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.virtualService.gateway.name<span style=color:#f92672>=</span>asm-ingressgateway <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.virtualService.gateway.namespace<span style=color:#f92672>=</span><span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.virtualService.gateway.labelKey<span style=color:#f92672>=</span>asm <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --set frontend.virtualService.gateway.labelValue<span style=color:#f92672>=</span>ingressgateway
+</span></span></code></pre></div><p>If you wait a little bit, when the <code>Pods</code> are deployed, you can access the Online Boutique website via the Ingress Gateway now, by clicking on this URL:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo -n <span style=color:#e6db74>&#34;http://&#34;</span> <span style=color:#f92672>&amp;&amp;</span> kubectl get svc asm-ingressgateway -n <span style=color:#e6db74>${</span>INGRESS_NAMESPACE<span style=color:#e6db74>}</span> -o json | jq -r <span style=color:#e6db74>&#39;.status.loadBalancer.ingress[0].ip&#39;</span>
+</span></span></code></pre></div><p>By navigating to the <strong>Anthos > Service Mesh</strong> page in your Google Cloud Console, you can see the associated <strong>Topology</strong> now containing the Ingress Gateway:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-asm-topology-ingressgateway.png alt="Online Boutique on ASM Topology page with Ingress Gateway"></p><p>By navigating to the <strong>Anthos > Security</strong> page in your Google Cloud Console, you can see that <strong>Service access control</strong> is enabled in the Ingress Gateway namespace too:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-authorizationpolicies-ingressgateway.png alt="Online Boutique AuthorizationPolicies with Ingress Gateway"></p><p>One last thing, not related to Online Boutique per say, but here is a quick win to add more security within your Service Mesh, by adding <code>STRICT</code> mTLS for the communication between your apps in the Servie Mesh:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt; EOF | kubectl apply -f -
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: security.istio.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: PeerAuthentication
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: default
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: istio-system
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mtls:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    mode: STRICT
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>By navigating to the <strong>Anthos > Security</strong> page in your Google Cloud Console, you can see that <strong>mTLS status</strong> is enabled in your Service Mesh:
+<img src=https://github.com/mathieu-benoit/my-images/raw/main/onlineboutique-with-helm-strict-mtls.png alt="Online Boutique with STRICT mTLS"></p><h2 id=deploy-online-boutique-via-config-sync-in-a-gitops-way>Deploy Online Boutique via Config Sync, in a GitOps way
+<a href=#deploy-online-boutique-via-config-sync-in-a-gitops-way class=h-anchor aria-hidden=true>#</a></h2><p>Config Sync is a GitOps tool that you could leverage in your GKE cluster, which supports Helm chart to sync from an Helm registry to your GKE cluster, let&rsquo;s see how you can accomplish this.</p><p>First, enable Config Sync on your GKE cluster:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gcloud beta container fleet config-management enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF &gt; acm-config.yaml
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>applySpecVersion: 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  configSync:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    enabled: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>gcloud beta container fleet config-management apply <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --membership <span style=color:#e6db74>${</span>CLUSTER<span style=color:#e6db74>}</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --config acm-config.yaml
+</span></span></code></pre></div><p>Wait for Config Sync to be successfully enabled on your GKE cluster (<code>Status</code> as <code>NOT_CONFIGURED</code>):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>gcloud beta container fleet config-management status
+</span></span></code></pre></div><p>Then, deploy the <code>RootSync</code> configuration to sync this Helm chart in your GKE cluster:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt; EOF | kubectl apply -f -
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: configsync.gke.io/v1beta1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: RootSync
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: root-sync-helm
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: config-management-system
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  sourceFormat: unstructured
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  sourceType: helm
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  helm:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    repo: oci://us-docker.pkg.dev/online-boutique-ci/charts
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    chart: onlineboutique
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    releaseName: onlineboutique
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    namespace: onlineboutique
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    auth: none
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    values:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      networkPolicies:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        create: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      sidecars:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        create: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      serviceAccounts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        create: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      authorizationPolicies:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        create: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      frontend:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        externalService: false
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        virtualService:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          create: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          gateway:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            name: asm-ingressgateway
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            namespace: ${INGRESS_NAMESPACE}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            labelKey: asm
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            labelValue: ingressgateway
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>By running the following command, you can see all the 73 resources synced from the Online Boutique Helm chart by Config Sync:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>nomos status --contexts <span style=color:#66d9ef>$(</span>kubectl config current-context<span style=color:#66d9ef>)</span>
+</span></span></code></pre></div><p>Output similar to:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Plaintext data-lang=Plaintext><span style=display:flex><span>&lt;root&gt;:root-sync-helm   oci://us-docker.pkg.dev/online-boutique-ci/charts/onlineboutique:latest   
+</span></span><span style=display:flex><span>  SYNCED                  onlineboutique:                                                           
+</span></span><span style=display:flex><span>  Managed resources:
+</span></span><span style=display:flex><span>     NAMESPACE        NAME                                                          STATUS    SOURCEHASH
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/adservice               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/cartservice             Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/checkoutservice         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/currencyservice         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/deny-all                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/emailservice            Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/frontend                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/paymentservice          Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/productcatalogservice   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/recommendationservice   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/redis-cart              Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   authorizationpolicy.security.istio.io/shippingservice         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/adservice                                     Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/cartservice                                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/checkoutservice                               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/currencyservice                               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/emailservice                                  Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/frontend                                      Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/loadgenerator                                 Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/paymentservice                                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/productcatalogservice                         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/recommendationservice                         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/redis-cart                                    Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   deployment.apps/shippingservice                               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/adservice                     Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/cartservice                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/checkoutservice               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/currencyservice               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/deny-all                      Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/emailservice                  Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/frontend                      Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/loadgenerator                 Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/paymentservice                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/productcatalogservice         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/recommendationservice         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/redis-cart                    Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   networkpolicy.networking.k8s.io/shippingservice               Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/adservice                                             Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/cartservice                                           Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/checkoutservice                                       Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/currencyservice                                       Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/emailservice                                          Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/frontend                                              Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/paymentservice                                        Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/productcatalogservice                                 Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/recommendationservice                                 Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/redis-cart                                            Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   service/shippingservice                                       Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/adservice                                      Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/cartservice                                    Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/checkoutservice                                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/currencyservice                                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/emailservice                                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/frontend                                       Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/loadgenerator                                  Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/paymentservice                                 Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/productcatalogservice                          Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/recommendationservice                          Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/redis-cart                                     Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   serviceaccount/shippingservice                                Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/adservice                         Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/cartservice                       Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/checkoutservice                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/currencyservice                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/emailservice                      Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/frontend                          Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/loadgenerator                     Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/paymentservice                    Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/productcatalogservice             Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/recommendationservice             Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/redis-cart                        Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   sidecar.networking.istio.io/shippingservice                   Current   onlineb
+</span></span><span style=display:flex><span>     onlineboutique   virtualservice.networking.istio.io/frontend                   Current   onlineb
+</span></span></code></pre></div><h2 id=conclusion>Conclusion
+<a href=#conclusion class=h-anchor aria-hidden=true>#</a></h2><p>The Online Boutique&rsquo;s Helm chart allows to deploy either the default basic setup as well as more advanced, complex and secure setup with Service Mesh and Config Sync (GitOps).</p><p>We just saw how you can deploy Online Boutique with its fine granular <code>NetworkPolicies</code>, <code>Sidecars</code>, <code>ServiceAccounts</code> and <code>AuthorizationPolicies</code>. We also saw how you can expose the Online Boutique&rsquo;s <code>frontend</code> app via an Istio Ingress Gateway.</p><p>You can take inspiration of this to improve your own Security Posture with your own workloads.</p><h2 id=more-examples>More examples
+<a href=#more-examples class=h-anchor aria-hidden=true>#</a></h2><p>You could also find advanced scenarios leveraging this Helm chart with these blogs below:</p><ul><li><a href=https://medium.com/google-cloud/b5bd26253a4c>gRPC health probes with Kubernetes 1.24+</a></li><li><a href=https://medium.com/google-cloud/f7248e077339>Use Google Cloud Spanner with the Online Boutique sample</a></li></ul><p>Hope you enjoyed that one, happy sailing, cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2022/12/onlineboutique-with-memorystore/><span class=button__icon>←</span>
+<span class=button__text>use google cloud memorystore (redis) with the online boutique sample</span></a></span>
+<span class="button next"><a href=/posts/2022/10/grpc-health-probes/><span class=button__text>grpc health probes with kubernetes 1.24+</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

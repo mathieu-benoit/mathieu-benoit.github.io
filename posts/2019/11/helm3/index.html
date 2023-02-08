@@ -1,0 +1,96 @@
+<!doctype html><html lang=en><head><title>helm 3 is out ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Recent and official announcements here: Helm 3.0.0 has been released!, here: Helm 3: Simpler and more secure or here: Helm Reaches Version 3.
+Yep, Tiller is gone, but that&amp;rsquo;s not just that! Here is an exhaustive list of all the major changes from Helm 2 to Helm 3.
+Let&amp;rsquo;s go through our first Hello, World! scenario with Helm 3.
+First you need to install Helm 3. In my case I will leverage throughout this blog article the Azure Cloud Shell."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2019/11/helm3/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="helm 3 is out"><meta name=twitter:description content="let's go through the latest and greatest of helm 3"><meta property="og:title" content="helm 3 is out"><meta property="og:description" content="let's go through the latest and greatest of helm 3"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2019/11/helm3/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-20T00:00:00+00:00"><meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>helm 3 is out</h1><div class=post-meta><span class=post-date>2019-11-20</span></div><span class=post-tags><a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;</span><div class=post-content><p><img src=https://github.com/cncf/artwork/raw/master/projects/helm/horizontal/color/helm-horizontal-color.png alt="Logo of Helm."></p><p>Recent and official announcements here: <a href=https://helm.sh/blog/helm-3-released/>Helm 3.0.0 has been released!</a>, here: <a href=https://cloudblogs.microsoft.com/opensource/2019/11/13/helm-3-available-simpler-more-secure/>Helm 3: Simpler and more secure</a> or here: <a href=https://www.cncf.io/announcement/2019/11/13/helm-reaches-version-3/>Helm Reaches Version 3</a>.</p><p>Yep, Tiller is gone, but that&rsquo;s not just that! Here is an exhaustive <a href=https://v3.helm.sh/docs/faq/#changes-since-helm-2>list of all the major changes from Helm 2 to Helm 3</a>.</p><p>Let&rsquo;s go through our first <em>Hello, World!</em> scenario with Helm 3.</p><p>First you need to <a href=https://helm.sh/docs/intro/install/>install Helm 3</a>. In my case I will leverage throughout this blog article the <a href=https://azure.microsoft.com/features/cloud-shell/>Azure Cloud Shell</a>. But as we speak, it just has Helm version 2.15.2, so here is my custom script to install my own Helm 3 version:</p><pre tabindex=0><code>helmFile=&#39;helm-v3.0.0-linux-amd64.tar.gz&#39;
+curl https://get.helm.sh/$helmFile --output $helmFile
+tar -xvf $helmFile
+mkdir ~/tools
+mv linux-amd64/helm ~/tools/helm3
+rm $helmFile
+rm -r linux-amd64
+echo &#39;export PATH=$PATH:~/tools&#39; &gt;&gt; ~/.bashrc &amp;&amp; source ~/.bashrc
+helm3 version
+</code></pre><p>From here I have both helm and helm3 commands to keep/use both in parallel for now. So I will use <code>helm3</code> command from here.</p><p>Then let&rsquo;s create our first Helm chart:</p><pre tabindex=0><code>chart=hello-world  
+helm3 create $chart
+ls ./$chart
+# Should return: charts  Chart.yaml  templates values.yaml
+ls ./$chart/templates
+# Should return: deployment.yaml  helpers.tpl  ingress.yaml  NOTES.txt  serviceaccount.yaml  service.yaml
+helm3 lint ./$chart
+</code></pre><p>Now let&rsquo;s deploy this chart in a Kubernetes cluster (so you need one somewhere locally, on Azure, etc.):</p><pre tabindex=0><code>ns=hello-world
+release=hello-world
+kubectl create ns $ns
+helm3 upgrade --install -n $ns $release ./$chart
+helm3 list -n $ns
+helm3 test $release -n $ns
+kubectl get all -n $ns
+</code></pre><p>Now let&rsquo;s leverage <a href=https://azure.microsoft.com/services/container-registry>Azure Container Registry (ACR)</a> as an <a href=https://docs.microsoft.com/azure/container-registry/container-registry-helm-repos>Helm chart repository</a>:</p><pre tabindex=0><code>acr=&lt;your-acr-name&gt;
+acrLogin=&lt;your-acr-login&gt;
+acrPassword=&lt;your-acr-password&gt;
+
+# First, let&#39;s package and push our Helm chart
+helm3 package ./$chart
+az acr helm push -n $acr -u $acrLogin -p $acrPassword $(ls $chart-*.tgz)
+az acr helm list -n $acr -u $acrLogin -p $acrPassword -o table
+az acr helm show $chart -n $acr
+
+# Second, let&#39;s pull and deploy our Helm chart
+helm3 repo add $acr https://$acr.azurecr.io/helm/v1/repo --username $acrLogin --password $acrPassword
+helm3 upgrade --install -n $ns $release $acr/$chart
+helm3 list -n $ns
+kubectl get all -n $ns
+</code></pre><p>Another approach could be to use instead the new <a href=https://helm.sh/docs/topics/registries>OCI Artifact support by Helm 3</a> by still leveraging ACR:</p><pre tabindex=0><code>export HELM_EXPERIMENTAL_OCI=1
+
+# First, let&#39;s package and push our Helm chart
+helm3 chart save ./$chart $acr.azurecr.io/charts/$chart:v1
+helm3 chart list
+
+echo $acrPassword | helm registry login $acr.azurecr.io -u $acrLogin --password-stdin
+
+helm chart push $acr.azurecr.io/charts/$chart:v1
+az acr repository show-tags -n $acr --repository charts/$chart
+az acr repository show-manifests -n $acr --repository charts/$chart --detail
+
+# Second, let&#39;s pull and deploy our Helm chart
+
+helm3 chart remove $acr.azurecr.io/charts/$chart:v1
+helm3 chart pull $acr.azurecr.io/charts/$chart:v1
+rm -rf $chart
+helm3 chart export $acr.azurecr.io/charts/$chart:v1
+ls $chart
+
+helm3 upgrade --install -n $ns $release ./$chart
+
+helm3 list -n $ns
+
+kubectl get all -n $ns
+</code></pre><p>What about if you have existing Helm 2 charts? Actually you could read more about the <a href=https://github.com/helm/helm-2to3>Migration tool in place to migrate both configurations and releases from Helm2 to Helm3</a>. But you could also keep your existing Helm 2 charts as-is and deploy them with the Helm 3 client, let&rsquo;s take an example for the latter option:</p><pre tabindex=0><code>git clone https://github.com/azure/phippyandfriends
+cd parrot/charts/parrot
+kubectl create ns parrot
+helm3 upgrade \
+    --install \
+    --set image.repository=mabenoit/parrot \
+    --set image.tag=latest \
+    --set ingress.enabled=false \
+    -n parrot parrot \
+    .
+
+helm3 list -n $ns
+
+kubectl get all -n $ns
+</code></pre><p><em>Note: I took the opportunity to open <a href=https://github.com/Azure/phippyandfriends/pull/35>PR#35</a> in the associated <a href=https://github.com/Azure/phippyandfriends>azure/phippyandfriends</a> GitHub repository to leverage the Helm 3 client.</em></p><p>Here we are! We have seen how to install Helm 3 in Azure Cloud Shell, we have created and deployed our first Helm 3 chart, then we pushed it in ACR via 2 different ways and finally we also showed how to continue using Helm 2 charts with the Helm 3 client. Hope you enjoyed this!</p><p>Complementary resources I invite you to leverage too:</p><ul><li><a href=https://github.com/helm/helm/releases>Helm releases</a></li><li><a href=https://helm.sh/blog/2019-11-15-helm-at-cloudnativecon>Helm at KubeCon + CloudNativeCon NA 2019</a><ul><li><a href=https://kccncna19.sched.com/event/UajI>An Introduction to Helm - Matt Farina, Samsung SDS & Josh Dolitsky, Blood Orange</a></li><li><a href=https://kccncna19.sched.com/event/Uagg>Helm 3 Deep Dive - Taylor Thomas, Microsoft Azure & Martin Hickey, IBM</a> </li><li><a href=https://kccncna19.sched.com/event/UabD>Managing Helm Deployments with GitOps at CERN - Ricardo Rocha, CERN</a></li></ul></li><li>Helm Hub - <a href=https://hub.helm.sh>https://hub.helm.sh</a></li><li><a href=https://github.com/deislabs/oras>ORAS - OCI Registry As Storage</a></li></ul><p>Happy Helming! Happy Sailing!</p><p>Cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2019/11/scanning-containers-with-asc/><span class=button__icon>←</span>
+<span class=button__text>scanning container images for vulnerabilities in acr with asc</span></a></span>
+<span class="button next"><a href=/posts/2019/11/ignite2019/><span class=button__text>ignite 2019, what's new with containers and kubernetes on azure?</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

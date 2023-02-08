@@ -1,0 +1,215 @@
+<!doctype html><html lang=en><head><title>deploying gatekeeper policies as oci artifacts, the gitops way ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Update on Sep 23rd, 2022: this blog article is now published in Google Cloud Community Medium.
+Since Anthos Config Management 1.13.0, you can now deploy OCI artifacts and Helm charts the GitOps way with Config Sync.
+In this blog, let&amp;rsquo;s see in action how to deploy Open Policy Agent (OPA) Gatekeeper policies as OCI artifacts, thanks to oras, Google Artifact Registry and Config Sync.
+Here is what you will accomplish throughout this blog:"><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2022/09/gatekeeper-policies-as-oci-artifacts/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="deploying gatekeeper policies as oci artifacts, the gitops way"><meta name=twitter:description content="let's see how to deploy gatekeeper policies as oci artifacts, thanks to oras, google artifact registry and config sync"><meta property="og:title" content="deploying gatekeeper policies as oci artifacts, the gitops way"><meta property="og:description" content="let's see how to deploy gatekeeper policies as oci artifacts, thanks to oras, google artifact registry and config sync"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2022/09/gatekeeper-policies-as-oci-artifacts/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-09-22T00:00:00+00:00"><meta property="article:modified_time" content="2022-09-22T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>deploying gatekeeper policies as oci artifacts, the gitops way</h1><div class=post-meta><span class=post-date>2022-09-22</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/gitops/>#gitops</a>&nbsp;</span><div class=post-content><p><em>Update on Sep 23rd, 2022: this blog article is now published in <a href=https://medium.com/google-cloud/e1233429ae2>Google Cloud Community Medium</a>.</em></p><p>Since <a href=https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022>Anthos Config Management 1.13.0</a>, you can now <a href=https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync>deploy OCI artifacts and Helm charts the GitOps way with Config Sync</a>.</p><p>In this blog, let&rsquo;s see in action how to deploy <a href=https://open-policy-agent.github.io/gatekeeper/website/docs/>Open Policy Agent (OPA) Gatekeeper</a> policies as OCI artifacts, thanks to <a href=https://oras.land/><code>oras</code></a>, Google Artifact Registry and Config Sync.</p><p>Here is what you will accomplish throughout this blog:</p><ul><li>Set up an Artifact Registry repository</li><li>Package and push a Gatekeeper policy (<code>K8sAllowedRepos</code>) as OCI artifact to Artifact Registry</li><li>Set up a GKE cluster with Config Sync and Policy Controller</li><li>Deploy a Gatekeeper policy as OCI artifact with Config Sync</li><li>Find an opportunity to create a second Gatekeeper policy (<code>RSyncAllowedRepos</code>) while wrapping up this blog ;)</li></ul><p><em>To illustrate this during this blog, we will leverage <a href=https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller>Policy Controller</a>, but the same approach could be done if you <a href=https://open-policy-agent.github.io/gatekeeper/website/docs/install>install Gatekeeper by yourself</a>. Policy Controller is based on the open source OPA Gatekeeper.</em></p><p><img src=https://github.com/mathieu-benoit/my-images/raw/main/gatekeeper-policies-as-oci-artifacts.png alt="Workflow overview."></p><h2 id=set-up-the-environment>Set up the environment
+<a href=#set-up-the-environment class=h-anchor aria-hidden=true>#</a></h2><p>Here are the tools you will need:</p><ul><li><a href=https://cloud.google.com/sdk/docs/install><code>gcloud</code></a></li><li><a href=https://oras.land/cli/><code>oras</code></a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/downloads#nomos_command><code>nomos</code></a></li><li><a href=https://kubernetes.io/docs/tasks/tools/#kubectl><code>kubectl</code></a></li></ul><p>Initialize the common variables used throughout this blog:</p><pre tabindex=0><code>PROJECT_ID=FIXME-WITH-YOUR-PROJECT-ID
+REGION=us-east4
+ZONE=us-east4-a
+</code></pre><p>To avoid repeating the <code>--project</code> in the commands throughout this tutorial, let&rsquo;s set the current project:</p><pre tabindex=0><code>gcloud config set project ${PROJECT_ID}
+</code></pre><h2 id=set-up-an-artifact-registry-repository>Set up an Artifact Registry repository
+<a href=#set-up-an-artifact-registry-repository class=h-anchor aria-hidden=true>#</a></h2><p>Create an Artifact Registry repository:</p><pre tabindex=0><code>gcloud services enable artifactregistry.googleapis.com
+ARTIFACT_REGISTRY_REPO_NAME=oci-artifacts
+gcloud artifacts repositories create ${ARTIFACT_REGISTRY_REPO_NAME} \
+    --location ${REGION} \
+    --repository-format docker
+</code></pre><h2 id=package-and-push-a-gatekeeper-policy-as-oci-artifact-to-artifact-registry>Package and push a Gatekeeper policy as OCI artifact to Artifact Registry
+<a href=#package-and-push-a-gatekeeper-policy-as-oci-artifact-to-artifact-registry class=h-anchor aria-hidden=true>#</a></h2><p>We will create a simple Gatekeeper policy composed by one <code>Constraint</code> and one <code>ConstraintTemplate</code>. You can easily replicate this scenario with your own list of policies.</p><p>Define a <code>ConstraintTemplate</code> which could ensure that container images begin with a string from the specified list:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; k8sallowedrepos.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  annotations:
+    description: Requires container images to begin with a string from the specified list.
+  name: k8sallowedrepos
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sAllowedRepos
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            repos:
+              description: The list of prefixes a container image is allowed to have.
+              type: array
+              items:
+                type: string
+  targets:
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
+      package k8sallowedrepos
+      violation[{&#34;msg&#34;: msg}] {
+        container := input.review.object.spec.containers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf(&#34;container &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v&#34;, [container.name, container.image, input.parameters.repos])
+      }
+      violation[{&#34;msg&#34;: msg}] {
+        container := input.review.object.spec.initContainers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf(&#34;initContainer &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v&#34;, [container.name, container.image, input.parameters.repos])
+      }
+      violation[{&#34;msg&#34;: msg}] {
+        container := input.review.object.spec.ephemeralContainers[_]
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(container.image, repo)]
+        not any(satisfied)
+        msg := sprintf(&#34;ephemeralContainer &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v&#34;, [container.name, container.image, input.parameters.repos])
+      }
+EOF
+</code></pre><p>Define an associated <code>Constraint</code> for the <code>Pods</code> which need to have their container image coming from allowed registries:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; pod-allowed-container-registries.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata:
+  name: pod-allowed-container-registries
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - &#34;&#34;
+      kinds:
+      - Pod
+  parameters:
+    repos:
+    - gcr.io/config-management-release/
+    - gcr.io/gkeconnect/
+    - gke.gcr.io/
+    - ${REGION}-docker.pkg.dev/${PROJECT_ID}/
+EOF
+</code></pre><p><em>Note: We are allowing system container images with the 3 first <code>repos</code>. For the last one, that&rsquo;s an example assuming you host your own container images in this <code>${REGION}-docker.pkg.dev/${PROJECT_ID}/</code> Arfifact registry. You can be more granular by adding the name of the Artifact Registry repository containing your container images at the end of this path.</em></p><p>Do an archive of these files:</p><pre tabindex=0><code>tar -cf my-policies.tar pod-allowed-container-registries.yaml k8sallowedrepos.yaml
+</code></pre><p>Login to Artifact Registry:</p><pre tabindex=0><code>gcloud auth configure-docker ${REGION}-docker.pkg.dev
+</code></pre><p>Push that artifact in Artifact Registry with <a href=https://oras.land/><code>oras</code></a>:</p><pre tabindex=0><code>oras push \
+    ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0 \
+    my-policies.tar
+</code></pre><p>See that your OCI artifact has been uploaded in the Google Artifact Registry repository:</p><pre tabindex=0><code>gcloud artifacts docker images list ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}
+</code></pre><h2 id=set-up-a-gke-cluster-with-config-sync-and-policy-controller>Set up a GKE cluster with Config Sync and Policy Controller
+<a href=#set-up-a-gke-cluster-with-config-sync-and-policy-controller class=h-anchor aria-hidden=true>#</a></h2><p>Create a GKE cluster registered in a Fleet to enable Config Management:</p><pre tabindex=0><code>gcloud services enable container.googleapis.com
+CLUSTER_NAME=FIXME
+gcloud container clusters create ${CLUSTER_NAME} \
+    --workload-pool=${PROJECT_ID}.svc.id.goog \
+    --zone ${ZONE}
+
+gcloud services enable gkehub.googleapis.com
+gcloud container fleet memberships register ${CLUSTER_NAME} \
+    --gke-cluster ${ZONE}/${CLUSTER_NAME} \
+    --enable-workload-identity
+
+gcloud beta container fleet config-management enable
+</code></pre><p>Install Config Sync and Policy Controller in this GKE cluster:</p><pre tabindex=0><code>cat &lt;&lt;EOF &gt; acm-config.yaml
+applySpecVersion: 1
+spec:
+  configSync:
+    enabled: true
+  policyController:
+    enabled: true
+    templateLibraryInstalled: false
+EOF
+gcloud beta container fleet config-management apply \
+    --membership ${CLUSTER_NAME} \
+    --config acm-config.yaml
+</code></pre><p><em>Note: in this scenario, we are not installing the <a href=https://cloud.google.com/anthos-config-management/docs/latest/reference/constraint-template-library>default library of constraint templates</a> because we want to deploy our own <code>ConstraintTemplate</code>.</em></p><h2 id=deploy-a-gatekeeper-policy-as-oci-artifact-with-config-sync>Deploy a Gatekeeper policy as OCI artifact with Config Sync
+<a href=#deploy-a-gatekeeper-policy-as-oci-artifact-with-config-sync class=h-anchor aria-hidden=true>#</a></h2><p>Create a dedicated Google Cloud Service Account with the fine granular access (<code>roles/artifactregistry.reader</code>) to that Artifact Registry repository:</p><pre tabindex=0><code>ARTIFACT_PULLER_GSA_NAME=configsync-oci-sa
+ARTIFACT_PULLER_GSA_ID=${ARTIFACT_PULLER_GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com
+gcloud iam service-accounts create ${ARTIFACT_PULLER_GSA_NAME} \
+  --display-name=${ARTIFACT_PULLER_GSA_NAME}
+gcloud artifacts repositories add-iam-policy-binding ${ARTIFACT_REGISTRY_REPO_NAME} \
+    --location $REGION \
+    --member &#34;serviceAccount:${ARTIFACT_PULLER_GSA_ID}&#34; \
+    --role roles/artifactregistry.reader
+</code></pre><p>Allow Config Sync to synchronize resources for a specific <code>RootSync</code>:</p><pre tabindex=0><code>ROOT_SYNC_NAME=root-sync-policies
+gcloud iam service-accounts add-iam-policy-binding \
+   --role roles/iam.workloadIdentityUser \
+   --member &#34;serviceAccount:${PROJECT_ID}.svc.id.goog[config-management-system/root-reconciler-${ROOT_SYNC_NAME}]&#34; \
+   ${ARTIFACT_PULLER_GSA_ID}
+</code></pre><p>Set up Config Sync to deploy this artifact from Artifact Registry:</p><pre tabindex=0><code>cat &lt;&lt; EOF | kubectl apply -f -
+apiVersion: configsync.gke.io/v1beta1
+kind: RootSync
+metadata:
+  name: ${ROOT_SYNC_NAME}
+  namespace: config-management-system
+spec:
+  sourceFormat: unstructured
+  sourceType: oci
+  oci:
+    image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}/my-policies:1.0.0
+    dir: .
+    auth: gcpserviceaccount
+    gcpServiceAccountEmail: ${ARTIFACT_PULLER_GSA_ID}
+EOF
+</code></pre><p>Check the sync status:</p><pre tabindex=0><code>nomos status \
+    --contexts=$(kubectl config current-context)
+</code></pre><p>Verify that the <code>Constraint</code> and <code>ConstraintTemplate</code> are actually deployed:</p><pre tabindex=0><code>kubectl get constraints
+kubectl get constrainttemplates
+</code></pre><p>And voila! That&rsquo;s how easy it is to deploy a Gatekeeper policy as an OCI artifact in a GitOps way with Config Sync.</p><p>You could even try to create a <code>Deployment</code> with a public image coming from an external registry not allow-listed:</p><pre tabindex=0><code>kubectl create deployment test --image=nginx --port=8080
+</code></pre><p>Output similar to:</p><pre tabindex=0><code>Error from server (Forbidden): admission webhook &#34;validation.gatekeeper.sh&#34; denied the request: [pod-allowed-container-registries] container test has an invalid image repo nginx, allowed repos are...
+</code></pre><h2 id=conclusion>Conclusion
+<a href=#conclusion class=h-anchor aria-hidden=true>#</a></h2><p>In this article, you were able to package a Gatekeeper policy (<code>Constraint</code> and <code>ConstraintTemplate</code>) as an OCI artifact and push it to Google Artifact Registry thanks to <a href=https://oras.land/><code>oras</code></a>. At the end, you saw how you can sync this private OCI artifact with the <code>spec.oci.auth: gcpserviceaccount</code> setup on the Config Sync&rsquo;s <code>RootSync</code> setup using Workload Identity to access Google Artifact Registry.</p><p>The continuous reconciliation of GitOps will reconcile between the desired state, now stored in an OCI registry, with the actual state, running in Kubernetes. Your Gatekeeper policies as OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries. This continuous reconciliation from OCI registries, not interacting with Git, has a lot of benefits in terms of scalability, performance and security as you will be able to configure very fine grained access to your OCI artifacts, across your fleet of clusters.</p><h2 id=ready-for-another-gatekeeper-policy>Ready for another Gatekeeper policy?
+<a href=#ready-for-another-gatekeeper-policy class=h-anchor aria-hidden=true>#</a></h2><p>Actually, let&rsquo;s create a Gatekeeper policy one more time here, based on what we just concluded:</p><blockquote><p><em>OCI artifacts are now just seen like any container images for your Kubernetes clusters as they are pulled from OCI registries.</em></p></blockquote><p>So let&rsquo;s create a Gatekeeper policy for this too, where we could make sure that any OCI artifacts pulled by Config Sync are just coming from our own private Artifact Registry repository.</p><p>Define a <code>ConstraintTemplate</code> which could ensure that OCI images begin with a string from the specified list:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; rsyncallowedrepos.yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  annotations:
+    description: Requires OCI images to begin with a string from the specified list.
+  name: rsyncallowedrepos
+spec:
+  crd:
+    spec:
+      names:
+        kind: RSyncAllowedRepos
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            repos:
+              description: The list of prefixes an OCI image is allowed to have.
+              type: array
+              items:
+                type: string
+  targets:
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
+      package rsyncallowedrepos
+      violation[{&#34;msg&#34;: msg}] {
+        image := input.review.object.spec.oci.image
+        satisfied := [good | repo = input.parameters.repos[_] ; good = startswith(image, repo)]
+        not any(satisfied)
+        msg := sprintf(&#34;&lt;%v&gt; named &lt;%v&gt; has an invalid image repo &lt;%v&gt;, allowed repos are %v&#34;, [input.review.kind.kind, input.review.object.metadata.name, image, input.parameters.repos])
+      }
+EOF
+</code></pre><p>Define an associated <code>Constraint</code> for both <a href=https://cloud.google.com/anthos-config-management/docs/reference/rootsync-reposync-fields><code>RootSyncs</code> and <code>RepoSyncs</code></a> which need to have their OCI image coming from allowed registries:</p><pre tabindex=0><code>cat &lt;&lt;EOF&gt; rsync-allowed-artifact-registries.yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: RSyncAllowedRepos
+metadata:
+  name: rsync-allowed-artifact-registries
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - configsync.gke.io
+      kinds:
+      - RootSync
+      - RepoSync
+  parameters:
+    repos:
+    - ${REGION}-docker.pkg.dev/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO_NAME}
+EOF
+</code></pre><p>We won&rsquo;t deploy nor test these resources, but you got the point here, we just added more governance and security. We are now able to control where both, the container images and the Kubernetes manifests as OCI images are coming from. Really cool, isn&rsquo;t it?!</p><h2 id=whats-next>What&rsquo;s next
+<a href=#whats-next class=h-anchor aria-hidden=true>#</a></h2><ul><li><a href=https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync>Deploy OCI artifacts and Helm charts the GitOps way with Config Sync</a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/how-to/sync-helm-charts-from-artifact-registry>Sync Helm charts from Artifact Registry</a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/how-to/sync-oci-artifacts-from-artifact-registry>Sync OCI artifacts from Artifact Registry</a></li><li><a href=/posts/2022/09/ci-gitops-helm-github-actions-github-registry/>CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync</a></li><li><a href=/posts/2022/09/ci-gitops-helm-github-actions-google-registry/>CI/GitOps with Helm, GitHub Actions, Google Artifact Registry and Config Sync</a></li></ul><p>Hope you enjoyed that one, happy sailing! ;)</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2022/10/onlineboutique-with-spanner/><span class=button__icon>←</span>
+<span class=button__text>use google cloud spanner with the online boutique sample</span></a></span>
+<span class="button next"><a href=/posts/2022/09/ci-gitops-oci-github-actions-google-registry/><span class=button__text>ci/gitops with oci artifact, github actions, google artifact registry and config sync</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

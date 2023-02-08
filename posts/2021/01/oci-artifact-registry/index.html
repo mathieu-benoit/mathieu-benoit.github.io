@@ -1,0 +1,96 @@
+<!doctype html><html lang=en><head><title>host helm charts and oci artifacts in google artifact registry ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Updated on August 2nd, 2022 with the official support of OCI format for Helm since 3.8.0, not experimental anymore.
+Google Artifact Registry is great to securely store and manage container images but we could do more with its supported formats. One of the use case could be to store your own Helm charts, or more generically any OCI artifacts, that you could reuse and share privately in your company, accross different projects, etc."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2021/01/oci-artifact-registry/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="host helm charts and oci artifacts in google artifact registry"><meta name=twitter:description content="let's see how we could host our own helm charts (and more generically, any oci artifacts) in google artifact registry"><meta property="og:title" content="host helm charts and oci artifacts in google artifact registry"><meta property="og:description" content="let's see how we could host our own helm charts (and more generically, any oci artifacts) in google artifact registry"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2021/01/oci-artifact-registry/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-01-14T00:00:00+00:00"><meta property="article:modified_time" content="2021-01-14T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>host helm charts and oci artifacts in google artifact registry</h1><div class=post-meta><span class=post-date>2021-01-14</span></div><span class=post-tags><a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;</span><div class=post-content><p><em>Updated on August 2nd, 2022 with the official support of OCI format for Helm since 3.8.0, not experimental anymore.</em></p><p><a href=https://cloud.google.com/blog/products/devops-sre/artifact-registry-is-ga>Google Artifact Registry</a> is great to securely store and manage container images but we could do more with <a href=https://cloud.google.com/artifact-registry/docs/supported-formats>its supported formats</a>. One of the use case could be to store your own Helm charts, or more generically any OCI artifacts, that you could reuse and share privately in your company, accross different projects, etc.</p><p>In this blog article we&rsquo;ll see 2 options to store and interact with your OCI artifacts and Artifact Registry:</p><ul><li><a href=#helm-cli>Helm CLI</a></li><li><a href=#oras-cli>Oras CLI</a></li></ul><h2 id=helm-cli>Helm CLI
+<a href=#helm-cli class=h-anchor aria-hidden=true>#</a></h2><p>Let&rsquo;s see in actions how we could <a href=https://cloud.google.com/artifact-registry/docs/helm>store our own Helm chart in Google Artifact Registry</a>!</p><pre tabindex=0><code># Info of your existing Artifact Registry
+region=us-east4
+project=FIXME
+
+# Create a repository dedicated to your helm charts in Artifact Registry
+repository=charts
+gcloud artifacts repositories create $repository \
+    --project $project \
+    --location $region \
+    --repository-format docker
+
+# If you don&#39;t have your own Helm chart yet, you could create it like this:
+chart=hello-world
+helm create $chart
+
+# Package the Helm chart:
+helm package $chart --version 0.1.0
+
+# For authentication, we&#39;ll use Artifact Registry credentials configured for Docker
+gcloud auth configure-docker $region-docker.pkg.dev
+# Other options are documented here: https://cloud.google.com/artifact-registry/docs/helm/authentication
+
+# Push the chart in Artifact Registry:
+helm push $chart-0.1.0.tgz oci://$region-docker.pkg.dev/$project/$repository
+
+# Verify the chart is there:
+gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/$chart
+gcloud artifacts files list \
+    --project $project \
+    --location $region \
+    --repository $repository
+
+# Pull the chart back:
+mkdir tmp
+helm pull oci://$region-docker.pkg.dev/$project/$repository/$chart \
+    -d tmp
+# You could add the --untar parameter too    
+ls tmp
+
+# Not part of this article, but from here you could also deploy this chart in your Kubernetes clusters via `helm upgrade|install`...
+</code></pre><p>Wonderful! Isn&rsquo;t it!? But that&rsquo;s not all&mldr;</p><h2 id=oras-cli>Oras CLI
+<a href=#oras-cli class=h-anchor aria-hidden=true>#</a></h2><p>Now let&rsquo;s push any file as an <a href=https://opencontainers.org/>Open Container Initiative (OCI)</a> Artifact. For this we need a generic client able to push an OCI format compliant file to the registry, here comes <a href=https://oras.land/>OCI Registry As Storage (ORAS)</a>.</p><p>Let&rsquo;s see it in actions by pushing a simple <code>.txt</code> file (you need to install the <code>oras</code> CLI, you could find the options to install it <a href=https://oras.land/cli/>here</a>):</p><pre tabindex=0><code># Create a dedicated repository
+repository=files
+gcloud artifacts repositories create $repository \
+    --project $project \
+    --location $region \
+    --repository-format docker
+
+# Let&#39;s have a file
+echo &#34;Here is a file!&#34; &gt; first-file.txt
+
+# For authentication, we&#39;ll use Artifact Registry credentials configured for Docker
+gcloud auth configure-docker $region-docker.pkg.dev
+
+# Push the file in Artifact Registry:
+oras push \
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v1 \
+    first-file.txt
+
+# Verify the chart is there:
+gcloud artifacts docker images list $region-docker.pkg.dev/$project/$repository/my-artifact
+gcloud artifacts files list \
+    --project $project \
+    --location $region \
+    --repository $repository
+
+# Pull the file back:
+rm first-file.txt
+oras pull \
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v1
+cat first-file.txt
+
+# Let&#39;s add more files in this artifact
+echo &#34;Here is a second file!&#34; &gt; second-file.txt
+mkdir subfolder
+echo &#34;Here is a third file!&#34; &gt; subfolder/third-file.txt
+oras push \
+    $region-docker.pkg.dev/$project/$repository/my-artifact:v2 \
+    first-file.txt second-file.txt subfolder/
+</code></pre><p>And that&rsquo;s it! That&rsquo;s how easily you could securely store and share any files in an OCI format across your company, teams and projects! ;)</p><p>Complementary and further resources:</p><ul><li><a href=https://cloud.google.com/artifact-registry/docs/docker>Managing your containers with Google Artifact Registry</a></li><li><a href=/posts/2020/08/cloud-build-with-gke/>Use Google Artifact Registry with Cloud Build and GKE</a></li><li><a href=https://jzelinskie.com/posts/oci-artifacts/>OCI Artifacts, Push it all to the registry!</a></li><li><a href="https://youtu.be/MIAJaAr3gCk?list=PLj6h78yzYM2O1wlsM-Ma-RYhfT5LKq0XC">Sharing Is Caring! Push Your Cloud Application to an OCI Registry</a></li><li><a href="https://youtu.be/BNQHowtj2dY?list=PLj6h78yzYM2Pn8RxfLh2qrXBDftr6Qjut">Managing Cloud Native Artifacts for Large Scale Kubernetes Cluster</a></li><li><a href=https://docs.microsoft.com/azure/container-registry/container-registry-helm-repos>Push and pull Helm charts to ACR</a></li><li><a href=https://docs.microsoft.com/azure/container-registry/container-registry-oci-artifacts>Push and pull an OCI artifact using ACR</a></li><li><a href=https://docs.aws.amazon.com/AmazonECR/latest/userguide/push-oci-artifact.html>Pushing an Helm chart to ECR</a></li></ul><p>Hope you enjoyed that one, cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2021/01/config-sync/><span class=button__icon>←</span>
+<span class=button__text>gitops on gke with config sync</span></a></span>
+<span class="button next"><a href=/posts/2021/01/container-linter/><span class=button__text>container linter for compliances and security</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

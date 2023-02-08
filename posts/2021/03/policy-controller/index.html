@@ -1,0 +1,73 @@
+<!doctype html><html lang=en><head><title>opa gatekeeper with policy controller ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="My last KubeCon 2020 experience told me that I really needed to give both OPA and Gatekeeper a try. Since then I learned how to use OPA as a container linter. What I now need to do is to leverage OPA Gatekeeper on my Kubernetes cluster.
+The Open Policy Agent (OPA, pronounced “oh-pa”) is an open source, general-purpose policy engine that unifies policy enforcement across the stack. OPA provides a high-level declarative language that lets you specify policy as code and simple APIs to offload policy decision-making from your software."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2021/03/policy-controller/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="opa gatekeeper with policy controller"><meta name=twitter:description content="let's see in actions how we could easily leverage opa gatekeeper on any kubernetes cluster via policy controller"><meta property="og:title" content="opa gatekeeper with policy controller"><meta property="og:description" content="let's see in actions how we could easily leverage opa gatekeeper on any kubernetes cluster via policy controller"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2021/03/policy-controller/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-03-11T00:00:00+00:00"><meta property="article:modified_time" content="2021-03-11T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>opa gatekeeper with policy controller</h1><div class=post-meta><span class=post-date>2021-03-11</span></div><span class=post-tags><a href=/tags/gcp/>#gcp</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/security/>#security</a>&nbsp;</span><div class=post-content><p><img src=https://github.com/open-policy-agent/opa/raw/main/logo/logo-144x144.png alt="Logo of Open Policy Agent."></p><p>My <a href=/posts/2020/12/k8s-ctf/>last KubeCon 2020 experience</a> told me that I really needed to give both OPA and Gatekeeper a try. Since then I learned how to use <a href=/posts/2021/01/container-linter/>OPA as a container linter</a>. What I now need to do is to leverage OPA Gatekeeper on my Kubernetes cluster.</p><blockquote><p>The <a href=https://www.openpolicyagent.org/>Open Policy Agent</a> (OPA, pronounced “oh-pa”) is an open source, general-purpose policy engine that unifies policy enforcement across the stack. OPA provides a high-level declarative language that lets you specify policy as code and simple APIs to offload policy decision-making from your software.</p></blockquote><blockquote><p><a href=https://www.openpolicyagent.org/docs/latest/kubernetes-introduction/>OPA Gatekeeper</a> is a new project that provides first-class integration between OPA and Kubernetes.</p></blockquote><p>Instead of installing Gatekeeper itself on my Kubernetes cluster, I will rather leverage <a href=https://cloud.google.com/anthos-config-management/docs/concepts/policy-controller>Policy Controller</a>.</p><blockquote><p><a href=https://cloud.google.com/anthos/config-management>Anthos Config Management</a>&rsquo;s Policy Controller is a Kubernetes dynamic admission controller that checks, audits, and enforces your clusters&rsquo; compliance with policies related to security, regulations, or arbitrary business rules. Policy Controller is built from the Gatekeeper open source project.</p></blockquote><p>Let&rsquo;s see in actions how easy it is to setup Gatekeeper via Policy Controller.</p><h2 id=install-policy-controller>Install Policy Controller
+<a href=#install-policy-controller class=h-anchor aria-hidden=true>#</a></h2><p>Policy Controller could <a href=https://cloud.google.com/anthos-config-management/docs/how-to/installing-policy-controller>be installed</a> on any Kubernetes clusters (not just GKE) with the following <code>kubectl</code> commands:</p><pre tabindex=0><code>gsutil cp gs://config-management-release/released/latest/config-management-operator.yaml ~/tmp/config-management-operator.yaml
+kubectl apply -f ~/tmp/config-management-operator.yaml
+cat &gt; ~/tmp/config-management.yaml &lt;&lt; EOF
+apiVersion: configmanagement.gke.io/v1
+kind: ConfigManagement
+metadata:
+  name: config-management
+spec:
+  policyController:
+    enabled: true
+EOF
+kubectl apply -f ~/tmp/config-management.yaml
+</code></pre><p><em>Notes: here are some considerations if you would like to <a href=https://cloud.google.com/anthos-config-management/docs/how-to/installing-policy-controller#installing_on_a_private_cluster>install Policy Controller on a private cluster</a>.</em></p><p>Let&rsquo;s check if the installation was successful:</p><pre tabindex=0><code># Check if the gatekeeper components are installed
+kubectl get pods -n gatekeeper-system
+
+# Check the version of the Policy Controller
+kubectl get deployments -n gatekeeper-system gatekeeper-controller-manager -o=&#34;jsonpath={.spec.template.spec.containers[0].image}&#34;
+
+# If your Kubernetes cluster is registered with Anthos, you could also check if Policy Controller is properly installed with ACM
+gcloud alpha container hub config-management status
+</code></pre><h2 id=create-constraints>Create constraints
+<a href=#create-constraints class=h-anchor aria-hidden=true>#</a></h2><p>You could now list the default <a href=https://open-policy-agent.github.io/gatekeeper/website/docs/howto#constraint-templates><code>constraint templates</code></a> installed:</p><pre tabindex=0><code>kubectl get constrainttemplates
+</code></pre><p>You could see this list <a href=https://cloud.google.com/anthos-config-management/docs/reference/constraint-template-library>here</a> too.</p><p>Based on those templates, you could create your own <a href=https://open-policy-agent.github.io/gatekeeper/website/docs/howto/#constraints>constraints</a> like described <a href=https://cloud.google.com/anthos-config-management/docs/how-to/creating-constraints>here</a>.</p><p>Let&rsquo;s see an example, by leveraging the <code>K8sAllowedRepos</code> template, with which we would like to allow only specific container registries for the images of the Pods running on our cluster:</p><pre tabindex=0><code>kubectl describe K8sAllowedRepos
+cat &gt; allowed-repos.yaml &lt;&lt; EOF
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata:
+  name: allowed-repos
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups: [&#34;&#34;]
+        kinds: [&#34;Pod&#34;]
+  parameters:
+    repos:
+      - &#34;gcr.io&#34;
+      - &#34;k8s.gcr.io&#34;
+      - &#34;gke.gcr.io&#34;
+EOF
+kubectl apply -f allowed-repos.yaml
+</code></pre><p>Another example could be to leverage the <code>K8sExternalIPs</code> template in order to <a href=https://cloud.google.com/blog/products/application-development/protecting-your-kubernetes-deployments-policy-controller>mitigate CVE-2020-8554</a>:</p><pre tabindex=0><code>kubectl describe K8sExternalIPs
+cat &gt; no-external-ip-services.yaml &lt;&lt; EOF
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sExternalIPs
+metadata:
+  name: no-external-ip-services
+spec:
+  match:
+    kinds:
+      - apiGroups: [&#34;&#34;]
+        kinds: [&#34;Service&#34;]
+EOF
+kubectl apply -f no-external-ip-services.yaml
+</code></pre><p>Leveraging the default templates is great because we don&rsquo;t have to write OPA regos for them. But, you may want to write your own template, <a href=https://cloud.google.com/anthos-config-management/docs/how-to/write-a-constraint-template>here</a> you are for the guidance to accomplish this.</p><p>And that&rsquo;s it, that&rsquo;s how easy it is to leverage OPA Gatekeeper via Policy Controller to have more governance in place and a better security posture on your Kubernetes clusters.</p><h2 id=further-and-complementary-resources>Further and complementary resources
+<a href=#further-and-complementary-resources class=h-anchor aria-hidden=true>#</a></h2><ul><li><a href=https://youtu.be/Yup1FUc2Qn0>Intro to OPA</a></li><li><a href=https://youtu.be/Uj2N9S58GLU>OPA deep dive</a></li><li><a href=https://github.com/open-policy-agent/gatekeeper>OPA Gatekeeper repository</a></li><li><a href=https://cloud.google.com/anthos-config-management/docs/how-to/using-constraints-to-enforce-pod-security>Use constraints instead of <code>PodSecurityPolicies</code></a></li><li><a href=https://kubernetes.io/blog/2021/04/06/podsecuritypolicy-deprecation-past-present-and-future/>PodSecurityPolicy Deprecation: Past, Present, and Future</a></li><li><a href=https://cloud.google.com/architecture/reporting-policy-controller-audit-violations-security-command-center>Reporting Policy Controller audit violations in Security Command Center</a></li><li><a href=https://cloud.google.com/solutions/policy-compliant-resources>Creating policy-compliant Google Cloud resources with Config Connector</a></li></ul><p>That&rsquo;s a wrap! Hope you enjoyed that one, sail safe out there, cheers! ;)</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2021/04/gke-cilium/><span class=button__icon>←</span>
+<span class=button__text>ebpf and cilium, to bring more security and more networking capabilities in gke</span></a></span>
+<span class="button next"><a href=/posts/2021/03/autopilot/><span class=button__text>fasten your seatbelt, and turn autopilot mode on</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>

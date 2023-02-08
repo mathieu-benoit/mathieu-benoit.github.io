@@ -1,0 +1,76 @@
+<!doctype html><html lang=en><head><title>flexible kured deployment with its helm chart ::
+always up, always on</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="Kured (KUbernetes REboot Daemon) is the proper way to keep your Linux Nodes up-to-date automatically with Kubernetes: https://docs.microsoft.com/azure/aks/node-updates-kured. That&amp;rsquo;s one of your responsibility to setup this tool (or any other alternative you may have) for your own Security Posture.
+I recently found out that the proper way to install kured is not by doing this like explained here:
+kubectl apply \ -f https://github.com/weaveworks/kured/releases/download/1.2.0/kured-1.2.0-dockerhub.yaml Yes it works like this for sure."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/2020/01/kured/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/style.css><link rel=apple-touch-icon-precomposed sizes=144x144 href=/img/apple-touch-icon-144-precomposed.png><link rel="shortcut icon" href=/img/favicon.png><link href=/assets/fonts/Inter-Italic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Regular.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Medium.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-MediumItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-Bold.woff2 rel=preload type=font/woff2 as=font crossorigin><link href=/assets/fonts/Inter-BoldItalic.woff2 rel=preload type=font/woff2 as=font crossorigin><meta name=twitter:card content="summary"><meta name=twitter:title content="flexible kured deployment with its helm chart"><meta name=twitter:description content="let's be more flexible while deploying kured thanks to its helm chart"><meta property="og:title" content="flexible kured deployment with its helm chart"><meta property="og:description" content="let's be more flexible while deploying kured thanks to its helm chart"><meta property="og:type" content="article"><meta property="og:url" content="/posts/2020/01/kured/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-01-10T00:00:00+00:00"><meta property="article:modified_time" content="2020-01-10T00:00:00+00:00"><meta property="og:site_name" content="always up, always on"><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></head><body class=dark-theme><div class=container><header class=header><span class=header__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a>
+<span class=header__right><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about/>about</a></li><li><a href=/presentations/>presentations</a></li><li><a href=/tags/>tags</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class=theme-toggle><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41c10.4934.0 19-8.5066 19-19C41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><div class=post><h1 class=post-title>flexible kured deployment with its helm chart</h1><div class=post-meta><span class=post-date>2020-01-10</span></div><span class=post-tags><a href=/tags/azure/>#azure</a>&nbsp;
+<a href=/tags/containers/>#containers</a>&nbsp;
+<a href=/tags/kubernetes/>#kubernetes</a>&nbsp;
+<a href=/tags/security/>#security</a>&nbsp;
+<a href=/tags/helm/>#helm</a>&nbsp;</span><div class=post-content><p><img src=https://raw.githubusercontent.com/weaveworks/kured/master/img/logo.png alt="Logo of Kured."></p><p>Kured (KUbernetes REboot Daemon) is the proper way to keep your Linux Nodes up-to-date automatically with Kubernetes: <a href=https://docs.microsoft.com/azure/aks/node-updates-kured>https://docs.microsoft.com/azure/aks/node-updates-kured</a>. That&rsquo;s one of your responsibility to setup this tool (or any other alternative you may have) for your own Security Posture.</p><p>I recently found out that the proper way to install kured is not by doing this like explained <a href=https://github.com/weaveworks/kured#installation>here</a>:</p><pre tabindex=0><code>kubectl apply \
+    -f https://github.com/weaveworks/kured/releases/download/1.2.0/kured-1.2.0-dockerhub.yaml
+</code></pre><p>Yes it works like this for sure. But, how updating that file? how extending it? So <a href=https://github.com/weaveworks/kured/issues/95#issuecomment-551066232>I recently found out</a> that instead of keeping my own version of this file and update it as I want, I could use the <a href=https://hub.helm.sh/charts/stable/kured>official Kured Helm chart</a> instead:</p><pre tabindex=0><code>helm repo update
+helm install kured stable/kured
+</code></pre><p>Really cool, isn&rsquo;t it!?</p><p><em>FYI the source code of this Helm chart is here: <a href=https://github.com/helm/charts/tree/master/stable/kured>https://github.com/helm/charts/tree/master/stable/kured</a></em></p><p>Maybe you don&rsquo;t see yet the value of using this Helm chart? Here below are few scenarios and capabilities you are now easily able to do with this Helm chart installation.</p><h1 id=deploy-kured-in-a-specific-namespace>Deploy kured in a specific namespace
+<a href=#deploy-kured-in-a-specific-namespace class=h-anchor aria-hidden=true>#</a></h1><p>It&rsquo;s not a good practice to deploy kured in the <code>kube-system</code> namespace, that&rsquo;s what the original file does. <em>Note: <a href=https://docs.microsoft.com/azure/security-center/azure-kubernetes-service-integration>Azure Security Center integrated with AKS</a> told me that.</em></p><pre tabindex=0><code>kubectl create ns kured
+helm install kured stable/kured \
+    -n kured
+</code></pre><h1 id=deploy-kured-only-on-linux-nodes>Deploy kured only on Linux nodes
+<a href=#deploy-kured-only-on-linux-nodes class=h-anchor aria-hidden=true>#</a></h1><p>Because it&rsquo;s not working for Windows nodes: <a href=https://github.com/weaveworks/kured/issues/96>https://github.com/weaveworks/kured/issues/96</a>.</p><pre tabindex=0><code>helm install kured stable/kured \
+    --set nodeSelector.&#34;beta\.kubernetes\.io/os&#34;=linux
+</code></pre><h1 id=deploy-kured-with-specific-tolerations>Deploy kured with specific tolerations
+<a href=#deploy-kured-with-specific-tolerations class=h-anchor aria-hidden=true>#</a></h1><p>Otherwise it will fail if you taint your nodes: <a href=https://github.com/weaveworks/kured/pull/88>https://github.com/weaveworks/kured/pull/88</a>. That&rsquo;s probably what you will find out <a href=https://docs.microsoft.com/azure/aks/use-multiple-node-pools#schedule-pods-using-taints-and-tolerations>as soon as you will leverage Multiple Node Pool for example</a>.</p><pre tabindex=0><code>helm install kured stable/kured \
+    --set tolerations[0].effect=NoSchedule \
+    --set tolerations[0].key=node-role.kubernetes.io/master \
+    --set tolerations[1].operator=Exists \
+    --set tolerations[1].key=CriticalAddonsOnly \
+    --set tolerations[2].operator=Exists \
+    --set tolerations[2].effect=NoExecute \
+    --set tolerations[3].operator=Exists \
+    --set tolerations[3].effect=NoSchedule
+</code></pre><h1 id=deploy-a-specific-version-of-the-kured-container>Deploy a specific version of the kured container
+<a href=#deploy-a-specific-version-of-the-kured-container class=h-anchor aria-hidden=true>#</a></h1><p>You may want to deploy a <a href=https://hub.docker.com/r/weaveworks/kured/tags>specific tag of the kured container</a>, for example when it&rsquo;s <a href=https://github.com/weaveworks/kured/releases>not yet officially released</a>.</p><pre tabindex=0><code>helm install kured stable/kured \
+    --set image.tag=master-f6e4062
+</code></pre><h1 id=get-notifications-in-slack-or-microsoft-teams>Get notifications in Slack or Microsoft Teams
+<a href=#get-notifications-in-slack-or-microsoft-teams class=h-anchor aria-hidden=true>#</a></h1><p>You may want to receive notifications when nodes are drained and rebooted. With Microsoft Teams you could <a href=https://docs.microsoft.com/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using#setting-up-a-custom-incoming-webhook>get Incoming Webhook URL very easily</a> to use it then with the following command:</p><pre tabindex=0><code>helm install kured stable/kured \
+    --set extraArgs.slack-hook-url=&lt;your-webhook-url&gt;
+</code></pre><p><img src=https://1.bp.blogspot.com/-wOWxotvcloI/Xhe6wz0N7TI/AAAAAAAAUms/FGg7nwSMNOg1Uj_g-4j6bpi1n4c9TSU_wCLcBGAsYHQ/s1600/Capture.PNG alt="Screenshot of the messages happening in Microsoft Teams."></p><h1 id=set-a-schedule-when-kured-should-reboot-the-nodes>Set a schedule when kured should reboot the nodes
+<a href=#set-a-schedule-when-kured-should-reboot-the-nodes class=h-anchor aria-hidden=true>#</a></h1><p>You may want to <a href=https://github.com/weaveworks/kured#setting-a-schedule>set a specific schedule (days and times)</a> when kured should reboot the nodes when needed. This feature is <a href=https://github.com/weaveworks/kured/pull/66#issuecomment-549486983>only available from a specific version</a> of the kured container and further versions.</p><pre tabindex=0><code>helm install kured stable/kured \
+    --set image.tag=master-f6e4062 \
+    --set extraArgs.start-time=9am \
+    --set extraArgs.end-time=5pm \
+    --set extraArgs.time-zone=America/Toronto \
+    --set extraArgs.reboot-days=&#34;mon\,tue\,wed\,thu\,fri&#34;
+</code></pre><h1 id=thats-a-wrap>That&rsquo;s a wrap!
+<a href=#thats-a-wrap class=h-anchor aria-hidden=true>#</a></h1><p>With all of this, here is my final command I use to deploy <code>kured</code> with its Helm chart in my own Kubernetes cluster:</p><pre tabindex=0><code>ns=kured  
+teamsWebHook=&lt;teams-web-hook&gt;  
+kubectl create ns $ns  
+helm repo update  
+helm install kured stable/kured \  
+    -n $ns \
+    --set image.tag=master-f6e4062 \
+    --set nodeSelector.&#34;beta\.kubernetes\.io/os&#34;=linux \
+    --set extraArgs.start-time=9am \
+    --set extraArgs.end-time=5pm \
+    --set extraArgs.time-zone=America/Toronto \
+    --set extraArgs.reboot-days=&#34;mon\,tue\,wed\,thu\,fri&#34; \
+    --set tolerations[0].effect=NoSchedule \
+    --set tolerations[0].key=node-role.kubernetes.io/master \
+    --set tolerations[1].operator=Exists \
+    --set tolerations[1].key=CriticalAddonsOnly \
+    --set tolerations[2].operator=Exists \
+    --set tolerations[2].effect=NoExecute \
+    --set tolerations[3].operator=Exists \
+    --set tolerations[3].effect=NoSchedule \
+    --set extraArgs.slack-hook-url=$teamsWebHook
+</code></pre><p><em>NB: I submitted a <a href=https://github.com/MicrosoftDocs/azure-docs/issues/45912>PR to improve the AKS docs with this</a>.</em></p><p>Hope you enjoyed this blog article and you learned enough to adapt this for your own context and needs.</p><p>Cheers!</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h>Read other posts</span><hr></div><div class=pagination__buttons><span class="button previous"><a href=/posts/2020/01/podman/><span class=button__icon>←</span>
+<span class=button__text>podman, a daemonless container engine</span></a></span>
+<span class="button next"><a href=/posts/2019/12/cloud-native-bot-app/><span class=button__text>my bot just became a cloud native app</span>
+<span class=button__icon>→</span></a></span></div></div></div></div><footer class=footer><div class=footer__inner><a href=/ class=logo style=text-decoration:none><span class=logo__mark><svg xmlns="http://www.w3.org/2000/svg" class="greater-icon" viewBox="0 0 44 44"><path fill="none" d="M15 8l14.729 14.382L15 35.367"/></svg></span><span class=logo__text>always up, always on</span>
+<span class=logo__cursor></span></a><div class=copyright><span>© 2023 Powered by
+<a href=https://gohugo.io target=_blank rel=noopener>Hugo</a></span>
+<span>Theme created by
+<a href=https://twitter.com/panr target=_blank rel=noopener>panr</a></span></div></div></footer><script src=/assets/main.js></script>
+<script src=/assets/prism.js></script></div><script async src="https://www.googletagmanager.com/gtag/js?id=G-J8536XT21V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-J8536XT21V",{anonymize_ip:!1})}</script></body></html>
