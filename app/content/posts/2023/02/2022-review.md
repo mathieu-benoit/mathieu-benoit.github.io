@@ -74,12 +74,14 @@ I started writing [**posts on Medium**](https://medium.com/@mabenoit) in order t
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://medium.com/p/836913e74e79)
 - [Use Helm to simplify the deployment of Online Boutique, with a Service Mesh, GitOps, and more!](https://medium.com/p/246119e46d53)
 - [Seamlessly encrypt traffic from any apps in your Service Mesh to Memorystore (Redis)](https://medium.com/p/64b71969318d)
+
 _Note: The [Sigstore’s cosign and policy-controller with GKE, Artifact Registry and KMS](https://medium.com/p/7bd5b12672ea) post just made it in the top 5 in less than 2 weeks, very popular topic! Watch out for it!_
 
 I wrote 10 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitqc/) in order to share more broadly my content. The 3 most popular posts are:
 - [2022 in review](https://www.linkedin.com/posts/mathieubenoitqc_googlecloud-kubernetes-canada-activity-6884693753190252544-3rau)
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://www.linkedin.com/posts/mathieubenoitqc_cigitops-with-helm-github-actions-github-activity-6977611558189154304-qP_8)
 - [Use Cloud Spanner with Online Boutique](https://www.linkedin.com/posts/mathieubenoitqc_use-google-cloud-spanner-with-the-online-activity-6988665215517097984-NEQo)
+
 _Note: Interestingly, the [Seamlessly encrypt traffic from any apps in your Mesh to Memorystore (redis)](https://www.linkedin.com/posts/mathieubenoitqc_seamlessly-encrypt-traffic-from-any-apps-activity-6975129860360826880-WFLK) post is very close to the 3rd one._
 
 ## Communities
