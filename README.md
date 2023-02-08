@@ -16,10 +16,9 @@ docker run -d -p 8080:8080 blog
 
 ```
 imageNameInRegistry=myblog
-kubectl create ns myblog
-kubectl config set-context --current --namespace myblog
-kubectl create deployment myblog --image=$imageNameInRegistry --port=8080
-kubectl expose deployment myblog --port=8080 --target-port=8080
+namespace=myblog
+kubectl create deployment myblog --image=$imageNameInRegistry --port=8080 -n $namespace
+kubectl expose deployment myblog --port=80 --target-port=8080 -n $namespace
 ```
 
 ## Configure GitHub action
