@@ -1,9 +1,8 @@
 ---
 title: 2022 in review, first year in devrel
 date: 2023-01-12
-tags: [gcp, kubernetes]
+tags: [gcp, kubernetes, gitops, helm, inspiration, presentations, security, service-mesh]
 description: FIXME
-draft: true
 aliases:
     - /2022-review/
 ---
