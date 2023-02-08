@@ -31,15 +31,11 @@ I directly worked with Product Managers, Software Engineers, Tech Writers, Devel
 
 I inspired and helped teammates and colleagues to accelerate their technical enableemnt and grow in their career.
 
-## Kubernetes
-
 I was focus on Kubernetes, more precisely on Google Kubernetes Engine (GKE) and Anthos.
 
 More than ever, I continuously shared with others what I learned around **Kubernetes** and its ecosystem for the enterprise customers.
 
 I nurtured my passion and appetite with **Security best practices with containers and Kubernetes**.
-
-I created the [**Config Management and Service Mesh workshop**](https://acm-workshop.alwaysupalwayson.com/). It's a step-by-step guide to setup a secure GKE environment with services such as ASM, Cloud Armor, GKE Security Posture, Config Sync, Policy Controller, Dataplane V2, Artifact Registry, Spanner, Memorystore (Redis), etc. Everything is deployed with Config Connector and Config Sync. 3 sample apps are leveraged: Whereami, Online Boutique and Bank of Anthos. 3 personas are involved: Org Admin, Platform Admin and Apps Operator. Customers and Googlers gave me great feedback. It was my sandbox to learn and play with products and feed my friction logs.
 
 ## Activities and artifacts
 
@@ -54,6 +50,8 @@ I actively participated in 4 products/features launch. Activities I conducted we
 - [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync ](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync)
 
 I was one of the main maintainers of the very popular [**Online Boutique repository**](https://github.com/GoogleCloudPlatform/microservices-demo). I proudly added more security in there (NetworkPolicies, AuthorizationPolicies, Seccomp profile, Security Context, secure container images, etc.). I created the Online Boutique’s Helm chart. [Check these stories out](https://medium.com/p/246119e46d53)!
+
+I created the [**Config Management and Service Mesh workshop**](https://acm-workshop.alwaysupalwayson.com/). It's a step-by-step guide to setup a secure GKE environment with services such as ASM, Cloud Armor, GKE Security Posture, Config Sync, Policy Controller, Dataplane V2, Artifact Registry, Spanner, Memorystore (Redis), etc. Everything is deployed with Config Connector and Config Sync. 3 sample apps are leveraged: Whereami, Online Boutique and Bank of Anthos. 3 personas are involved: Org Admin, Platform Admin and Apps Operator. Customers and Googlers gave me great feedback. It was my sandbox to learn and play with products and feed my friction logs.
 
 ## Blogs
 
