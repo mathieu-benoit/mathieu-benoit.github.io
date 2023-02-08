@@ -9,7 +9,7 @@ docker build -t blog .
 ## Run locally
 
 ```
-docker run -d -p 8080:8080 blog
+docker run -d -p 80:8080 blog
 ```
 
 ## Deploy on Kubernetes
