@@ -28,7 +28,7 @@ I learned how to actually do **evangelism and advocacy work** as DevRel Engineer
 
 I directly worked with Product Managers, Software Engineers, Tech Writers, Developer Advocates, Customer Engineers, and many other stakeholders. The role I was given allowed me to be the bridge, the glue, between all of them.
 
-I inspired and helped teammates and colleagues to accelerate their technical enableemnt and grow in their career.
+I inspired and helped teammates and colleagues to accelerate their technical enablement and growth in their career.
 
 I was focus on Kubernetes, more precisely on Google Kubernetes Engine (GKE) and Anthos.
 
@@ -71,7 +71,7 @@ I started writing [**posts on Medium**](https://medium.com/@mabenoit) in order t
 _Note: The [Sigstore’s cosign and policy-controller with GKE, Artifact Registry and KMS](https://medium.com/p/7bd5b12672ea) post just made it in the top 5 in less than 2 weeks, very popular topic! Watch out for it!_
 
 I wrote 10 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitqc/) in order to share more broadly my content. The 3 most popular posts are:
-- [2022 in review](https://www.linkedin.com/posts/mathieubenoitqc_googlecloud-kubernetes-canada-activity-6884693753190252544-3rau)
+- [2021 in review](https://www.linkedin.com/posts/mathieubenoitqc_googlecloud-kubernetes-canada-activity-6884693753190252544-3rau)
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://www.linkedin.com/posts/mathieubenoitqc_cigitops-with-helm-github-actions-github-activity-6977611558189154304-qP_8)
 - [Use Cloud Spanner with Online Boutique](https://www.linkedin.com/posts/mathieubenoitqc_use-google-cloud-spanner-with-the-online-activity-6988665215517097984-NEQo)
 
