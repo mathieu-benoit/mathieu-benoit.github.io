@@ -1,1 +1,1 @@
-The content of my blog hosted there: mathieu-benoit.github.io
+The content of my blog hosted there: https://mathieu-benoit.github.io/
