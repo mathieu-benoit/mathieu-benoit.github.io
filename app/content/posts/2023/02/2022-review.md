@@ -6,6 +6,8 @@ description: let's review my first year as devrel engineer in 2022, all about ku
 aliases:
     - /2022-review/
 ---
+_Update on Feb 9th, 2023: this blog article is now on [Medium](https://medium.com/p/b438fce665ac)._
+
 **For 2021** I did [this wrap up of the year on LinkedIn](https://www.linkedin.com/posts/mathieubenoitqc_googlecloud-kubernetes-canada-activity-6884693753190252544-3rau), where I shared great personal and professional achievements.
 
 Taking the time to summarize what have been accomplished in a fiscal year is always a good exercise. We could celebrate, be grateful and adjust for the future.
