@@ -58,10 +58,10 @@ I co-wrote 2 official **Google Cloud blog posts** with [Divyansh Chaturvedi](htt
 - [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync)
 - [Manage Kubernetes configuration at scale using the new GitOps observability dashboard](https://cloud.google.com/blog/products/containers-kubernetes/manage-kubernetes-configuration-at-scale-using-the-new-gitops-observability-dashboard)
 
-I wrote 15 posts in [**my personal blog**](https://alwaysupalwayson.com), the 3 most popular posts are:
-- [Keyless GCP authentication from GitHub Actions with Workload Identity Federation](https://alwaysupalwayson.com/posts/2022/01/workload-identity-federation/)
-- [Deploying Gatekeeper policies as OCI artifacts, the GitOps way](https://alwaysupalwayson.com/posts/2022/09/gatekeeper-policies-as-oci-artifacts/) 
-- [Lessons learned from the Log4Shell CVEs](https://alwaysupalwayson.com/posts/2021/12/log4shell/)
+I wrote 15 posts in [**my personal blog**](/), the 3 most popular posts are:
+- [Keyless GCP authentication from GitHub Actions with Workload Identity Federation]({{< ref "/posts/2022/01/workload-identity-federation.md" >}})
+- [Deploying Gatekeeper policies as OCI artifacts, the GitOps way]({{< ref "/posts/2022/09/gatekeeper-policies-as-oci-artifacts.md" >}})
+- [Lessons learned from the Log4Shell CVEs]({{< ref "/posts/2021/12/log4shell.md" >}})
 
 I started writing [**posts on Medium**](https://medium.com/@mabenoit) in order to share more broadly my content. I wrote 8 posts there since September. The 3 most popular posts are:
 - [CI/GitOps with Helm, GitHub Actions, GitHub Container Registry and Config Sync](https://medium.com/p/836913e74e79)
