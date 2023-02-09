@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           cd app
-          hugo --minify
+          hugo --minify --baseURL "https://mathieu-benoit.github.io/myblog.io"
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: github.ref == 'refs/heads/main'
