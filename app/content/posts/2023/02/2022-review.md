@@ -1,6 +1,6 @@
 ---
 title: 2022 in review, first year in devrel
-date: 2023-02-12
+date: 2023-02-08
 tags: [gcp, kubernetes, gitops, helm, inspiration, presentations, security, service-mesh]
 description: let's review my first year as devrel engineer in 2022, all about kubernetes
 aliases:
