@@ -6,7 +6,9 @@ on:
     paths-ignore:
       - 'README.md'
       - '.github/dependabot.yml'
-      - 'docs/*'
+      - 'docs/**'
+      - 'app/Dockerfile'
+      - 'chart/**'
 jobs:
   build:
     runs-on: ubuntu-22.04
