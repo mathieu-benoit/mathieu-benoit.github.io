@@ -10,7 +10,7 @@ aliases:
 
 Taking the time to summarize what have been accomplished in a fiscal year is always a good exercise. We could celebrate, be grateful and adjust for the future.
 
-## Roles
+## Roles I played
 
 2022 was my first year as **DevRel Engineer**. I really enjoyed this year.
 
@@ -36,7 +36,7 @@ More than ever, I continuously shared with others what I learned around **Kubern
 
 I nurtured my passion and appetite with **Security best practices with containers and Kubernetes**.
 
-## Activities and artifacts
+## Activities and artifacts I produced
 
 I conducted and wrote 9 impactful [friction logs](https://developerrelations.com/developer-experience/an-introduction-to-friction-logging ), generating 200+ issues and feature requests for both products and docs.
 
@@ -52,7 +52,7 @@ I was one of the main maintainers of the very popular [**Online Boutique reposit
 
 I created the [**Config Management and Service Mesh workshop**](https://acm-workshop.alwaysupalwayson.com/). It's a step-by-step guide to setup a secure GKE environment with services such as ASM, Cloud Armor, GKE Security Posture, Config Sync, Policy Controller, Dataplane V2, Artifact Registry, Spanner, Memorystore (Redis), etc. Everything is deployed with Config Connector and Config Sync. 3 sample apps are leveraged: Whereami, Online Boutique and Bank of Anthos. 3 personas are involved: Org Admin, Platform Admin and Apps Operator. Customers and Googlers gave me great feedback. It was my sandbox to learn and play with products and feed my friction logs.
 
-## Blogs
+## Blog posts I wrote
 
 I co-wrote 2 official **Google Cloud blog posts** with [Divyansh Chaturvedi](https://www.linkedin.com/in/divyanshc/):
 - [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync)
@@ -77,7 +77,7 @@ I wrote 10 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitq
 
 _Note: Interestingly, the [Seamlessly encrypt traffic from any apps in your Mesh to Memorystore (redis)](https://www.linkedin.com/posts/mathieubenoitqc_seamlessly-encrypt-traffic-from-any-apps-activity-6975129860360826880-WFLK) post is very close to the 3rd one._
 
-## Communities
+## Communities I engaged with
 
 I presented 3 talks and 1 workshop in 2 major conferences: **IstioCon 2022** (virtual) and **GitOpsCon NA 2022** (in-person): 
 - [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh](https://sched.co/1AR95) - Co-built and co-presented with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/).
@@ -91,7 +91,7 @@ I co-organized with [Sébastien Thomas](https://www.linkedin.com/in/prune/) the 
 
 I contributed to **5 CNCF projects: Kubernetes, Istio, ORAS, OPA Gatekeeper and Sigstore**. By delivering talks, writing blog posts, contributing to docs, filing issues, etc.
 
-## Traveling
+## The flights I took
 
 I traveled internationally, again, for the first time since 2020.
 
