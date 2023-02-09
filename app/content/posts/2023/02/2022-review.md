@@ -54,12 +54,6 @@ I created the [**Config Management and Service Mesh workshop**](https://acm-work
 
 ## Blogs
 
-I presented 3 talks and 1 workshop in 2 major conferences: **IstioCon 2022** (virtual) and **GitOpsCon NA 2022** (in-person): 
-- [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh](https://sched.co/1AR95) - Co-built and co-presented with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/).
-- [Build and deploy Cloud Native (OCI) artifacts, the GitOps way](https://sched.co/1AR9T) - Co-built with [Nan Yu](https://www.linkedin.com/in/nan-yu-57650618/).
-- [Gatekeeper + Istio, FTW](https://events.istio.io/istiocon-2022/sessions/gatekeeper-istio/) - Co-built and co-delivered with [Ernest Wong](https://www.linkedin.com/in/chewong/).
-- [Manage and Secure Distributed Services with Anthos Service Mesh](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/) - Co-built and co-presented with [Christine Kim](https://www.linkedin.com/in/christine-soh-kim/), [Mike Coleman](https://www.linkedin.com/in/mikegcoleman/) and [Nim Jayawardena](https://www.linkedin.com/in/nimesha-nim-jayawardena-3b4a1396/).
-
 I co-wrote 2 official **Google Cloud blog posts** with [Divyansh Chaturvedi](https://www.linkedin.com/in/divyanshc/):
 - [Deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync)
 - [Manage Kubernetes configuration at scale using the new GitOps observability dashboard](https://cloud.google.com/blog/products/containers-kubernetes/manage-kubernetes-configuration-at-scale-using-the-new-gitops-observability-dashboard)
@@ -84,6 +78,12 @@ I wrote 10 posts on [**my LinkedIn**](https://www.linkedin.com/in/mathieubenoitq
 _Note: Interestingly, the [Seamlessly encrypt traffic from any apps in your Mesh to Memorystore (redis)](https://www.linkedin.com/posts/mathieubenoitqc_seamlessly-encrypt-traffic-from-any-apps-activity-6975129860360826880-WFLK) post is very close to the 3rd one._
 
 ## Communities
+
+I presented 3 talks and 1 workshop in 2 major conferences: **IstioCon 2022** (virtual) and **GitOpsCon NA 2022** (in-person): 
+- [The successful recipe to secure your fleet of clusters: GitOps + Policies + Service Mesh](https://sched.co/1AR95) - Co-built and co-presented with [Poonam Lamba](https://www.linkedin.com/in/poonamlamba/).
+- [Build and deploy Cloud Native (OCI) artifacts, the GitOps way](https://sched.co/1AR9T) - Co-built with [Nan Yu](https://www.linkedin.com/in/nan-yu-57650618/).
+- [Gatekeeper + Istio, FTW](https://events.istio.io/istiocon-2022/sessions/gatekeeper-istio/) - Co-built and co-delivered with [Ernest Wong](https://www.linkedin.com/in/chewong/).
+- [Manage and Secure Distributed Services with Anthos Service Mesh](https://events.istio.io/istiocon-2022/sessions/workshop-anthos/) - Co-built and co-presented with [Christine Kim](https://www.linkedin.com/in/christine-soh-kim/), [Mike Coleman](https://www.linkedin.com/in/mikegcoleman/) and [Nim Jayawardena](https://www.linkedin.com/in/nimesha-nim-jayawardena-3b4a1396/).
 
 I attended my first **KubeCon** in-person. So inspiring! Felt so re-energized when I came back from Detroit.
 
