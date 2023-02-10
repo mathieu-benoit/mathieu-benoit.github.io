@@ -6,6 +6,8 @@ description: let's see how to deploy gatekeeper policies as oci artifacts, thank
 aliases:
     - /gatekeeper-policies-as-oci-artifacts/
 ---
+_Update on Feb 10th, 2023 — [this blog post is now featured in the official ORAS blog](https://oras.land/blog/gatekeeper-policies-as-oci-image/)!_ 🎉
+
 _Update on Sep 23rd, 2022: this blog article is now published in [Google Cloud Community Medium](https://medium.com/google-cloud/e1233429ae2)._
 
 Since [Anthos Config Management 1.13.0](https://cloud.google.com/anthos-config-management/docs/release-notes#September_15_2022), you can now [deploy OCI artifacts and Helm charts the GitOps way with Config Sync](https://cloud.google.com/blog/products/containers-kubernetes/gitops-with-oci-artifacts-and-config-sync).
