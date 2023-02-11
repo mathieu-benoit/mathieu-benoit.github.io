@@ -6,7 +6,9 @@ description: let's see how we could sign our own private container images with s
 aliases:
     - /cosign-with-gke/
 ---
-_Update on Jan 24th, 2023: this blog article is now on [Medium](https://medium.com/google-cloud/7bd5b12672ea)._
+_Update on Feb 10th, 2023: this blog post is now [featured in the official Sigstore blog](https://blog.sigstore.dev/cosign-and-policy-controller-with-gke-artifact-registry-and-cloud-kms/)._
+
+_Update on Jan 24th, 2023: this blog post is now on [Medium](https://medium.com/google-cloud/7bd5b12672ea)._
 
 At [KubeCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2O5aNpRM71NQyx3WUe1xpTn), [GitOpsCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2PVniTC7pKpHx1KsYjsOJnJ), [SigstoreCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2MUNId2hvHBnrGCCbmou_gl) and [SecurityCon](https://www.youtube.com/playlist?list=PLj6h78yzYM2Mwt-aVXI6ItZX5s9izAp0F) NA 2022, Secure Software Supply Chain (S3C) demonstrated that it is not anymore just a trend or a buzz. It's getting more and more serious, we are seeing a lot of simplification about how to set up and leverage such technologies.
 
