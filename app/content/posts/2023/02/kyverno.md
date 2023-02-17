@@ -7,7 +7,7 @@ draft: true
 aliases:
     - /kyverno/
 ---
-I needed to give Kyverno a try, to learn more about it, here we are!
+I needed to give Kyverno a try, to learn more about it. Here we are!
 
 KubeCon NA 2022...
 https://nirmata.com/2022/11/07/policy-governance-and-automation-crossed-the-chasm-at-kubecon-north-america-2022/
@@ -20,10 +20,10 @@ I’m very impressed, like any Policies engine you can create policies to add mo
 - Evaluate the Policy in a Kubernetes cluster
 
 Kyverno has other powerful features we won’t cover here:
-- Mutate resources - https://kyverno.io/docs/writing-policies/mutate/
-- Generate resources - https://kyverno.io/docs/writing-policies/generate/
-- Test policies - https://kyverno.io/docs/testing-policies/
-- Manage policies as OCI images - https://kyverno.io/docs/kyverno-cli/#oci
+- [Mutate resources](https://kyverno.io/docs/writing-policies/mutate/)
+- [Generate resources](https://kyverno.io/docs/writing-policies/generate/)
+- [Test policies](https://kyverno.io/docs/testing-policies/)
+- [Manage policies as OCI images](https://kyverno.io/docs/kyverno-cli/#oci)
 
 ## Create a Policy to enforce that any `Pod` should have a required label
 
@@ -32,7 +32,7 @@ Create a dedicated folder for the associated files:
 mkdir -p policies
 ```
 
-Define our first policy to require label `app.kubernetes.io/name` for any `Pods` in non-system namespaces:
+Define our first policy to require label `app.kubernetes.io/name` for any `Pods`:
 ```bash
 cat <<EOF > policies/pod-require-name-label.yaml
 apiVersion: kyverno.io/v1
@@ -52,7 +52,7 @@ spec:
       any:
       - resources:
           namespaces:
-          - kube-system
+          - my-namespace-excluded
     validate:
       message: "label 'app.kubernetes.io/name' is required"
       pattern:
@@ -61,6 +61,7 @@ spec:
             app.kubernetes.io/name: "?*"
 EOF
 ```
+_In this example we also illustrate that we don’t want this Policy to be enforced in our `my-namespace-excluded` namespace. Note that by default, Kyverno skips any Policies in the following namespaces: `kyverno`, `kube-system`, `kube-public` and `kube-node-lease`. You can learn more about this resource filters configuration [here](https://kyverno.io/docs/installation/#resource-filters)._
 
 ## Evaluate the Policy with the Kyverno CLI
 
@@ -84,10 +85,9 @@ pass: 0, fail: 1, warn: 0, error: 0, skip: 2
 ```
 Wow, wait! What just happened?!
 
-We just used the Kyverno CLI to evaluate the Policy against our Deployment file, and this locall, without any Kubernetes cluster. This client makes it very convenient to test policies without any Kubernetes cluster! We can for example integrate this test during our Continuous Integration (CI) pipelines.
+We just used the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli) to evaluate the Policy against our Deployment file, and this locall, without any Kubernetes cluster. This client makes it very convenient to test policies without any Kubernetes cluster! We can for example integrate this test during our Continuous Integration (CI) pipelines.
 
-Another concept we just illustrated is 
- + https://kyverno.io/docs/writing-policies/autogen/
+Another very important concept we just illustrated is the [Auto-Gen rules for Pod Controllers](https://kyverno.io/docs/writing-policies/autogen/) feature. In our case, we defined our Policy on Pods, but in our test, we evaluate this Policy against a Deployment definition. Very powerful feature here, Deployment resource is directly blocked!
 
 ## Evaluate the Policy in a Kubernetes cluster
 
