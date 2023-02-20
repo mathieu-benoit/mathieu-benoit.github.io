@@ -3,20 +3,19 @@ title: kyverno
 date: 2023-02-20
 tags: [kubernetes, policies, security]
 description: let’s see the capabilities of kyverno to manage policies in your cluster
-draft: true
 aliases:
     - /kyverno/
 ---
-I wanted to give Kyverno a try, to learn more about it. Here we are!
+I wanted to give [Kyverno](https://kyverno.io/) a try, to learn more about it. Here we are!
 
 When I was attending KubeCon NA 2022, I noticed the [maturity and importance of Kyverno](https://nirmata.com/2022/11/07/policy-governance-and-automation-crossed-the-chasm-at-kubecon-north-america-2022/). Concrete use cases and advanced scenarios presented by customers and partners piqued my curiosity. With the recent [Cloud Native SecurityCon 2023](https://nirmata.com/2023/02/07/notes-from-cloud-native-securitycon-2023/), same feeling.
 
 In this blog post we will illustrate how to:
-- Create a policy to enforce that any Pod should have a required label
-- Evaluate the policy with the Kyverno CLI
-- Evaluate the policy in a Kubernetes cluster
-- Create a policy to enforce that any container image should be signed with Cosign
-- Bundle and share policies as OCI images
+- [Create a policy to enforce that any Pod should have a required label](#create-a-policy-to-enforce-that-any-pod-should-have-a-required-label)
+- [Evaluate the policy locally with the Kyverno CLI](#evaluate-the-policy-locally-with-the-kyverno-cli)
+- [Evaluate the policy in a Kubernetes cluster](#evaluate-the-policy-in-a-kubernetes-cluster)
+- [Create a policy to enforce that any container image should be signed with Cosign](#create-a-policy-to-enforce-that-any-container-image-should-be-signed-with-cosign)
+- [Bundle and share policies as OCI images](#bundle-and-share-policies-as-oci-images)
 
 ## Create a policy to enforce that any `Pod` should have a required label
 
@@ -25,7 +24,7 @@ Create a dedicated folder for the associated files:
 mkdir -p policies
 ```
 
-Define our first policy to require label `app.kubernetes.io/name` for any `Pods`:
+Define our first policy to require the label `app.kubernetes.io/name` for any `Pods`:
 ```bash
 cat <<EOF > policies/pod-require-name-label.yaml
 apiVersion: kyverno.io/v1
@@ -55,12 +54,12 @@ spec:
             app.kubernetes.io/name: "?*"
 EOF
 ```
-_Note: In this example we also illustrate that we don’t want this policy to be enforced in the `kube-system` namespace._
+_Note: In this example we also illustrate that we don’t want this policy to be enforced in the `kube-system` and `kyverno` namespaces._
 
 Policies library - https://kyverno.io/policies/
 Install policies for PSS: https://kyverno.io/policies/pod-security/
 
-## Evaluate the policy with the Kyverno CLI
+## Evaluate the policy locally with the Kyverno CLI
 
 Define locally a `Deployment` without the required label:
 ```bash
@@ -86,15 +85,15 @@ pass: 0, fail: 1, warn: 0, error: 0, skip: 2
 ```
 Wow, wait! What just happened?!
 
-We just used the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli) to evaluate the policy against our local Deployment file. This client makes it very convenient to test policies without any Kubernetes cluster! We can for example integrate this test during our Continuous Integration (CI) pipelines.
+We just used the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli) to evaluate the policy against our local `Deployment` file. This client makes it very convenient to test policies without any Kubernetes cluster. We can for example integrate this test during our Continuous Integration (CI) pipelines.
 
-Another very important concept we just illustrated is the [Auto-Gen rules for Pod Controllers](https://kyverno.io/docs/writing-policies/autogen/) feature. In our case, we defined our policy on Pods, but in our test, we evaluate this policy against a Deployment definition. Very powerful feature here, the non compliant `Deployment` resource is directly blocked!
+Another very important concept we just illustrated is the [Auto-Gen rules for Pod Controllers](https://kyverno.io/docs/writing-policies/autogen/) feature. In our case, we defined our policy on Pods, but in our test, we evaluate this policy against a Deployment definition. The non compliant `Deployment` resource is directly blocked.
 
 ## Evaluate the policy in a Kubernetes cluster
 
 You can [install Kyverno](https://kyverno.io/docs/installation/) in any Kubernetes cluster.
 
-Deploy a `Deployment` without the required label:
+Deploy a `Deployment` without the required label that we will reuse later in this post:
 ```bash
 kubectl create deployment nginx \
     --image=nginx
@@ -121,8 +120,9 @@ pod-require-name-label:
   autogen-check-for-name-label: 'validation error: label ''app.kubernetes.io/name''
     is required. rule autogen-check-for-name-label failed at path /spec/template/metadata/labels/app.kubernetes.io/name/'
 ```
+Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) need to have this required label, otherwise they can’t be deployed.
 
-Check that the existing `Deployment` without the required label is reported:
+Check that the existing `Deployment` without the required label is reported too:
 ```bash
 kubectl get policyreport -A
 ```
@@ -143,20 +143,22 @@ kubectl get policyreport cpol-pod-require-name-label \
 
 ## Create a Policy to enforce that any container image should be signed with Cosign
 
-https://kyverno.io/docs/writing-policies/verify-images/
+Let’s now illustrate an advanced scenario where we want to make sure that [any container images deployed in our cluster is signed by Cosign with our own signature](https://kyverno.io/docs/writing-policies/verify-images/).
 
-Get the `nginx` container image in your private registry
+Get the `nginx` container image in your private registry to illustrate this section. We use the [ORAS CLI](https://oras.land/) for this:
 ```bash
-REGISTRY=FIXME
-oras cp docker.io/library/nginx:latest $REGISTRY/nginx:latest
+PRIVATE_REGISTRY=FIXME
+oras cp docker.io/library/nginx:latest $PRIVATE_REGISTRY/nginx:latest
 ```
 
 Get the associated digest of this image:
 ```bash
-SHA=$(oras manifest fetch $REGISTRY/nginx:latest --descriptor --pretty | jq -r .digest)
+SHA=$(oras manifest fetch $PRIVATE_REGISTRY/nginx:latest \
+    --descriptor \
+    | jq -r .digest)
 ```
 
-Generate a public-private key pair with Cosign:
+Generate a public-private key pair with [Cosign](https://docs.sigstore.dev/cosign/overview/):
 ```bash
 cosign generate-key-pair
 ```
@@ -164,7 +166,7 @@ cosign generate-key-pair
 Sign the container image with Cosign:
 ```bash
 cosign sign \
-    --key cosign.key $REGISTRY/nginx@$SHA
+    --key cosign.key $PRIVATE_REGISTRY/nginx@$SHA
 ```
 
 Define the policy to require the appropriate Cosign signature for the container images of any `Pods`:
@@ -202,7 +204,7 @@ spec:
 EOF
 ```
 
-Create the associated Secret with our Cosign signature public key:
+Create the associated `Secret` with our Cosign signature public key:
 ```bash
 kubectl create secret generic cosign-public-key \
     --from-file=cosign.pub
@@ -229,29 +231,32 @@ container-images-need-to-be-signed:
   autogen-container-images-need-to-be-signed: |
     failed to verify image docker.io/nginx:latest: .attestors[0].entries[0].keys: no matching signatures:
 ```
+Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) need to have its container images signed by Cosign, otherwise they can’t be deployed.
 
 Deploy a `Pod` with the appropriate container image signed earlier and with the required label:
 ```bash
 kubectl run nginx3 \
-    --image $REGISTRY/nginx@$SHA \
+    --image $PRIVATE_REGISTRY/nginx@$SHA \
     --labels app.kubernetes.io/name=nginx
 ```
-
 Success! Wow, congrats! You just enforced that any container images deployed in your cluster should have been signed.
 
 ## Bundle and share policies as OCI images
+
+Let’s use one more feature of the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli).
 
 One way to store and share your policies is to store them in a Git repository. But another option is to store them in an OCI registry. The Kyverno CLI allows to [`push` and `pull` policies as OCI image](https://kyverno.io/docs/kyverno-cli/#oci) with your OCI registry.
 
 Bundle and push our policies in our OCI registry:
 ```bash
-REGISTRY=FIXME
-kyverno oci push -i $REGISTRY/policies:1 --policy policies/
+kyverno oci push \
+    -i $PRIVATE_REGISTRY/policies:1 \
+    --policy policies/
 ```
 
 Check the OCI image manifest:
 ```bash
-oras manifest fetch $REGISTRY/policies:1 --pretty
+oras manifest fetch $PRIVATE_REGISTRY/policies:1 --pretty
 ```
 Output similar to:
 ```plaintext
@@ -282,10 +287,12 @@ From here, you can use `kyverno pull` to download these policies.
 
 ## Conclusion
 
-I’m very impressed by the capabilities of Kyverno. Like any policies engine you can manage policies to add more security and governance in your Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner.
+I’m very impressed by the capabilities of Kyverno. Like any policies engine you can manage policies to add more security and governance in your Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/). With OPA Gatekeeper, these two features are not something doable as easy as what Kyverno allows.
 
-Kyverno has other powerful features we didn’t cover in this post:
+Kyverno has more powerful features we didn’t cover in this post:
 - [Use external data sources in Policies](https://kyverno.io/docs/writing-policies/external-data-sources)
 - [Mutate resources](https://kyverno.io/docs/writing-policies/mutate/)
 - [Generate resources](https://kyverno.io/docs/writing-policies/generate/)
 - [Test policies](https://kyverno.io/docs/testing-policies/)
+
+Happy policies, happy sailing, cheers!
