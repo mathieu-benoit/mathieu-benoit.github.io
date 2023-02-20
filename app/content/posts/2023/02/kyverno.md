@@ -2,7 +2,7 @@
 title: kyverno
 date: 2023-02-20
 tags: [kubernetes, policies, security]
-description: let’s see the capabilities of kyverno to manage policies in your cluster
+description: let’s see the capabilities of kyverno to manage policies in kubernetes cluster
 aliases:
     - /kyverno/
 ---
@@ -56,8 +56,7 @@ EOF
 ```
 _Note: In this example we also illustrate that we don’t want this policy to be enforced in the `kube-system` and `kyverno` namespaces._
 
-Policies library - https://kyverno.io/policies/
-Install policies for PSS: https://kyverno.io/policies/pod-security/
+Kyverno has a library of policies (https://kyverno.io/policies/). This library is very helpful, we can deploy the ready-to-use policies as well as taking inspiration of them to write our own custom policies.
 
 ## Evaluate the policy locally with the Kyverno CLI
 
@@ -91,7 +90,7 @@ Another very important concept we just illustrated is the [Auto-Gen rules for Po
 
 ## Evaluate the policy in a Kubernetes cluster
 
-You can [install Kyverno](https://kyverno.io/docs/installation/) in any Kubernetes cluster.
+[Install Kyverno](https://kyverno.io/docs/installation/) in any Kubernetes cluster.
 
 Deploy a `Deployment` without the required label that we will reuse later in this post:
 ```bash
@@ -120,7 +119,7 @@ pod-require-name-label:
   autogen-check-for-name-label: 'validation error: label ''app.kubernetes.io/name''
     is required. rule autogen-check-for-name-label failed at path /spec/template/metadata/labels/app.kubernetes.io/name/'
 ```
-Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) need to have this required label, otherwise they can’t be deployed.
+Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) needs to have this required label, otherwise they can’t be deployed.
 
 Check that the existing `Deployment` without the required label is reported too:
 ```bash
@@ -134,7 +133,7 @@ default     cpol-pod-require-name-label   0      2      0      0       0      5m
 
 This [policy report](https://kyverno.io/docs/policy-reports/) is in place with policies with [`background: true`](https://kyverno.io/docs/writing-policies/background/), which is the default value for any policy.
 
-You can see the error message by running the following command:
+We can see the error message by running the following command:
 ```bash
 kubectl get policyreport cpol-pod-require-name-label \
     -n default \
@@ -145,7 +144,7 @@ kubectl get policyreport cpol-pod-require-name-label \
 
 Let’s now illustrate an advanced scenario where we want to make sure that [any container images deployed in our cluster is signed by Cosign with our own signature](https://kyverno.io/docs/writing-policies/verify-images/).
 
-Get the `nginx` container image in your private registry to illustrate this section. We use the [ORAS CLI](https://oras.land/) for this:
+Get the `nginx` container image in our private registry to illustrate this section. We use the [ORAS CLI](https://oras.land/) for this:
 ```bash
 PRIVATE_REGISTRY=FIXME
 oras cp docker.io/library/nginx:latest $PRIVATE_REGISTRY/nginx:latest
@@ -231,7 +230,7 @@ container-images-need-to-be-signed:
   autogen-container-images-need-to-be-signed: |
     failed to verify image docker.io/nginx:latest: .attestors[0].entries[0].keys: no matching signatures:
 ```
-Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) need to have its container images signed by Cosign, otherwise they can’t be deployed.
+Great, any `Pod` (or associated resources like `Deployment`, `ReplicaSet`, `Job`, `Daemonset`, etc.) needs to have its container images signed by Cosign, otherwise they can’t be deployed.
 
 Deploy a `Pod` with the appropriate container image signed earlier and with the required label:
 ```bash
@@ -239,13 +238,13 @@ kubectl run nginx3 \
     --image $PRIVATE_REGISTRY/nginx@$SHA \
     --labels app.kubernetes.io/name=nginx
 ```
-Success! Wow, congrats! You just enforced that any container images deployed in your cluster should have been signed.
+Success! Wow, congrats! We just enforced that any container images deployed in our cluster should be signed.
 
 ## Bundle and share policies as OCI images
 
 Let’s use one more feature of the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli).
 
-One way to store and share your policies is to store them in a Git repository. But another option is to store them in an OCI registry. The Kyverno CLI allows to [`push` and `pull` policies as OCI image](https://kyverno.io/docs/kyverno-cli/#oci) with your OCI registry.
+One way to store and share our policies is to store them in a Git repository. But another option is to store them in an OCI registry. The Kyverno CLI allows to [`push` and `pull` policies as OCI image](https://kyverno.io/docs/kyverno-cli/#oci) with our OCI registry.
 
 Bundle and push our policies in our OCI registry:
 ```bash
@@ -283,11 +282,11 @@ Output similar to:
 }
 ```
 
-From here, you can use `kyverno pull` to download these policies.
+From here, we can use `kyverno pull` to download these policies.
 
 ## Conclusion
 
-I’m very impressed by the capabilities of Kyverno. Like any policies engine you can manage policies to add more security and governance in your Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/). With OPA Gatekeeper, these two features are not something doable as easy as what Kyverno allows.
+I’m very impressed by the capabilities of Kyverno. Like any policies engine we can manage policies to add more security and governance in our Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/).
 
 Kyverno has more powerful features we didn’t cover in this post:
 - [Use external data sources in Policies](https://kyverno.io/docs/writing-policies/external-data-sources)
