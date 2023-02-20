@@ -1,5 +1,5 @@
 ---
-title: kyverno
+title: kyverno, kubernetes native policy management
 date: 2023-02-20
 tags: [kubernetes, policies, security]
 description: let’s see the capabilities of kyverno to manage policies in kubernetes cluster
@@ -11,10 +11,11 @@ I wanted to give [Kyverno](https://kyverno.io/) a try, to learn more about it. H
 When I was attending KubeCon NA 2022, I noticed the [maturity and importance of Kyverno](https://nirmata.com/2022/11/07/policy-governance-and-automation-crossed-the-chasm-at-kubecon-north-america-2022/). Concrete use cases and advanced scenarios presented by customers and partners piqued my curiosity. With the recent [Cloud Native SecurityCon 2023](https://nirmata.com/2023/02/07/notes-from-cloud-native-securitycon-2023/), same feeling.
 
 In this blog post we will illustrate how to:
-- [Create a policy to enforce that any Pod should have a required label](#create-a-policy-to-enforce-that-any-pod-should-have-a-required-label)
+- [Create a policy to enforce that any `Pod` should have a required label](#create-a-policy-to-enforce-that-any-pod-should-have-a-required-label)
 - [Evaluate the policy locally with the Kyverno CLI](#evaluate-the-policy-locally-with-the-kyverno-cli)
 - [Evaluate the policy in a Kubernetes cluster](#evaluate-the-policy-in-a-kubernetes-cluster)
 - [Create a policy to enforce that any container image should be signed with Cosign](#create-a-policy-to-enforce-that-any-container-image-should-be-signed-with-cosign)
+- [Create a policy to enforce that any `Namespace` should have a `NetworkPolicy`](#create-a-policy-to-enforce-that-any-namespace-should-have-a-networkpolicy)
 - [Bundle and share policies as OCI images](#bundle-and-share-policies-as-oci-images)
 
 ## Create a policy to enforce that any `Pod` should have a required label
@@ -24,7 +25,7 @@ Create a dedicated folder for the associated files:
 mkdir -p policies
 ```
 
-Define our first policy to require the label `app.kubernetes.io/name` for any `Pods`:
+Define our first policy in `enforce` mode to require the label `app.kubernetes.io/name` for any `Pods`:
 ```bash
 cat <<EOF > policies/pod-require-name-label.yaml
 apiVersion: kyverno.io/v1
@@ -33,6 +34,7 @@ metadata:
   name: pod-require-name-label
 spec:
   validationFailureAction: Enforce
+  background: true
   rules:
   - name: check-for-name-label
     match:
@@ -133,7 +135,7 @@ default     cpol-pod-require-name-label   0      2      0      0       0      5m
 
 This [policy report](https://kyverno.io/docs/policy-reports/) is in place with policies with [`background: true`](https://kyverno.io/docs/writing-policies/background/), which is the default value for any policy.
 
-We can see the error message by running the following command:
+We can see more details about the error by running the following command:
 ```bash
 kubectl get policyreport cpol-pod-require-name-label \
     -n default \
@@ -168,7 +170,7 @@ cosign sign \
     --key cosign.key $PRIVATE_REGISTRY/nginx@$SHA
 ```
 
-Define the policy to require the appropriate Cosign signature for the container images of any `Pods`:
+Define the policy in `enforce` mode to require the appropriate Cosign signature for the container images of any `Pods`:
 ```bash
 cat <<EOF > policies/container-images-need-to-be-signed.yaml
 apiVersion: kyverno.io/v1
@@ -177,6 +179,7 @@ metadata:
   name: container-images-need-to-be-signed
 spec:
   validationFailureAction: Enforce
+  background: true
   rules:
   - name: container-images-need-to-be-signed
     match:
@@ -240,6 +243,80 @@ kubectl run nginx3 \
 ```
 Success! Wow, congrats! We just enforced that any container images deployed in our cluster should be signed.
 
+## Create a policy to enforce that any `Namespace` should have a `NetworkPolicy`
+
+Another use case with Kubernetes policies is to check if a resource exists in a `Namespace`. For example, we want to guarantee that any Namespace has at least one NetworkPolicy. For this we will check variables from [Kubernetes API Server calls](https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-kubernetes-api-server-calls).
+
+Find the API group and version for `NetworkPolicies`:
+```bash
+kubectl api-resources \
+    | grep networkpolicies
+```
+
+From this, test the API call to list the `NetworkPolicy` in our cluster:
+```bash
+kubectl get \
+    --raw /apis/networking.k8s.io/v1/networkpolicies \
+    | jq .items
+```
+
+Define the policy in `audit` mode to require any `Namespace` should have at least one `NetworkPolicy`:
+```bash
+cat <<EOF > policies/namespace-needs-networkpolicy.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: namespace-needs-networkpolicy
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: namespace-needs-networkpolicy
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - kube-node-lease
+          - kube-public
+          - kyverno
+    context:
+    - name: allnetworkpolicies
+      apiCall:
+        urlPath: "/apis/networking.k8s.io/v1/networkpolicies"
+        jmesPath: "items[].metadata.namespace"
+    validate:
+      message: "All Namespaces must have a NetworkPolicy."
+      deny:
+        conditions:
+          all:
+          - key: "{{request.object.metadata.name}}"
+            operator: AnyNotIn
+            value: "{{allnetworkpolicies}}"
+EOF
+```
+
+Check that the existing `default` `Namespace` without the required `NetworkPolicy` is reported:
+```bash
+kubectl get clusterpolicyreport -A
+```
+Output similar to:
+```plaintext
+NAME                                 PASS   FAIL   WARN   ERROR   SKIP   AGE
+cpol-namespace-needs-networkpolicy   0      1      0      0       0      62s
+```
+
+We can see more details about the error by running the following command:
+```bash
+kubectl get clusterpolicyreport cpol-namespace-needs-networkpolicy \
+    -o yaml
+```
+
 ## Bundle and share policies as OCI images
 
 Let’s use one more feature of the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli).
@@ -286,7 +363,9 @@ From here, we can use `kyverno pull` to download these policies.
 
 ## Conclusion
 
-I’m very impressed by the capabilities of Kyverno. Like any policies engine we can manage policies to add more security and governance in our Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/).
+I’m very impressed by the capabilities of Kyverno. The documentation is very clear, well organized and a lot of code samples are provided to simplify the learning experience. ClusterPolicies are really easy to write
+
+Like any policies engine we can manage policies to add more security and governance in our Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/).
 
 Kyverno has more powerful features we didn’t cover in this post:
 - [Use external data sources in Policies](https://kyverno.io/docs/writing-policies/external-data-sources)
