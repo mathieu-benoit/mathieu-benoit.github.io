@@ -245,20 +245,7 @@ Success! Wow, congrats! We just enforced that any container images deployed in o
 
 ## Create a policy to enforce that any `Namespace` should have a `NetworkPolicy`
 
-Another use case with Kubernetes policies is to check if a resource exists in a `Namespace`. For example, we want to guarantee that any Namespace has at least one NetworkPolicy. For this we will check variables from [Kubernetes API Server calls](https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-kubernetes-api-server-calls).
-
-Find the API group and version for `NetworkPolicies`:
-```bash
-kubectl api-resources \
-    | grep networkpolicies
-```
-
-From this, test the API call to list the `NetworkPolicy` in our cluster:
-```bash
-kubectl get \
-    --raw /apis/networking.k8s.io/v1/networkpolicies \
-    | jq .items
-```
+Another use case with Kubernetes policies is to check if a resource exists in a `Namespace`. For example, we want to guarantee that any `Namespace` has at least one `NetworkPolicy`. For this we will [check the variables from Kubernetes API Server calls](https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-kubernetes-api-server-calls).
 
 Define the policy in `audit` mode to require any `Namespace` should have at least one `NetworkPolicy`:
 ```bash
@@ -300,6 +287,7 @@ spec:
             value: "{{allnetworkpolicies}}"
 EOF
 ```
+_Tips: We can test this API call by running this command: `kubectl get --raw /apis/networking.k8s.io/v1/networkpolicies | jq .items.`_
 
 Check that the existing `default` `Namespace` without the required `NetworkPolicy` is reported:
 ```bash
