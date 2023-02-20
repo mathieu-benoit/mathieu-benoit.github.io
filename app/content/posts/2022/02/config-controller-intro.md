@@ -1,7 +1,7 @@
 ---
 title: config controller in action
 date: 2022-02-14
-tags: [gcp, kubernetes, security]
+tags: [gcp, kubernetes, policies, security]
 description: let's see with config controller how we could build a secure platform allowing to deploy gcp resources via kubernetes manifests
 aliases:
     - /config-controller/

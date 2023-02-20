@@ -1,7 +1,7 @@
 ---
 title: opa gatekeeper with policy controller
 date: 2021-03-11
-tags: [gcp, kubernetes, security]
+tags: [gcp, kubernetes, policies, security]
 description: let's see in actions how we could easily leverage opa gatekeeper on any kubernetes cluster via policy controller
 aliases:
     - /policy-controller/

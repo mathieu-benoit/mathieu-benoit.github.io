@@ -1,7 +1,7 @@
 ---
 title: sigstore's cosign and policy-controller with gke and kms
 date: 2023-01-23
-tags: [gcp, kubernetes, security, containers]
+tags: [gcp, kubernetes, policies, security, containers]
 description: let's see how we could sign our own private container images with sigstore's cosign and then how to only allow them to be deployed in our gke cluster thanks to sigstore's policy-controller
 aliases:
     - /cosign-with-gke/

@@ -1,7 +1,7 @@
 ---
 title: validating admission policies, the future of kubernetes policies
 date: 2023-01-12
-tags: [gcp, kubernetes, security]
+tags: [gcp, kubernetes, policies, security]
 description: let's see how to use the new validating admission policies feature in kubernetes 1.26+ and what it brings for the future of kubernetes policies
 aliases:
     - /validating-admission-policies/

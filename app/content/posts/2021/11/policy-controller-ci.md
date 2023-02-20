@@ -1,7 +1,7 @@
 ---
 title: opa gatekeeper and policy controller during continuous integration (ci) pipelines
 date: 2021-11-27
-tags: [gcp, security, kubernetes]
+tags: [gcp, policies, security, kubernetes]
 description: let's see how to shift left on security by catching opa gatekeeper policy violations during continuous integration (ci) pipelines.
 aliases:
     - /policy-controller-ci/

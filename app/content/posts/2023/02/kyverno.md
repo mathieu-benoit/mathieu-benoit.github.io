@@ -1,8 +1,8 @@
 ---
 title: kyverno
-date: 2023-02-17
-tags: [fixme]
-description: fixme
+date: 2023-02-20
+tags: [kubernetes, policies, security]
+description: let’s see the capabilities of kyverno to manage policies in your cluster
 draft: true
 aliases:
     - /kyverno/
@@ -17,12 +17,6 @@ In this blog post we will illustrate how to:
 - Evaluate the policy in a Kubernetes cluster
 - Create a policy to enforce that any container image should be signed with Cosign
 - Bundle and share policies as OCI images
-
-Kyverno has other powerful features we won’t cover here:
-- [Use external data sources in Policies](https://kyverno.io/docs/writing-policies/external-data-sources)
-- [Mutate resources](https://kyverno.io/docs/writing-policies/mutate/)
-- [Generate resources](https://kyverno.io/docs/writing-policies/generate/)
-- [Test policies](https://kyverno.io/docs/testing-policies/)
 
 ## Create a policy to enforce that any `Pod` should have a required label
 
@@ -52,6 +46,7 @@ spec:
       - resources:
           namespaces:
           - kube-system
+          - kyverno
     validate:
       message: "label 'app.kubernetes.io/name' is required"
       pattern:
@@ -67,14 +62,18 @@ Install policies for PSS: https://kyverno.io/policies/pod-security/
 
 ## Evaluate the policy with the Kyverno CLI
 
-Define locally a Deployment without the required label:
+Define locally a `Deployment` without the required label:
 ```bash
-kubectl create deployment nginx --image=nginx --dry-run=client -o yaml > deploy-without-name-label.yaml
+kubectl create deployment nginx \
+    --image=nginx \
+    --dry-run=client \
+    -o yaml > deploy-without-name-label.yaml
 ```
 
-Test locally the policy against this deployment:
+Test locally the policy against this `Deployment`:
 ```bash
-kyverno apply policies/ -r deploy-without-name-label.yaml
+kyverno apply policies/ \
+    -r deploy-without-name-label.yaml
 ```
 Output similar to:
 ```plaintext
@@ -95,19 +94,22 @@ Another very important concept we just illustrated is the [Auto-Gen rules for Po
 
 You can [install Kyverno](https://kyverno.io/docs/installation/) in any Kubernetes cluster.
 
-Deploy a deployment without the required label:
+Deploy a `Deployment` without the required label:
 ```bash
-kubectl create deployment nginx --image=nginx
+kubectl create deployment nginx \
+    --image=nginx
 ```
 
 Deploy the policy in the cluster:
 ```bash
-kubectl apply -f policies/pod-require-name-label.yaml
+kubectl apply \
+    -f policies/pod-require-name-label.yaml
 ```
 
-Try to deploy a deployment without the required label:
+Try to deploy a `Deployment` without the required label:
 ```bash
-kubectl create deployment nginx2 --image=nginx
+kubectl create deployment nginx2 \
+    --image=nginx
 ```
 Output similar to:
 ```plaintext
@@ -120,27 +122,30 @@ pod-require-name-label:
     is required. rule autogen-check-for-name-label failed at path /spec/template/metadata/labels/app.kubernetes.io/name/'
 ```
 
-Check that the existing deployment without the required label is reported:
+Check that the existing `Deployment` without the required label is reported:
 ```bash
 kubectl get policyreport -A
 ```
 Output similar to:
 ```plaintext
 NAMESPACE   NAME                          PASS   FAIL   WARN   ERROR   SKIP   AGE
-default     cpol-pod-require-name-label   0      3      0      0       0      5m40s
-kyverno     cpol-pod-require-name-label   6      0      0      0       0      5m40s
+default     cpol-pod-require-name-label   0      2      0      0       0      5m40s
 ```
-_Note: We are seeing 3 `FAIL` for our deployment in the `default` namespace because there is one error for each resource: the `Deployment`, its `ReplicaSet` and its `Pod`._
 
 This [policy report](https://kyverno.io/docs/policy-reports/) is in place with policies with [`background: true`](https://kyverno.io/docs/writing-policies/background/), which is the default value for any policy.
 
-You can see the error message by running this command: `kubectl get policyreport cpol-pod-require-name-label -n default -o yaml`.
+You can see the error message by running the following command:
+```bash
+kubectl get policyreport cpol-pod-require-name-label \
+    -n default \
+    -o yaml
+```
 
 ## Create a Policy to enforce that any container image should be signed with Cosign
 
 https://kyverno.io/docs/writing-policies/verify-images/
 
-Get the nginx container image in your private registry
+Get the `nginx` container image in your private registry
 ```bash
 REGISTRY=FIXME
 oras cp docker.io/library/nginx:latest $REGISTRY/nginx:latest
@@ -158,14 +163,85 @@ cosign generate-key-pair
 
 Sign the container image with Cosign:
 ```bash
-cosign sign --key cosign.key $REGISTRY/nginx@$SHA
+cosign sign \
+    --key cosign.key $REGISTRY/nginx@$SHA
 ```
+
+Define the policy to require the appropriate Cosign signature for the container images of any `Pods`:
+```bash
+cat <<EOF > policies/container-images-need-to-be-signed.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: container-images-need-to-be-signed
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: container-images-need-to-be-signed
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - kube-system
+          - kyverno
+    verifyImages:
+      - imageReferences:
+        - "*"
+        attestors:
+        - count: 1
+          entries:
+          - keys:
+              secret:
+                name: cosign-public-key
+                namespace: default
+EOF
+```
+
+Create the associated Secret with our Cosign signature public key:
+```bash
+kubectl create secret generic cosign-public-key \
+    --from-file=cosign.pub
+```
+
+Deploy this policy:
+```bash
+kubectl apply \
+    -f policies/container-images-need-to-be-signed.yaml
+```
+
+Try to deploy a `Deployment` without the appropriate container image signed:
+```bash
+kubectl create deployment nginx2 \
+    --image=nginx
+```
+Output similar to:
+```plaintext
+error: failed to create deployment: admission webhook "mutate.kyverno.svc-fail" denied the request: 
+
+policy Deployment/default/nginx2 for resource violation: 
+
+container-images-need-to-be-signed:
+  autogen-container-images-need-to-be-signed: |
+    failed to verify image docker.io/nginx:latest: .attestors[0].entries[0].keys: no matching signatures:
+```
+
+Deploy a `Pod` with the appropriate container image signed earlier and with the required label:
+```bash
+kubectl run nginx3 \
+    --image $REGISTRY/nginx@$SHA \
+    --labels app.kubernetes.io/name=nginx
+```
+
+Success! Wow, congrats! You just enforced that any container images deployed in your cluster should have been signed.
 
 ## Bundle and share policies as OCI images
 
-[Manage policies as OCI images](https://kyverno.io/docs/kyverno-cli/#oci)
-
-One way to store and share your policies is to store them in a Git repository. But another option is to store them in an OCI registry. The Kyverno CLI allows to `push` and `pull` policies as OCI image with your OCI registry.
+One way to store and share your policies is to store them in a Git repository. But another option is to store them in an OCI registry. The Kyverno CLI allows to [`push` and `pull` policies as OCI image](https://kyverno.io/docs/kyverno-cli/#oci) with your OCI registry.
 
 Bundle and push our policies in our OCI registry:
 ```bash
@@ -206,4 +282,10 @@ From here, you can use `kyverno pull` to download these policies.
 
 ## Conclusion
 
-I’m very impressed, like any policies engine you can create policies to add more security and governance in your Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner.
+I’m very impressed by the capabilities of Kyverno. Like any policies engine you can manage policies to add more security and governance in your Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner.
+
+Kyverno has other powerful features we didn’t cover in this post:
+- [Use external data sources in Policies](https://kyverno.io/docs/writing-policies/external-data-sources)
+- [Mutate resources](https://kyverno.io/docs/writing-policies/mutate/)
+- [Generate resources](https://kyverno.io/docs/writing-policies/generate/)
+- [Test policies](https://kyverno.io/docs/testing-policies/)

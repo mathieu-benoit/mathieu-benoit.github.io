@@ -1,7 +1,7 @@
 ---
 title: deploying gatekeeper policies as oci artifacts, the gitops way
 date: 2022-09-22
-tags: [gcp, containers, kubernetes, gitops]
+tags: [gcp, containers, kubernetes, gitops, policies, security]
 description: let's see how to deploy gatekeeper policies as oci artifacts, thanks to oras, google artifact registry and config sync
 aliases:
     - /gatekeeper-policies-as-oci-artifacts/
