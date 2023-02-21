@@ -6,6 +6,8 @@ description: let’s see the capabilities of kyverno to manage policies in kuber
 aliases:
     - /kyverno/
 ---
+_Update on Feb 9th, 2023: this blog article is now on [Medium]()._
+
 I wanted to give [Kyverno](https://kyverno.io/) a try, to learn more about it. Here we are!
 
 When I was attending KubeCon NA 2022, I noticed the [maturity and importance of Kyverno](https://nirmata.com/2022/11/07/policy-governance-and-automation-crossed-the-chasm-at-kubecon-north-america-2022/). Concrete use cases and advanced scenarios presented by customers and partners piqued my curiosity. With the recent [Cloud Native SecurityCon 2023](https://nirmata.com/2023/02/07/notes-from-cloud-native-securitycon-2023/), same feeling.
@@ -58,7 +60,7 @@ EOF
 ```
 _Note: In this example we also illustrate that we don’t want this policy to be enforced in the `kube-system` and `kyverno` namespaces._
 
-Kyverno has a library of policies (https://kyverno.io/policies/). This library is very helpful, we can deploy the ready-to-use policies as well as taking inspiration of them to write our own custom policies.
+Kyverno has a [library of policies](https://kyverno.io/policies/). This library is very helpful, we can deploy the ready-to-use policies as well as taking inspiration of them to write our own custom policies.
 
 ## Evaluate the policy locally with the Kyverno CLI
 
@@ -351,7 +353,7 @@ From here, we can use `kyverno pull` to download these policies.
 
 ## Conclusion
 
-I’m very impressed by the capabilities of Kyverno. The documentation is very clear, well organized and a lot of code samples are provided to simplify the learning experience. ClusterPolicies are really easy to write
+I’m very impressed by the capabilities of Kyverno. The documentation is very clear, well organized and a lot of code samples are provided to simplify the learning experience. `ClusterPolicies` are really easy to write.
 
 Like any policies engine we can manage policies to add more security and governance in our Kubernetes clusters. But Kyverno can do way more than just that, and in a simple manner. The two features illustrated in this post which blow my mind are: [check the image signatures](https://kyverno.io/docs/writing-policies/verify-images/) and [automatically generate rules for `Pod` controllers](https://kyverno.io/docs/writing-policies/autogen/).
 
