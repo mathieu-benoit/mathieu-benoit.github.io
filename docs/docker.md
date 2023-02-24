@@ -1,7 +1,7 @@
 ## Build the container
 
 ```
-git clone --recurse-submodules https://github.com/mathieu-benoit/myblog
+git clone --recurse-submodules https://github.com/mathieu-benoit/mathieu-benoit.github.io
 cd myblog
 docker build -t blog .
 ```
