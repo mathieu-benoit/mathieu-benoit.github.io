@@ -70,3 +70,15 @@ docker run -d \
     --tmpfs /sv \
     cgr.dev/chainguard/nginx
 ```
+
+So why using `cgr.dev/chainguard/nginx` container image?
+
+Let s talk about the size of the container image:
+```plaintext
+REPOSITORY                    TAG       IMAGE ID       CREATED       SIZE
+cgr.dev/chainguard/nginx      latest    347a73fb3cdb   3 hours ago   20.4MB
+nginxinc/nginx-unprivileged   alpine    157abf7c6312   11 days ago   40.7MB
+nginxinc/nginx-unprivileged   latest    32817c140766   11 days ago   142MB
+nginx                         alpine    2bc7edbc3cf2   13 days ago   40.7MB
+nginx                         latest    3f8a00f137a0   2 weeks ago   142MB
+```
