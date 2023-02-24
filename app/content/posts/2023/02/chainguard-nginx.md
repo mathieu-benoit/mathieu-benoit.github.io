@@ -12,6 +12,8 @@ cgr.dev/chainguard/nginx
 
 https://github.com/chainguard-images/images/tree/main/images/nginx
 
+https://www.chainguard.dev/chainguard-images
+
 ```bash
 mkdir site-content
 cat <<EOF > site-content/index.html
@@ -71,7 +73,9 @@ docker run -d \
     cgr.dev/chainguard/nginx
 ```
 
-So why using `cgr.dev/chainguard/nginx` container image?
+## Why using `cgr.dev/chainguard/nginx` container image?
+
+### Smaller size!
 
 Let s talk about the size of the container image:
 ```plaintext
@@ -82,3 +86,46 @@ nginxinc/nginx-unprivileged   latest    32817c140766   11 days ago   142MB
 nginx                         alpine    2bc7edbc3cf2   13 days ago   40.7MB
 nginx                         latest    3f8a00f137a0   2 weeks ago   142MB
 ```
+
+With the `cgr.dev/chainguard/nginx` (20.4MB) in comparison to `nginxinc/nginx-unprivileged:alpine` (40.7MB), we are saving 50.5% of space on the disk!
+
+### More secure!
+
+```plaintext
+cgr.dev/chainguard/nginx (wolfi 20230201)
+=========================================
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+
+```plaintext
+nginx:alpine (alpine 3.17.2)
+============================
+Total: 6 (UNKNOWN: 0, LOW: 4, MEDIUM: 2, HIGH: 0, CRITICAL: 0)
+
+┌─────────┬────────────────┬──────────┬───────────────────┬───────────────┬─────────────────────────────────────────────────────────┐
+│ Library │ Vulnerability  │ Severity │ Installed Version │ Fixed Version │                          Title                          │
+├─────────┼────────────────┼──────────┼───────────────────┼───────────────┼─────────────────────────────────────────────────────────┤
+│ curl    │ CVE-2023-23916 │ MEDIUM   │ 7.87.0-r1         │ 7.87.0-r2     │ [curl: HTTP multi-header compression denial of service] │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23916              │
+│         ├────────────────┼──────────┤                   │               ├─────────────────────────────────────────────────────────┤
+│         │ CVE-2023-23914 │ LOW      │                   │               │ [curl: HSTS ignored on multiple requests]               │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23914              │
+│         ├────────────────┤          │                   │               ├─────────────────────────────────────────────────────────┤
+│         │ CVE-2023-23915 │          │                   │               │ [curl: HSTS amnesia with --parallel]                    │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23915              │
+├─────────┼────────────────┼──────────┤                   │               ├─────────────────────────────────────────────────────────┤
+│ libcurl │ CVE-2023-23916 │ MEDIUM   │                   │               │ [curl: HTTP multi-header compression denial of service] │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23916              │
+│         ├────────────────┼──────────┤                   │               ├─────────────────────────────────────────────────────────┤
+│         │ CVE-2023-23914 │ LOW      │                   │               │ [curl: HSTS ignored on multiple requests]               │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23914              │
+│         ├────────────────┤          │                   │               ├─────────────────────────────────────────────────────────┤
+│         │ CVE-2023-23915 │          │                   │               │ [curl: HSTS amnesia with --parallel]                    │
+│         │                │          │                   │               │ https://avd.aquasec.com/nvd/cve-2023-23915              │
+└─────────┴────────────────┴──────────┴───────────────────┴───────────────┴─────────────────────────────────────────────────────────┘
+```
+
+That s a wrap!
+
+You could find many other Chainguard images such as FIXME
+https://www.chainguard.dev/chainguard-images
