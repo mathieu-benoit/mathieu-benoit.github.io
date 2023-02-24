@@ -125,6 +125,12 @@ Total: 6 (UNKNOWN: 0, LOW: 4, MEDIUM: 2, HIGH: 0, CRITICAL: 0)
 └─────────┴────────────────┴──────────┴───────────────────┴───────────────┴─────────────────────────────────────────────────────────┘
 ```
 
+```plaintext
+nginx (debian 11.6)
+===================
+Total: 129 (UNKNOWN: 0, LOW: 88, MEDIUM: 22, HIGH: 18, CRITICAL: 1)
+```
+
 That s a wrap!
 
 You could find many other Chainguard images such as FIXME
