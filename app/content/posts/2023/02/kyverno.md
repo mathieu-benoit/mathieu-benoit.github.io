@@ -6,7 +6,7 @@ description: let’s see the capabilities of kyverno to manage policies in kuber
 aliases:
     - /kyverno/
 ---
-_Update on Feb 9th, 2023: this blog article is now on [Medium]()._
+_Update on Feb 9th, 2023: this blog article is now on [Medium](https://medium.com/@mabenoit/7ca01fa372a3)._
 
 I wanted to give [Kyverno](https://kyverno.io/) a try, to learn more about it. Here we are!
 
