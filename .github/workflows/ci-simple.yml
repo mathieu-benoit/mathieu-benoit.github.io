@@ -24,6 +24,7 @@ jobs:
       - name: run container locally as a test
         run: |
           docker run -d -p 8080:8080 --read-only --cap-drop=ALL --user=1000 ${IMAGE_NAME}
+          curl -v --max-time 10 http://localhost:8080/
   chart:
     needs: container
     runs-on: ubuntu-22.04
