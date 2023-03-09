@@ -7,24 +7,57 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
-https://youtu.be/4N2ywun-wTE
-> Platform Engineering is a discipline which involved doing whatever it takes to build, maintain and provide a curated platform experience for the communities using it.
+DevOps is not a role. DevOps is a set of best practices in order 
 
-https://www.gartner.com/en/articles/what-is-platform-engineering
+SRE (Site Reliability Engineer) is a role.
+
+Platform Engineer is also a role, collaborating with SREs
+https://platformengineering.org/blog/what-is-platform-engineering
+Developer toil and cognitive load in the cloud-native space is real. The complexity posed by microservices, Kubernetes, and “software-defined everything” almost necessitated that ops needed to solve many of these issues to support cloud-native development.
+Developers have reported frustration—they are wasting a lot of time on repetitive work and routine tasks that deliver no business value, such as setting up environments and troubleshooting CI pipelines along with slow feedback loops in the development process.
+The developer platform concept, supported by architecture, DevOps and SRE teams, contains the ingredients of transformation both for business and for developer experience.
+
+In this blog post, I will hightlight key aspects defining what is a Platform and 
+
+## ...accelerates delivery of business value
+
+According to Gartner(https://www.gartner.com/en/articles/what-is-platform-engineering):
 > Platform engineering is an emerging technology approach that can accelerate the delivery of applications and the pace at which they produce business value.
 
-https://youtu.be/x8kDNO1Pjc0
-
-The promise of having DevOps people doing everything is painful, not possible. You build it, you run it.
-
-https://platformengineering.org/blog/what-is-platform-engineering
+## ...enables developer self-service
 
 https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/
 > An Internal Developer Platform (IDP) is built by a platform team to build golden paths and enable developer self-service. An IDP consists of many different techs and tools, glued together in a way that lowers cognitive load on developers without abstracting away context and underlying technologies. Following best practices, platform teams treat their platform as a product and build it based on user research, maintain and continuously improve it.
 
-Developer toil and cognitive load in the cloud-native space is real. The complexity posed by microservices, Kubernetes, and “software-defined everything” almost necessitated that ops needed to solve many of these issues to support cloud-native development.
-Developers have reported frustration—they are wasting a lot of time on repetitive work and routine tasks that deliver no business value, such as setting up environments and troubleshooting CI pipelines along with slow feedback loops in the development process.
-The developer platform concept, supported by architecture, DevOps and SRE teams, contains the ingredients of transformation both for business and for developer experience.
+## ...has a Product mindset
+
+Evan Bottcher touches 
+> A digital platform is a foundation of self-service APIs, tools, services, knowledge and support which are arranged as a compelling internal product. Autonomous delivery teams can make use of the platform to deliver product features at a higher pace, with reduced co-ordination.
+
+Product Management best practices with a Product Manager, with a vision, a roadmap, with a...
+
+## ...focuses on the Customer Experience
+
+https://youtu.be/4N2ywun-wTE
+> Platform Engineering is a discipline which involved doing whatever it takes to build, maintain and provide a curated platform experience for the communities using it.
+
+A platform has customers and users part of the tech communities using it. With a platform as product approach, you should focus on the personas consuming yoru platform and make sure that their usability journey is as efficient as possible.
+
+
+
+
+
+## ...uses Cloud Native technologies
+
+https://medium.com/contino-engineering/creating-your-internal-developer-platform-part-2-65ff217cecd6
+
+Kubernetes is API-first, modular, declarative, self-healing
+
+Cloud Native technologies...
+
+
+
+## Further thoughts
 
 https://www.youtube.com/@PlatformEngineering
 
@@ -55,6 +88,25 @@ Think about the Platform as a Product, understand your users [and] talk to them.
 What [do] we need to prioritize? What is more valuable? Because you’re likely going to have thousands of requests when you’re working on a platform, because everyone has their own needs. So you need to have this product vision of where are we going. What is the broader value to the organization? Let’s not build things that only help one or two teams.
 All of this is product thinking. Do a bit of user research, talk to your customers, see how they use your services. Provide the right level of documentation as self-service, so that people can use the platform and not depend on you as a platform team to answer their requests.
 
+https://youtu.be/jJSo3kdflpA
+> A digital platform is a foundation of self-service APIs, tools, services, knowledge and support which are arranged as a compelling internal product. Autonomous delivery teams can make use of the platform to deliver product features at a higher pace, with reduced co-ordination.
+- Who are the users
+- Is the platform meeting their needs
+- Do you have backlog of features and issues in priority
+Platform is internal product, drives flow + Enables DevOps at scale + Build according to needs
+Identity platform users in app / product teams + Gather feedback / measure progress + Drive adoption
+--> Product Manager of the Platform
+--> Engineering Manager or Tech Lead of the Platform
+--> 
+
+Security, SRE, Support, Compliance, Tech Writer, UX/Designer
+
+Survey, friction logging, dog fooding, live interview, usability interview
+
+Do you have a brand? Logo, stickers, newsletter, t-shirts, lunch&learn, platform advocate
+
+DevX/UX: do they have a fast way, limiting the coginitive load, to ship secure, compliand and resilient apps in production?
+
 UX
 https://nandovillalba.medium.com/ux-on-platform-engineering-1c7ecfaddea7
 > Recognize and take all your communities into account.
@@ -77,6 +129,7 @@ Kubernetes
 Terraform and/or KRM
 
 FRONTEND
+Kubernetes manifests or Helm charts in Git repo?
 https://backstage.io/
 Backstage is an open platform for building developer portals
 A developer portal = one frontend for your entire infrastructure (unifies all your tooling, services, apps, data, docs with a single, consistent UI)
@@ -106,3 +159,20 @@ There are more opiniated products where you don t need to build your own platfor
 These tools are not incompatible with the other tools mentioned earlier, you can see articles about their collaboration.
 
 A platform team should include a product manager, (or the team lead should perform that function) have a roadmap, and have mechanisms for prioritizing incoming requests.
+
+
+
+
+https://youtu.be/x8kDNO1Pjc0
+https://youtu.be/6sCTIVpdC08
+Non-Technical Challenges of Platform Engineering - https://youtu.be/m6nlREbQ6LQ
+
+
+Tips:
+- Start small, solve concrete issues/challenges
+- Show value, track metrics
+- Have a product owner
+- Eat your own dogfood
+- Listen to your user, be empathetic
+
+https://platformcon.com/

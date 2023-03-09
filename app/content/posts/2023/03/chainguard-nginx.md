@@ -140,3 +140,5 @@ https://www.chainguard.dev/chainguard-images
 https://www.chainguard.dev/unchained/introducing-apko-bringing-distroless-nirvana-to-alpine-linux
 
 https://www.chainguard.dev/unchained/introducing-wolfi-the-first-linux-un-distro
+
+https://betterprogramming.pub/why-i-will-never-use-alpine-linux-ever-again-a324fd0cbfd6
