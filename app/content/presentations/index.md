@@ -2,7 +2,12 @@
 title: presentations
 ---
 
-Here is the list of the 43 public presentations and workshops I have built and delivered.
+Here is the list of the 45 public presentations and workshops I have built and delivered.
+
+## 2023 (2)
+
+- _(Coming)_ 2023-05 - GitOpsCon NA 2023 - Bundle, Test, Sign, Verify and Deploy Gatekeeper Policies As OCI Image
+- _(Coming)_ 2023-03 - GDG Cloud Montreal - Sigstore Cosign with GKE, GAR and KMS
 
 ## 2022 (7)
 
