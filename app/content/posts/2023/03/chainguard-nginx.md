@@ -191,7 +191,7 @@ zlib                    1.2.13-r0    apk
 
 _Note: we could also expect that the `cgr.dev/chainguard/nginx` image will be simplified a little bit more soon [like discussed here](https://github.com/chainguard-images/images/issues/305#issuecomment-1454020044). Stay tuned!_
 
-Another important point is the fact that alpine is based on `musl`, on the other hand, `cgr.dev/chainguard/nginx` is based on `glibc`. This blog post: [Why I Will Never Use Alpine Linux Ever Again](https://betterprogramming.pub/why-i-will-never-use-alpine-linux-ever-again-a324fd0cbfd6) highlights some known issues with `alpine`/`musl`.
+Another important point is the fact that `alpine` is based on `musl`, on the other hand, `cgr.dev/chainguard/nginx` is based on `glibc`. This blog post: [Why I Will Never Use Alpine Linux Ever Again](https://betterprogramming.pub/why-i-will-never-use-alpine-linux-ever-again-a324fd0cbfd6) highlights some known issues with `alpine`/`musl`.
 
 ### More secure!
 
