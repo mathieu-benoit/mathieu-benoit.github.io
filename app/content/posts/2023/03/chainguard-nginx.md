@@ -1,8 +1,8 @@
 ---
-title: Chainguard nginx container image
+title: chainguard nginx container image
 date: 2023-03-16
 tags: [containers, kubernetes, security]
-description: let s see what are the advantages of using a chainguard container image, with nginx
+description: let's see what are the advantages of using a chainguard container image, with nginx
 aliases:
     - /chainguard-nginx/
 ---
@@ -132,7 +132,7 @@ nginx                         alpine        2bc7edbc3cf2   4 weeks ago   40.7MB
 nginx                         alpine-slim   c59097225492   4 weeks ago   11.5MB
 ```
 
-With the `cgr.dev/chainguard/nginx` (20.4MB) in comparison to `nginx:alpine` (40.7MB), we are saving 50.5% of space on the disk!
+With the `cgr.dev/chainguard/nginx` (20.4MB) in comparison to `nginx:alpine` (40.7MB), we are saving 50.5% of space on disk!
 
 But on the other hand, we could see that the `nginx:alpine-slim` (11.5MB) is way much smaller than the `cgr.dev/chainguard/nginx` (20.4MB).
 
@@ -202,11 +202,17 @@ For both `nginx:alpine-slim` and `cgr.dev/chainguard/nginx` we could see that we
 Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
 ```
 
-As a comparison, here is what the scanning results will give for the two other variations:
-- `nginx:alpine`
-  - `Total: 6 (UNKNOWN: 0, LOW: 0, MEDIUM: 2, HIGH: 2, CRITICAL: 2)`
-- `nginx`
-  - `Total: 116 (UNKNOWN: 0, LOW: 84, MEDIUM: 11, HIGH: 18, CRITICAL: 3)`
+As a comparison, here below is what the scanning results will give for the two other variations.
+
+For `nginx:alpine`:
+```plaintext
+Total: 6 (UNKNOWN: 0, LOW: 0, MEDIUM: 2, HIGH: 2, CRITICAL: 2)
+```
+
+For `nginx`:
+```plaintext
+Total: 116 (UNKNOWN: 0, LOW: 84, MEDIUM: 11, HIGH: 18, CRITICAL: 3)
+```
 
 
 
