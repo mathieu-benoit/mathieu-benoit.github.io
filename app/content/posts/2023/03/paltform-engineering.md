@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://youtu.be/jjwrIra7Dx4 - Camille Fournier
+
 DevOps is not a role. DevOps is a set of best practices in order 
 
 SRE (Site Reliability Engineer) is a role.
@@ -18,6 +20,8 @@ Developers have reported frustration—they are wasting a lot of time on repetit
 The developer platform concept, supported by architecture, DevOps and SRE teams, contains the ingredients of transformation both for business and for developer experience.
 
 In this blog post, I will hightlight key aspects defining what is a Platform and 
+
+A platform...
 
 ## ...accelerates delivery of business value
 
@@ -33,6 +37,8 @@ https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/
 
 Evan Bottcher touches 
 > A digital platform is a foundation of self-service APIs, tools, services, knowledge and support which are arranged as a compelling internal product. Autonomous delivery teams can make use of the platform to deliver product features at a higher pace, with reduced co-ordination.
+
+PO/PM, SWEs, roadmap, user interviews
 
 Product Management best practices with a Product Manager, with a vision, a roadmap, with a...
 
