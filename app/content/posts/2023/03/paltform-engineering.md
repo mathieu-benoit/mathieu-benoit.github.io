@@ -7,6 +7,12 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://youtu.be/BnFJzf6Ruwk
+
+The term platform engineering has been around for a while, but gained significant traction in the past year. Gartner has even added it to the 2022 ‘Hype Cycle’ Software Engineering. The reality is DevOps teams continue to be overburdened and developers are at odds with taking on operations tasks. The term ‘you build it you run it’ comes with its challenges.
+Platform engineering addresses these issues by providing the technology and tooling that will automate repetitive DevOps tasks as well as provide developers with self-service.
+Platform engineering enables organizations to better focus their developer efforts. With developer self-service and the use of golden paths, developers can optimize their productivity for business related tasks. This enables them to deliver software faster, more securely and with organizational best practices.
+
 https://youtu.be/jjwrIra7Dx4 - Camille Fournier
 
 DevOps is not a role. DevOps is a set of best practices in order 
