@@ -8,6 +8,37 @@ aliases:
     - /platform-engineering/
 ---
 https://youtu.be/BnFJzf6Ruwk
+https://www.salaboy.com/2023/03/31/what-platform-engineering-why-continuous-delivery/
+https://humanitec.com/blog/sre-vs-devops-vs-platform-engineering
+https://techpodcast.form3.tech/episodes/ep-26-tech-role-of-a-platform-engineer
+https://launchdarkly.com/blog/sre-vs.-platform-engineering-vs.-devops/
+https://www.thoughtworks.com/insights/blog/platforms/engineering-platform-key-to-maximizing-software-development-effectiveness
+https://medium.com/4th-coffee/building-your-developer-portal-with-backstage-a-comprehensive-tutorial-d9433722c633
+https://www.cncf.io/blog/2023/03/06/leveraging-platform-engineering-and-devops-synergy-for-high-performance-systems/
+https://www.syntasso.io/post/the-12-platform-challenges-recap
+https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/
+https://www.contino.io/insights/platform-engineering
+https://platformengineering.org/blog/what-is-platform-engineering
+https://www.youtube.com/watch?v=4N2ywun-wTE
+https://martinfowler.com/articles/talk-about-platforms.html
+https://nandovillalba.medium.com/ux-on-platform-engineering-1c7ecfaddea7
+https://www.youtube.com/watch?v=Jip3lBnxKXU
+https://www.youtube.com/watch?v=SN2uigKsiyc
+https://www.infoq.com/minibooks/platform-engineering-guide/
+https://www.youtube.com/watch?v=vkYNCZZVMPE
+https://www.syntasso.io/post/crossing-the-platform-gap
+https://thenewstack.io/how-spotlify-adopted-platform-engineering-culture/
+https://platformengineering.org/platform-tooling
+https://thenewstack.io/platform-engineering-in-2023-doing-more-with-less/
+https://platformengineering.org/talks-library/applying-devsecops-to-kubernetes
+https://platformengineering.org/talks-library/internal-platform-enterprise-courtney-kissler
+https://platformengineering.org/talks-library/things-to-consider-before-building-your-internal-platform-thoughtworks
+https://nirmata.com/2023/03/01/the-need-for-an-enterprise-wide-platform-engineering-strategy/
+https://nirmata.com/2023/03/03/reasons-why-platform-teams-adopt-policy-as-code-for-kubernetes/
+https://platformcon.com/
+https://thenewstack.io/getting-developer-self-service-right/
+https://circleci.com/blog/platform-engineering-devops-at-scale/
+https://github.com/cncf/tag-app-delivery/blob/main/platforms-whitepaper/latest/index.md
 
 The term platform engineering has been around for a while, but gained significant traction in the past year. Gartner has even added it to the 2022 ‘Hype Cycle’ Software Engineering. The reality is DevOps teams continue to be overburdened and developers are at odds with taking on operations tasks. The term ‘you build it you run it’ comes with its challenges.
 Platform engineering addresses these issues by providing the technology and tooling that will automate repetitive DevOps tasks as well as provide developers with self-service.
