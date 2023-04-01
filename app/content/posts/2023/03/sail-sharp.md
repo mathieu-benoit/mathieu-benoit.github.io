@@ -67,7 +67,7 @@ cat <<EOF > my-sample-app/my-sample-app.csproj
 EOF
 ```
 
-## Multi-stage build
+## 1. Multi-stage build
 
 Create our first `Dockerfile` with a multi-stage build. That’s not the final one, until then, please bear with me:
 ```bash
@@ -101,7 +101,7 @@ docker run -d -p 80:80 my-sample-app
 curl localhost:80
 ```
 
-## Optimized bundled application
+## 2. Optimized bundled application
 
 When using `dotnet publish`, we can use different features to optimize the size of the bundled application:
 - [Self-contained deployment](https://learn.microsoft.com/en-us/dotnet/core/deploying/runtime-patch-selection)
@@ -122,7 +122,7 @@ With `-p:TrimMode=full`, the size of the container image is now **136MB** on dis
 warning IL2026: Using member 'Microsoft.AspNetCore.Builder.EndpointRouteBuilderExtensions.MapGet(IEndpointRouteBuilder, String, Delegate)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. This API may perform reflection on the supplied delegate and its parameters. These types may be trimmed if not directly referenced.
 ```
 
-## Small base image
+## 3. Small base image
 
 To reduce the surface of attack or to avoid dealing with security vulnerabilities debt, using the smallest base image is a must.
 
@@ -139,12 +139,12 @@ _Note: if this app was compatible with `-p:TrimMode=full`, the size of the conta
 Below is the illustration of the sizes of the different base images:
 ```plaintext
 SIZE
-REPOSITORY                              TAG                                     IMAGE ID       CREATED       SIZE
-mcr.microsoft.com/dotnet/sdk            7.0.202                                 44f75b33d075   2 weeks ago   775MB
-mcr.microsoft.com/dotnet/runtime-deps   7.0.4                                   b53cbd54f8b3   2 weeks ago   117MB
-mcr.microsoft.com/dotnet/runtime-deps   7.0.4-cbl-mariner2.0-distroless         574233947e6b   2 weeks ago   26.4MB
-mcr.microsoft.com/dotnet/runtime-deps   7.0.4-alpine3.17                        ada21ea6f003   2 weeks ago   12.1MB
-mcr.microsoft.com/dotnet/runtime-deps   8.0.0-preview.2-jammy-chiseled          8786432e1e98   2 weeks ago   13MB
+REPOSITORY                              TAG                                     SIZE
+mcr.microsoft.com/dotnet/sdk            7.0.202                                 775MB
+mcr.microsoft.com/dotnet/runtime-deps   7.0.4                                   117MB
+mcr.microsoft.com/dotnet/runtime-deps   7.0.4-cbl-mariner2.0-distroless         26.4MB
+mcr.microsoft.com/dotnet/runtime-deps   7.0.4-alpine3.17                        12.1MB
+mcr.microsoft.com/dotnet/runtime-deps   8.0.0-preview.2-jammy-chiseled          13MB
 ```
 
 Here, like you can see, I decided to take the smallest container image `dotnet/runtime-deps:7.0.4-alpine3.17`: **12.1MB**.
@@ -153,14 +153,11 @@ But what about `dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless` (**26.4MB**
 
 Good question, glad you asked!
 
-They are very attractive because they are bringing the concept of `distroless`. They are container images that do not contain the complete or full-blown OS with system utilities installed.
-https://microsoft.github.io/CBL-Mariner/announcing-mariner-2.0/
+They are very attractive because they are bringing the concept of `distroless`. They are container images that do not contain the complete or full-blown OS with system utilities installed. You can read more about CBL-Mariner 2.0 [here](https://microsoft.github.io/CBL-Mariner/announcing-mariner-2.0/), and more about Chiseled Ubuntu Containers [here](https://devblogs.microsoft.com/dotnet/dotnet-6-is-now-in-ubuntu-2204/#chiseled-ubuntu-containers). Both are not yet ready for production.
 
-_Note: Chainguard is also working on having their own `distroless` images for `dotnet`: https://github.com/chainguard-images/images/issues/223. Something to keep in mind too!_
+_Note: Chainguard is also working on having their [own `distroless` images for `dotnet`](https://github.com/chainguard-images/images/issues/223). Something to keep in mind too!_
 
-Less packages and dependencies!
-Actually no, it doesn’t make nginx:alpine-slim more secure than cgr.dev/chainguard/nginx.
-This blog post Image sizes miss the point explains the why:
+This blog post [Image sizes miss the point](https://www.chainguard.dev/unchained/image-sizes-miss-the-point) explains really well why the `distroless` ones are very attractive:
 > To reduce debt, reduce image complexity not size.
 
 By using a tool like [`syft`](https://github.com/anchore/syft), we could see that the `distroless` ones are less complex than the `alpine` one, with less dependencies, reducing the debt and surface of risks. See results below.
@@ -238,7 +235,7 @@ Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
 
 With all of that being said, I will still continue to use the `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17` one. I will keep an eye on `mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64`, that’s for sure, it seems to be very promising!
 
-## Immutable base image
+## 4. Immutable base image
 
 Use a specific tag or version for your base image, not `latest` is important for traceability. But a tag or version is mutable, which means that you can’t guarantee which content of the container you are using. Using a [digest](https://www.mikenewswanger.com/posts/2020/docker-image-digests/) will guarantee that, a digest is immutable.
 
@@ -248,7 +245,7 @@ Update the `Dockerfile` with these two base images:
 
 _Note: it’s also highly encouraged that you store these two base images in your own private container registry and update your `Dockerfile` to point to them. You will guarantee their provenance, you will be able to scan them, etc._
 
-## Update dependencies
+## 5. Update dependencies
 
 An important aspect is to keep your dependencies up-to-date in order to fix CVEs, catch new features, etc. One way to help you with that, in an automated fashion, is to leverage tools like [`Renovate`](https://www.mend.io/renovate/) or [`Dependabot`](https://docs.github.com/en/code-security/dependabot/working-with-dependabot) if you are using GitHub.
 
@@ -267,7 +264,7 @@ updates:
       interval: "daily"
 ```
 
-## `.dockerignore`
+## 6. `.dockerignore`
 
 Use a [`.dockerignore`](https://docs.docker.com/engine/reference/builder/#dockerignore-file) file to ignore files that do not need to be added to the image.
 
@@ -283,7 +280,7 @@ Dockerfile*
 EOF
 ```
 
-## Unprivilege/non-root container
+## 7. Unprivilege/non-root container
 
 For security purposes, always ensure that your images run as non-root by defining `USER` in your `Dockerfile`.
 
@@ -300,7 +297,7 @@ docker run -d -p 80:8080 -u 1000 my-sample-app
 curl localhost:80
 ```
 
-## Read-only container filesystem
+## 8. Read-only container filesystem
 
 To make the container in read-only mode on filesystem, [`DOTNET_EnableDiagnostics`](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_enablediagnostics) needs to be turned off. `DOTNET_EnableDiagnostics` allows is used for debugging, profiling, and other diagnostics.
 
