@@ -219,6 +219,8 @@ For `mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64`
 No packages discovered
 ```
 
+_Note: Another important point is the fact that `alpine` is based on `musl`, on the other hand, the `distroless` ones are based on `glibc`. This blog post: [Why I Will Never Use Alpine Linux Ever Again](https://betterprogramming.pub/why-i-will-never-use-alpine-linux-ever-again-a324fd0cbfd6) highlights some known issues with `alpine`/`musl`. Good to keep in mind too._
+
 Furthermore, and for your information, I gave [`trivy`](https://trivy.dev/) a try for these three container images, here is the summary of the scans:
 - For `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17`:
 ```plaintext
