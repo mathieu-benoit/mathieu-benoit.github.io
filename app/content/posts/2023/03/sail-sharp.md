@@ -1,9 +1,8 @@
 ---
-title: sail sharp, 8 tips to optimize and secure your .net containers
+title: sail sharp, 8 tips to optimize and secure your .net containers for kubernetes
 date: 2023-03-31
 tags: [kubernetes, containers, dotnet, security]
-description: let s go through 8 tips to optimize and secure your .net containers, based on my contributions to the online boutique sample apps
-draft: true
+description: let’s go through 8 tips to optimize and secure your .net containers for kubernetes, based on my contributions to the online boutique sample apps
 aliases:
     - /sail-sharp/
 ---
@@ -131,7 +130,7 @@ You can find all the dotnet container images available here:
 - [`dotnet/sdk`](https://mcr.microsoft.com/v2/dotnet/sdk/tags/list)
 - [`dotnet/runtime-deps`](https://mcr.microsoft.com/v2/dotnet/runtime-deps/tags/list)
 
-In my case, I choose to use the `alpine` one: `dotnet/runtime-deps:7.0-alpine3.17`. For that we need to update the `Dockerfile` with `-r linux-musl-x64` for both commands: `dotnet restore` and `dotnet publish`.
+In my case, I choose to use the `alpine` one: `dotnet/runtime-deps:7.0-alpine3.17`. For that, we need to update the `Dockerfile` with `-r linux-musl-x64` for both commands: `dotnet restore` and `dotnet publish`.
 
 We can see that the size of the container image is now **43.2MB** on disk locally. Impressive! Isn’t it? 
 
@@ -150,34 +149,24 @@ mcr.microsoft.com/dotnet/runtime-deps   8.0.0-preview.2-jammy-chiseled          
 
 Here, like you can see, I decided to take the smallest container image `dotnet/runtime-deps:7.0.4-alpine3.17`: **12.1MB**.
 
-But what about `dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless` (**26.4MB**) and `dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled` (**13MB**)? Good question, glad you asked!
+But what about `dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless` (**26.4MB**) and `dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled` (**13MB**)?
 
-They are very attractive because they are bringing the concept of `distroless`. 
-Do you know why the `dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless` one is also attractive even if it is **26.4MB**, which is more than twice the size of the `alpine` one above?
+Good question, glad you asked!
+
+They are very attractive because they are bringing the concept of `distroless`. They are container images that do not contain the complete or full-blown OS with system utilities installed.
 https://microsoft.github.io/CBL-Mariner/announcing-mariner-2.0/
 
-Chainguard is also working on having their own distroless dotnet images: https://github.com/chainguard-images/images/issues/223.
-
-TRIVY
-mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17 (alpine 3.17.3)
-Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
-mcr.microsoft.com/dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless (cbl-mariner 2.0.20230303)
-Total: 6 (UNKNOWN: 0, LOW: 0, MEDIUM: 1, HIGH: 4, CRITICAL: 1)
-mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64 (ubuntu 22.04)
-Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+_Note: Chainguard is also working on having their own `distroless` images for `dotnet`: https://github.com/chainguard-images/images/issues/223. Something to keep in mind too!_
 
 Less packages and dependencies!
 Actually no, it doesn’t make nginx:alpine-slim more secure than cgr.dev/chainguard/nginx.
 This blog post Image sizes miss the point explains the why:
 > To reduce debt, reduce image complexity not size.
-By using a tool like Syft, we could see that cgr.dev/chainguard/nginx is less complex, with less dependencies, reducing the debt and surface of risks.
-For cgr.dev/chainguard/nginx:
 
-syft mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64
-[0 packages]
-No packages discovered
+By using a tool like [`syft`](https://github.com/anchore/syft), we could see that the `distroless` ones are less complex than the `alpine` one, with less dependencies, reducing the debt and surface of risks. See results below.
 
-syft mcr.microsoft.com/dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless
+For `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless`:
+```plaintext
 [13 packages]
 NAME                         VERSION               TYPE 
 distroless-packages-minimal  0.1-3.cm2             rpm   
@@ -193,8 +182,10 @@ openssl-libs                 1.1.1k-21.cm2         rpm
 prebuilt-ca-certificates     2547388:2.0.0-10.cm2  rpm   
 tzdata                       2022g-1.cm2           rpm   
 zlib                         1.2.12-2.cm2          rpm
+```
 
-syft mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17
+For `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17`:
+```plaintext
 [25 packages]
 NAME                    VERSION                TYPE   
 alpine-baselayout       3.4.0-r0               apk     
@@ -222,6 +213,30 @@ musl-utils              1.2.3-r4               apk
 scanelf                 1.3.5-r1               apk     
 ssl_client              1.35.0-r29             apk     
 zlib                    1.2.13-r0              apk
+```
+_Note: very important note that this container image contains `busybox` with `wget` included, which could help someone who made it into the running container to download malicious files, etc._
+
+For `mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64`:
+```plaintext
+[0 packages]
+No packages discovered
+```
+
+Furthermore, and for your information, I gave [`trivy`](https://trivy.dev/) a try for these three container images, here is the summary of the scans:
+- For `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17`:
+```plaintext
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+- For `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-cbl-mariner2.0-distroless`:
+```plaintext
+Total: 6 (UNKNOWN: 0, LOW: 0, MEDIUM: 1, HIGH: 4, CRITICAL: 1)
+```
+- For `mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64`:
+```plaintext
+Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+
+With all of that being said, I will still continue to use the `mcr.microsoft.com/dotnet/runtime-deps:7.0.4-alpine3.17` one. I will keep an eye on `mcr.microsoft.com/dotnet/runtime-deps:8.0.0-preview.2-jammy-chiseled-amd64`, that’s for sure, it seems to be very promising!
 
 ## Immutable base image
 
@@ -270,15 +285,18 @@ EOF
 
 ## Unprivilege/non-root container
 
+For security purposes, always ensure that your images run as non-root by defining `USER` in your `Dockerfile`.
+
+ASP.NET Core apps listen on port `80` by default. The problem is that port `80` is a [privileged port](https://www.w3.org/Daemon/User/Installation/PrivilegedPorts.html) that requires root permission. For making our container unprivilege, we will configure its port to `8080`:
 ```dockerfile
-EXPOSE 7070
-ENV ASPNETCORE_URLS=http://*:7070
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
 USER 1000
 ```
 
-You can now run this container with `-u 1000` on port `7070`:
+You can now run this container with `-u 1000` on port `8080`:
 ```bash
-docker run -d -p 80:7070 -u 1000 my-sample-app
+docker run -d -p 80:8080 -u 1000 my-sample-app
 curl localhost:80
 ```
 
@@ -292,7 +310,7 @@ ENV DOTNET_EnableDiagnostics=0
 
 You can now run this container with `--read-only`:
 ```bash
-docker run -d -p 80:7070 -u 1000 --read-only my-sample-app
+docker run -d -p 80:8080 -u 1000 --read-only my-sample-app
 curl localhost:80
 ```
 
@@ -317,8 +335,8 @@ RUN dotnet publish my-sample-app.csproj -r linux-musl-x64 -c release -o /my-samp
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine3.17-amd64@sha256:941c0748b773dd13f2930cded91d01f62d357a785550c25eabe3d53d7997ae4b
 WORKDIR /app
 COPY --from=builder /my-sample-app .
-EXPOSE 7070
-ENV ASPNETCORE_URLS=http://*:7070
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://*:8080
 ENV DOTNET_EnableDiagnostics=0
 USER 1000
 ENTRYPOINT ["/app/my-sample-app"]
@@ -359,7 +377,7 @@ spec:
             readOnlyRootFilesystem: true
           image: my-sample-app:latest
           ports:
-            - containerPort: 7070
+            - containerPort: 8080
 ```
 
 You are now ready to Sail Sharp! Hope you enjoyed that one! Cheers!
