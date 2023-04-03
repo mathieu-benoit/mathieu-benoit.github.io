@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://www.youtube.com/watch?v=S0an3FnI69Q
 https://youtu.be/BnFJzf6Ruwk
 https://www.salaboy.com/2023/03/31/what-platform-engineering-why-continuous-delivery/
 https://humanitec.com/blog/sre-vs-devops-vs-platform-engineering
