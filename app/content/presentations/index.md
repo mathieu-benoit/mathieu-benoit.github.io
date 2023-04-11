@@ -2,10 +2,11 @@
 title: presentations
 ---
 
-Here is the list of the 44 public presentations and workshops I have built and delivered.
+Here is the list of the 45 public presentations and workshops I have built and delivered.
 
-## 2023 (1)
+## 2023 (2)
 
+- 2023-04 - [OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
 - 2023-03 - [GDG Cloud Montreal - Sigstore Cosign with GKE, GAR and KMS](https://gdg.community.dev/events/details/google-gdg-cloud-montreal-presents-containerized-artifact-signature-verification-finops-on-gcp/)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/GDG%20Cloud%20Montreal%20-%20Cosign%20on%20GKE.pdf)
 
