@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://www.cncf.io/blog/2023/04/11/announcing-a-white-paper-on-platforms-for-cloud-native-computing/
 https://thenewstack.io/a-platform-for-kubernetes/
 https://medium.com/@vincn.ledan/platform-as-a-product-accelerating-cloud-adoption-and-innovation-315f9baafcde
 https://www.youtube.com/watch?v=S0an3FnI69Q
