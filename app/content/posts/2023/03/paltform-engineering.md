@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://humanitec.com/blog/what-is-dynamic-configuration-management
+https://humanitec.com/blog/implementing-dynamic-configuration-management-with-score-and-humanitec
+https://humanitec.com/blog/gartner-internal-developer-platforms-platform-engineering
+https://humanitec.com/blog/what-is-a-platform-orchestrator
 https://www.cncf.io/blog/2023/04/11/announcing-a-white-paper-on-platforms-for-cloud-native-computing/
 https://thenewstack.io/a-platform-for-kubernetes/
 https://medium.com/@vincn.ledan/platform-as-a-product-accelerating-cloud-adoption-and-innovation-315f9baafcde
