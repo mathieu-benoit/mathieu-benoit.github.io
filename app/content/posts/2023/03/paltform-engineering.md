@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://tanzu.vmware.com/content/blog/golden-path-to-cloud-success
+https://thenewstack.io/why-you-should-run-your-platform-team-like-a-product-team/
 https://humanitec.com/blog/what-is-dynamic-configuration-management
 https://humanitec.com/blog/implementing-dynamic-configuration-management-with-score-and-humanitec
 https://humanitec.com/blog/gartner-internal-developer-platforms-platform-engineering
