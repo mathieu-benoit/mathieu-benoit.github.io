@@ -8,7 +8,7 @@ title: about
 </figure>
 {{< /html >}}
 
-I'm Mathieu Benoit. I live in Quebec city, QC - Canada :maple_leaf:, and I was born in France :fr:. I work at {{< html >}}<a href="https://humanitec.com" target="_blank">Humanitec</a>{{< /html >}} as Customer Success Engineer :cloud:. Previously to that I was {{< html >}}<a href="https://medium.com/@mabenoit/2022-in-review-first-year-in-devrel-b438fce665ac" target="_blank">Developer Platform Engineer at Google</a>{{< /html >}}.
+I'm Mathieu Benoit. I live in Quebec city, QC - Canada :maple_leaf:, and I was born in France :fr:. I'm a {{< html >}}<a href="https://www.cncf.io/people/ambassadors" target="_blank">Cloud Native Ambassadors (CNAs)</a>{{< /html >}} and I work at {{< html >}}<a href="https://humanitec.com" target="_blank">Humanitec</a>{{< /html >}} as Customer Success Engineer :cloud:. Previously to that I was {{< html >}}<a href="https://medium.com/@mabenoit/2022-in-review-first-year-in-devrel-b438fce665ac" target="_blank">Developer Platform Engineer at Google</a>{{< /html >}}.
 
 The intent of this blog is to document and share my learnings, I'm a [learn-it-all]({{< ref "/posts/2020/09/sharing-is-caring.md" >}}) person :rocket:. I'm passionate :heart: about Cloud Native Computing technologies driven by Open Source, Cloud, Security, SRE, Containers, DevOps, Platform Engineering and Kubernetes. Based on my past experiences as software engineer, IT consultant, solution architect, etc. I now focus my work more and more on usability, driven by how I could improve the developers and end-users experience with docs, samples and products.
 
