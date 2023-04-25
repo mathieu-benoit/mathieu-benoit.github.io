@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://siliconangle.com/2023/04/22/plenty-gas-innovations-continue-apace-first-post-pandemic-kubecon/
+https://www.infoq.com/news/2023/04/idp-user-experience/
 https://tanzu.vmware.com/content/blog/golden-path-to-cloud-success
 https://thenewstack.io/why-you-should-run-your-platform-team-like-a-product-team/
 https://humanitec.com/blog/what-is-dynamic-configuration-management
