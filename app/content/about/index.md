@@ -14,9 +14,7 @@ I'm a {{< html >}}<a href="https://www.cncf.io/people/ambassadors" target="_blan
 
 The intent of this blog is to document and share my learnings, I'm a [learn-it-all]({{< ref "/posts/2020/09/sharing-is-caring.md" >}}) person :rocket:.
 
-I'm passionate :heart: about Cloud Native Computing technologies driven by Open Source, Cloud, Security, SRE, Containers, DevOps, Platform Engineering and Kubernetes. Based on my past experiences as software engineer, IT consultant, solution architect, etc.
-
-I now focus my work more and more on usability of products, driven by how I could improve the developers and end-users experience with docs, samples and products.
+I'm passionate :heart: about Cloud Native Computing technologies driven by Open Source, Cloud, Security, SRE, Containers, DevOps, Platform Engineering and Kubernetes. Based on my past experiences as software engineer, IT consultant and solution architect, I now focus my work more and more on usability of products, driven by how I could improve the developers and end-users experience with docs, samples and products.
 
 If you have any feedback, comment or issue about this blog, feel free to directly file a new issue :memo: {{< html >}}<a href="https://github.com/mathieu-benoit/myblog/issues/new/choose" target="_blank">there</a>{{< /html >}}.
 
