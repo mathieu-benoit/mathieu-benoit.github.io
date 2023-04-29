@@ -7,6 +7,7 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://thenewstack.io/kubecon-panel-how-platform-engineering-benefits-developers/
 https://www.syntasso.io/post/syntasso-donates-first-version-of-platform-maturity-model-to-cncf-working-group
 https://siliconangle.com/2023/04/22/plenty-gas-innovations-continue-apace-first-post-pandemic-kubecon/
 https://www.infoq.com/news/2023/04/idp-user-experience/
