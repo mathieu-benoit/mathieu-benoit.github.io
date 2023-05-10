@@ -26,6 +26,8 @@ But to be honest, after giving them a shot, I found out that they were not compl
 
 That's what I will cover throughout this blog post by sharing my learnings and showing you this end-to-end setup, please bear with me! :)
 
+![](https://github.com/mathieu-benoit/my-images/raw/main/nginx-ingress-cloud-armor.png)
+
 _Note: I'm doing this via `gcloud` commands, but everything can be done via Terraform too._
 
 Define common variables:
@@ -109,6 +111,7 @@ gcloud compute firewall-rules create ${CLUSTER_NAME}-allow-tcp-loadbalancer \
     --source-ranges 130.211.0.0/22,35.191.0.0/16 \
     --target-tags ${CLUSTER_FIREWALL_RULE_TAG}
 ```
+_Note: these IP ranges correspond to the Google Cloud probers to connect to your backend, more information [here](https://cloud.google.com/load-balancing/docs/health-check-concepts#ip-ranges)._
 
 Add an HTTPS Health Check configuration:
 ```bash
