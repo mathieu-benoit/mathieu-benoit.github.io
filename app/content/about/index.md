@@ -16,6 +16,8 @@ The intent of this blog is to document and share my learnings, I'm a [learn-it-a
 
 I'm passionate :heart: about Cloud Native Computing technologies driven by Open Source, Cloud, Security, SRE, Containers, DevOps, Platform Engineering and Kubernetes. Based on my past experiences as software engineer, IT consultant and solution architect, I now focus my work more and more on usability of products, driven by how I could improve the developers and end-users experience with docs, samples and products.
 
+On a personal aspect, I'm a very proud father of 2 boys. I really enjoy outdoors activities, my go-tos are hicking, snowboarding :snowboarder: and playing tennis :tennis:.
+
 If you have any feedback, comment or issue about this blog, feel free to directly file a new issue :memo: {{< html >}}<a href="https://github.com/mathieu-benoit/myblog/issues/new/choose" target="_blank">there</a>{{< /html >}}.
 
 {{< html >}}
