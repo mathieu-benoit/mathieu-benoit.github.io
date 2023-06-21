@@ -1,5 +1,5 @@
 ---
-title: what is platform engineering
+title: platform engineering, devops on steroide?
 date: 2023-05-25
 tags: [kubernetes, inspiration]
 description: let's see what is platform engineering
@@ -7,7 +7,14 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
-https://www.cncf.io/blog/2023/05/08/kubecon-europe-2023-highlights-kubernetes-explosion-and-need-for-instant-platform-engineering/
+https://platifyinsights.com/2023/04/12/what-is-platform-engineering/
+
+https://thenewstack.io/at-platformcon-for-realtor-com-success-is-driven-by-stories/
+
+https://github.blog/2023-06-08-developer-experience-what-is-it-and-why-should-you-care/
+
+[Fidelity’s Software Delivery Platform – Frictionless Approach to Achieve Autonomic DevOps & Enhanced Security/Compliance Practices](https://youtu.be/77_oX2SD7Vs?list=PLj6h78yzYM2M3-reG8FBlsE5s7P_UOvl4)
+
 https://thenewstack.io/kubecon-panel-how-platform-engineering-benefits-developers/
 https://www.syntasso.io/post/syntasso-donates-first-version-of-platform-maturity-model-to-cncf-working-group
 https://siliconangle.com/2023/04/22/plenty-gas-innovations-continue-apace-first-post-pandemic-kubecon/
@@ -76,7 +83,7 @@ So what is defining a successful platform? In this blog post, I will summarize 6
 - [Focus on the Customer Experience](#focus-on-the-customer-experience)
 - [Abstract Cloud Native technologies](#abstract-cloud-native-technologies)
 
-Finally, to wrap up this blog post, we will conclude it with:
+Finally, to wrap up this blog post, we will conclude with:
 - [Navigate the CNCF landscape](#navigate-the-cncf-landscape)
 - [Wrap up with Humanitec](#wrap-up-with-humanitec)
 
@@ -104,14 +111,14 @@ Here are even more considerations you will have as
 - Do you have a brand, a logo, stickers, a newsletter, t-shirts, lunch&learn sessions, platform advocates?
 - Do you have dedicated team for support or SRE? Do you monitor metrics and provide SLAs with your services? How to you help your internal customers meeting with their own metrics and SLAs for the services they provide to their end-users?
 
-
-
 ## Focus on the Customer Experience
 
 A platform has customers and users part of the tech communities using it. With a platform as product approach, you should focus on the personas consuming your platform and make sure that their usability journey is as efficient as possible.
 
 https://youtu.be/4N2ywun-wTE
 > Platform Engineering is a discipline which involved doing whatever it takes to build, maintain and provide a curated platform experience for the communities using it.
+
+Meet the developers where they are in their developer flow.
 
 Optimize for adoption and discoverability.
 
@@ -185,9 +192,6 @@ https://kubevela.io/
 dapr
 https://youtu.be/JxyI1Rr1yys?list=PLcip_LgkYwzspITkpyHGRw7L87UqOI2lX
 
-There are more opiniated products where you don t need to build your own platform but you can buy it: Humanitec --> platform orchestrator
-These tools are not incompatible with the other tools mentioned earlier, you can see articles about their collaboration.
-
 
 
 
@@ -196,6 +200,9 @@ https://youtu.be/6sCTIVpdC08
 Non-Technical Challenges of Platform Engineering - https://youtu.be/m6nlREbQ6LQ
 
 ## Wrap up with Humanitec
+
+There are more opiniated products where you don't need to build your own platform but you can buy it: Humanitec --> platform orchestrator
+These tools are not incompatible with the other tools mentioned earlier, you can see articles about their collaboration.
 
 https://youtu.be/b-67km-wcEo
 - Golden paths over cages
@@ -234,6 +241,7 @@ The platform is open to change, collaborate to discover new needs.
 
 ## Resources
 
+- [KubeCon Europe 2023 highlights Kubernetes explosion and need for instant platform engineering](https://www.cncf.io/blog/2023/05/08/kubecon-europe-2023-highlights-kubernetes-explosion-and-need-for-instant-platform-engineering/)
 - https://humanitec.com/blog/gartner-internal-developer-platforms-platform-engineering
 - https://www.youtube.com/@PlatformEngineering
 - https://thenewstack.io/how-team-topologies-supports-platform-engineering/ - https://youtu.be/b8YHCDMxqfg?list=PLR74Ng-6aEfCcdBM_l8PPfX85S33-fSFS
