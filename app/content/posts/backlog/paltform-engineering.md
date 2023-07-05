@@ -7,6 +7,8 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://github.blog/2023-07-03-leading-your-platform-migration-with-developer-experience/
+
 https://platifyinsights.com/2023/04/12/what-is-platform-engineering/
 
 https://thenewstack.io/at-platformcon-for-realtor-com-success-is-driven-by-stories/
