@@ -7,6 +7,10 @@ draft: true
 aliases:
     - /platform-engineering/
 ---
+https://humanitec.com/blog/build-vs-buy-internal-developer-platform-for-enterprise
+
+https://blogs.gartner.com/manjunath-bhat/2023/07/07/adopt-platform-engineering-to-scale-application-security-practices/
+
 https://github.blog/2023-07-03-leading-your-platform-migration-with-developer-experience/
 
 https://platifyinsights.com/2023/04/12/what-is-platform-engineering/
