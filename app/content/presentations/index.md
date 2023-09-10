@@ -6,10 +6,14 @@ Here is the list of the 46 public presentations and workshops I have built and d
 
 ## 2023 (3)
 
-- 2023-09 - [Agile Quebec - Platform Engineering](https://github.com/mathieu-benoit/presentations/blob/main/2023-09-PlatformEngineering.pdf)
-- 2023-04 - [OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
+- 2023-09 - [Agile Quebec - Platform Engineering](https://www.linkedin.com/events/est-cequelaplatformengineeringe7095864339999383552/)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
+- 2023-04 - OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
+  - [Link to the recording](https://youtu.be/XSCM-9VZgVM?list=PLbzoR-pLrL6osxY8Ao02UdjFIYux9I-Qi)
 - 2023-03 - [GDG Cloud Montreal - Sigstore Cosign with GKE, GAR and KMS](https://gdg.community.dev/events/details/google-gdg-cloud-montreal-presents-containerized-artifact-signature-verification-finops-on-gcp/)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/GDG%20Cloud%20Montreal%20-%20Cosign%20on%20GKE.pdf)
+  - [Link to the recording](https://youtu.be/14txVf7cpro)
 
 ## 2022 (7)
 
