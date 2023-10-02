@@ -8,7 +8,7 @@ Here is the list of the 48 public presentations and workshops I have built and d
 
 - 2023-09 - Cloud Native Security & Kubernetes
   - [Link to the presentation](https://youtu.be/1bSclxSk4zs)
-- 2023-09 - [CNCF & Kuberentes Meetup - Quebec city - Only one label to improve your Kubernetes security posture, with the Pod Security Admission (PSA) — just do it!](https://community.cncf.io/e/mb8wvx/)
+- 2023-09 - [CNCF & Kubernetes Meetup - Quebec city - Only one label to improve your Kubernetes security posture, with the Pod Security Admission (PSA) — just do it!](https://community.cncf.io/e/mb8wvx/)
   - [Link to the presentation](https://medium.com/google-cloud/improve-your-kubernetes-security-posture-with-the-pod-security-admission-psa-6bb59cc6923f?sk=572e10584484afec9b071a83067c60a3)
 - 2023-09 - [Agile Quebec - Platform Engineering](https://www.linkedin.com/events/est-cequelaplatformengineeringe7095864339999383552/)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
