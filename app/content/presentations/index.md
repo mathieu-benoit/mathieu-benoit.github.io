@@ -125,7 +125,7 @@ Here is the list of the 48 public presentations and workshops I have built and d
   - [Link to the session](https://www.meetup.com/AzureQC/events/232734345/)
 - 2016-08 - [Java ALM - my Android app with VSTS](https://github.com/mathieu-benoit/presentations/raw/main/2016-08-Mycellarsandtastes-JavaToolsChallenge.pdf)
    - [Link to the contest entry](https://devpost.com/software/my-cellars-and-tastes-9chdpq)
-   - [Java Tools Challenge results]](https://devblogs.microsoft.com/bharry/java-tools-challenge-results/)
+   - [Java Tools Challenge results](https://devblogs.microsoft.com/bharry/java-tools-challenge-results/)
    - [My Customer Testimonial on using Visual Studio Team Services for Java Mobile App Development](https://youtu.be/asg_7NMQ6BE)
    - [Java Mobile Android App Migration to Visual Studio Team Services](https://youtu.be/GKrMeODfzCM)
 - 2016-03 - [Microsoft et le developpement Web Moderne [fr]](https://github.com/mathieu-benoit/presentations/raw/main/2016-03-MicrosoftModerneWebDevelopment-UniversiteLaval.pdf)
