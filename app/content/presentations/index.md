@@ -12,7 +12,7 @@ Here is the list of the 48 public presentations and workshops I have built and d
   - [Link to the presentation](https://medium.com/google-cloud/improve-your-kubernetes-security-posture-with-the-pod-security-admission-psa-6bb59cc6923f?sk=572e10584484afec9b071a83067c60a3)
 - 2023-09 - [Agile Quebec - Platform Engineering](https://www.linkedin.com/events/est-cequelaplatformengineeringe7095864339999383552/)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
-- 2023-04 - OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests
+- 2023-04 - [OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests](https://sched.co/1K5Ek)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
   - [Link to the recording](https://youtu.be/XSCM-9VZgVM?list=PLbzoR-pLrL6osxY8Ao02UdjFIYux9I-Qi)
 - 2023-03 - [GDG Cloud Montreal - Sigstore Cosign with GKE, GAR and KMS](https://gdg.community.dev/events/details/google-gdg-cloud-montreal-presents-containerized-artifact-signature-verification-finops-on-gcp/)
