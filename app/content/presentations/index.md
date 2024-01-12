@@ -2,7 +2,13 @@
 title: presentations
 ---
 
-Here is the list of the 48 public presentations and workshops I have built and delivered.
+Here is the list of the 49 public presentations and workshops I have built and delivered.
+
+## 2024 (1)
+
+- 2024-01 - Dapr, Score and Humanitec Orchestrator - Level up the Developer eXperience of your Platform, on steroids!
+  - [Link to the presentation](https://medium.com/@mabenoit/dapr-with-score-and-humanitec-developer-experience-with-your-platform-on-steroids-a848f2de0a5a)
+  - [Link to the recording](https://www.youtube.com/watch?v=4gT0Y6QxinU&t=140s)
 
 ## 2023 (5)
 
@@ -11,7 +17,7 @@ Here is the list of the 48 public presentations and workshops I have built and d
 - 2023-09 - [CNCF & Kubernetes Meetup - Quebec city - Only one label to improve your Kubernetes security posture, with the Pod Security Admission (PSA) — just do it!](https://community.cncf.io/e/mb8wvx/)
   - [Link to the presentation](https://medium.com/google-cloud/improve-your-kubernetes-security-posture-with-the-pod-security-admission-psa-6bb59cc6923f?sk=572e10584484afec9b071a83067c60a3)
 - 2023-09 - [Agile Quebec - Platform Engineering](https://www.linkedin.com/events/est-cequelaplatformengineeringe7095864339999383552/)
-  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
+  - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/2023-09-PlatformEngineering.pdf)
 - 2023-04 - [OSS Summit - SupplyChain & SecurityCon 2023 - Sigstore Cosign for your Kubernetes manifests](https://sched.co/1K5Ek)
   - [Link to the presentation](https://github.com/mathieu-benoit/presentations/raw/main/OSS-NA-SupplyChainSecurityCon-2023-Cosign-and-Kubernetes.pdf)
   - [Link to the recording](https://youtu.be/XSCM-9VZgVM?list=PLbzoR-pLrL6osxY8Ao02UdjFIYux9I-Qi)
