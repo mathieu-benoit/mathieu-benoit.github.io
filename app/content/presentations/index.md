@@ -2,10 +2,16 @@
 title: presentations
 ---
 
-Here is the list of the 49 public presentations and workshops I have built and delivered.
+Here is the list of the 51 public presentations and workshops I have built and delivered.
 
-## 2024 (1)
+## 2024 (3)
 
+- 2024-02 - Deep Dive into Workload Specification with Score - Platform Engineering webinar series
+  - [Link to the recording](https://youtu.be/rd2KWGHZQsg) 
+- 2024-01 - Score submitted as CNCF Sandbox, presented at the TAG App Delivery - Platforms WG
+  - [Link to the recording]([https://youtu.be/P6otOxdOKDk](https://youtu.be/P6otOxdOKDk?t=1296))
+  - [Link to the presentation](https://docs.google.com/presentation/d/1O8m2O1WAdUQU6-wcJiwBTiO24J6PBGob3Rqc31DOZEM/edit#slide=id.g190e23edb22_0_0)
+  - [Link to the blog post](https://score.dev/blog/score-applies-to-become-a-cncf-sandbox-project)
 - 2024-01 - Dapr, Score and Humanitec Orchestrator - Level up the Developer eXperience of your Platform, on steroids!
   - [Link to the presentation](https://medium.com/@mabenoit/dapr-with-score-and-humanitec-developer-experience-with-your-platform-on-steroids-a848f2de0a5a)
   - [Link to the recording](https://www.youtube.com/watch?v=4gT0Y6QxinU&t=140s)
